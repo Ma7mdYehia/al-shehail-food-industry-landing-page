@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://alshehailfood.com/sitemap.xml",
+    sitemap: "https://www.alshehai.ae/sitemap.xml",
   };
 }

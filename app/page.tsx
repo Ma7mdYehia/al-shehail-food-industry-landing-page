@@ -18,11 +18,15 @@ const jsonLd = {
   name: company.name,
   description:
     "UAE-based bakery manufacturing and private label partner. From idea to shelf — developing and manufacturing bakery products built for retail success.",
+  url: "https://www.alshehai.ae",
   address: {
     "@type": "PostalAddress",
+    streetAddress: "New Industrial Area",
+    addressLocality: "Umm Al Quwain",
     addressCountry: "AE",
   },
   email: company.email,
+  telephone: company.phone,
   makesOffer: productCategories.map((p) => ({
     "@type": "Offer",
     itemOffered: { "@type": "Product", name: p.name },

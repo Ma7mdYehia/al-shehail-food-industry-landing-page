@@ -1,4 +1,4 @@
-import { company, navLinks, trustBadges } from "@/lib/content";
+import { company, navLinks, trustBadges, whatsappLink } from "@/lib/content";
 
 export default function Footer() {
   return (
@@ -61,10 +61,28 @@ export default function Footer() {
               <li>{company.location}</li>
               <li>
                 <a
+                  href={`tel:+${company.phoneDigits}`}
+                  className="transition-colors hover:text-gold"
+                >
+                  {company.phone}
+                </a>
+              </li>
+              <li>
+                <a
                   href={`mailto:${company.email}`}
                   className="transition-colors hover:text-gold"
                 >
                   {company.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-gold"
+                >
+                  WhatsApp
                 </a>
               </li>
               <li>
