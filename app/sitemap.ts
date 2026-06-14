@@ -5,6 +5,14 @@ const baseUrl = "https://www.alshehai.ae";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
+  const corePages = [
+    "/about",
+    "/private-label",
+    "/capabilities",
+    "/quality",
+    "/partners",
+    "/contact",
+  ];
   return [
     {
       url: baseUrl,
@@ -18,6 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    ...corePages.map((path) => ({
+      url: `${baseUrl}${path}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
     ...products.map((p) => ({
       url: `${baseUrl}/products/${p.slug}`,
       lastModified,

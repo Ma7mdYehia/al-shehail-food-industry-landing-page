@@ -20,12 +20,13 @@ export const whatsappLink = `https://wa.me/${company.phoneDigits}?text=${encodeU
 )}`;
 
 export const navLinks = [
-  { label: "About", href: "/#about" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
   { label: "Products", href: "/products" },
-  { label: "Private Label", href: "/#private-label" },
-  { label: "Quality", href: "/#certifications" },
-  { label: "Capabilities", href: "/#capabilities" },
-  { label: "Presence", href: "/#presence" },
+  { label: "Private Label", href: "/private-label" },
+  { label: "Capabilities", href: "/capabilities" },
+  { label: "Quality", href: "/quality" },
+  { label: "Partners", href: "/partners" },
   { label: "Contact", href: "/contact" },
 ];
 
