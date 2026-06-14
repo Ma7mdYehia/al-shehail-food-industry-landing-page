@@ -40,12 +40,12 @@ export default function Header() {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-5 lg:flex xl:gap-7" aria-label="Primary">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-charcoal/80 transition-colors hover:text-gold"
+              className="whitespace-nowrap text-sm font-medium text-charcoal/80 transition-colors hover:text-gold"
             >
               {link.label}
             </a>
