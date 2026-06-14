@@ -10,7 +10,8 @@ import MarketPresence from "@/components/MarketPresence";
 import WhyUs from "@/components/WhyUs";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
-import { company, productCategories } from "@/lib/content";
+import { company } from "@/lib/content";
+import { products } from "@/lib/products";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -27,7 +28,7 @@ const jsonLd = {
   },
   email: company.email,
   telephone: company.phone,
-  makesOffer: productCategories.map((p) => ({
+  makesOffer: products.map((p) => ({
     "@type": "Offer",
     itemOffered: { "@type": "Product", name: p.name },
   })),

@@ -20,12 +20,12 @@ export const whatsappLink = `https://wa.me/${company.phoneDigits}?text=${encodeU
 )}`;
 
 export const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Products", href: "#products" },
-  { label: "Private Label", href: "#private-label" },
-  { label: "Quality", href: "#certifications" },
-  { label: "Capabilities", href: "#capabilities" },
-  { label: "Presence", href: "#presence" },
+  { label: "About", href: "/#about" },
+  { label: "Products", href: "/products" },
+  { label: "Private Label", href: "/#private-label" },
+  { label: "Quality", href: "/#certifications" },
+  { label: "Capabilities", href: "/#capabilities" },
+  { label: "Presence", href: "/#presence" },
 ];
 
 export const trustBadges = [
@@ -40,72 +40,6 @@ export const manufacturingPartners = [
   "EKTIFA",
   "Al Taj",
   "Al Tahan",
-];
-
-export type ProductIconKey =
-  | "flatbread"
-  | "loaf"
-  | "samoon"
-  | "bun"
-  | "croissant"
-  | "croissantLarge"
-  | "puff"
-  | "maamoul"
-  | "date";
-
-export type ProductCategory = {
-  name: string;
-  description: string;
-  icon: ProductIconKey;
-};
-
-export const productCategories: ProductCategory[] = [
-  {
-    name: "Flatbread & Arabic Bread",
-    description:
-      "Authentic regional flatbreads produced for everyday retail demand.",
-    icon: "flatbread",
-  },
-  {
-    name: "Toast & Sandwich Bread",
-    description: "Soft, consistent loaves engineered for shelf life and slicing.",
-    icon: "loaf",
-  },
-  {
-    name: "Samoon Bread",
-    description: "Traditional Gulf samoon, baked for freshness and texture.",
-    icon: "samoon",
-  },
-  {
-    name: "Burger Buns",
-    description: "Foodservice and retail buns with reliable structure and crumb.",
-    icon: "bun",
-  },
-  {
-    name: "Mini Croissants",
-    description: "Laminated mini croissants ideal for grab-and-go formats.",
-    icon: "croissant",
-  },
-  {
-    name: "Full-Size Croissants",
-    description: "Premium butter-style croissants for bakery and cafe shelves.",
-    icon: "croissantLarge",
-  },
-  {
-    name: "Puff Pastry Products",
-    description: "Layered savory and sweet pastry lines for diverse ranges.",
-    icon: "puff",
-  },
-  {
-    name: "Maamoul",
-    description: "Filled date and nut maamoul for seasonal and year-round sales.",
-    icon: "maamoul",
-  },
-  {
-    name: "Date Balls / Tamriya",
-    description: "Wholesome date-based snacks built for the health-aware shopper.",
-    icon: "date",
-  },
 ];
 
 export type Step = {
