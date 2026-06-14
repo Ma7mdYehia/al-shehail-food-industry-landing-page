@@ -7,10 +7,17 @@ export const company = {
   shortName: "Al Shehail",
   positioning: "UAE-Based Bakery Manufacturing & Private Label Partner",
   coreMessage: "From idea to shelf",
-  location: "United Arab Emirates",
-  email: "info@alshehailfood.com",
-  phone: "+971 (placeholder)",
+  location: "New Industrial Area, Umm Al Quwain, UAE",
+  email: "info@alshehai.ae",
+  phone: "+971 54 743 1444",
+  // E.164 digits only, used for tel: and wa.me links
+  phoneDigits: "971547431444",
 };
+
+// WhatsApp deep link with a prefilled B2B enquiry message.
+export const whatsappLink = `https://wa.me/${company.phoneDigits}?text=${encodeURIComponent(
+  "Hello Al Shehail, I'd like to discuss a private label bakery project."
+)}`;
 
 export const navLinks = [
   { label: "About", href: "#about" },
@@ -89,33 +96,51 @@ export type Step = {
 export const privateLabelSteps: Step[] = [
   {
     number: "01",
-    title: "Concept & Development",
+    title: "Product Idea",
     description:
-      "We translate your idea into a viable bakery product — recipe, format, and positioning aligned to your brand.",
+      "We start from your brief — category, positioning, and target shelf — and shape a manufacturable bakery concept.",
   },
   {
     number: "02",
-    title: "Recipe & Sampling",
+    title: "Recipe Development",
     description:
-      "Iterative sampling and refinement until taste, texture, and cost meet retail expectations.",
+      "Our development team formulates the recipe for taste, texture, and clean, repeatable production.",
   },
   {
     number: "03",
-    title: "Manufacturing & QA",
+    title: "Sampling",
     description:
-      "Production under certified food-safety systems with consistent quality at every batch.",
+      "We produce samples and refine through feedback until the product is right for your brand.",
   },
   {
     number: "04",
-    title: "Packing & Branding",
+    title: "Costing",
     description:
-      "Retail-ready packaging and private-label finishing tailored to your brand identity.",
+      "Transparent unit costing and specifications so the product works commercially at retail.",
   },
   {
     number: "05",
-    title: "Scale & Supply",
+    title: "Packaging",
     description:
-      "Reliable, repeatable supply scaled to your distribution and retail footprint.",
+      "Private-label packaging engineered for shelf appeal, compliance, and product protection.",
+  },
+  {
+    number: "06",
+    title: "Production",
+    description:
+      "Scaled manufacturing on certified bakery lines with consistent output, batch after batch.",
+  },
+  {
+    number: "07",
+    title: "Quality Control",
+    description:
+      "ISO- and HACCP-aligned checks safeguard food safety and quality at every stage.",
+  },
+  {
+    number: "08",
+    title: "Retail-Ready Delivery",
+    description:
+      "Finished, branded, retail-ready product supplied reliably to your distribution network.",
   },
 ];
 

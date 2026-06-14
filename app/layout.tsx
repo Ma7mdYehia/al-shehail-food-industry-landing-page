@@ -14,7 +14,7 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-const siteUrl = "https://alshehailfood.com";
+const siteUrl = "https://www.alshehai.ae";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
