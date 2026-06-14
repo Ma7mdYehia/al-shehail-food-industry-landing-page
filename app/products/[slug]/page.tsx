@@ -143,7 +143,7 @@ export default function ProductDetailPage({ params }: Params) {
                   >
                     Request This Product
                   </a>
-                  <Link href="/#contact" className="btn-secondary">
+                  <Link href="/contact" className="btn-secondary">
                     Discuss Private Label Options
                   </Link>
                 </div>
@@ -318,7 +318,7 @@ export default function ProductDetailPage({ params }: Params) {
                   and retail-ready supply.
                 </p>
                 <div className="mt-8 flex flex-wrap justify-center gap-4">
-                  <Link href="/#contact" className="btn-primary">
+                  <Link href="/contact" className="btn-primary">
                     Request Manufacturing Consultation
                   </Link>
                   <a

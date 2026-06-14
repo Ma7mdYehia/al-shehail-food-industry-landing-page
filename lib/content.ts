@@ -26,6 +26,7 @@ export const navLinks = [
   { label: "Quality", href: "/#certifications" },
   { label: "Capabilities", href: "/#capabilities" },
   { label: "Presence", href: "/#presence" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const trustBadges = [

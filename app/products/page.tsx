@@ -198,7 +198,7 @@ export default function ProductsPage() {
                   retail-ready supply.
                 </p>
                 <div className="mt-8">
-                  <Link href="/#contact" className="btn-primary">
+                  <Link href="/contact" className="btn-primary">
                     Start a Private Label Project
                   </Link>
                 </div>

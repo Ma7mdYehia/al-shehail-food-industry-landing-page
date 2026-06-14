@@ -53,7 +53,7 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <a href="/#contact" className="btn-primary">
+          <a href="/contact" className="btn-primary">
             Start a Project
           </a>
         </div>
@@ -97,7 +97,7 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="/#contact"
+              href="/contact"
               className="btn-primary mt-2"
               onClick={() => setOpen(false)}
             >
