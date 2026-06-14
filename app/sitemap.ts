@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { products } from "@/lib/products";
 
 const baseUrl = "https://www.alshehai.ae";
 
@@ -17,6 +18,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    // Product detail routes (/products/[slug]) will be added in Sprint 2.
+    ...products.map((p) => ({
+      url: `${baseUrl}/products/${p.slug}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
   ];
 }

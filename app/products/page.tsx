@@ -7,7 +7,7 @@ import ProductIcon from "@/components/ProductIcon";
 import { productsByCategory } from "@/lib/products";
 
 export const metadata: Metadata = {
-  title: "Bakery Products | Al Shehail Food Industries UAE",
+  title: { absolute: "Bakery Products | Al Shehail Food Industries UAE" },
   description:
     "Explore Al Shehail Food Industries’ bakery manufacturing range including Arabic bread, wraps, toast, burger buns, croissants, pate, maamoul, and tamriya for private label and retail supply.",
   alternates: { canonical: "/products" },
