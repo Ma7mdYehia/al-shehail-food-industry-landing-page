@@ -1,4 +1,5 @@
 import SectionHeading from "./SectionHeading";
+import AssetHint from "./AssetHint";
 import { retailPresence } from "@/lib/content";
 
 // Monogram for each retailer (e.g. "Lulu Hypermarket" -> "LH").
@@ -25,12 +26,15 @@ export default function MarketPresence() {
                 key={retailer}
                 className="group flex flex-col items-center justify-center gap-3 bg-cream px-4 py-9 text-center transition-colors duration-300 hover:bg-warmwhite"
               >
+                {/* Placeholder logo: brand monogram until the real retail
+                    logo asset is supplied. */}
                 <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-sand bg-warmwhite font-serif text-sm font-bold text-gold transition-colors group-hover:border-champagne">
                   {monogram(retailer)}
                 </span>
-                <span className="font-serif text-sm font-semibold leading-tight text-charcoal/80 transition-colors group-hover:text-ink sm:text-base">
+                <span className="font-serif text-sm font-semibold leading-tight text-charcoal transition-colors group-hover:text-ink sm:text-base">
                   {retailer}
                 </span>
+                <AssetHint label="Retail logo needed" />
               </div>
             ))}
           </div>

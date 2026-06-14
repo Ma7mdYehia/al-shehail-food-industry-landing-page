@@ -55,7 +55,7 @@ export default function FinalCTA() {
 
           <div className="relative grid items-center gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
             <div className="text-center lg:text-left">
-              <span className="eyebrow justify-center lg:justify-start">
+              <span className="eyebrow">
                 <span className="h-px w-6 bg-champagne" />
                 From Idea to Shelf
               </span>

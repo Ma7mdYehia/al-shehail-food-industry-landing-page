@@ -51,7 +51,7 @@ export default function Hero() {
               UAE-Based Bakery Manufacturing &amp; Private Label Partner
             </span>
 
-            <h1 className="heading-serif mt-6 text-4xl sm:text-5xl lg:text-6xl">
+            <h1 className="heading-serif mt-6 text-4xl leading-[1.1] sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
               Private Label Bakery Manufacturing in the UAE
             </h1>
 
@@ -145,11 +145,19 @@ export default function Hero() {
                     </div>
                   ))}
                 </div>
+
+                {/* Asset placeholder note (internal-facing, kept subtle) */}
+                <p className="relative mt-5 border-t border-white/60 pt-4 text-[11px] leading-snug text-stone/80">
+                  <span className="font-semibold text-stone">Image needed:</span>{" "}
+                  real Al Shehail factory / bakery production line / packaging
+                  operation.
+                </p>
               </div>
             </div>
 
-            {/* Floating proof chip */}
-            <div className="absolute -bottom-5 left-6 hidden items-center gap-2.5 rounded-2xl border border-sand bg-warmwhite px-4 py-3 shadow-soft sm:flex">
+            {/* Floating proof chip — shown only at lg+, where the two-column
+                layout gives it a clean anchor and avoids tablet overlap. */}
+            <div className="absolute -bottom-5 left-6 hidden items-center gap-2.5 rounded-2xl border border-sand bg-warmwhite px-4 py-3 shadow-soft lg:flex">
               <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-beige text-gold">
                 <RetailIcon width={18} height={18} />
               </span>

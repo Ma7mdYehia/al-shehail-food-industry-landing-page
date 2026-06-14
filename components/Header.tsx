@@ -24,6 +24,9 @@ export default function Header() {
     >
       <div className="container-x flex h-20 items-center justify-between py-4">
         <a href="#top" className="flex items-center gap-3" aria-label={company.name}>
+          {/* Required asset: Al Shehail Food Industries official logo —
+              transparent PNG or SVG, horizontal version preferred.
+              Replace this monogram + wordmark with the logo when available. */}
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-gradient font-serif text-lg font-bold text-white shadow-soft">
             AS
           </span>

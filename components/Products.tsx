@@ -1,4 +1,5 @@
 import SectionHeading from "./SectionHeading";
+import AssetHint from "./AssetHint";
 import { productCategories, type ProductIconKey } from "@/lib/content";
 import {
   FlatbreadIcon,
@@ -49,7 +50,7 @@ export default function Products() {
                   <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold-gradient text-white shadow-card">
                     <Icon width={22} height={22} />
                   </span>
-                  <span className="font-serif text-sm font-bold text-sand transition-colors group-hover:text-champagne">
+                  <span className="font-serif text-sm font-bold text-champagne/60 transition-colors group-hover:text-champagne">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
@@ -60,6 +61,8 @@ export default function Products() {
                 <p className="relative mt-2 text-sm leading-relaxed text-stone">
                   {product.description}
                 </p>
+                {/* Placeholder cue: replace with a real product photo. */}
+                <AssetHint label="Product photo needed" className="relative mt-4" />
               </div>
             );
           })}
