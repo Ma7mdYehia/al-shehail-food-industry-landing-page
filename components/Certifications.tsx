@@ -1,4 +1,5 @@
 import SectionHeading from "./SectionHeading";
+import AssetHint from "./AssetHint";
 import { certifications } from "@/lib/content";
 import { ShieldCheckIcon } from "./Icons";
 
@@ -36,6 +37,15 @@ export default function Certifications() {
               <p className="mt-2 text-sm leading-relaxed text-stone">
                 {cert.description}
               </p>
+              {/* Placeholder cue for the verified certification asset. */}
+              <AssetHint
+                label={
+                  cert.title === "Carrefour Approved"
+                    ? "Approval proof/logo needed"
+                    : "Certificate scan/logo needed"
+                }
+                className="mt-4"
+              />
             </div>
           ))}
         </div>
