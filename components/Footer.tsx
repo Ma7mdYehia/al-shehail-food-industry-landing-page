@@ -89,7 +89,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#contact" className="btn-primary mt-3">
+                <a href="/#contact" className="btn-primary mt-3">
                   Start a Project
                 </a>
               </li>

@@ -23,7 +23,7 @@ export default function Header() {
       }`}
     >
       <div className="container-x flex h-20 items-center justify-between py-4">
-        <a href="#top" className="flex items-center gap-3" aria-label={company.name}>
+        <a href="/" className="flex items-center gap-3" aria-label={company.name}>
           {/* Required asset: Al Shehail Food Industries official logo —
               transparent PNG or SVG, horizontal version preferred.
               Replace this monogram + wordmark with the logo when available. */}
@@ -53,7 +53,7 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <a href="#contact" className="btn-primary">
+          <a href="/#contact" className="btn-primary">
             Start a Project
           </a>
         </div>
@@ -97,7 +97,7 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="#contact"
+              href="/#contact"
               className="btn-primary mt-2"
               onClick={() => setOpen(false)}
             >
