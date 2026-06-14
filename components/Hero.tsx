@@ -61,7 +61,7 @@ export default function Hero() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a href="#contact" className="btn-primary">
+              <a href="/contact" className="btn-primary">
                 Start a Project
               </a>
               <a href="#products" className="btn-secondary">
