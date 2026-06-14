@@ -1,4 +1,34 @@
 import { trustBadges } from "@/lib/content";
+import {
+  DevelopIcon,
+  ProductionIcon,
+  PackagingIcon,
+  RetailIcon,
+  ShieldCheckIcon,
+} from "./Icons";
+
+const pipeline = [
+  {
+    label: "Develop",
+    note: "Product & recipe development",
+    Icon: DevelopIcon,
+  },
+  {
+    label: "Manufacture",
+    note: "Certified bakery production",
+    Icon: ProductionIcon,
+  },
+  {
+    label: "Pack",
+    note: "Retail-ready private label",
+    Icon: PackagingIcon,
+  },
+  {
+    label: "Supply",
+    note: "Scaled UAE retail delivery",
+    Icon: RetailIcon,
+  },
+];
 
 export default function Hero() {
   return (
@@ -39,62 +69,95 @@ export default function Hero() {
               </a>
             </div>
 
-            <div className="mt-10 flex flex-wrap gap-2.5">
-              {trustBadges.map((badge) => (
-                <span
-                  key={badge}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-sand bg-warmwhite/80 px-3.5 py-1.5 text-xs font-semibold text-charcoal"
-                >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="text-gold"
+            <div className="mt-10">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-stone">
+                Certified Manufacturing
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2.5">
+                {trustBadges.map((badge) => (
+                  <span
+                    key={badge}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-sand bg-warmwhite/80 px-3.5 py-1.5 text-xs font-semibold text-charcoal"
                   >
-                    <path
-                      d="M20 6L9 17l-5-5"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  {badge}
-                </span>
-              ))}
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="text-gold"
+                    >
+                      <path
+                        d="M20 6L9 17l-5-5"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    {badge}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Visual panel */}
+          {/* Visual placeholder system — suggests the manufacturing pipeline.
+              Swap the gradient tiles for real factory imagery later. */}
           <div className="relative animate-fade-up [animation-delay:120ms]">
             <div className="relative rounded-3xl border border-sand bg-warmwhite p-3 shadow-soft">
-              <div className="relative flex aspect-[4/5] flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-beige via-cream to-sand p-8">
-                <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-champagne/20 blur-2xl" />
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-                    From Idea to Shelf
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-beige via-cream to-sand p-6 sm:p-7">
+                <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-champagne/20 blur-2xl" />
+
+                <div className="relative flex items-start justify-between gap-4">
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+                      From Idea to Shelf
+                    </span>
+                    <p className="mt-3 max-w-xs font-serif text-xl font-semibold leading-snug text-ink sm:text-2xl">
+                      One partner across the full bakery manufacturing journey.
+                    </p>
+                  </div>
+                  <span className="hidden flex-none rounded-xl bg-warmwhite/80 p-2.5 text-gold shadow-card backdrop-blur sm:block">
+                    <ShieldCheckIcon />
                   </span>
-                  <p className="mt-3 font-serif text-2xl font-semibold leading-snug text-ink">
-                    We develop and manufacture bakery products built for retail
-                    success.
-                  </p>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  {["Develop", "Manufacture", "Pack", "Scale"].map((stage, i) => (
+
+                <div className="relative mt-6 grid grid-cols-2 gap-3">
+                  {pipeline.map((stage, i) => (
                     <div
-                      key={stage}
-                      className="rounded-xl border border-white/60 bg-warmwhite/70 px-4 py-3 backdrop-blur"
+                      key={stage.label}
+                      className="rounded-xl border border-white/70 bg-warmwhite/75 p-4 backdrop-blur"
                     >
-                      <span className="font-serif text-sm font-bold text-gold">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <p className="mt-1 text-sm font-semibold text-charcoal">
-                        {stage}
+                      <div className="flex items-center justify-between">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gold-gradient text-white shadow-card">
+                          <stage.Icon width={18} height={18} />
+                        </span>
+                        <span className="font-serif text-sm font-bold text-champagne">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <p className="mt-3 text-sm font-semibold text-charcoal">
+                        {stage.label}
+                      </p>
+                      <p className="mt-0.5 text-xs leading-snug text-stone">
+                        {stage.note}
                       </p>
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+
+            {/* Floating proof chip */}
+            <div className="absolute -bottom-5 left-6 hidden items-center gap-2.5 rounded-2xl border border-sand bg-warmwhite px-4 py-3 shadow-soft sm:flex">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-beige text-gold">
+                <RetailIcon width={18} height={18} />
+              </span>
+              <div className="leading-tight">
+                <p className="text-sm font-semibold text-charcoal">
+                  On UAE retail shelves
+                </p>
+                <p className="text-xs text-stone">Hypermarkets &amp; co-ops</p>
               </div>
             </div>
           </div>

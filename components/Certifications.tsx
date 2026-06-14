@@ -1,5 +1,6 @@
 import SectionHeading from "./SectionHeading";
 import { certifications } from "@/lib/content";
+import { ShieldCheckIcon } from "./Icons";
 
 export default function Certifications() {
   return (
@@ -15,23 +16,21 @@ export default function Certifications() {
           {certifications.map((cert) => (
             <div
               key={cert.title}
-              className="flex flex-col items-center rounded-2xl border border-sand bg-cream p-7 text-center shadow-card"
+              className="group relative flex flex-col items-center overflow-hidden rounded-2xl border border-sand bg-cream p-8 text-center shadow-card transition-all duration-300 hover:border-champagne hover:shadow-soft"
             >
-              <span className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-champagne/40 bg-warmwhite text-gold">
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 19.3 7.2 16.9l.9-5.4L4.2 7.7l5.4-.8z" />
-                </svg>
+              {/* Gold seal */}
+              <span className="relative flex h-20 w-20 items-center justify-center">
+                <span className="absolute inset-0 rounded-full border-2 border-dashed border-champagne/40" />
+                <span className="absolute inset-2 rounded-full border border-champagne/30" />
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-gradient text-white shadow-card">
+                  <ShieldCheckIcon width={22} height={22} />
+                </span>
               </span>
-              <h3 className="mt-5 font-serif text-lg font-semibold text-ink">
+
+              <span className="mt-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-champagne">
+                Quality Mark
+              </span>
+              <h3 className="mt-1.5 font-serif text-lg font-semibold text-ink">
                 {cert.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-stone">
@@ -40,6 +39,11 @@ export default function Certifications() {
             </div>
           ))}
         </div>
+
+        <p className="mt-8 text-center text-xs text-stone">
+          Certification marks shown represent quality and food-safety standards
+          our operations are built around.
+        </p>
       </div>
     </section>
   );
