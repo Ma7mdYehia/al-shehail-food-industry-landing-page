@@ -1,13 +1,39 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 // Subtle, internal-facing helper caption that marks where a real asset
-// (logo, photo, certificate) still needs to be supplied. Kept intentionally
-// muted and elegant so the page never looks unfinished or messy.
+// (logo, photo, certificate) still needs to be supplied. The internal
+// guidance is kept (see docs/assets-needed.md), but these captions are
+// hidden from normal public visitors.
+//
+// Visible only when:
+//   - NODE_ENV is "development", or
+//   - the URL contains the query param ?assetHints=1
+//     e.g. https://www.alshehai.ae/?assetHints=1
 
 type Props = {
   label: string;
   className?: string;
 };
 
+const SHOW_IN_DEV = process.env.NODE_ENV === "development";
+
 export default function AssetHint({ label, className = "" }: Props) {
+  const [visible, setVisible] = useState(SHOW_IN_DEV);
+
+  useEffect(() => {
+    if (SHOW_IN_DEV) return;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("assetHints") === "1") setVisible(true);
+    } catch {
+      /* no-op */
+    }
+  }, []);
+
+  if (!visible) return null;
+
   return (
     <span
       className={`inline-flex items-center gap-1.5 text-[11px] font-medium text-stone/70 ${className}`}
