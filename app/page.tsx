@@ -1,17 +1,27 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Partners from "@/components/Partners";
-import AboutSnapshot from "@/components/AboutSnapshot";
 import Products from "@/components/Products";
-import PrivateLabel from "@/components/PrivateLabel";
-import Certifications from "@/components/Certifications";
-import Capabilities from "@/components/Capabilities";
-import MarketPresence from "@/components/MarketPresence";
-import WhyUs from "@/components/WhyUs";
+import AboutTeaser from "@/components/home/AboutTeaser";
+import PrivateLabelTeaser from "@/components/home/PrivateLabelTeaser";
+import CapabilitiesTeaser from "@/components/home/CapabilitiesTeaser";
+import QualityTeaser from "@/components/home/QualityTeaser";
+import MarketPresenceTeaser from "@/components/home/MarketPresenceTeaser";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import { company } from "@/lib/content";
 import { products } from "@/lib/products";
+
+export const metadata: Metadata = {
+  title: {
+    absolute:
+      "Al Shehail Food Industries | Private Label Bakery Manufacturing UAE",
+  },
+  description:
+    "Private label bakery manufacturing in the UAE — bakery product development and retail-ready supply, from idea to shelf, for retail and institutional brands.",
+  alternates: { canonical: "/" },
+};
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -45,13 +55,12 @@ export default function Home() {
       <main>
         <Hero />
         <Partners />
-        <AboutSnapshot />
+        <AboutTeaser />
         <Products />
-        <PrivateLabel />
-        <Certifications />
-        <Capabilities />
-        <MarketPresence />
-        <WhyUs />
+        <PrivateLabelTeaser />
+        <CapabilitiesTeaser />
+        <QualityTeaser />
+        <MarketPresenceTeaser />
         <FinalCTA />
       </main>
       <Footer />

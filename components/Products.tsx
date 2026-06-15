@@ -102,7 +102,7 @@ export default function Products() {
 
         <div className="mt-12 text-center">
           <Link href="/products" className="btn-secondary">
-            View All Product Categories
+            View Full Product Catalog
           </Link>
         </div>
       </div>
