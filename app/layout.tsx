@@ -65,7 +65,35 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+
+        {/*
+          TRACKING / ANALYTICS PLACEHOLDER — intentionally not loaded yet.
+          IDs live in lib/analytics.ts (currently empty). When ready, add the
+          scripts here, gated on the relevant ID being set, e.g.:
+
+          {analyticsConfig.googleAnalyticsId && (
+            <>
+              <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${analyticsConfig.googleAnalyticsId}`}
+                strategy="afterInteractive"
+              />
+              <Script id="ga4" strategy="afterInteractive">{`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${analyticsConfig.googleAnalyticsId}');
+              `}</Script>
+            </>
+          )}
+
+          - Meta Pixel:        analyticsConfig.metaPixelId
+          - LinkedIn Insight:  analyticsConfig.linkedInPartnerId
+
+          No tracking scripts run until these are configured.
+        */}
+      </body>
     </html>
   );
 }
