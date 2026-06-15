@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { manufacturingPartners } from "@/lib/content";
 import AssetHint from "./AssetHint";
 
@@ -45,6 +46,29 @@ export default function Partners() {
               <AssetHint label="Upload official partner logo" className="mt-3" />
             </div>
           ))}
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link
+            href="/partners"
+            className="group inline-flex items-center gap-1.5 text-sm font-semibold text-gold"
+          >
+            View Partners
+            <svg
+              className="transition-transform duration-300 group-hover:translate-x-0.5"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>
