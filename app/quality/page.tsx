@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
@@ -7,6 +8,14 @@ import SectionHeading from "@/components/SectionHeading";
 import AssetHint from "@/components/AssetHint";
 import { ShieldCheckIcon } from "@/components/Icons";
 import { certifications } from "@/lib/content";
+import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
+
+const certAssetKeys: Record<string, keyof typeof assets.certifications> = {
+  "ISO Certified":      "iso",
+  "HACCP Certified":    "haccp",
+  "Organic Certified":  "organic",
+  "Carrefour Approved": "carrefourApproved",
+};
 
 export const metadata: Metadata = {
   title: { absolute: "Quality & Certifications | Al Shehail Food Industries UAE" },
@@ -48,17 +57,32 @@ export default function QualityPage() {
               title="Standards we build around"
             />
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {certifications.map((cert) => (
+              {certifications.map((cert) => {
+                const assetKey = certAssetKeys[cert.title];
+                const logoPath = assetKey ? assets.certifications[assetKey] : null;
+                return (
                 <div
                   key={cert.title}
                   className="flex flex-col items-center rounded-2xl border border-sand bg-cream p-8 text-center shadow-card"
                 >
                   <span className="relative flex h-20 w-20 items-center justify-center">
-                    <span className="absolute inset-0 rounded-full border-2 border-dashed border-champagne/40" />
-                    <span className="absolute inset-2 rounded-full border border-champagne/30" />
-                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-gradient text-white shadow-card">
-                      <ShieldCheckIcon width={22} height={22} />
-                    </span>
+                    {hasAsset(logoPath) ? (
+                      <Image
+                        src={logoPath}
+                        alt={getAssetAlt(assetKey!, cert.title)}
+                        width={80}
+                        height={80}
+                        className="h-20 w-20 object-contain"
+                      />
+                    ) : (
+                      <>
+                        <span className="absolute inset-0 rounded-full border-2 border-dashed border-champagne/40" />
+                        <span className="absolute inset-2 rounded-full border border-champagne/30" />
+                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-gradient text-white shadow-card">
+                          <ShieldCheckIcon width={22} height={22} />
+                        </span>
+                      </>
+                    )}
                   </span>
                   <span className="mt-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-champagne">
                     Quality Mark
@@ -69,16 +93,19 @@ export default function QualityPage() {
                   <p className="mt-2 text-sm leading-relaxed text-stone">
                     {cert.description}
                   </p>
-                  <AssetHint
-                    label={
-                      cert.title === "Carrefour Approved"
-                        ? "Approval proof/logo needed"
-                        : "Certificate scan/logo needed"
-                    }
-                    className="mt-4"
-                  />
+                  {!hasAsset(logoPath) && (
+                    <AssetHint
+                      label={
+                        cert.title === "Carrefour Approved"
+                          ? "Approval proof/logo needed"
+                          : "Certificate scan/logo needed"
+                      }
+                      className="mt-4"
+                    />
+                  )}
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>

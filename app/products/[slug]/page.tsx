@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AssetHint from "@/components/AssetHint";
 import ProductIcon from "@/components/ProductIcon";
 import { WhatsAppIcon } from "@/components/Icons";
+import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
 import {
   products,
   getProductBySlug,
@@ -82,6 +84,19 @@ function SectionTitle({
   );
 }
 
+const productAssetKeys: Record<string, keyof typeof assets.products> = {
+  "arabic-bread":   "arabicBread",
+  "bread-wraps":    "breadWraps",
+  "toast":          "toast",
+  "burger-buns":    "burgerBuns",
+  "bread-rolls":    "breadRolls",
+  "croissant":      "croissant",
+  "mini-croissant": "miniCroissant",
+  "pate":           "pate",
+  "maamoul":        "maamoul",
+  "tamriya":        "tamriya",
+};
+
 export default function ProductDetailPage({ params }: Params) {
   const product = getProductBySlug(params.slug);
   const detail = getProductDetail(params.slug);
@@ -89,6 +104,8 @@ export default function ProductDetailPage({ params }: Params) {
 
   const waLink = whatsappForProduct(product.name);
   const related = getRelatedProducts(product.slug, 3);
+  const assetKey = productAssetKeys[product.slug];
+  const photoPath = assetKey ? assets.products[assetKey] : null;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -149,9 +166,21 @@ export default function ProductDetailPage({ params }: Params) {
                 </div>
               </div>
 
-              {/* Product photo placeholder */}
+              {/* Product photo */}
               <div className="relative">
                 <div className="relative rounded-3xl border border-sand bg-warmwhite p-3 shadow-soft">
+                  {hasAsset(photoPath) ? (
+                    <div className="relative overflow-hidden rounded-2xl">
+                      <Image
+                        src={photoPath}
+                        alt={getAssetAlt(assetKey!, product.name)}
+                        width={720}
+                        height={540}
+                        priority
+                        className="aspect-[4/3] w-full object-cover"
+                      />
+                    </div>
+                  ) : (
                   <div className="relative flex aspect-[4/3] flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-beige via-cream to-sand">
                     <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-champagne/20 blur-2xl" />
                     <span className="flex h-20 w-20 items-center justify-center rounded-2xl bg-warmwhite/80 text-gold shadow-card backdrop-blur">
@@ -159,6 +188,7 @@ export default function ProductDetailPage({ params }: Params) {
                     </span>
                     <AssetHint label="Product photo needed" className="mt-5" />
                   </div>
+                  )}
                 </div>
               </div>
             </div>

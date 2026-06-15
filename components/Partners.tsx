@@ -1,6 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
-import { manufacturingPartners } from "@/lib/content";
 import AssetHint from "./AssetHint";
+import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
 
 // Derive a clean monogram from a partner name (e.g. "HÄLSA Bake" -> "HB").
 function monogram(name: string) {
@@ -11,6 +12,13 @@ function monogram(name: string) {
     .join("")
     .toUpperCase();
 }
+
+const partnerEntries = [
+  { name: "HÄLSA Bake", assetKey: "halsaBake" as const },
+  { name: "EKTIFA",     assetKey: "ektifa"    as const },
+  { name: "Al Taj",     assetKey: "alTaj"     as const },
+  { name: "Al Tahan",   assetKey: "alTahan"   as const },
+] satisfies { name: string; assetKey: keyof typeof assets.partners }[];
 
 export default function Partners() {
   return (
@@ -28,24 +36,38 @@ export default function Partners() {
         </div>
 
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {manufacturingPartners.map((partner) => (
+          {partnerEntries.map(({ name, assetKey }) => {
+            const logoPath = assets.partners[assetKey];
+            return (
             <div
-              key={partner}
+              key={name}
               className="group flex flex-col rounded-2xl border border-sand bg-cream px-5 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne hover:bg-warmwhite hover:shadow-card"
             >
               <div className="flex items-center gap-3.5">
-                {/* Placeholder logo: shows brand monogram until the official
-                    partner logo asset is supplied. */}
-                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-sand bg-warmwhite font-serif text-sm font-bold text-gold transition-colors group-hover:border-champagne">
-                  {monogram(partner)}
-                </span>
+                {hasAsset(logoPath) ? (
+                  <Image
+                    src={logoPath}
+                    alt={getAssetAlt(assetKey, name)}
+                    width={44}
+                    height={44}
+                    className="h-11 w-11 flex-none rounded-xl object-contain"
+                  />
+                ) : (
+                  /* Placeholder: monogram until the official logo is supplied */
+                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-sand bg-warmwhite font-serif text-sm font-bold text-gold transition-colors group-hover:border-champagne">
+                    {monogram(name)}
+                  </span>
+                )}
                 <span className="font-serif text-base font-semibold leading-tight text-charcoal transition-colors group-hover:text-ink sm:text-lg">
-                  {partner}
+                  {name}
                 </span>
               </div>
-              <AssetHint label="Upload official partner logo" className="mt-3" />
+              {!hasAsset(logoPath) && (
+                <AssetHint label="Upload official partner logo" className="mt-3" />
+              )}
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-10 text-center">

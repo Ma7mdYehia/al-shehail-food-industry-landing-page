@@ -1,11 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "./SectionHeading";
 import AssetHint from "./AssetHint";
 import ProductIcon from "./ProductIcon";
 import { productCategories, products } from "@/lib/products";
+import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
+
+const productAssetKeys: Record<string, keyof typeof assets.products> = {
+  "arabic-bread":   "arabicBread",
+  "bread-wraps":    "breadWraps",
+  "toast":          "toast",
+  "burger-buns":    "burgerBuns",
+  "bread-rolls":    "breadRolls",
+  "croissant":      "croissant",
+  "mini-croissant": "miniCroissant",
+  "pate":           "pate",
+  "maamoul":        "maamoul",
+  "tamriya":        "tamriya",
+};
 
 const filters = [
   { label: "All", slug: "all" },
@@ -52,20 +67,35 @@ export default function Products() {
         </div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {visible.map((product) => (
+          {visible.map((product) => {
+            const assetKey = productAssetKeys[product.slug];
+            const photoPath = assetKey ? assets.products[assetKey] : null;
+            return (
             <Link
               key={product.slug}
               href={`/products/${product.slug}`}
               className="group flex flex-col overflow-hidden rounded-2xl border border-sand bg-cream transition-all duration-300 hover:-translate-y-1 hover:border-champagne hover:shadow-soft"
             >
-              {/* Product photo placeholder */}
+              {/* Product photo — real image when available, gradient icon placeholder otherwise */}
               <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br from-beige via-cream to-sand">
-                <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-champagne/15 blur-2xl" />
+                {hasAsset(photoPath) ? (
+                  <Image
+                    src={photoPath}
+                    alt={getAssetAlt(assetKey!, product.name)}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                ) : (
+                  <>
+                    <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-champagne/15 blur-2xl" />
+                    <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-warmwhite/80 text-gold shadow-card backdrop-blur">
+                      <ProductIcon type={product.iconType} width={30} height={30} />
+                    </span>
+                  </>
+                )}
                 <span className="absolute left-4 top-4 rounded-full border border-sand bg-warmwhite/80 px-3 py-1 text-[11px] font-semibold text-gold backdrop-blur">
                   {product.category}
-                </span>
-                <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-warmwhite/80 text-gold shadow-card backdrop-blur">
-                  <ProductIcon type={product.iconType} width={30} height={30} />
                 </span>
               </div>
 
@@ -77,7 +107,9 @@ export default function Products() {
                 <p className="mt-2 text-sm leading-relaxed text-stone">
                   {product.shortDescription}
                 </p>
-                <AssetHint label="Product photo needed" className="mt-4" />
+                {!hasAsset(photoPath) && (
+                  <AssetHint label="Product photo needed" className="mt-4" />
+                )}
                 <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold">
                   View Product
                   <svg
@@ -97,7 +129,8 @@ export default function Products() {
                 </span>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-12 text-center">
