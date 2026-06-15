@@ -1,0 +1,226 @@
+// Centralized asset manifest for Al Shehail Food Industries.
+//
+// All paths are null until the real file is dropped into /public/assets/.
+// Components check hasAsset() / getAsset() and fall back to their existing
+// placeholder when the path is null — nothing breaks without the files.
+//
+// Folder layout:
+//   /public/assets/brand/          — logo, favicon
+//   /public/assets/partners/       — manufacturing partner logos
+//   /public/assets/products/       — product photos (one per product slug)
+//   /public/assets/factory/        — hero and production photography
+//   /public/assets/certifications/ — certificate scans / certifying-body logos
+//   /public/assets/retail/         — retail chain logos
+//   /public/assets/og/             — Open Graph / social share image
+
+// ── Types ──────────────────────────────────────────────────────────────────
+
+export type AssetPath = string | null;
+
+export type BrandAssets = {
+  logoHorizontal: AssetPath; // header + footer
+  logoMark: AssetPath;       // favicon / square icon
+};
+
+export type PartnerAssets = {
+  halsaBake: AssetPath;
+  ektifa: AssetPath;
+  alTaj: AssetPath;
+  alTahan: AssetPath;
+};
+
+export type ProductAssets = {
+  arabicBread: AssetPath;
+  breadWraps: AssetPath;
+  toast: AssetPath;
+  burgerBuns: AssetPath;
+  breadRolls: AssetPath;
+  croissant: AssetPath;
+  miniCroissant: AssetPath;
+  pate: AssetPath;
+  maamoul: AssetPath;
+  tamriya: AssetPath;
+};
+
+export type FactoryAssets = {
+  exterior: AssetPath;       // hero visual
+  productionLine: AssetPath;
+  packagingLine: AssetPath;
+  qualityControl: AssetPath;
+  warehousing: AssetPath;
+};
+
+export type CertificationAssets = {
+  iso: AssetPath;
+  haccp: AssetPath;
+  organic: AssetPath;
+  carrefourApproved: AssetPath;
+};
+
+export type RetailAssets = {
+  carrefour: AssetPath;
+  unionCoop: AssetPath;
+  abuDhabiCoop: AssetPath;
+  sharjahCoop: AssetPath;
+  alMayaGroup: AssetPath;
+  luluHypermarket: AssetPath;
+  nestoHypermarket: AssetPath;
+  grandiose: AssetPath;
+  spinneys: AssetPath;
+  waitroseUae: AssetPath;
+};
+
+export type OgAssets = {
+  default: AssetPath; // 1200×630 social share image
+};
+
+export type AssetManifest = {
+  brand: BrandAssets;
+  partners: PartnerAssets;
+  products: ProductAssets;
+  factory: FactoryAssets;
+  certifications: CertificationAssets;
+  retail: RetailAssets;
+  og: OgAssets;
+};
+
+// ── Manifest ───────────────────────────────────────────────────────────────
+// Drop the real file into /public/assets/<folder>/<filename> and update the
+// path here (e.g. "/assets/brand/al-shehail-logo.svg"). The component will
+// automatically use the real asset on next build.
+
+export const assets: AssetManifest = {
+  brand: {
+    logoHorizontal: null, // /assets/brand/al-shehail-logo.svg
+    logoMark: null,       // /assets/brand/al-shehail-mark.svg
+  },
+
+  partners: {
+    halsaBake: null,  // /assets/partners/halsa-bake.svg
+    ektifa: null,     // /assets/partners/ektifa.svg
+    alTaj: null,      // /assets/partners/al-taj.svg
+    alTahan: null,    // /assets/partners/al-tahan.svg
+  },
+
+  products: {
+    arabicBread: null,    // /assets/products/arabic-bread.webp
+    breadWraps: null,     // /assets/products/bread-wraps.webp
+    toast: null,          // /assets/products/toast.webp
+    burgerBuns: null,     // /assets/products/burger-buns.webp
+    breadRolls: null,     // /assets/products/bread-rolls.webp
+    croissant: null,      // /assets/products/croissant.webp
+    miniCroissant: null,  // /assets/products/mini-croissant.webp
+    pate: null,           // /assets/products/pate.webp
+    maamoul: null,        // /assets/products/maamoul.webp
+    tamriya: null,        // /assets/products/tamriya.webp
+  },
+
+  factory: {
+    exterior: null,       // /assets/factory/exterior.webp
+    productionLine: null, // /assets/factory/production-line.webp
+    packagingLine: null,  // /assets/factory/packaging-line.webp
+    qualityControl: null, // /assets/factory/quality-control.webp
+    warehousing: null,    // /assets/factory/warehousing.webp
+  },
+
+  certifications: {
+    iso: null,              // /assets/certifications/iso.svg (or .webp)
+    haccp: null,            // /assets/certifications/haccp.svg (or .webp)
+    organic: null,          // /assets/certifications/organic.svg (or .webp)
+    carrefourApproved: null, // /assets/certifications/carrefour-approved.svg (or .webp)
+  },
+
+  retail: {
+    carrefour: null,        // /assets/retail/carrefour.svg
+    unionCoop: null,        // /assets/retail/union-coop.svg
+    abuDhabiCoop: null,     // /assets/retail/abu-dhabi-coop.svg
+    sharjahCoop: null,      // /assets/retail/sharjah-coop.svg
+    alMayaGroup: null,      // /assets/retail/al-maya-group.svg
+    luluHypermarket: null,  // /assets/retail/lulu-hypermarket.svg
+    nestoHypermarket: null, // /assets/retail/nesto-hypermarket.svg
+    grandiose: null,        // /assets/retail/grandiose.svg
+    spinneys: null,         // /assets/retail/spinneys.svg
+    waitroseUae: null,      // /assets/retail/waitrose-uae.svg
+  },
+
+  og: {
+    default: null, // /assets/og/al-shehail-og.jpg (1200×630)
+  },
+};
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+/** Returns true only when a real file path is registered. */
+export function hasAsset(path: AssetPath): path is string {
+  return typeof path === "string" && path.length > 0;
+}
+
+/**
+ * Returns the asset path when present, or the provided fallback string.
+ * Use the fallback for an existing placeholder value, e.g. a monogram string
+ * or a data-URI, so the UI stays intact when the real file isn't yet supplied.
+ */
+export function getAsset(path: AssetPath, fallback: string): string;
+export function getAsset(path: AssetPath): string | null;
+export function getAsset(path: AssetPath, fallback?: string): string | null {
+  if (hasAsset(path)) return path;
+  return fallback ?? null;
+}
+
+/** Alt-text map for every asset key. */
+const altTexts: Record<string, string> = {
+  // brand
+  logoHorizontal: "Al Shehail Food Industries",
+  logoMark: "Al Shehail Food Industries mark",
+
+  // partners
+  halsaBake: "HÄLSA Bake",
+  ektifa: "EKTIFA",
+  alTaj: "Al Taj",
+  alTahan: "Al Tahan",
+
+  // products
+  arabicBread: "Arabic bread",
+  breadWraps: "Bread wraps",
+  toast: "Toast loaf",
+  burgerBuns: "Burger buns",
+  breadRolls: "Bread rolls",
+  croissant: "Croissant",
+  miniCroissant: "Mini croissant",
+  pate: "Pâte / puff pastry",
+  maamoul: "Maa'moul",
+  tamriya: "Tamriya",
+
+  // factory
+  exterior: "Al Shehail factory exterior",
+  productionLine: "Bakery production line",
+  packagingLine: "Private label packaging line",
+  qualityControl: "Quality control",
+  warehousing: "Warehousing and dispatch",
+
+  // certifications
+  iso: "ISO Certified",
+  haccp: "HACCP Certified",
+  organic: "Organic Certified",
+  carrefourApproved: "Carrefour Approved",
+
+  // retail
+  carrefour: "Carrefour",
+  unionCoop: "Union Coop",
+  abuDhabiCoop: "Abu Dhabi Coop",
+  sharjahCoop: "Sharjah Coop",
+  alMayaGroup: "Al Maya Group",
+  luluHypermarket: "Lulu Hypermarket",
+  nestoHypermarket: "Nesto Hypermarket",
+  grandiose: "Grandiose Supermarket",
+  spinneys: "Spinneys",
+  waitroseUae: "Waitrose UAE",
+
+  // og
+  default: "Al Shehail Food Industries — UAE Bakery Manufacturing & Private Label Partner",
+};
+
+/** Returns the alt text for an asset key, with an optional fallback. */
+export function getAssetAlt(key: string, fallback = ""): string {
+  return altTexts[key] ?? fallback;
+}

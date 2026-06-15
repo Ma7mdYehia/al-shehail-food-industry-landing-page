@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
@@ -6,6 +7,7 @@ import CtaBand from "@/components/CtaBand";
 import SectionHeading from "@/components/SectionHeading";
 import AssetHint from "@/components/AssetHint";
 import { manufacturingPartners, retailPresence } from "@/lib/content";
+import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
 
 export const metadata: Metadata = {
   title: { absolute: "Partners & Market Presence | Al Shehail Food Industries UAE" },
@@ -19,6 +21,26 @@ function monogram(name: string) {
   if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
   return (words[0][0] + words[1][0]).toUpperCase();
 }
+
+const partnerEntries = [
+  { name: "HÄLSA Bake", assetKey: "halsaBake" as const },
+  { name: "EKTIFA",     assetKey: "ektifa"    as const },
+  { name: "Al Taj",     assetKey: "alTaj"     as const },
+  { name: "Al Tahan",   assetKey: "alTahan"   as const },
+] satisfies { name: string; assetKey: keyof typeof assets.partners }[];
+
+const retailAssetKeys: Record<string, keyof typeof assets.retail> = {
+  "Carrefour":            "carrefour",
+  "Union Coop":           "unionCoop",
+  "Abu Dhabi Coop":       "abuDhabiCoop",
+  "Sharjah Coop":         "sharjahCoop",
+  "Al Maya Group":        "alMayaGroup",
+  "Lulu Hypermarket":     "luluHypermarket",
+  "Nesto Hypermarket":    "nestoHypermarket",
+  "Grandiose Supermarket":"grandiose",
+  "Spinneys":             "spinneys",
+  "Waitrose UAE":         "waitroseUae",
+};
 
 export default function PartnersPage() {
   return (
@@ -44,22 +66,37 @@ export default function PartnersPage() {
               description="We develop and produce private label bakery ranges for established UAE food brands."
             />
             <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {manufacturingPartners.map((partner) => (
+              {partnerEntries.map(({ name, assetKey }) => {
+                const logoPath = assets.partners[assetKey];
+                return (
                 <div
-                  key={partner}
+                  key={name}
                   className="flex flex-col rounded-2xl border border-sand bg-cream px-5 py-5"
                 >
                   <div className="flex items-center gap-3.5">
-                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-sand bg-warmwhite font-serif text-sm font-bold text-gold">
-                      {monogram(partner)}
-                    </span>
+                    {hasAsset(logoPath) ? (
+                      <Image
+                        src={logoPath}
+                        alt={getAssetAlt(assetKey, name)}
+                        width={44}
+                        height={44}
+                        className="h-11 w-11 flex-none rounded-xl object-contain"
+                      />
+                    ) : (
+                      <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-sand bg-warmwhite font-serif text-sm font-bold text-gold">
+                        {monogram(name)}
+                      </span>
+                    )}
                     <span className="font-serif text-base font-semibold leading-tight text-charcoal sm:text-lg">
-                      {partner}
+                      {name}
                     </span>
                   </div>
-                  <AssetHint label="Upload official partner logo" className="mt-3" />
+                  {!hasAsset(logoPath) && (
+                    <AssetHint label="Upload official partner logo" className="mt-3" />
+                  )}
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
@@ -74,20 +111,34 @@ export default function PartnersPage() {
             />
             <div className="mt-12 overflow-hidden rounded-3xl border border-sand bg-cream">
               <div className="grid grid-cols-2 gap-px bg-sand sm:grid-cols-3 lg:grid-cols-5">
-                {retailPresence.map((retailer) => (
+                {retailPresence.map((retailer) => {
+                  const assetKey = retailAssetKeys[retailer];
+                  const logoPath = assetKey ? assets.retail[assetKey] : null;
+                  return (
                   <div
                     key={retailer}
                     className="flex flex-col items-center justify-center gap-3 bg-cream px-4 py-9 text-center"
                   >
-                    <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-sand bg-warmwhite font-serif text-sm font-bold text-gold">
-                      {monogram(retailer)}
-                    </span>
+                    {hasAsset(logoPath) ? (
+                      <Image
+                        src={logoPath}
+                        alt={getAssetAlt(assetKey!, retailer)}
+                        width={48}
+                        height={48}
+                        className="h-12 w-auto object-contain"
+                      />
+                    ) : (
+                      <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-sand bg-warmwhite font-serif text-sm font-bold text-gold">
+                        {monogram(retailer)}
+                      </span>
+                    )}
                     <span className="font-serif text-sm font-semibold leading-tight text-charcoal sm:text-base">
                       {retailer}
                     </span>
-                    <AssetHint label="Retail logo needed" />
+                    {!hasAsset(logoPath) && <AssetHint label="Retail logo needed" />}
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

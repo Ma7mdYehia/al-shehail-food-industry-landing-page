@@ -1,6 +1,22 @@
+import Image from "next/image";
 import SectionHeading from "../SectionHeading";
 import TeaserLink from "../TeaserLink";
 import { retailPresence } from "@/lib/content";
+import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
+
+// Maps retailer display name → asset key in the manifest
+const retailAssetKeys: Record<string, keyof typeof assets.retail> = {
+  "Carrefour":            "carrefour",
+  "Union Coop":           "unionCoop",
+  "Abu Dhabi Coop":       "abuDhabiCoop",
+  "Sharjah Coop":         "sharjahCoop",
+  "Al Maya Group":        "alMayaGroup",
+  "Lulu Hypermarket":     "luluHypermarket",
+  "Nesto Hypermarket":    "nestoHypermarket",
+  "Grandiose Supermarket":"grandiose",
+  "Spinneys":             "spinneys",
+  "Waitrose UAE":         "waitroseUae",
+};
 
 export default function MarketPresenceTeaser() {
   return (
@@ -13,14 +29,27 @@ export default function MarketPresenceTeaser() {
         />
 
         <div className="mt-12 flex flex-wrap justify-center gap-3">
-          {retailPresence.map((retailer) => (
+          {retailPresence.map((retailer) => {
+            const assetKey = retailAssetKeys[retailer];
+            const logoPath = assetKey ? assets.retail[assetKey] : null;
+            return (
             <span
               key={retailer}
-              className="rounded-full border border-sand bg-cream px-5 py-2.5 font-serif text-sm font-semibold text-charcoal"
+              className="inline-flex items-center gap-2.5 rounded-full border border-sand bg-cream px-5 py-2.5 font-serif text-sm font-semibold text-charcoal"
             >
+              {hasAsset(logoPath) && (
+                <Image
+                  src={logoPath}
+                  alt={getAssetAlt(assetKey!, retailer)}
+                  width={20}
+                  height={20}
+                  className="h-5 w-auto object-contain"
+                />
+              )}
               {retailer}
             </span>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-10 text-center">

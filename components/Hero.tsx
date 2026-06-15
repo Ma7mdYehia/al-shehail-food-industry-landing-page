@@ -1,4 +1,7 @@
+import Image from "next/image";
 import { trustBadges } from "@/lib/content";
+import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
+import AssetHint from "./AssetHint";
 import {
   DevelopIcon,
   ProductionIcon,
@@ -101,10 +104,21 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Visual placeholder system — suggests the manufacturing pipeline.
-              Swap the gradient tiles for real factory imagery later. */}
+          {/* Hero visual — factory photo when available, pipeline card placeholder otherwise */}
           <div className="relative animate-fade-up [animation-delay:120ms]">
             <div className="relative rounded-3xl border border-sand bg-warmwhite p-3 shadow-soft">
+              {hasAsset(assets.factory.exterior) ? (
+                <div className="relative overflow-hidden rounded-2xl">
+                  <Image
+                    src={assets.factory.exterior}
+                    alt={getAssetAlt("exterior")}
+                    width={720}
+                    height={480}
+                    priority
+                    className="aspect-[3/2] w-full object-cover"
+                  />
+                </div>
+              ) : (
               <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-beige via-cream to-sand p-6 sm:p-7">
                 <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-champagne/20 blur-2xl" />
 
@@ -146,13 +160,11 @@ export default function Hero() {
                   ))}
                 </div>
 
-                {/* Asset placeholder note (internal-facing, kept subtle) */}
-                <p className="relative mt-5 border-t border-white/60 pt-4 text-[11px] leading-snug text-stone/80">
-                  <span className="font-semibold text-stone">Image needed:</span>{" "}
-                  real Al Shehail factory / bakery production line / packaging
-                  operation.
-                </p>
+                <div className="relative mt-5 border-t border-white/60 pt-4">
+                  <AssetHint label="Factory / production line photo needed" />
+                </div>
               </div>
+              )}
             </div>
 
             {/* Floating proof chip — shown only at lg+, where the two-column
