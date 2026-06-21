@@ -7,7 +7,12 @@ import Footer from "@/components/Footer";
 import AssetHint from "@/components/AssetHint";
 import ProductIcon from "@/components/ProductIcon";
 import { WhatsAppIcon } from "@/components/Icons";
-import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
+import {
+  assets,
+  hasAsset,
+  getAssetAlt,
+  productAssetKeyBySlug,
+} from "@/lib/assets";
 import {
   products,
   getProductBySlug,
@@ -84,19 +89,6 @@ function SectionTitle({
   );
 }
 
-const productAssetKeys: Record<string, keyof typeof assets.products> = {
-  "arabic-bread":   "arabicBread",
-  "bread-wraps":    "breadWraps",
-  "toast":          "toast",
-  "burger-buns":    "burgerBuns",
-  "bread-rolls":    "breadRolls",
-  "croissant":      "croissant",
-  "mini-croissant": "miniCroissant",
-  "pate":           "pate",
-  "maamoul":        "maamoul",
-  "tamriya":        "tamriya",
-};
-
 export default function ProductDetailPage({ params }: Params) {
   const product = getProductBySlug(params.slug);
   const detail = getProductDetail(params.slug);
@@ -104,7 +96,7 @@ export default function ProductDetailPage({ params }: Params) {
 
   const waLink = whatsappForProduct(product.name);
   const related = getRelatedProducts(product.slug, 3);
-  const assetKey = productAssetKeys[product.slug];
+  const assetKey = productAssetKeyBySlug[product.slug];
   const photoPath = assetKey ? assets.products[assetKey] : null;
 
   const jsonLd = {

@@ -63,7 +63,7 @@ export default function QualityPage() {
                 return (
                 <div
                   key={cert.title}
-                  className="flex flex-col items-center rounded-2xl border border-sand bg-cream p-8 text-center shadow-card"
+                  className="card-lift group flex flex-col items-center rounded-2xl border border-sand bg-cream p-8 text-center shadow-card hover:border-champagne/60 hover:shadow-glow"
                 >
                   <span className="relative flex h-20 w-20 items-center justify-center">
                     {hasAsset(logoPath) ? (
@@ -76,7 +76,7 @@ export default function QualityPage() {
                       />
                     ) : (
                       <>
-                        <span className="absolute inset-0 rounded-full border-2 border-dashed border-champagne/40" />
+                        <span className="absolute inset-0 rounded-full border-2 border-dashed border-champagne/40 transition-transform duration-700 group-hover:rotate-90" />
                         <span className="absolute inset-2 rounded-full border border-champagne/30" />
                         <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-gradient text-white shadow-card">
                           <ShieldCheckIcon width={22} height={22} />

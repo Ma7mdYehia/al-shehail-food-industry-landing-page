@@ -1,46 +1,22 @@
 import SectionHeading from "../SectionHeading";
 import TeaserLink from "../TeaserLink";
-import { DevelopIcon, ProductionIcon, PackagingIcon, RetailIcon } from "../Icons";
-
-const pillars = [
-  { title: "Product idea", Icon: DevelopIcon },
-  { title: "Recipe development", Icon: ProductionIcon },
-  { title: "Manufacturing", Icon: PackagingIcon },
-  { title: "Retail-ready delivery", Icon: RetailIcon },
-];
+import ProcessJourney from "../ProcessJourney";
 
 export default function PrivateLabelTeaser() {
   return (
-    <section className="section">
-      <div className="container-x">
+    <section className="section relative overflow-hidden">
+      {/* Subtle dotted-gold texture behind the signature journey */}
+      <div className="bg-dotted-gold pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+      <div className="container-x relative">
         <SectionHeading
           eyebrow="Private Label Solutions"
           title="From idea to shelf, end to end"
-          description="One partner across product development, manufacturing, packaging, and retail-ready supply."
+          description="One connected manufacturing line — product development, recipe, sampling, costing, packaging, production, quality control, and retail-ready supply."
         />
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {pillars.map((pillar, i) => (
-            <div
-              key={pillar.title}
-              className="flex flex-col rounded-2xl border border-sand bg-warmwhite p-6 shadow-card"
-            >
-              <div className="flex items-center justify-between">
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold-gradient text-white shadow-card">
-                  <pillar.Icon width={22} height={22} />
-                </span>
-                <span className="font-serif text-sm font-bold text-champagne">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-              </div>
-              <h3 className="mt-5 font-serif text-base font-semibold text-ink">
-                {pillar.title}
-              </h3>
-            </div>
-          ))}
-        </div>
+        <ProcessJourney />
 
-        <div className="mt-10 text-center">
+        <div className="mt-12 text-center">
           <TeaserLink href="/private-label" label="Explore Private Label" variant="secondary" />
         </div>
       </div>
