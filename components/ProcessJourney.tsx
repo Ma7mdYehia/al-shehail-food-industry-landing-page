@@ -32,7 +32,7 @@ export default function ProcessJourney({ id }: Props) {
     <div id={id} className="relative mt-14">
       {/* Central / left production line */}
       <div
-        className="pointer-events-none absolute bottom-0 top-0 w-px bg-gradient-to-b from-champagne/60 via-champagne/45 to-champagne/10 max-lg:left-[27px] lg:left-1/2 lg:-translate-x-1/2"
+        className="pointer-events-none absolute bottom-0 top-0 w-px bg-gradient-to-b from-champagne/40 via-champagne/25 to-transparent max-lg:left-[27px] lg:left-1/2 lg:-translate-x-1/2"
         aria-hidden
       >
         {/* Travelling pulse */}
@@ -59,7 +59,7 @@ export default function ProcessJourney({ id }: Props) {
 
               {/* Node marker on the line */}
               <div className="relative z-10 flex-none lg:order-2 lg:px-0">
-                <span className="group flex h-14 w-14 items-center justify-center rounded-2xl border border-champagne/50 bg-warmwhite shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-glow">
+                <span className="group flex h-14 w-14 items-center justify-center rounded-2xl border border-sand bg-warmwhite shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60 hover:shadow-glow">
                   <span className="absolute -left-px -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-gold-gradient font-serif text-[11px] font-bold text-white shadow-card lg:-left-2 lg:-top-2">
                     {step.number}
                   </span>
@@ -95,7 +95,7 @@ function StepCard({
 }) {
   return (
     <div
-      className={`card-lift glow-border group rounded-2xl bg-warmwhite p-5 shadow-card ${
+      className={`group rounded-2xl border border-sand bg-warmwhite p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-champagne/60 hover:shadow-glow focus-within:-translate-y-1 focus-within:border-champagne/60 focus-within:shadow-glow ${
         align === "right" ? "lg:ml-auto" : ""
       } max-w-md`}
     >
