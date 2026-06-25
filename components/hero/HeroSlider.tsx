@@ -83,16 +83,17 @@ export default function HeroSlider() {
 
   return (
     <div
-      className="relative"
+      className="relative flex min-h-[88vh] items-center overflow-hidden pt-32 pb-20 sm:pt-36 lg:min-h-[44rem] lg:pt-44 lg:pb-28"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      {/* Active stage banner — a soft, full-bleed visual layer focused on the
-          right, with warm gradient overlays that keep the left copy readable.
-          All stage images are stacked and cross-faded by opacity to avoid
-          layout shift and re-mounting. */}
+      {/* Active stage banner — a full-bleed cinematic layer that fills the whole
+          hero area beneath the header, all the way to the bottom edge. Warm
+          gradient overlays keep the left copy very readable while letting more
+          of the image breathe on the right. All stage images are stacked and
+          cross-faded by opacity to avoid layout shift and re-mounting. */}
       <div className="pointer-events-none absolute inset-0 -z-[5] overflow-hidden">
         {heroSlides.map((s, i) => (
           <Image
@@ -103,20 +104,21 @@ export default function HeroSlider() {
             sizes="100vw"
             priority={i === 0}
             aria-hidden={i !== active}
-            className={`object-cover object-right transition-opacity duration-700 ease-out ${
+            className={`object-cover object-center transition-opacity duration-700 ease-out ${
               i === active ? "opacity-100" : "opacity-0"
             }`}
           />
         ))}
-        {/* Warm readability overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/80 to-cream/15 sm:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-cream/75 via-transparent to-warmwhite/40" />
+        {/* Warm readability overlays — stronger cream wash on the left for the
+            copy, more image visibility kept on the right. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/85 to-cream/20 sm:via-cream/70 sm:to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-cream/70 via-transparent to-warmwhite/35" />
         {/* Stronger wash on mobile where copy sits over the image */}
         <div className="absolute inset-0 bg-cream/55 sm:bg-transparent" />
       </div>
 
-      <div className="container-x relative grid items-center gap-14 lg:grid-cols-[1.1fr_0.82fr]">
-      <div className="animate-fade-up">
+      <div className="container-x relative">
+      <div className="max-w-xl animate-fade-up">
         {slide.eyebrow && (
           <span className="eyebrow">
             <span className="h-px w-6 bg-champagne" />
@@ -178,13 +180,15 @@ export default function HeroSlider() {
         )}
       </div>
 
-      {/* Hero visual — real factory photo when available, otherwise the
-          interactive manufacturing-system carousel. */}
-      <div className="relative animate-fade-up [animation-delay:120ms]">
+      {/* Hero visual — a compact floating control panel layered over the image.
+          On large screens it floats toward the center-/lower-right with plenty
+          of breathing room from the copy; on mobile it sits in normal flow
+          beneath the text. Real factory photo replaces it when available. */}
+      <div className="mt-12 animate-fade-up [animation-delay:120ms] sm:max-w-xs lg:mt-0 lg:absolute lg:right-0 lg:top-1/2 lg:max-w-none lg:-translate-y-[42%]">
         {showSystem ? (
           <HeroSystem active={slide.step} onSelect={setActive} />
         ) : (
-          <div className="glow-border relative overflow-hidden rounded-3xl bg-warmwhite p-3 shadow-soft">
+          <div className="glow-border relative overflow-hidden rounded-3xl bg-warmwhite p-3 shadow-soft lg:w-72">
             <div className="relative overflow-hidden rounded-2xl">
               <Image
                 src={assets.factory.exterior as string}

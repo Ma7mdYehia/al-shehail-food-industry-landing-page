@@ -4,7 +4,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden pt-32 pb-20 sm:pt-36 lg:pt-44 lg:pb-28"
+      className="relative overflow-hidden"
     >
       {/* Warm decorative background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
