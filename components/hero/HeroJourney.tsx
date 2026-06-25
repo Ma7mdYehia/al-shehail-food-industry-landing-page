@@ -10,7 +10,6 @@ import {
   clientTypes,
   beforeWith,
   trustLayer,
-  CONTACT_HREF,
 } from "@/lib/heroJourney";
 
 const AUTOPLAY_MS = 5000;
@@ -27,6 +26,8 @@ export default function HeroJourney() {
   const railRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   // Autoplay through the steps, paused on hover/focus or reduced motion.
+  // A manual click simply changes `active`; the next tick advances from there,
+  // so there is no jarring reset.
   useEffect(() => {
     if (paused || reducedMotion || quizOpen) return;
     const t = setInterval(
@@ -68,12 +69,30 @@ export default function HeroJourney() {
             UAE-Based Bakery Manufacturing &amp; Private Label Partner
           </span>
 
-          {/* Client type switcher */}
-          <div className="mt-5">
+          <p
+            className="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold"
+            aria-live="polite"
+          >
+            {step.eyebrow}
+          </p>
+          <h1 className="heading-serif mt-2 text-3xl leading-[1.12] sm:text-4xl lg:text-[2.85rem] lg:leading-[1.1]">
+            {step.title}
+          </h1>
+
+          <p className="mt-4 max-w-xl text-lg leading-relaxed text-stone">
+            {step.description}
+          </p>
+
+          {/* Client type switcher + supporting microcopy */}
+          <div className="mt-7">
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-stone">
               I am a
             </span>
-            <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Select your role">
+            <div
+              className="mt-2 flex flex-wrap gap-2"
+              role="group"
+              aria-label="Select your role"
+            >
               {clientTypes.map((c) => {
                 const on = c.id === clientId;
                 return (
@@ -93,23 +112,17 @@ export default function HeroJourney() {
                 );
               })}
             </div>
+            <p
+              className="mt-2.5 text-sm font-medium text-gold"
+              aria-live="polite"
+            >
+              {client.support}
+            </p>
           </div>
 
-          <h1 className="heading-serif mt-6 text-3xl leading-[1.12] sm:text-4xl lg:text-[2.85rem] lg:leading-[1.1]">
-            {step.title}
-          </h1>
-
-          <p className="mt-3 text-sm font-medium text-gold" aria-live="polite">
-            {client.angle}
-          </p>
-
-          <p className="mt-4 max-w-xl text-lg leading-relaxed text-stone">
-            {step.paragraph}
-          </p>
-
           {/* Proof cards */}
-          <dl className="mt-7 grid max-w-md grid-cols-2 gap-3">
-            {step.proof.map((p) => (
+          <dl className="mt-6 grid max-w-md grid-cols-2 gap-3">
+            {step.proofCards.map((p) => (
               <div
                 key={p.label}
                 className="rounded-2xl border border-sand bg-warmwhite/80 px-4 py-3"
@@ -124,9 +137,13 @@ export default function HeroJourney() {
             ))}
           </dl>
 
-          {/* Dynamic CTA + quiz trigger */}
+          {/* Dynamic CTA — opens the project readiness quiz */}
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <a href={CONTACT_HREF} className="btn-primary group">
+            <button
+              type="button"
+              onClick={() => setQuizOpen(true)}
+              className="btn-primary group"
+            >
               {step.ctaLabel}
               <svg
                 className="transition-transform duration-300 group-hover:translate-x-0.5"
@@ -142,14 +159,10 @@ export default function HeroJourney() {
               >
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
-            </a>
-            <button
-              type="button"
-              onClick={() => setQuizOpen(true)}
-              className="btn-secondary"
-            >
-              Check Project Readiness
             </button>
+            <a href="/products" className="btn-secondary">
+              Explore Products
+            </a>
           </div>
 
           {/* Trust layer */}
@@ -157,24 +170,32 @@ export default function HeroJourney() {
             {trustLayer.map((group) => (
               <div
                 key={group.title}
-                className="rounded-2xl border border-sand bg-warmwhite/70 px-4 py-3"
+                className="rounded-2xl border border-sand bg-warmwhite/70 px-4 py-3.5"
               >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-stone">
-                  {group.title}
-                </p>
-                <div className="mt-2 flex flex-wrap gap-1.5">
-                  {group.items.map((item) => (
-                    <span
-                      key={item}
-                      className="inline-flex items-center gap-1 rounded-full border border-sand bg-cream/70 px-2.5 py-1 text-xs font-semibold text-charcoal"
-                    >
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" className="text-gold" aria-hidden>
-                        <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      {item}
-                    </span>
-                  ))}
+                <div className="flex items-center gap-1.5">
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="text-gold"
+                    aria-hidden
+                  >
+                    <path
+                      d="M20 6L9 17l-5-5"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-charcoal">
+                    {group.title}
+                  </p>
                 </div>
+                <p className="mt-1.5 text-xs leading-relaxed text-stone">
+                  {group.body}
+                </p>
               </div>
             ))}
           </div>
@@ -218,9 +239,7 @@ export default function HeroJourney() {
                   <div className="absolute left-[27px] top-2 bottom-2 w-px bg-gradient-to-b from-champagne/70 via-champagne/40 to-champagne/10" aria-hidden />
                   <ul
                     className="relative space-y-2"
-                    role="tablist"
                     aria-label="Manufacturing steps"
-                    aria-orientation="vertical"
                     onKeyDown={onRailKeyDown}
                   >
                     {journeySteps.map((s, i) => {
@@ -229,10 +248,9 @@ export default function HeroJourney() {
                         <li key={s.id}>
                           <button
                             type="button"
-                            role="tab"
                             id={`journey-tab-${s.id}`}
-                            aria-selected={on}
-                            aria-controls="journey-panel"
+                            aria-pressed={on}
+                            aria-current={on ? "step" : undefined}
                             tabIndex={on ? 0 : -1}
                             ref={(el) => {
                               railRefs.current[i] = el;
@@ -266,30 +284,33 @@ export default function HeroJourney() {
                               </span>
                             </div>
                           </button>
+
+                          {/* Expanded active-step panel — shown inline under
+                              the selected node so the flow stays compact. */}
+                          {on && (
+                            <div
+                              aria-labelledby={`journey-tab-${s.id}`}
+                              className="ml-[3.875rem] mt-2 rounded-2xl border border-sand bg-warmwhite/80 p-3.5"
+                            >
+                              <p className="text-sm leading-relaxed text-stone">
+                                {s.description}
+                              </p>
+                              <div className="mt-2.5 flex flex-wrap gap-1.5">
+                                {s.tags.map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="rounded-full border border-sand bg-cream/70 px-2.5 py-1 text-[11px] font-semibold text-charcoal"
+                                  >
+                                    {tag}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </li>
                       );
                     })}
                   </ul>
-                </div>
-
-                {/* Expanded active-step panel */}
-                <div
-                  id="journey-panel"
-                  role="tabpanel"
-                  aria-labelledby={`journey-tab-${step.id}`}
-                  className="mt-5 rounded-2xl border border-sand bg-warmwhite/80 p-4"
-                >
-                  <p className="text-sm leading-relaxed text-stone">{step.detail}</p>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {step.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-sand bg-cream/70 px-2.5 py-1 text-[11px] font-semibold text-charcoal"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
                 </div>
               </div>
             </div>
@@ -305,15 +326,15 @@ export default function HeroJourney() {
                 Current Output
               </p>
               <p className="text-sm font-semibold text-charcoal">
-                {step.output.label}
+                {step.outputTitle}
               </p>
-              <p className="text-xs text-stone">{step.output.caption}</p>
+              <p className="text-xs text-stone">{step.outputDescription}</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Before / With value message ───────────────────────────────── */}
+      {/* ── Before / With value strip ─────────────────────────────────── */}
       <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:mt-20">
         <div className="rounded-2xl border border-sand bg-cream/60 p-6">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-stone">

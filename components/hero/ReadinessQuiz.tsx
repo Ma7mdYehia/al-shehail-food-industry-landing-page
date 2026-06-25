@@ -132,7 +132,7 @@ export default function ReadinessQuiz({ open, onClose, initialNeed }: Props) {
               ready ? "" : "pointer-events-none opacity-50"
             }`}
           >
-            Send Project Brief
+            Continue to Contact
           </a>
         </div>
       </div>
