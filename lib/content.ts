@@ -125,6 +125,10 @@ export type HeroSlide = {
   ctaHref?: string;
   /** Omit to hide the trust points on this slide. */
   trustPoints?: HeroTrustPoint[];
+  /** Banner image for this manufacturing stage (in /public). */
+  image: string;
+  /** Alt text for the stage banner image. */
+  imageAlt: string;
 };
 
 const heroPrimaryTrust: HeroTrustPoint[] = [
@@ -143,6 +147,8 @@ export const heroSlides: HeroSlide[] = [
     ctaLabel: "Start a Project",
     ctaHref: "/contact",
     trustPoints: heroPrimaryTrust,
+    image: "/images/hero-journey/product-idea.webp",
+    imageAlt: "Shaping a new bakery product idea and concept",
   },
   {
     step: 1,
@@ -152,6 +158,8 @@ export const heroSlides: HeroSlide[] = [
       "Formulated for flavour, texture, and clean, repeatable production on certified lines.",
     ctaLabel: "Start a Project",
     ctaHref: "/contact",
+    image: "/images/hero-journey/recipe.webp",
+    imageAlt: "Developing a bakery recipe in the kitchen",
   },
   {
     step: 2,
@@ -159,6 +167,8 @@ export const heroSlides: HeroSlide[] = [
     title: "Samples refined until they're right",
     description:
       "We produce and tune samples with your team until the product is ready for your brand.",
+    image: "/images/hero-journey/sampling.webp",
+    imageAlt: "Sampling and tasting freshly baked products",
   },
   {
     step: 3,
@@ -168,6 +178,8 @@ export const heroSlides: HeroSlide[] = [
       "Private-label packaging designed for shelf appeal, compliance, and product protection.",
     ctaLabel: "Start a Project",
     ctaHref: "/contact",
+    image: "/images/hero-journey/packaging.webp",
+    imageAlt: "Private-label retail bakery packaging",
   },
   {
     step: 4,
@@ -176,6 +188,8 @@ export const heroSlides: HeroSlide[] = [
     description:
       "Consistent output on certified bakery lines, ready to grow with your brand.",
     trustPoints: heroPrimaryTrust,
+    image: "/images/hero-journey/production.webp",
+    imageAlt: "Scaled bakery production line in operation",
   },
   {
     step: 5,
@@ -184,6 +198,8 @@ export const heroSlides: HeroSlide[] = [
     description:
       "ISO- and HACCP-aligned checks safeguard food safety from line to delivery.",
     trustPoints: heroPrimaryTrust,
+    image: "/images/hero-journey/qc.webp",
+    imageAlt: "Quality control checks on bakery products",
   },
   {
     step: 6,
@@ -194,6 +210,8 @@ export const heroSlides: HeroSlide[] = [
     ctaLabel: "Start a Project",
     ctaHref: "/contact",
     trustPoints: heroPrimaryTrust,
+    image: "/images/hero-journey/retail-ready.webp",
+    imageAlt: "Retail-ready bakery products on the shelf",
   },
 ];
 

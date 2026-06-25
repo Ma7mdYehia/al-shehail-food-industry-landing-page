@@ -33,7 +33,7 @@ type Props = {
 export default function HeroSystem({ active, onSelect }: Props) {
   return (
     <MouseGlow className="mouse-glow mouse-glow-border relative mx-auto max-w-sm rounded-3xl lg:mr-0 lg:ml-auto">
-      <div className="glow-border relative overflow-hidden rounded-3xl bg-warmwhite p-2.5 shadow-soft">
+      <div className="glow-border relative overflow-hidden rounded-3xl bg-warmwhite/85 p-2.5 shadow-soft backdrop-blur-md">
         {/* Layered premium background */}
         <div className="oven-glow pointer-events-none absolute inset-0" aria-hidden />
         <div className="bg-grain pointer-events-none absolute inset-0 opacity-70" aria-hidden />

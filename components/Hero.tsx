@@ -15,9 +15,7 @@ export default function Hero() {
         <div className="absolute top-40 -left-24 h-96 w-96 rounded-full bg-sand/30 blur-3xl" />
       </div>
 
-      <div className="container-x">
-        <HeroSlider />
-      </div>
+      <HeroSlider />
     </section>
   );
 }

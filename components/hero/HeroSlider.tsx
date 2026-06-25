@@ -83,12 +83,39 @@ export default function HeroSlider() {
 
   return (
     <div
-      className="grid items-center gap-14 lg:grid-cols-[1.1fr_0.82fr]"
+      className="relative"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
+      {/* Active stage banner — a soft, full-bleed visual layer focused on the
+          right, with warm gradient overlays that keep the left copy readable.
+          All stage images are stacked and cross-faded by opacity to avoid
+          layout shift and re-mounting. */}
+      <div className="pointer-events-none absolute inset-0 -z-[5] overflow-hidden">
+        {heroSlides.map((s, i) => (
+          <Image
+            key={s.image}
+            src={s.image}
+            alt={s.imageAlt}
+            fill
+            sizes="100vw"
+            priority={i === 0}
+            aria-hidden={i !== active}
+            className={`object-cover object-right transition-opacity duration-700 ease-out ${
+              i === active ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
+        {/* Warm readability overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/80 to-cream/15 sm:to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-cream/75 via-transparent to-warmwhite/40" />
+        {/* Stronger wash on mobile where copy sits over the image */}
+        <div className="absolute inset-0 bg-cream/55 sm:bg-transparent" />
+      </div>
+
+      <div className="container-x relative grid items-center gap-14 lg:grid-cols-[1.1fr_0.82fr]">
       <div className="animate-fade-up">
         {slide.eyebrow && (
           <span className="eyebrow">
@@ -170,6 +197,7 @@ export default function HeroSlider() {
             </div>
           </div>
         )}
+      </div>
       </div>
     </div>
   );
