@@ -101,6 +101,102 @@ export const privateLabelSteps: Step[] = [
   },
 ];
 
+// ── Hero slider ──────────────────────────────────────────────────────────────
+// Clean content variants for the hero, mapped 1:1 to the seven right-side
+// manufacturing stages (index 0–6). Each variant can selectively show or hide
+// the eyebrow, CTA, and trust points — not every slide shows every element.
+// The first slide stays very close to the original hero (full layout).
+
+export type HeroTrustIcon = "shield-check" | "label" | "truck";
+
+export type HeroTrustPoint = {
+  label: string;
+  icon: HeroTrustIcon;
+};
+
+export type HeroSlide = {
+  /** Index (0–6) of the highlighted stage in the right-side system. */
+  step: number;
+  eyebrow?: string;
+  title: string;
+  description: string;
+  /** Omit to hide the CTA on this slide. */
+  ctaLabel?: string;
+  ctaHref?: string;
+  /** Omit to hide the trust points on this slide. */
+  trustPoints?: HeroTrustPoint[];
+};
+
+const heroPrimaryTrust: HeroTrustPoint[] = [
+  { label: "ISO / HACCP Systems", icon: "shield-check" },
+  { label: "Private Label Ready", icon: "label" },
+  { label: "Retail Supply Support", icon: "truck" },
+];
+
+export const heroSlides: HeroSlide[] = [
+  {
+    step: 0,
+    eyebrow: "UAE-Based Bakery Manufacturing & Private Label Partner",
+    title: "Private Label Bakery Manufacturing in the UAE",
+    description:
+      "From product concept to retail-ready bakery — developed, manufactured, packed, and scaled for modern food brands.",
+    ctaLabel: "Start a Project",
+    ctaHref: "/contact",
+    trustPoints: heroPrimaryTrust,
+  },
+  {
+    step: 1,
+    eyebrow: "Recipe Development",
+    title: "Recipes engineered for taste and scale",
+    description:
+      "Formulated for flavour, texture, and clean, repeatable production on certified lines.",
+    ctaLabel: "Start a Project",
+    ctaHref: "/contact",
+  },
+  {
+    step: 2,
+    eyebrow: "Sampling",
+    title: "Samples refined until they're right",
+    description:
+      "We produce and tune samples with your team until the product is ready for your brand.",
+  },
+  {
+    step: 3,
+    eyebrow: "Packaging",
+    title: "Retail packaging built for the shelf",
+    description:
+      "Private-label packaging designed for shelf appeal, compliance, and product protection.",
+    ctaLabel: "Start a Project",
+    ctaHref: "/contact",
+  },
+  {
+    step: 4,
+    eyebrow: "Production",
+    title: "Scaled production, batch after batch",
+    description:
+      "Consistent output on certified bakery lines, ready to grow with your brand.",
+    trustPoints: heroPrimaryTrust,
+  },
+  {
+    step: 5,
+    eyebrow: "Quality Control",
+    title: "Quality assured at every stage",
+    description:
+      "ISO- and HACCP-aligned checks safeguard food safety from line to delivery.",
+    trustPoints: heroPrimaryTrust,
+  },
+  {
+    step: 6,
+    eyebrow: "Retail Ready",
+    title: "Finished, branded, retail-ready",
+    description:
+      "Packed and supplied reliably to your distribution network across the UAE.",
+    ctaLabel: "Start a Project",
+    ctaHref: "/contact",
+    trustPoints: heroPrimaryTrust,
+  },
+];
+
 export const capabilities = [
   {
     title: "Product Development",
