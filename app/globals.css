@@ -29,11 +29,164 @@
     @apply font-serif font-semibold leading-tight text-ink;
   }
 
+  /* ------------------------------------------------------------------ */
+  /* Premium buttons with a soft light sweep on hover                    */
+  /* ------------------------------------------------------------------ */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gold-gradient px-7 py-3.5 text-sm font-semibold text-white shadow-soft transition-all duration-300 hover:shadow-card hover:brightness-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-gold-gradient px-7 py-3.5 text-sm font-semibold text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card hover:brightness-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
+  }
+
+  /* Light sweep — a soft diagonal highlight that crosses the button. */
+  .btn-primary::after {
+    content: "";
+    @apply pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 skew-x-[-20deg];
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.55),
+      transparent
+    );
+    transform: translateX(-120%);
+  }
+
+  .btn-primary:hover::after {
+    @apply animate-sweep;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-sand bg-warmwhite px-7 py-3.5 text-sm font-semibold text-charcoal transition-all duration-300 hover:border-champagne hover:bg-beige focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-sand bg-warmwhite px-7 py-3.5 text-sm font-semibold text-charcoal transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne hover:bg-beige focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
+  }
+}
+
+@layer utilities {
+  /* ------------------------------------------------------------------ */
+  /* Premium section background layers                                   */
+  /* ------------------------------------------------------------------ */
+
+  /* Soft grain / flour-dust texture (very subtle, tiled SVG noise). */
+  .bg-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+
+  /* Dotted champagne-gold pattern. */
+  .bg-dotted-gold {
+    background-image: radial-gradient(
+      rgba(198, 166, 100, 0.28) 1px,
+      transparent 1.4px
+    );
+    background-size: 22px 22px;
+  }
+
+  /* Subtle warm grid. */
+  .bg-grid {
+    background-image: linear-gradient(
+        to right,
+        rgba(198, 166, 100, 0.10) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(198, 166, 100, 0.10) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Warm oven glow layer (use on a positioned ::before-style element). */
+  .oven-glow {
+    background-image: theme("backgroundImage.oven-glow");
+  }
+
+  /* Champagne border glow — a refined ring used on premium panels. */
+  .glow-border {
+    @apply border border-champagne/40;
+    box-shadow: theme("boxShadow.glow");
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Interaction utilities                                               */
+  /* ------------------------------------------------------------------ */
+
+  /* Card lift on hover. */
+  .card-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+  .card-lift:hover {
+    @apply -translate-y-1.5 shadow-lift;
+  }
+
+  /* Pseudo-3D tilt — slight perspective lean toward the viewer. */
+  .tilt {
+    transform: perspective(900px) rotateX(0deg) rotateY(0deg);
+    transition: transform 0.4s ease-out;
+    transform-style: preserve-3d;
+  }
+  .tilt:hover {
+    transform: perspective(900px) rotateX(3deg) rotateY(-4deg) translateY(-4px);
+  }
+
+  /* Mouse-follow glow — a soft radial that tracks the cursor.
+     A parent sets --mx / --my (in %, via MouseGlow) on pointer move. */
+  .mouse-glow {
+    position: relative;
+    isolation: isolate;
+  }
+  .mouse-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    background: radial-gradient(
+      240px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(198, 166, 100, 0.18),
+      transparent 60%
+    );
+  }
+  .mouse-glow:hover::before {
+    opacity: 1;
+  }
+
+  /* Mouse-follow border glow — highlights the panel edge near the cursor. */
+  .mouse-glow-border::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    background: radial-gradient(
+      200px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(198, 166, 100, 0.65),
+      transparent 65%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  .mouse-glow-border:hover::after {
+    opacity: 1;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/* Reduced-motion: disable all non-essential motion and reveal cleanly  */
+/* -------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .card-lift:hover,
+  .tilt:hover {
+    transform: none;
   }
 }

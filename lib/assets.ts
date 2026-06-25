@@ -148,11 +148,33 @@ export const assets: AssetManifest = {
   },
 };
 
+// Single source of truth mapping a product slug → its key in assets.products.
+// Used by every product card / detail view so the slug→asset wiring lives in
+// one place.
+export const productAssetKeyBySlug: Record<string, keyof ProductAssets> = {
+  "arabic-bread": "arabicBread",
+  "bread-wraps": "breadWraps",
+  toast: "toast",
+  "burger-buns": "burgerBuns",
+  "bread-rolls": "breadRolls",
+  croissant: "croissant",
+  "mini-croissant": "miniCroissant",
+  pate: "pate",
+  maamoul: "maamoul",
+  tamriya: "tamriya",
+};
+
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 /** Returns true only when a real file path is registered. */
 export function hasAsset(path: AssetPath): path is string {
   return typeof path === "string" && path.length > 0;
+}
+
+/** Resolves a product slug to its registered photo path (or null). */
+export function getProductAsset(slug: string): AssetPath {
+  const key = productAssetKeyBySlug[slug];
+  return key ? assets.products[key] : null;
 }
 
 /**
