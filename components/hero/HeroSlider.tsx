@@ -188,7 +188,7 @@ export default function HeroSlider() {
           The fade-up entrance animation lives on the inner wrapper so its
           transform keyframes don't clobber the centering — otherwise the card
           drops to top:50% and its lower tabs get clipped by the hero edge. */}
-      <div className="mt-12 sm:max-w-xs lg:absolute lg:right-0 lg:top-1/2 lg:z-10 lg:mt-0 lg:max-w-none lg:-translate-y-1/2 xl:right-4">
+      <div className="mt-7 max-w-xl lg:absolute lg:right-0 lg:top-1/2 lg:z-10 lg:mt-0 lg:max-w-none lg:-translate-y-1/2 xl:right-4">
         <div className="animate-fade-up [animation-delay:120ms]">
           {showSystem ? (
             <HeroSystem active={slide.step} onSelect={setActive} />
