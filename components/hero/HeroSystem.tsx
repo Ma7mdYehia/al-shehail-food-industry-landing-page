@@ -32,31 +32,31 @@ type Props = {
 
 export default function HeroSystem({ active, onSelect }: Props) {
   return (
-    <MouseGlow className="mouse-glow mouse-glow-border relative mx-auto w-full max-w-[17rem] rounded-3xl lg:mr-0 lg:ml-auto xl:max-w-[18rem]">
+    <MouseGlow className="mouse-glow mouse-glow-border relative mx-auto w-full max-w-[17rem] rounded-3xl lg:mr-0 lg:ml-auto lg:max-h-[calc(100vh-9rem)] xl:max-w-[18rem]">
       <div className="glow-border relative overflow-hidden rounded-3xl bg-warmwhite/90 p-1.5 shadow-soft backdrop-blur-md sm:p-2">
         {/* Layered premium background */}
         <div className="oven-glow pointer-events-none absolute inset-0" aria-hidden />
         <div className="bg-grain pointer-events-none absolute inset-0 opacity-70" aria-hidden />
         <FlourParticles />
 
-        <div className="bg-dotted-gold relative overflow-hidden rounded-2xl border border-sand/70 p-3 sm:p-3.5">
+        <div className="bg-dotted-gold relative overflow-hidden rounded-2xl border border-sand/70 p-2.5 sm:p-3">
           {/* Header */}
           <div className="flex items-center justify-between gap-2.5">
             <div>
               <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-gold sm:text-[10px]">
                 Manufacturing System
               </span>
-              <p className="mt-1 font-serif text-sm font-semibold leading-tight text-ink">
+              <p className="mt-0.5 font-serif text-sm font-semibold leading-tight text-ink">
                 From idea to shelf
               </p>
             </div>
-            <span className="flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-gold-gradient font-serif text-xs font-bold text-white shadow-card">
+            <span className="flex h-7 w-7 flex-none items-center justify-center rounded-xl bg-gold-gradient font-serif text-xs font-bold text-white shadow-card">
               {String(active + 1).padStart(2, "0")}
             </span>
           </div>
 
           {/* Stage list — compact enough for all 7 tabs to stay visible in the hero */}
-          <ul className="relative mt-2.5 space-y-1">
+          <ul className="relative mt-2 space-y-1">
             {FLOW.map((step, i) => {
               const isActive = i === active;
               return (
@@ -66,20 +66,20 @@ export default function HeroSystem({ active, onSelect }: Props) {
                     onClick={() => onSelect(i)}
                     aria-current={isActive ? "step" : undefined}
                     aria-label={`Stage ${i + 1}: ${step.label}`}
-                    className={`group flex min-h-[2.35rem] w-full items-center gap-2.5 rounded-xl border px-2 py-1 text-left transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-1 focus-visible:ring-offset-warmwhite ${
+                    className={`group flex min-h-[2rem] w-full items-center gap-2.5 rounded-xl border px-2 py-0.5 text-left transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-1 focus-visible:ring-offset-warmwhite ${
                       isActive
                         ? "border-champagne/70 bg-cream shadow-card"
                         : "border-transparent hover:border-sand/70 hover:bg-cream/60"
                     }`}
                   >
                     <span
-                      className={`flex h-8 w-8 flex-none items-center justify-center rounded-xl border transition-colors duration-300 ${
+                      className={`flex h-7 w-7 flex-none items-center justify-center rounded-xl border transition-colors duration-300 ${
                         isActive
                           ? "border-champagne bg-warmwhite shadow-card"
                           : "border-sand bg-warmwhite/80"
                       }`}
                     >
-                      <PremiumObject name={step.object} size={20} />
+                      <PremiumObject name={step.object} size={18} />
                     </span>
                     <span
                       className={`flex-1 truncate font-serif text-[13px] font-semibold leading-none transition-colors duration-300 sm:text-sm ${

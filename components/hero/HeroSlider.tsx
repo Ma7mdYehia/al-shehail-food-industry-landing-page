@@ -184,23 +184,29 @@ export default function HeroSlider() {
           On large screens it stays vertically centered inside the safe hero area
           so all seven stage tabs remain visible; on mobile it sits in normal flow
           beneath the text. Real factory photo replaces it when available. */}
-      <div className="mt-12 animate-fade-up [animation-delay:120ms] sm:max-w-xs lg:absolute lg:right-0 lg:top-[46%] lg:z-10 lg:mt-0 lg:max-w-none lg:-translate-y-1/2 xl:right-4 xl:top-[47%]">
-        {showSystem ? (
-          <HeroSystem active={slide.step} onSelect={setActive} />
-        ) : (
-          <div className="glow-border relative overflow-hidden rounded-3xl bg-warmwhite p-3 shadow-soft lg:w-72">
-            <div className="relative overflow-hidden rounded-2xl">
-              <Image
-                src={assets.factory.exterior as string}
-                alt={getAssetAlt("exterior")}
-                width={720}
-                height={480}
-                priority
-                className="aspect-[3/2] w-full object-cover"
-              />
+      {/* Outer element owns the desktop centering transform (lg:-translate-y-1/2).
+          The fade-up entrance animation lives on the inner wrapper so its
+          transform keyframes don't clobber the centering — otherwise the card
+          drops to top:50% and its lower tabs get clipped by the hero edge. */}
+      <div className="mt-12 sm:max-w-xs lg:absolute lg:right-0 lg:top-1/2 lg:z-10 lg:mt-0 lg:max-w-none lg:-translate-y-1/2 xl:right-4">
+        <div className="animate-fade-up [animation-delay:120ms]">
+          {showSystem ? (
+            <HeroSystem active={slide.step} onSelect={setActive} />
+          ) : (
+            <div className="glow-border relative overflow-hidden rounded-3xl bg-warmwhite p-3 shadow-soft lg:w-72">
+              <div className="relative overflow-hidden rounded-2xl">
+                <Image
+                  src={assets.factory.exterior as string}
+                  alt={getAssetAlt("exterior")}
+                  width={720}
+                  height={480}
+                  priority
+                  className="aspect-[3/2] w-full object-cover"
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       </div>
     </div>
