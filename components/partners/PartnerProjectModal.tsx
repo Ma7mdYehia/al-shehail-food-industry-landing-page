@@ -25,13 +25,22 @@ const NUTRITION_HIGHLIGHT_CATEGORIES: PartnerProject["category"][] = [
   "Organic / Government Food Brand Bakery Production",
 ];
 
+// Short "focus type" label per project category — no new claims, just a concise
+// restatement of the existing category for the quick-facts strip.
+const FOCUS_LABEL: Record<PartnerProject["category"], string> = {
+  "Healthy Bakery / Functional Bread": "Healthy / Functional Bakery",
+  "Organic / Government Food Brand Bakery Production":
+    "Organic / Private Label Bakery",
+  "Date-Based Sweets / Bakery": "Date-Based Sweets",
+};
+
 function monogram(name: string) {
   const words = name.split(/\s+/).filter(Boolean);
   if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
   return (words[0][0] + words[1][0]).toUpperCase();
 }
 
-/** A titled section wrapper with the warm eyebrow heading style. */
+/** Main-column section: divider heading + content. */
 function Section({
   title,
   children,
@@ -40,7 +49,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="border-t border-sand/70 pt-6">
+    <section className="border-t border-sand/70 pt-5">
       <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
         {title}
       </h3>
@@ -49,10 +58,30 @@ function Section({
   );
 }
 
-/** Renders a string[] as a grid of soft bullet cards. */
-function BulletGrid({ items }: { items: string[] }) {
+/** Support-column section: framed card for visual separation. */
+function PanelSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+    <section className="rounded-2xl border border-sand bg-warmwhite p-5">
+      <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+        {title}
+      </h3>
+      <div className="mt-3">{children}</div>
+    </section>
+  );
+}
+
+/** Renders a string[] as soft bullet cards (1 or 2 columns). */
+function BulletGrid({ items, cols = 2 }: { items: string[]; cols?: 1 | 2 }) {
+  return (
+    <ul
+      className={`grid grid-cols-1 gap-2.5 ${cols === 2 ? "sm:grid-cols-2" : ""}`}
+    >
       {items.map((item, i) => (
         <li
           key={i}
@@ -66,6 +95,19 @@ function BulletGrid({ items }: { items: string[] }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+function Fact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-sand bg-warmwhite px-4 py-3">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold">
+        {label}
+      </p>
+      <p className="mt-1 font-serif text-sm font-semibold leading-tight text-ink">
+        {value}
+      </p>
+    </div>
   );
 }
 
@@ -137,6 +179,7 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
       p.nutritionHighlights.length > 0 &&
       !p.nutritionHighlights.includes(NEEDS_VERIFICATION)
   );
+  const productCount = project.products.length;
 
   return (
     <div
@@ -159,36 +202,44 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
         ref={panelRef}
         className="animate-fade-up relative flex max-h-[93vh] w-[96vw] max-w-6xl flex-col overflow-hidden rounded-2xl border border-sand bg-cream shadow-lift sm:max-h-[90vh] sm:w-[90vw] sm:rounded-3xl"
       >
-        {/* Header */}
-        <div className="relative flex items-start gap-4 border-b border-sand bg-warmwhite px-5 py-5 sm:px-8 sm:py-6">
-          <div className="oven-glow pointer-events-none absolute inset-0" aria-hidden />
+        {/* Sticky header */}
+        <div className="relative flex items-start gap-4 border-b border-sand bg-warmwhite px-5 py-5 sm:gap-5 sm:px-8 sm:py-6">
+          <div
+            className="oven-glow pointer-events-none absolute inset-0"
+            aria-hidden
+          />
+
+          {/* Logo / monogram in a framed tile */}
           {hasAsset(logoPath) ? (
-            <Image
-              src={logoPath}
-              alt={getAssetAlt(project.partnerAssetKey ?? "", project.partnerName)}
-              width={128}
-              height={64}
-              className="h-12 w-24 flex-none object-contain sm:h-14 sm:w-28"
-            />
+            <span className="flex h-14 flex-none items-center justify-center rounded-2xl border border-sand bg-cream px-3 shadow-card sm:h-16">
+              <Image
+                src={logoPath}
+                alt={getAssetAlt(
+                  project.partnerAssetKey ?? "",
+                  project.partnerName
+                )}
+                width={120}
+                height={56}
+                className="h-9 w-auto max-w-[6rem] object-contain sm:h-10"
+              />
+            </span>
           ) : (
-            <span className="flex h-12 w-12 flex-none items-center justify-center rounded-xl border border-sand bg-cream font-serif text-base font-bold text-gold sm:h-14 sm:w-14">
+            <span className="flex h-14 w-14 flex-none items-center justify-center rounded-2xl border border-sand bg-cream font-serif text-base font-bold text-gold shadow-card sm:h-16 sm:w-16">
               {monogram(project.partnerName)}
             </span>
           )}
 
           <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <h2
-                id={titleId}
-                className="font-serif text-xl font-semibold leading-tight text-ink sm:text-2xl"
-              >
-                {project.partnerName}
-              </h2>
-              <span className="inline-flex items-center rounded-full border border-champagne/60 bg-cream px-3 py-1 text-[11px] font-semibold text-gold">
-                {project.category}
-              </span>
-            </div>
-            <p className="mt-2 max-w-3xl text-sm leading-relaxed text-stone sm:text-base">
+            <span className="inline-flex items-center rounded-full border border-champagne/60 bg-cream px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-gold">
+              {project.category}
+            </span>
+            <h2
+              id={titleId}
+              className="mt-2 font-serif text-xl font-semibold leading-tight text-ink sm:text-2xl"
+            >
+              {project.partnerName}
+            </h2>
+            <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-stone sm:text-[15px]">
               {project.positioning}
             </p>
           </div>
@@ -217,70 +268,100 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
         </div>
 
         {/* Scrollable content */}
-        <div className="flex-1 space-y-6 overflow-y-auto px-5 py-6 sm:px-8 sm:py-7">
-          {/* 1. Overview */}
-          <section>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-              Overview
-            </h3>
-            <div className="mt-3 space-y-3">
-              {project.overview.map((para, i) => (
-                <p key={i} className="text-sm leading-relaxed text-charcoal sm:text-[15px]">
-                  {para}
-                </p>
-              ))}
+        <div className="flex-1 overflow-y-auto px-5 py-6 sm:px-8 sm:py-7">
+          {/* Quick facts strip */}
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+            <Fact label="Focus" value={FOCUS_LABEL[project.category]} />
+            <Fact label="Products" value={String(productCount)} />
+            <Fact
+              label="Specification data"
+              value={nutritionVerified ? "Available" : "Pending"}
+            />
+            <Fact
+              label="Nutrition data"
+              value={nutritionVerified ? "Verified" : "Pending"}
+            />
+          </div>
+
+          {/* Two-column body */}
+          <div className="mt-6 grid gap-6 lg:grid-cols-3">
+            {/* Main column */}
+            <div className="space-y-5 lg:col-span-2">
+              <section>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+                  Overview
+                </h3>
+                <div className="mt-3 space-y-3">
+                  {project.overview.map((para, i) => (
+                    <p
+                      key={i}
+                      className="text-sm leading-relaxed text-charcoal sm:text-[15px]"
+                    >
+                      {para}
+                    </p>
+                  ))}
+                </div>
+              </section>
+
+              <Section title="Production Focus">
+                <BulletGrid items={project.productionFocus} />
+              </Section>
+
+              <Section title="Ingredient Strategy">
+                <BulletGrid items={project.ingredientStrategy} />
+              </Section>
+
+              <Section title="Process & Fermentation">
+                <BulletGrid items={project.processNotes} />
+              </Section>
+            </div>
+
+            {/* Support column */}
+            <div className="space-y-4">
+              <PanelSection title="Nutrition / Product Logic">
+                {highlightNutrition && (
+                  <div className="mb-3 flex flex-wrap gap-2">
+                    {NUTRITION_DIMENSIONS.map((dim) => (
+                      <span
+                        key={dim}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-sand bg-cream px-3 py-1 text-xs font-semibold text-charcoal"
+                      >
+                        {dim}
+                        <span className="text-[10px] font-medium text-stone/70">
+                          pending
+                        </span>
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <BulletGrid items={project.nutritionFocus} cols={1} />
+                {!nutritionVerified && (
+                  <p className="mt-3 text-xs font-medium text-stone/80">
+                    Nutrition values pending verified specification sheet
+                  </p>
+                )}
+              </PanelSection>
+
+              <PanelSection title="Quality / Compliance Notes">
+                <BulletGrid items={project.complianceNotes} cols={1} />
+              </PanelSection>
+            </div>
+          </div>
+
+          {/* Products Manufactured — full width */}
+          <section className="mt-7 border-t border-sand/70 pt-5">
+            <div className="flex items-center justify-between gap-3">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+                Products Manufactured
+              </h3>
+              <span className="text-xs font-medium text-stone">
+                {productCount} {productCount === 1 ? "product" : "products"}
+              </span>
+            </div>
+            <div className="mt-3">
+              <PartnerProjectProducts products={project.products} />
             </div>
           </section>
-
-          {/* 2. Production Focus */}
-          <Section title="Production Focus">
-            <BulletGrid items={project.productionFocus} />
-          </Section>
-
-          {/* 3. Ingredient Strategy */}
-          <Section title="Ingredient Strategy">
-            <BulletGrid items={project.ingredientStrategy} />
-          </Section>
-
-          {/* 4. Nutrition / Product Logic */}
-          <Section title="Nutrition / Product Logic">
-            {highlightNutrition && (
-              <div className="mb-3 flex flex-wrap gap-2">
-                {NUTRITION_DIMENSIONS.map((dim) => (
-                  <span
-                    key={dim}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-sand bg-warmwhite px-3 py-1 text-xs font-semibold text-charcoal"
-                  >
-                    {dim}
-                    <span className="text-[10px] font-medium text-stone/70">
-                      pending
-                    </span>
-                  </span>
-                ))}
-              </div>
-            )}
-            <BulletGrid items={project.nutritionFocus} />
-            {!nutritionVerified && (
-              <p className="mt-3 text-xs font-medium text-stone/80">
-                Nutrition values pending verified specification sheet
-              </p>
-            )}
-          </Section>
-
-          {/* 5. Process & Fermentation */}
-          <Section title="Process & Fermentation">
-            <BulletGrid items={project.processNotes} />
-          </Section>
-
-          {/* 6. Quality / Compliance Notes */}
-          <Section title="Quality / Compliance Notes">
-            <BulletGrid items={project.complianceNotes} />
-          </Section>
-
-          {/* 7. Products Manufactured */}
-          <Section title="Products Manufactured">
-            <PartnerProjectProducts products={project.products} />
-          </Section>
         </div>
       </div>
     </div>
