@@ -40,6 +40,7 @@ export type ProductAssets = {
   pate: AssetPath;
   maamoul: AssetPath;
   tamriya: AssetPath;
+  cookies: AssetPath;
 };
 
 export type FactoryAssets = {
@@ -103,16 +104,17 @@ export const assets: AssetManifest = {
   },
 
   products: {
-    arabicBread: null,    // /assets/products/arabic-bread.webp
-    breadWraps: null,     // /assets/products/bread-wraps.webp
-    toast: null,          // /assets/products/toast.webp
-    burgerBuns: null,     // /assets/products/burger-buns.webp
-    breadRolls: null,     // /assets/products/bread-rolls.webp
-    croissant: null,      // /assets/products/croissant.webp
-    miniCroissant: null,  // /assets/products/mini-croissant.webp
-    pate: null,           // /assets/products/pate.webp
-    maamoul: null,        // /assets/products/maamoul.webp
-    tamriya: null,        // /assets/products/tamriya.webp
+    arabicBread: null,    // /assets/products/arabic-bread.webp (pending)
+    breadWraps: null,     // /assets/products/bread-wraps.webp (pending)
+    toast: "/assets/products/toast.webp",
+    burgerBuns: "/assets/products/burger-buns.webp",
+    breadRolls: "/assets/products/bread-rolls.webp",
+    croissant: "/assets/products/croissant.webp",
+    miniCroissant: "/assets/products/mini-croissant.webp",
+    pate: "/assets/products/pate.webp",
+    maamoul: "/assets/products/maamoul.webp",
+    tamriya: "/assets/products/tamriya.webp",
+    cookies: "/assets/products/cookies.webp",
   },
 
   factory: {
@@ -162,6 +164,7 @@ export const productAssetKeyBySlug: Record<string, keyof ProductAssets> = {
   pate: "pate",
   maamoul: "maamoul",
   tamriya: "tamriya",
+  cookies: "cookies",
 };
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -212,6 +215,7 @@ const altTexts: Record<string, string> = {
   pate: "Pâte / puff pastry",
   maamoul: "Maa'moul",
   tamriya: "Tamriya",
+  cookies: "Cookies",
 
   // factory
   exterior: "Al Shehail factory exterior",
