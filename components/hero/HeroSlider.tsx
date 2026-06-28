@@ -181,10 +181,10 @@ export default function HeroSlider() {
       </div>
 
       {/* Hero visual — a compact floating control panel layered over the image.
-          On large screens it floats toward the center-/lower-right with plenty
-          of breathing room from the copy; on mobile it sits in normal flow
+          On large screens it stays vertically centered inside the safe hero area
+          so all seven stage tabs remain visible; on mobile it sits in normal flow
           beneath the text. Real factory photo replaces it when available. */}
-      <div className="mt-12 animate-fade-up [animation-delay:120ms] sm:max-w-xs lg:mt-0 lg:absolute lg:right-0 lg:top-1/2 lg:max-w-none lg:-translate-y-[42%]">
+      <div className="mt-12 animate-fade-up [animation-delay:120ms] sm:max-w-xs lg:absolute lg:right-0 lg:top-[46%] lg:z-10 lg:mt-0 lg:max-w-none lg:-translate-y-1/2 xl:right-4 xl:top-[47%]">
         {showSystem ? (
           <HeroSystem active={slide.step} onSelect={setActive} />
         ) : (
