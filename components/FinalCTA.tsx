@@ -1,12 +1,22 @@
 import Link from "next/link";
 import { whatsappLink } from "@/lib/content";
 import { WhatsAppIcon } from "./Icons";
+import BackgroundVideo from "./BackgroundVideo";
 
 export default function FinalCTA() {
   return (
     <section id="contact" className="section">
       <div className="container-x">
         <div className="relative overflow-hidden rounded-3xl border border-champagne/40 bg-gradient-to-br from-warmwhite via-cream to-beige px-6 py-16 text-center shadow-soft sm:px-12 lg:py-20">
+          {/* Subtle decorative background video + warm wash for readability */}
+          <BackgroundVideo
+            src="/assets/videos/from-idea-to-shelf-bg.mp4"
+            className="opacity-40"
+          />
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-br from-warmwhite/80 via-cream/65 to-beige/80"
+            aria-hidden
+          />
           <div className="pointer-events-none absolute inset-0">
             <div className="oven-glow absolute inset-x-0 top-0 h-1/2" />
             <div className="bg-dotted-gold absolute inset-0 opacity-25" />

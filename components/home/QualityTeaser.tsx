@@ -1,5 +1,6 @@
 import SectionHeading from "../SectionHeading";
 import TeaserLink from "../TeaserLink";
+import BackgroundVideo from "../BackgroundVideo";
 import { ShieldCheckIcon } from "../Icons";
 import { trustBadges } from "@/lib/content";
 
@@ -13,6 +14,15 @@ const processSummary = [
 export default function QualityTeaser() {
   return (
     <section className="section relative overflow-hidden">
+      {/* Subtle decorative background video + warm wash for readability */}
+      <BackgroundVideo
+        src="/assets/videos/quality-certifications-bg.mp4"
+        className="opacity-40"
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-cream/80 via-cream/60 to-cream/85"
+        aria-hidden
+      />
       <div className="bg-grain pointer-events-none absolute inset-0 opacity-50" aria-hidden />
       <div className="container-x relative">
         <SectionHeading
