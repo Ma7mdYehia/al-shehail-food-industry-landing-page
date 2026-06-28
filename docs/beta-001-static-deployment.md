@@ -92,7 +92,30 @@ Because the build uses `trailingSlash: true`, each route is a real directory
 with an `index.html`, so links like `/about/` resolve on virtually any static
 host without extra rewrite rules.
 
-## 6. Test locally after build
+## 6. Zip the /out folder (for handoff or upload)
+
+To package the build as a single archive — e.g. to email it, hand it to the
+server admin, or upload via a control panel — zip the **contents** of `/out`:
+
+```bash
+# From the project root, zip everything inside out/ (note the trailing /. )
+cd out && zip -r ../beta-001-out.zip . && cd ..
+```
+
+This produces `beta-001-out.zip` at the project root with `index.html` at the
+top level of the archive (not nested inside an `out/` directory), so extracting
+it directly into the web root gives a working site.
+
+On Windows PowerShell:
+
+```powershell
+Compress-Archive -Path out\* -DestinationPath beta-001-out.zip
+```
+
+> Tip: keep the archive name versioned (e.g. `beta-001-out.zip`) so each
+> deployment build is easy to identify.
+
+## 7. Test locally after build
 
 Serve the `out/` folder with any static file server and open it in a browser:
 
@@ -114,7 +137,7 @@ http://localhost:8080) and check:
 - Contact form opens WhatsApp with a prefilled message
 - `/sitemap.xml` and `/robots.txt` are reachable
 
-## 7. Create the Beta.001 git tag
+## 8. Create the Beta.001 git tag
 
 After the deployment build is confirmed, tag the release:
 
