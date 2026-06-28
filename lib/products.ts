@@ -377,9 +377,6 @@ export const productsByCategory = productCategories.map((category) => ({
   items: products.filter((p) => p.categorySlug === category.slug),
 }));
 
-// Hand-picked highlight set for the homepage "Featured" filter.
-export const featuredProducts = products.filter((p) => p.featured);
-
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
 }
