@@ -1,21 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import AssetHint from "./AssetHint";
-import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
-import { manufacturingPartners } from "@/lib/content";
-
-// Derive a clean monogram from a partner name (e.g. "HÄLSA Bake" -> "HB").
-function monogram(name: string) {
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase();
-}
-
-// Shared partner list (name + logo asset key + linked project slug).
-const partnerEntries = manufacturingPartners;
+import PartnerProjectGrid from "./partners/PartnerProjectGrid";
 
 export default function Partners() {
   return (
@@ -32,40 +16,8 @@ export default function Partners() {
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {partnerEntries.map(({ name, assetKey }) => {
-            const logoPath = assets.partners[assetKey];
-            return (
-            <div
-              key={name}
-              className="group flex flex-col rounded-2xl border border-sand bg-cream px-5 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne hover:bg-warmwhite hover:shadow-card"
-            >
-              <div className="flex items-center gap-3.5">
-                {hasAsset(logoPath) ? (
-                  <Image
-                    src={logoPath}
-                    alt={getAssetAlt(assetKey, name)}
-                    width={128}
-                    height={64}
-                    className="h-12 w-28 flex-none object-contain"
-                  />
-                ) : (
-                  /* Placeholder: monogram until the official logo is supplied */
-                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-sand bg-warmwhite font-serif text-sm font-bold text-gold transition-colors group-hover:border-champagne">
-                    {monogram(name)}
-                  </span>
-                )}
-                <span className="font-serif text-base font-semibold leading-tight text-charcoal transition-colors group-hover:text-ink sm:text-lg">
-                  {name}
-                </span>
-              </div>
-              {!hasAsset(logoPath) && (
-                <AssetHint label="Upload official partner logo" className="mt-3" />
-              )}
-            </div>
-            );
-          })}
-        </div>
+        {/* Clickable partner cards — each opens its project detail modal */}
+        <PartnerProjectGrid className="mt-10" />
 
         <div className="mt-10 text-center">
           <Link

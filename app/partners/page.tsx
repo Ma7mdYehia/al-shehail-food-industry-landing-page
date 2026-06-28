@@ -6,7 +6,8 @@ import PageHero from "@/components/PageHero";
 import CtaBand from "@/components/CtaBand";
 import SectionHeading from "@/components/SectionHeading";
 import AssetHint from "@/components/AssetHint";
-import { manufacturingPartners, retailPresence } from "@/lib/content";
+import PartnerProjectGrid from "@/components/partners/PartnerProjectGrid";
+import { retailPresence } from "@/lib/content";
 import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
 
 export const metadata: Metadata = {
@@ -21,9 +22,6 @@ function monogram(name: string) {
   if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
   return (words[0][0] + words[1][0]).toUpperCase();
 }
-
-// Shared partner list (name + logo asset key + linked project slug).
-const partnerEntries = manufacturingPartners;
 
 const retailAssetKeys: Record<string, keyof typeof assets.retail> = {
   "Carrefour":            "carrefour",
@@ -61,39 +59,8 @@ export default function PartnersPage() {
               title="Trusted by established food brands"
               description="We develop and produce private label bakery ranges for established UAE food brands."
             />
-            <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {partnerEntries.map(({ name, assetKey }) => {
-                const logoPath = assets.partners[assetKey];
-                return (
-                <div
-                  key={name}
-                  className="flex flex-col rounded-2xl border border-sand bg-cream px-5 py-5"
-                >
-                  <div className="flex items-center gap-3.5">
-                    {hasAsset(logoPath) ? (
-                      <Image
-                        src={logoPath}
-                        alt={getAssetAlt(assetKey, name)}
-                        width={128}
-                        height={64}
-                        className="h-12 w-28 flex-none object-contain"
-                      />
-                    ) : (
-                      <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-sand bg-warmwhite font-serif text-sm font-bold text-gold">
-                        {monogram(name)}
-                      </span>
-                    )}
-                    <span className="font-serif text-base font-semibold leading-tight text-charcoal sm:text-lg">
-                      {name}
-                    </span>
-                  </div>
-                  {!hasAsset(logoPath) && (
-                    <AssetHint label="Upload official partner logo" className="mt-3" />
-                  )}
-                </div>
-                );
-              })}
-            </div>
+            {/* Clickable partner cards — each opens its project detail modal */}
+            <PartnerProjectGrid className="mt-12" />
           </div>
         </section>
 
