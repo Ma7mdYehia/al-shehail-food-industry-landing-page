@@ -131,16 +131,16 @@ export const assets: AssetManifest = {
   },
 
   retail: {
-    carrefour: null,        // /assets/retail/carrefour.svg
-    unionCoop: null,        // /assets/retail/union-coop.svg
-    abuDhabiCoop: null,     // /assets/retail/abu-dhabi-coop.svg
-    sharjahCoop: null,      // /assets/retail/sharjah-coop.svg
-    alMayaGroup: null,      // /assets/retail/al-maya-group.svg
-    luluHypermarket: null,  // /assets/retail/lulu-hypermarket.svg
-    nestoHypermarket: null, // /assets/retail/nesto-hypermarket.svg
-    grandiose: null,        // /assets/retail/grandiose.svg
-    spinneys: null,         // /assets/retail/spinneys.svg
-    waitroseUae: null,      // /assets/retail/waitrose-uae.svg
+    carrefour: "/assets/retail/carrefour.png",
+    unionCoop: "/assets/retail/union-coop.png",
+    abuDhabiCoop: "/assets/retail/abu-dhabi-coop.png",
+    sharjahCoop: "/assets/retail/sharjah-coop.png",
+    alMayaGroup: "/assets/retail/al-maya-group.png",
+    luluHypermarket: "/assets/retail/lulu-hypermarket.png",
+    nestoHypermarket: "/assets/retail/nesto-hypermarket.png",
+    grandiose: "/assets/retail/grandiose.png",
+    spinneys: "/assets/retail/spinneys.png",
+    waitroseUae: "/assets/retail/waitrose-uae.png",
   },
 
   og: {
