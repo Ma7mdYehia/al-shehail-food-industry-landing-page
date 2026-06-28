@@ -31,7 +31,14 @@ export type PartnerAssets = {
 
 export type ProductAssets = {
   arabicBread: AssetPath;
-  breadWraps: AssetPath;
+  breadWraps: AssetPath; // legacy/generic — kept for backward compatibility
+  highProteinBreadWrap: AssetPath;
+  highFiberBreadWrap: AssetPath;
+  chiaBreadWrap: AssetPath;
+  oatsBreadWrap: AssetPath;
+  barleyBreadWrap: AssetPath;
+  blackSeedBreadWrap: AssetPath;
+  wholeGrainsBreadWrap: AssetPath;
   toast: AssetPath;
   burgerBuns: AssetPath;
   breadRolls: AssetPath;
@@ -104,8 +111,15 @@ export const assets: AssetManifest = {
   },
 
   products: {
-    arabicBread: null,    // /assets/products/arabic-bread.webp (pending)
-    breadWraps: null,     // /assets/products/bread-wraps.webp (pending)
+    arabicBread: "/assets/products/arabic-bread.webp",
+    breadWraps: null,     // legacy generic wrap — no longer used by a product
+    highProteinBreadWrap: "/assets/products/high-protein-bread-wrap.webp",
+    highFiberBreadWrap: "/assets/products/high-fiber-bread-wrap.webp",
+    chiaBreadWrap: "/assets/products/chia-bread-wrap.webp",
+    oatsBreadWrap: "/assets/products/oats-bread-wrap.webp",
+    barleyBreadWrap: "/assets/products/barley-bread-wrap.webp",
+    blackSeedBreadWrap: "/assets/products/black-seed-bread-wrap.webp",
+    wholeGrainsBreadWrap: "/assets/products/whole-grains-bread-wrap.webp",
     toast: "/assets/products/toast.webp",
     burgerBuns: "/assets/products/burger-buns.webp",
     breadRolls: "/assets/products/bread-rolls.webp",
@@ -156,6 +170,13 @@ export const assets: AssetManifest = {
 export const productAssetKeyBySlug: Record<string, keyof ProductAssets> = {
   "arabic-bread": "arabicBread",
   "bread-wraps": "breadWraps",
+  "high-protein-bread-wrap": "highProteinBreadWrap",
+  "high-fiber-bread-wrap": "highFiberBreadWrap",
+  "chia-bread-wrap": "chiaBreadWrap",
+  "oats-bread-wrap": "oatsBreadWrap",
+  "barley-bread-wrap": "barleyBreadWrap",
+  "black-seed-bread-wrap": "blackSeedBreadWrap",
+  "whole-grains-bread-wrap": "wholeGrainsBreadWrap",
   toast: "toast",
   "burger-buns": "burgerBuns",
   "bread-rolls": "breadRolls",
@@ -207,6 +228,13 @@ const altTexts: Record<string, string> = {
   // products
   arabicBread: "Arabic bread",
   breadWraps: "Bread wraps",
+  highProteinBreadWrap: "High-protein bread wrap",
+  highFiberBreadWrap: "High-fiber bread wrap",
+  chiaBreadWrap: "Chia bread wrap",
+  oatsBreadWrap: "Oats bread wrap",
+  barleyBreadWrap: "Barley bread wrap",
+  blackSeedBreadWrap: "Black seed bread wrap",
+  wholeGrainsBreadWrap: "Whole grains bread wrap",
   toast: "Toast loaf",
   burgerBuns: "Burger buns",
   breadRolls: "Bread rolls",
