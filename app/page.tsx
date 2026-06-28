@@ -5,6 +5,7 @@ import Partners from "@/components/Partners";
 import Products from "@/components/Products";
 import AboutTeaser from "@/components/home/AboutTeaser";
 import PrivateLabelTeaser from "@/components/home/PrivateLabelTeaser";
+import ServicesEcosystem from "@/components/home/ServicesEcosystem";
 import CapabilitiesTeaser from "@/components/home/CapabilitiesTeaser";
 import QualityTeaser from "@/components/home/QualityTeaser";
 import MarketPresenceTeaser from "@/components/home/MarketPresenceTeaser";
@@ -58,6 +59,7 @@ export default function Home() {
         <AboutTeaser />
         <Products />
         <PrivateLabelTeaser />
+        <ServicesEcosystem />
         <CapabilitiesTeaser />
         <QualityTeaser />
         <MarketPresenceTeaser />
