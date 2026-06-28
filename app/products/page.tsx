@@ -52,9 +52,10 @@ export default function ProductsPage() {
                 Bakery Product Categories
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-stone">
-                Explore Al Shehail’s bakery manufacturing range across flat
-                bread, soft bread, French bakery, and date sweets — developed
-                for private label, retail, and institutional supply.
+                Explore Al Shehail’s bakery manufacturing range across
+                flatbread &amp; wraps, bread &amp; toast, buns &amp; rolls,
+                pastry, and date sweets — developed for private label, retail,
+                and institutional supply.
               </p>
             </div>
           </div>
@@ -63,7 +64,7 @@ export default function ProductsPage() {
         {/* 2. Category overview */}
         <section className="section pt-4 sm:pt-6 lg:pt-8">
           <div className="container-x">
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {productsByCategory.map(({ category, items }) => (
                 <div
                   key={category.slug}

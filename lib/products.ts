@@ -24,42 +24,53 @@ export type Product = {
   privateLabelOptions: string[];
   imagePlaceholderLabel: string;
   iconType: ProductIconType;
+  /** Optional flavor/functional variants shown as chips (e.g. flatbread range). */
+  variants?: string[];
+  /** Included in the homepage "Featured" filter when true. */
+  featured?: boolean;
 };
 
 export const productCategories: ProductCategory[] = [
   {
-    name: "Flat Bread",
-    slug: "flat-bread",
+    name: "Flatbread & Wraps",
+    slug: "flatbread-wraps",
     description:
-      "Authentic regional flatbreads — soft, foldable, and produced for everyday retail and foodservice demand.",
+      "Arabic flatbread and pliable wraps — including functional and flavored flatbread directions — produced for everyday retail and foodservice demand.",
   },
   {
-    name: "Soft Bread",
-    slug: "soft-bread",
+    name: "Bread & Toast",
+    slug: "bread-toast",
     description:
-      "Soft, consistent breads engineered for shelf life, slicing, and reliable sandwich and burger builds.",
+      "Soft, sliceable loaves engineered for shelf life, slicing, and reliable sandwich and breakfast builds.",
   },
   {
-    name: "French Bakery",
-    slug: "french-bakery",
+    name: "Buns & Rolls",
+    slug: "buns-rolls",
     description:
-      "Laminated and layered French-style bakery — croissants and puff pastry for premium bakery and cafe shelves.",
+      "Structured buns and soft rolls for foodservice, retail multipacks, and hospitality table service.",
   },
   {
-    name: "Date Sweets",
-    slug: "date-sweets",
+    name: "Pastry",
+    slug: "pastry",
     description:
-      "Traditional date-based sweets and filled pastries for seasonal gifting, retail confectionery, and snacking.",
+      "Laminated and layered French-style bakery — croissants, mini croissants, and puff pastry for premium bakery and cafe shelves.",
+  },
+  {
+    name: "Sweets",
+    slug: "sweets",
+    description:
+      "Traditional date-based sweets — maa'moul and tamriya — for seasonal gifting, retail confectionery, and snacking.",
   },
 ];
 
 export const products: Product[] = [
-  // 1. Flat Bread
+  // 1. Flatbread & Wraps
   {
     name: "Arabic Bread",
     slug: "arabic-bread",
-    category: "Flat Bread",
-    categorySlug: "flat-bread",
+    category: "Flatbread & Wraps",
+    categorySlug: "flatbread-wraps",
+    featured: true,
     shortDescription: "Traditional round Arabic flatbread, soft and foldable.",
     cardDescription:
       "Authentic Arabic flatbread produced for consistent texture and everyday retail demand.",
@@ -75,27 +86,41 @@ export const products: Product[] = [
   {
     name: "Bread Wraps",
     slug: "bread-wraps",
-    category: "Flat Bread",
-    categorySlug: "flat-bread",
-    shortDescription: "Thin, pliable wraps for sandwiches and rolls.",
+    category: "Flatbread & Wraps",
+    categorySlug: "flatbread-wraps",
+    featured: true,
+    shortDescription: "Thin, pliable wraps and flatbread across functional, flavored directions.",
     cardDescription:
-      "Soft, flexible wraps engineered to hold fillings without tearing.",
+      "Soft, flexible wraps and flatbread engineered to hold fillings without tearing, with functional and flavored variants.",
     useCases: ["Wraps & sandwiches", "Foodservice chains", "Grab-and-go retail"],
     privateLabelOptions: [
       "Multiple diameters",
       "Plain & flavored variants",
       "Branded film packaging",
     ],
+    // Flatbread flavor / functional variants — represented as chips, not as
+    // separate product cards in the grid.
+    variants: [
+      "Turmeric",
+      "High Protein",
+      "High Fiber",
+      "Whole Wheat",
+      "Oats",
+      "Barley",
+      "Black Seed",
+      "Chia",
+    ],
     imagePlaceholderLabel: "Bread wraps photo",
     iconType: "flatbread",
   },
 
-  // 2. Soft Bread
+  // 2. Bread & Toast
   {
     name: "Toast",
     slug: "toast",
-    category: "Soft Bread",
-    categorySlug: "soft-bread",
+    category: "Bread & Toast",
+    categorySlug: "bread-toast",
+    featured: true,
     shortDescription: "Soft sandwich loaves with an even, sliceable crumb.",
     cardDescription:
       "Consistent toast loaves engineered for shelf life, slicing, and sandwich builds.",
@@ -111,8 +136,9 @@ export const products: Product[] = [
   {
     name: "Burger Buns",
     slug: "burger-buns",
-    category: "Soft Bread",
-    categorySlug: "soft-bread",
+    category: "Buns & Rolls",
+    categorySlug: "buns-rolls",
+    featured: true,
     shortDescription: "Structured buns with a soft crumb for foodservice and retail.",
     cardDescription:
       "Reliable burger buns with the structure to hold builds and a soft, even crumb.",
@@ -128,8 +154,8 @@ export const products: Product[] = [
   {
     name: "Bread Rolls",
     slug: "bread-rolls",
-    category: "Soft Bread",
-    categorySlug: "soft-bread",
+    category: "Buns & Rolls",
+    categorySlug: "buns-rolls",
     shortDescription: "Soft dinner and sandwich rolls in versatile formats.",
     cardDescription:
       "Versatile soft rolls for sandwiches, sliders, and hospitality table service.",
@@ -143,12 +169,12 @@ export const products: Product[] = [
     iconType: "samoon",
   },
 
-  // 3. French Bakery
+  // 3. Pastry
   {
     name: "Croissant",
     slug: "croissant",
-    category: "French Bakery",
-    categorySlug: "french-bakery",
+    category: "Pastry",
+    categorySlug: "pastry",
     shortDescription: "Laminated butter-style croissants with flaky layers.",
     cardDescription:
       "Premium laminated croissants with crisp, flaky layers for bakery and cafe shelves.",
@@ -164,8 +190,9 @@ export const products: Product[] = [
   {
     name: "Mini Croissant",
     slug: "mini-croissant",
-    category: "French Bakery",
-    categorySlug: "french-bakery",
+    category: "Pastry",
+    categorySlug: "pastry",
+    featured: true,
     shortDescription: "Bite-size laminated croissants for grab-and-go.",
     cardDescription:
       "Laminated mini croissants ideal for grab-and-go, breakfast packs, and platters.",
@@ -181,8 +208,8 @@ export const products: Product[] = [
   {
     name: "Pate",
     slug: "pate",
-    category: "French Bakery",
-    categorySlug: "french-bakery",
+    category: "Pastry",
+    categorySlug: "pastry",
     shortDescription: "Layered puff pastry products, sweet and savory.",
     cardDescription:
       "Layered puff pastry products across sweet and savory formats for varied ranges.",
@@ -196,12 +223,12 @@ export const products: Product[] = [
     iconType: "puff",
   },
 
-  // 4. Date Sweets
+  // 4. Sweets
   {
     name: "Maa'moul",
     slug: "maamoul",
-    category: "Date Sweets",
-    categorySlug: "date-sweets",
+    category: "Sweets",
+    categorySlug: "sweets",
     shortDescription: "Filled semolina pastries with date and nut centers.",
     cardDescription:
       "Traditional filled maa'moul with date and nut centers for seasonal and year-round sales.",
@@ -217,8 +244,8 @@ export const products: Product[] = [
   {
     name: "Tamriya",
     slug: "tamriya",
-    category: "Date Sweets",
-    categorySlug: "date-sweets",
+    category: "Sweets",
+    categorySlug: "sweets",
     shortDescription: "Wholesome date-based sweets and balls.",
     cardDescription:
       "Date-based tamriya sweets built for the health-aware shopper and snacking ranges.",
@@ -238,6 +265,9 @@ export const productsByCategory = productCategories.map((category) => ({
   category,
   items: products.filter((p) => p.categorySlug === category.slug),
 }));
+
+// Hand-picked highlight set for the homepage "Featured" filter.
+export const featuredProducts = products.filter((p) => p.featured);
 
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);

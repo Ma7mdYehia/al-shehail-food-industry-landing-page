@@ -455,6 +455,52 @@ export function getPartnerProjectByPartnerName(
   return partnerProjectByPartnerName[name];
 }
 
+/**
+ * Conservative "strength" chips for partner cards, derived only from the
+ * existing project wording — no new claims are introduced. Sugar wording maps to
+ * the softer "Sugar-Conscious" rather than a hard "Sugar Free"; preservative /
+ * clean-label wording maps to "Clean Label Direction".
+ */
+export function getProjectStrengthChips(project: PartnerProject): string[] {
+  const text = [
+    project.positioning,
+    project.category,
+    ...project.productionFocus,
+    ...project.ingredientStrategy,
+    ...project.processNotes,
+    ...project.nutritionFocus,
+    ...project.complianceNotes,
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  const chips: string[] = [];
+
+  if (
+    project.category === "Healthy Bakery / Functional Bread" ||
+    project.category === "Organic / Government Food Brand Bakery Production"
+  ) {
+    chips.push("Nutrition-Focused");
+  }
+  if (project.category === "Date-Based Sweets / Bakery") {
+    chips.push("Date-Based Sweets");
+  }
+  if (text.includes("organic")) chips.push("Organic Direction");
+  if (
+    text.includes("long-fermentation") ||
+    text.includes("long fermentation") ||
+    text.includes("sourdough")
+  ) {
+    chips.push("Long Fermentation");
+  }
+  if (text.includes("clean-label") || text.includes("clean label")) {
+    chips.push("Clean Label Direction");
+  }
+  if (text.includes("sugar")) chips.push("Sugar-Conscious");
+
+  return chips;
+}
+
 /** Finds a single product within a project by both slugs. */
 export function getPartnerProjectProduct(
   projectSlug: string,

@@ -4,19 +4,19 @@ import { useState } from "react";
 import Link from "next/link";
 import SectionHeading from "./SectionHeading";
 import ProductCard from "./ProductCard";
-import { productCategories, products } from "@/lib/products";
+import { productCategories, products, featuredProducts } from "@/lib/products";
 
 const filters = [
-  { label: "All", slug: "all" },
+  { label: "Featured", slug: "featured" },
   ...productCategories.map((c) => ({ label: c.name, slug: c.slug })),
 ];
 
 export default function Products() {
-  const [active, setActive] = useState("all");
+  const [active, setActive] = useState("featured");
 
   const visible =
-    active === "all"
-      ? products
+    active === "featured"
+      ? featuredProducts
       : products.filter((p) => p.categorySlug === active);
 
   return (

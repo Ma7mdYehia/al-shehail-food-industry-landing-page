@@ -16,8 +16,8 @@ export default function Partners() {
           </p>
         </div>
 
-        {/* Clickable partner cards — each opens its project detail modal */}
-        <PartnerProjectGrid className="mt-10" />
+        {/* Clickable partner cards — clean logo + name, open the project modal */}
+        <PartnerProjectGrid className="mt-10" variant="compact" />
 
         <div className="mt-10 text-center">
           <Link

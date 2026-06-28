@@ -92,6 +92,24 @@ export default function ProductCard({ product, showUseCases = true }: Props) {
           {product.shortDescription}
         </p>
 
+        {product.variants && product.variants.length > 0 && (
+          <div className="mt-3">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gold">
+              Variants
+            </span>
+            <div className="mt-1.5 flex flex-wrap gap-1.5">
+              {product.variants.map((v) => (
+                <span
+                  key={v}
+                  className="rounded-full border border-sand bg-warmwhite px-2.5 py-0.5 text-[11px] font-medium text-charcoal"
+                >
+                  {v}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
         {showUseCases && product.useCases.length > 0 && (
           <ul className="mt-4 space-y-1.5">
             {product.useCases.map((use) => (

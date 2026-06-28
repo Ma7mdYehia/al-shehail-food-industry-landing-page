@@ -60,7 +60,7 @@ export default function PartnersPage() {
               description="We develop and produce private label bakery ranges for established UAE food brands."
             />
             {/* Clickable partner cards — each opens its project detail modal */}
-            <PartnerProjectGrid className="mt-12" />
+            <PartnerProjectGrid className="mt-12" variant="detailed" />
           </div>
         </section>
 
