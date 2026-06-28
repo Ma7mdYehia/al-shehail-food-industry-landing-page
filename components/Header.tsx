@@ -2,7 +2,25 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { company, navLinks } from "@/lib/content";
+import { company } from "@/lib/content";
+import { primaryNav } from "@/lib/navigation";
+
+function Chevron() {
+  return (
+    <svg
+      className="h-3.5 w-3.5 transition-transform duration-200 group-hover:rotate-180"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -44,15 +62,42 @@ export default function Header() {
         </a>
 
         <nav className="hidden items-center gap-5 lg:flex xl:gap-7" aria-label="Primary">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="whitespace-nowrap text-sm font-medium text-charcoal/80 transition-colors hover:text-gold"
-            >
-              {link.label}
-            </a>
-          ))}
+          {primaryNav.map((item) =>
+            item.children ? (
+              <div key={item.label} className="group relative">
+                <button
+                  type="button"
+                  className="flex items-center gap-1 whitespace-nowrap text-sm font-medium text-charcoal/80 transition-colors hover:text-gold group-hover:text-gold"
+                  aria-haspopup="true"
+                >
+                  {item.label}
+                  <Chevron />
+                </button>
+                {/* Premium flyout — opens on hover and keyboard focus */}
+                <div className="invisible absolute left-0 top-full z-50 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                  <div className="w-64 rounded-2xl border border-sand bg-warmwhite p-2 shadow-soft">
+                    {item.children.map((child) => (
+                      <a
+                        key={child.href}
+                        href={child.href}
+                        className="block rounded-xl px-3 py-2.5 text-sm font-medium text-charcoal transition-colors hover:bg-beige hover:text-gold"
+                      >
+                        {child.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <a
+                key={item.href}
+                href={item.href}
+                className="whitespace-nowrap text-sm font-medium text-charcoal/80 transition-colors hover:text-gold"
+              >
+                {item.label}
+              </a>
+            )
+          )}
         </nav>
 
         <div className="hidden lg:block">
@@ -89,16 +134,34 @@ export default function Header() {
       {open && (
         <div className="border-t border-sand/70 bg-warmwhite lg:hidden">
           <nav className="container-x flex flex-col gap-1 py-4" aria-label="Mobile">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-charcoal hover:bg-beige"
-                onClick={() => setOpen(false)}
-              >
-                {link.label}
-              </a>
-            ))}
+            {primaryNav.map((item) =>
+              item.children ? (
+                <div key={item.label} className="py-1">
+                  <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
+                    {item.label}
+                  </p>
+                  {item.children.map((child) => (
+                    <a
+                      key={child.href}
+                      href={child.href}
+                      className="block rounded-lg py-2.5 pl-6 pr-3 text-sm font-medium text-charcoal hover:bg-beige"
+                      onClick={() => setOpen(false)}
+                    >
+                      {child.label}
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-charcoal hover:bg-beige"
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </a>
+              )
+            )}
             <a
               href="/contact"
               className="btn-primary mt-2"
