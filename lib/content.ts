@@ -38,10 +38,9 @@ export const trustBadges = [
 ];
 
 export const manufacturingPartners = [
+  "Al Tahan",
   "HÄLSA Bake",
   "EKTIFA",
-  "Al Taj",
-  "Al Tahan",
 ];
 
 export type Step = {

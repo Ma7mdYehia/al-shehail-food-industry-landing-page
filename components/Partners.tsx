@@ -14,10 +14,9 @@ function monogram(name: string) {
 }
 
 const partnerEntries = [
+  { name: "Al Tahan",   assetKey: "alTahan"   as const },
   { name: "HÄLSA Bake", assetKey: "halsaBake" as const },
   { name: "EKTIFA",     assetKey: "ektifa"    as const },
-  { name: "Al Taj",     assetKey: "alTaj"     as const },
-  { name: "Al Tahan",   assetKey: "alTahan"   as const },
 ] satisfies { name: string; assetKey: keyof typeof assets.partners }[];
 
 export default function Partners() {
@@ -35,7 +34,7 @@ export default function Partners() {
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {partnerEntries.map(({ name, assetKey }) => {
             const logoPath = assets.partners[assetKey];
             return (
@@ -48,9 +47,9 @@ export default function Partners() {
                   <Image
                     src={logoPath}
                     alt={getAssetAlt(assetKey, name)}
-                    width={44}
-                    height={44}
-                    className="h-11 w-11 flex-none rounded-xl object-contain"
+                    width={128}
+                    height={64}
+                    className="h-12 w-28 flex-none object-contain"
                   />
                 ) : (
                   /* Placeholder: monogram until the official logo is supplied */

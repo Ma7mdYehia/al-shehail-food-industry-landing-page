@@ -23,10 +23,9 @@ function monogram(name: string) {
 }
 
 const partnerEntries = [
+  { name: "Al Tahan",   assetKey: "alTahan"   as const },
   { name: "HÄLSA Bake", assetKey: "halsaBake" as const },
   { name: "EKTIFA",     assetKey: "ektifa"    as const },
-  { name: "Al Taj",     assetKey: "alTaj"     as const },
-  { name: "Al Tahan",   assetKey: "alTahan"   as const },
 ] satisfies { name: string; assetKey: keyof typeof assets.partners }[];
 
 const retailAssetKeys: Record<string, keyof typeof assets.retail> = {
@@ -65,7 +64,7 @@ export default function PartnersPage() {
               title="Trusted by established food brands"
               description="We develop and produce private label bakery ranges for established UAE food brands."
             />
-            <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
               {partnerEntries.map(({ name, assetKey }) => {
                 const logoPath = assets.partners[assetKey];
                 return (
@@ -78,9 +77,9 @@ export default function PartnersPage() {
                       <Image
                         src={logoPath}
                         alt={getAssetAlt(assetKey, name)}
-                        width={44}
-                        height={44}
-                        className="h-11 w-11 flex-none rounded-xl object-contain"
+                        width={128}
+                        height={64}
+                        className="h-12 w-28 flex-none object-contain"
                       />
                     ) : (
                       <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-sand bg-warmwhite font-serif text-sm font-bold text-gold">

@@ -96,10 +96,10 @@ export const assets: AssetManifest = {
   },
 
   partners: {
-    halsaBake: null,  // /assets/partners/halsa-bake.svg
-    ektifa: null,     // /assets/partners/ektifa.svg
-    alTaj: null,      // /assets/partners/al-taj.svg
-    alTahan: null,    // /assets/partners/al-tahan.svg
+    halsaBake: "/assets/partners/halsa-bake.png",
+    ektifa: "/assets/partners/ektifa.png",
+    alTaj: null,
+    alTahan: "/assets/partners/al-tahan.png",
   },
 
   products: {
