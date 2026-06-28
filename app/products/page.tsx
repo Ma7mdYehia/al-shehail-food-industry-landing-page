@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import ProductIcon, { type ProductIconType } from "@/components/ProductIcon";
+import ProductFamilyStickyNav from "@/components/products/ProductFamilyStickyNav";
 import { products, productsByCategory } from "@/lib/products";
 
 export const metadata: Metadata = {
@@ -129,8 +130,12 @@ export default function ProductsPage() {
           </div>
         </section>
 
-        {/* 2. Product Family Directory */}
-        <section id="product-families" className="scroll-mt-24 pb-4">
+        {/* 2. Product Family Directory — a distinct soft beige band, set lower
+            with extra breathing room below the hero. */}
+        <section
+          id="product-families"
+          className="scroll-mt-24 border-y border-sand/50 bg-beige/35 pt-12 pb-12 sm:pt-14 lg:pt-16"
+        >
           <div className="container-x">
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
               <FamilyCard
@@ -160,31 +165,9 @@ export default function ProductsPage() {
           </div>
         </section>
 
-        {/* Sticky quick-jump nav — sits under the fixed header */}
-        <nav
-          aria-label="Product families"
-          className="sticky top-20 z-40 mt-6 border-y border-sand/60 bg-cream/90 backdrop-blur"
-        >
-          <div className="container-x">
-            <div className="flex gap-2 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <a
-                href="#product-directory"
-                className="flex-none rounded-full border border-sand bg-warmwhite px-4 py-1.5 text-sm font-semibold text-charcoal transition-colors hover:border-champagne hover:text-gold"
-              >
-                All
-              </a>
-              {productsByCategory.map(({ category }) => (
-                <a
-                  key={category.slug}
-                  href={`#${category.slug}`}
-                  className="flex-none whitespace-nowrap rounded-full border border-sand bg-warmwhite px-4 py-1.5 text-sm font-semibold text-charcoal transition-colors hover:border-champagne hover:text-gold"
-                >
-                  {category.name}
-                </a>
-              ))}
-            </div>
-          </div>
-        </nav>
+        {/* Sticky quick-jump nav — hidden while the family cards are visible,
+            then pinned under the header once scrolled past them. */}
+        <ProductFamilyStickyNav />
 
         {/* 3. Grouped product sections */}
         <div id="product-directory" className="scroll-mt-36">
