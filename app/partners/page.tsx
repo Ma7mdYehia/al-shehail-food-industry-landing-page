@@ -22,11 +22,8 @@ function monogram(name: string) {
   return (words[0][0] + words[1][0]).toUpperCase();
 }
 
-const partnerEntries = [
-  { name: "Al Tahan",   assetKey: "alTahan"   as const },
-  { name: "HÄLSA Bake", assetKey: "halsaBake" as const },
-  { name: "EKTIFA",     assetKey: "ektifa"    as const },
-] satisfies { name: string; assetKey: keyof typeof assets.partners }[];
+// Shared partner list (name + logo asset key + linked project slug).
+const partnerEntries = manufacturingPartners;
 
 const retailAssetKeys: Record<string, keyof typeof assets.retail> = {
   "Carrefour":            "carrefour",

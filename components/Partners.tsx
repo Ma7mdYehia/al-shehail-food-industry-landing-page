@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AssetHint from "./AssetHint";
 import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
+import { manufacturingPartners } from "@/lib/content";
 
 // Derive a clean monogram from a partner name (e.g. "HÄLSA Bake" -> "HB").
 function monogram(name: string) {
@@ -13,11 +14,8 @@ function monogram(name: string) {
     .toUpperCase();
 }
 
-const partnerEntries = [
-  { name: "Al Tahan",   assetKey: "alTahan"   as const },
-  { name: "HÄLSA Bake", assetKey: "halsaBake" as const },
-  { name: "EKTIFA",     assetKey: "ektifa"    as const },
-] satisfies { name: string; assetKey: keyof typeof assets.partners }[];
+// Shared partner list (name + logo asset key + linked project slug).
+const partnerEntries = manufacturingPartners;
 
 export default function Partners() {
   return (

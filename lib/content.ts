@@ -2,6 +2,8 @@
 // NOTE: No unverified figures (capacity, outlet counts, team size, factory
 // size) are included. Use verified assets/data when available.
 
+import type { PartnerAssets } from "@/lib/assets";
+
 export const company = {
   name: "Al Shehail Food Industries",
   shortName: "Al Shehail",
@@ -37,10 +39,19 @@ export const trustBadges = [
   "Carrefour Approved",
 ];
 
-export const manufacturingPartners = [
-  "Al Tahan",
-  "HÄLSA Bake",
-  "EKTIFA",
+// Manufacturing partners shown on the home + partners pages. Each entry carries
+// the logo asset key and the slug of its "Single Partner Project" (see
+// lib/partnerProjects.ts) so the partner card can connect to project data later.
+export type ManufacturingPartner = {
+  name: string;
+  assetKey: keyof PartnerAssets;
+  projectSlug: string;
+};
+
+export const manufacturingPartners: ManufacturingPartner[] = [
+  { name: "Al Tahan", assetKey: "alTahan", projectSlug: "al-tahan" },
+  { name: "HÄLSA Bake", assetKey: "halsaBake", projectSlug: "halsa-bake" },
+  { name: "EKTIFA", assetKey: "ektifa", projectSlug: "ektifa" },
 ];
 
 export type Step = {
