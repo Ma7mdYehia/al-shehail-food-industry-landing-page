@@ -101,7 +101,6 @@ export const products: Product[] = [
     slug: "chia-bread-wrap",
     category: "Flatbread & Wraps",
     categorySlug: "flatbread-wraps",
-    featured: true,
     shortDescription:
       "Bread wrap featuring chia as part of a health-focused flatbread range.",
     cardDescription:
@@ -376,6 +375,9 @@ export const productsByCategory = productCategories.map((category) => ({
   category,
   items: products.filter((p) => p.categorySlug === category.slug),
 }));
+
+// Curated highlight set for the homepage "What We Manufacture" teaser.
+export const featuredProducts = products.filter((p) => p.featured);
 
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);

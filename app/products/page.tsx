@@ -3,21 +3,58 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import { productsByCategory } from "@/lib/products";
+import ProductIcon, { type ProductIconType } from "@/components/ProductIcon";
+import { products, productsByCategory } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: { absolute: "Bakery Products | Al Shehail Food Industries UAE" },
   description:
-    "Explore Al Shehail Food Industries’ bakery manufacturing range including Arabic bread, wraps, toast, burger buns, croissants, pate, maamoul, and tamriya for private label and retail supply.",
+    "Explore Al Shehail Food Industries’ bakery manufacturing range including flatbread & wraps, soft bread, pastry, and date sweets for private label and retail supply.",
   alternates: { canonical: "/products" },
 };
+
+// Per-family icon + one-line tagline for the directory cards.
+const familyIcon: Record<string, ProductIconType> = {
+  "flatbread-wraps": "flatbread",
+  "soft-bread": "loaf",
+  pastry: "croissant",
+  sweets: "maamoul",
+};
+
+const familyTagline: Record<string, string> = {
+  "flatbread-wraps": "Arabic flatbread & functional wraps",
+  "soft-bread": "Loaves, buns & rolls",
+  pastry: "Croissants & puff pastry",
+  sweets: "Date sweets & cookies",
+};
+
+function AllIcon({ size = 30 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <rect x="4" y="4" width="6.5" height="6.5" rx="1.5" />
+      <rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5" />
+      <rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5" />
+      <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5" />
+    </svg>
+  );
+}
 
 function ArrowRight() {
   return (
     <svg
       className="transition-transform duration-300 group-hover:translate-x-0.5"
-      width="16"
-      height="16"
+      width="15"
+      height="15"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -31,13 +68,46 @@ function ArrowRight() {
   );
 }
 
+// A premium rounded family card that scrolls to its product section.
+function FamilyCard({
+  href,
+  name,
+  count,
+  tagline,
+  children,
+}: {
+  href: string;
+  name: string;
+  count: number;
+  tagline: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      className="group flex flex-col items-center rounded-2xl border border-sand bg-warmwhite px-4 py-6 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-champagne hover:shadow-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+    >
+      <span className="flex h-16 w-16 items-center justify-center rounded-full border border-sand bg-cream text-gold transition-colors duration-300 group-hover:border-champagne">
+        {children}
+      </span>
+      <span className="mt-3 font-serif text-base font-semibold leading-tight text-ink">
+        {name}
+      </span>
+      <span className="mt-0.5 text-[11px] font-medium text-stone/70">
+        {count} {count === 1 ? "product" : "products"}
+      </span>
+      <span className="mt-1.5 text-xs leading-snug text-stone">{tagline}</span>
+    </a>
+  );
+}
+
 export default function ProductsPage() {
   return (
     <>
       <Header />
       <main>
         {/* 1. Hero */}
-        <section className="relative overflow-hidden pt-32 pb-16 sm:pt-36 lg:pt-44 lg:pb-20">
+        <section className="relative overflow-hidden pt-32 pb-14 sm:pt-36 lg:pt-44 lg:pb-16">
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-gradient-to-b from-warmwhite via-cream to-beige/40" />
             <div className="absolute -top-24 right-0 h-96 w-96 rounded-full bg-champagne/10 blur-3xl" />
@@ -46,87 +116,123 @@ export default function ProductsPage() {
             <div className="max-w-3xl">
               <span className="eyebrow">
                 <span className="h-px w-6 bg-champagne" />
-                Our Manufacturing Range
+                Product Directory
               </span>
               <h1 className="heading-serif mt-6 text-4xl leading-[1.1] sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
-                Bakery Product Categories
+                Bakery Products by Family
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-stone">
-                Explore Al Shehail’s bakery manufacturing range across
-                flatbread &amp; wraps, soft bread, pastry, and sweets —
-                developed for private label, retail, and institutional supply.
+                Browse our manufacturing range by product family — developed for
+                private label, retail, and institutional supply.
               </p>
             </div>
           </div>
         </section>
 
-        {/* 2. Category overview */}
-        <section className="section pt-4 sm:pt-6 lg:pt-8">
+        {/* 2. Product Family Directory */}
+        <section id="product-families" className="scroll-mt-24 pb-4">
           <div className="container-x">
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+              <FamilyCard
+                href="#product-directory"
+                name="All Products"
+                count={products.length}
+                tagline="The full manufacturing range"
+              >
+                <AllIcon size={30} />
+              </FamilyCard>
               {productsByCategory.map(({ category, items }) => (
-                <div
+                <FamilyCard
                   key={category.slug}
-                  className="flex flex-col rounded-2xl border border-sand bg-warmwhite p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-champagne hover:shadow-soft"
+                  href={`#${category.slug}`}
+                  name={category.name}
+                  count={items.length}
+                  tagline={familyTagline[category.slug] ?? ""}
                 >
-                  <h2 className="font-serif text-xl font-semibold text-ink">
-                    {category.name}
-                  </h2>
-                  <p className="mt-2 text-sm leading-relaxed text-stone">
-                    {category.description}
-                  </p>
-                  <ul className="mt-4 flex flex-wrap gap-2">
-                    {items.map((p) => (
-                      <li
-                        key={p.slug}
-                        className="rounded-full border border-sand bg-cream px-3 py-1 text-xs font-medium text-charcoal"
-                      >
-                        {p.name}
-                      </li>
-                    ))}
-                  </ul>
-                  <a
-                    href={`#${category.slug}`}
-                    className="group mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold"
-                  >
-                    View {category.name}
-                    <ArrowRight />
-                  </a>
-                </div>
+                  <ProductIcon
+                    type={familyIcon[category.slug] ?? "loaf"}
+                    width={32}
+                    height={32}
+                  />
+                </FamilyCard>
               ))}
             </div>
           </div>
         </section>
 
-        {/* 3. Product catalog grouped by category */}
-        {productsByCategory.map(({ category, items }) => (
-          <section
-            key={category.slug}
-            id={category.slug}
-            className="section scroll-mt-24 border-t border-sand/60 bg-warmwhite first:border-t-0"
-          >
-            <div className="container-x">
-              <div className="max-w-2xl">
-                <span className="eyebrow">
-                  <span className="h-px w-6 bg-champagne" />
+        {/* Sticky quick-jump nav — sits under the fixed header */}
+        <nav
+          aria-label="Product families"
+          className="sticky top-20 z-40 mt-6 border-y border-sand/60 bg-cream/90 backdrop-blur"
+        >
+          <div className="container-x">
+            <div className="flex gap-2 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <a
+                href="#product-directory"
+                className="flex-none rounded-full border border-sand bg-warmwhite px-4 py-1.5 text-sm font-semibold text-charcoal transition-colors hover:border-champagne hover:text-gold"
+              >
+                All
+              </a>
+              {productsByCategory.map(({ category }) => (
+                <a
+                  key={category.slug}
+                  href={`#${category.slug}`}
+                  className="flex-none whitespace-nowrap rounded-full border border-sand bg-warmwhite px-4 py-1.5 text-sm font-semibold text-charcoal transition-colors hover:border-champagne hover:text-gold"
+                >
                   {category.name}
-                </span>
-                <h2 className="heading-serif mt-4 text-3xl sm:text-4xl">
-                  {category.name}
-                </h2>
-                <p className="mt-4 text-base leading-relaxed text-stone sm:text-lg">
-                  {category.description}
-                </p>
-              </div>
-
-              <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {items.map((product) => (
-                  <ProductCard key={product.slug} product={product} />
-                ))}
-              </div>
+                </a>
+              ))}
             </div>
-          </section>
-        ))}
+          </div>
+        </nav>
+
+        {/* 3. Grouped product sections */}
+        <div id="product-directory" className="scroll-mt-36">
+          {productsByCategory.map(({ category, items }) => (
+            <section
+              key={category.slug}
+              id={category.slug}
+              className="section scroll-mt-36 border-t border-sand/60 bg-warmwhite first:border-t-0"
+            >
+              <div className="container-x">
+                <div className="flex flex-wrap items-end justify-between gap-4">
+                  <div className="max-w-2xl">
+                    <span className="eyebrow">
+                      <span className="h-px w-6 bg-champagne" />
+                      {category.name}
+                      <span className="ml-1 text-stone/70">
+                        · {items.length}
+                      </span>
+                    </span>
+                    <h2 className="heading-serif mt-4 text-3xl sm:text-4xl">
+                      {category.name}
+                    </h2>
+                    <p className="mt-4 text-base leading-relaxed text-stone sm:text-lg">
+                      {category.description}
+                    </p>
+                  </div>
+                  <a
+                    href="#product-families"
+                    className="group inline-flex items-center gap-1.5 text-sm font-semibold text-gold"
+                  >
+                    Back to families
+                    <ArrowRight />
+                  </a>
+                </div>
+
+                <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {items.map((product) => (
+                    <ProductCard
+                      key={product.slug}
+                      product={product}
+                      showUseCases={false}
+                    />
+                  ))}
+                </div>
+              </div>
+            </section>
+          ))}
+        </div>
 
         {/* 4. CTA */}
         <section className="section">
