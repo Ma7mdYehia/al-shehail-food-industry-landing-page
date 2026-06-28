@@ -37,6 +37,11 @@ export const metadata: Metadata = {
     "ISO bakery manufacturer",
   ],
   authors: [{ name: "Al Shehail Food Industries" }],
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",

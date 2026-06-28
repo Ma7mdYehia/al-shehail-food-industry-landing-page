@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { company, navLinks, trustBadges, whatsappLink } from "@/lib/content";
 
 export default function Footer() {
@@ -7,12 +8,13 @@ export default function Footer() {
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-3">
-              {/* Required asset: Al Shehail Food Industries official logo —
-                  transparent PNG or SVG, horizontal version preferred.
-                  Replace this monogram + wordmark with the logo when available. */}
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-gradient font-serif text-lg font-bold text-white">
-                AS
-              </span>
+              <Image
+                src="/assets/brand/al-shehail-icon.svg"
+                alt={company.name}
+                width={40}
+                height={40}
+                className="h-10 w-10 flex-none object-contain"
+              />
               <span className="flex flex-col leading-none">
                 <span className="font-serif text-base font-semibold text-ink">
                   Al Shehail

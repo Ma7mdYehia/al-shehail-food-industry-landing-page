@@ -99,8 +99,8 @@ export type AssetManifest = {
 
 export const assets: AssetManifest = {
   brand: {
-    logoHorizontal: null, // /assets/brand/al-shehail-logo.svg
-    logoMark: null,       // /assets/brand/al-shehail-mark.svg
+    logoHorizontal: null, // /assets/brand/al-shehail-logo.svg (pending)
+    logoMark: "/assets/brand/al-shehail-icon.svg",
   },
 
   partners: {

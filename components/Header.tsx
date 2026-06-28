@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { company, navLinks } from "@/lib/content";
 
@@ -24,12 +25,14 @@ export default function Header() {
     >
       <div className="container-x flex h-20 items-center justify-between py-4">
         <a href="/" className="flex items-center gap-3" aria-label={company.name}>
-          {/* Required asset: Al Shehail Food Industries official logo —
-              transparent PNG or SVG, horizontal version preferred.
-              Replace this monogram + wordmark with the logo when available. */}
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-gradient font-serif text-lg font-bold text-white shadow-soft">
-            AS
-          </span>
+          <Image
+            src="/assets/brand/al-shehail-icon.svg"
+            alt={company.name}
+            width={40}
+            height={40}
+            priority
+            className="h-10 w-10 flex-none object-contain"
+          />
           <span className="flex flex-col leading-none">
             <span className="font-serif text-base font-semibold text-ink">
               Al Shehail
