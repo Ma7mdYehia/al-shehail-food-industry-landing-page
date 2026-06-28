@@ -53,7 +53,7 @@ export default function CapabilitiesTeaser() {
         </div>
 
         <div className="mt-10 text-center">
-          <TeaserLink href="/capabilities" label="View Capabilities" variant="secondary" />
+          <TeaserLink href="/private-label/#capabilities" label="View Capabilities" variant="secondary" />
         </div>
       </div>
     </section>

@@ -67,7 +67,7 @@ export default function QualityTeaser() {
                 </li>
               ))}
             </ul>
-            <TeaserLink href="/quality" label="View Quality Standards" className="relative mt-6" />
+            <TeaserLink href="/private-label/#quality" label="View Quality Standards" className="relative mt-6" />
           </div>
         </div>
       </div>

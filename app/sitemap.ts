@@ -5,11 +5,11 @@ const baseUrl = "https://www.alshehai.ae";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
+  // /capabilities and /quality now redirect into /private-label, so they are
+  // not listed as standalone pages.
   const corePages = [
     "/about",
     "/private-label",
-    "/capabilities",
-    "/quality",
     "/partners",
     "/contact",
   ];

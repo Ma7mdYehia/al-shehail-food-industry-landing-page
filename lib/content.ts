@@ -21,13 +21,14 @@ export const whatsappLink = `https://wa.me/${company.phoneDigits}?text=${encodeU
   "Hello Al Shehail, I'd like to discuss a private label bakery project."
 )}`;
 
+// Capabilities and Quality now live inside the merged /private-label page
+// (sections #capabilities and #quality), so they are no longer separate nav
+// items. The old routes redirect there.
 export const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Products", href: "/products" },
   { label: "Private Label", href: "/private-label" },
-  { label: "Capabilities", href: "/capabilities" },
-  { label: "Quality", href: "/quality" },
   { label: "Partners", href: "/partners" },
   { label: "Contact", href: "/contact" },
 ];
