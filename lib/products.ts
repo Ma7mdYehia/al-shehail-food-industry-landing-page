@@ -35,19 +35,13 @@ export const productCategories: ProductCategory[] = [
     name: "Flatbread & Wraps",
     slug: "flatbread-wraps",
     description:
-      "Arabic flatbread and pliable wraps — including functional and flavored flatbread directions — produced for everyday retail and foodservice demand.",
+      "Arabic-style flatbread and functional bread wraps — produced for everyday retail, foodservice, and healthy bakery ranges.",
   },
   {
-    name: "Bread & Toast",
-    slug: "bread-toast",
+    name: "Soft Bread",
+    slug: "soft-bread",
     description:
-      "Soft, sliceable loaves engineered for shelf life, slicing, and reliable sandwich and breakfast builds.",
-  },
-  {
-    name: "Buns & Rolls",
-    slug: "buns-rolls",
-    description:
-      "Structured buns and soft rolls for foodservice, retail multipacks, and hospitality table service.",
+      "Soft, sliceable breads, buns, and rolls engineered for shelf life, slicing, and reliable sandwich, burger, and table builds.",
   },
   {
     name: "Pastry",
@@ -59,17 +53,147 @@ export const productCategories: ProductCategory[] = [
     name: "Sweets",
     slug: "sweets",
     description:
-      "Traditional date-based sweets — maa'moul and tamriya — for seasonal gifting, retail confectionery, and snacking.",
+      "Traditional date-based sweets and cookies — maa'moul, tamriya, and cookies — for seasonal gifting, retail confectionery, and snacking.",
   },
 ];
 
 export const products: Product[] = [
-  // 1. Flatbread & Wraps
+  // 1. Flatbread & Wraps — functional bread wrap range
+  {
+    name: "High-Protein Bread Wrap",
+    slug: "high-protein-bread-wrap",
+    category: "Flatbread & Wraps",
+    categorySlug: "flatbread-wraps",
+    featured: true,
+    shortDescription:
+      "Functional bread wrap developed for protein-focused healthy bakery ranges.",
+    cardDescription:
+      "Functional bread wrap developed for protein-focused healthy bakery ranges.",
+    useCases: ["Wraps & sandwiches", "Healthy bakery ranges", "Grab-and-go retail"],
+    privateLabelOptions: [
+      "Multiple diameters",
+      "Branded film packaging",
+      "Recipe & format customization",
+    ],
+    imagePlaceholderLabel: "High-protein bread wrap photo",
+    iconType: "flatbread",
+  },
+  {
+    name: "High-Fiber Bread Wrap",
+    slug: "high-fiber-bread-wrap",
+    category: "Flatbread & Wraps",
+    categorySlug: "flatbread-wraps",
+    shortDescription:
+      "Functional bread wrap focused on fiber-conscious bakery positioning.",
+    cardDescription:
+      "Functional bread wrap focused on fiber-conscious bakery positioning.",
+    useCases: ["Wraps & sandwiches", "Healthy bakery ranges", "Grab-and-go retail"],
+    privateLabelOptions: [
+      "Multiple diameters",
+      "Branded film packaging",
+      "Recipe & format customization",
+    ],
+    imagePlaceholderLabel: "High-fiber bread wrap photo",
+    iconType: "flatbread",
+  },
+  {
+    name: "Chia Bread Wrap",
+    slug: "chia-bread-wrap",
+    category: "Flatbread & Wraps",
+    categorySlug: "flatbread-wraps",
+    featured: true,
+    shortDescription:
+      "Bread wrap featuring chia as part of a health-focused flatbread range.",
+    cardDescription:
+      "Bread wrap featuring chia as part of a health-focused flatbread range.",
+    useCases: ["Wraps & sandwiches", "Healthy bakery ranges", "Grab-and-go retail"],
+    privateLabelOptions: [
+      "Multiple diameters",
+      "Branded film packaging",
+      "Recipe & format customization",
+    ],
+    imagePlaceholderLabel: "Chia bread wrap photo",
+    iconType: "flatbread",
+  },
+  {
+    name: "Oats Bread Wrap",
+    slug: "oats-bread-wrap",
+    category: "Flatbread & Wraps",
+    categorySlug: "flatbread-wraps",
+    shortDescription:
+      "Bread wrap featuring oats for a wholesome bakery profile.",
+    cardDescription:
+      "Bread wrap featuring oats for a wholesome bakery profile.",
+    useCases: ["Wraps & sandwiches", "Healthy bakery ranges", "Grab-and-go retail"],
+    privateLabelOptions: [
+      "Multiple diameters",
+      "Branded film packaging",
+      "Recipe & format customization",
+    ],
+    imagePlaceholderLabel: "Oats bread wrap photo",
+    iconType: "flatbread",
+  },
+  {
+    name: "Barley Bread Wrap",
+    slug: "barley-bread-wrap",
+    category: "Flatbread & Wraps",
+    categorySlug: "flatbread-wraps",
+    shortDescription:
+      "Bread wrap featuring barley for a hearty grain-forward profile.",
+    cardDescription:
+      "Bread wrap featuring barley for a hearty grain-forward profile.",
+    useCases: ["Wraps & sandwiches", "Healthy bakery ranges", "Grab-and-go retail"],
+    privateLabelOptions: [
+      "Multiple diameters",
+      "Branded film packaging",
+      "Recipe & format customization",
+    ],
+    imagePlaceholderLabel: "Barley bread wrap photo",
+    iconType: "flatbread",
+  },
+  {
+    name: "Black Seed Bread Wrap",
+    slug: "black-seed-bread-wrap",
+    category: "Flatbread & Wraps",
+    categorySlug: "flatbread-wraps",
+    shortDescription:
+      "Bread wrap featuring black seed for a distinctive healthy bakery variant.",
+    cardDescription:
+      "Bread wrap featuring black seed for a distinctive healthy bakery variant.",
+    useCases: ["Wraps & sandwiches", "Healthy bakery ranges", "Grab-and-go retail"],
+    privateLabelOptions: [
+      "Multiple diameters",
+      "Branded film packaging",
+      "Recipe & format customization",
+    ],
+    imagePlaceholderLabel: "Black seed bread wrap photo",
+    iconType: "flatbread",
+  },
+  {
+    name: "Whole Grains Bread Wrap",
+    slug: "whole-grains-bread-wrap",
+    category: "Flatbread & Wraps",
+    categorySlug: "flatbread-wraps",
+    shortDescription:
+      "Bread wrap built around whole grains for everyday healthy bakery positioning.",
+    cardDescription:
+      "Bread wrap built around whole grains for everyday healthy bakery positioning.",
+    useCases: ["Wraps & sandwiches", "Healthy bakery ranges", "Grab-and-go retail"],
+    privateLabelOptions: [
+      "Multiple diameters",
+      "Branded film packaging",
+      "Recipe & format customization",
+    ],
+    imagePlaceholderLabel: "Whole grains bread wrap photo",
+    iconType: "flatbread",
+  },
+
+  // 2. Soft Bread — flatbread staple, loaves, buns, and rolls
   {
     name: "Arabic Bread",
     slug: "arabic-bread",
-    category: "Flatbread & Wraps",
-    categorySlug: "flatbread-wraps",
+    category: "Soft Bread",
+    categorySlug: "soft-bread",
     featured: true,
     shortDescription: "Traditional round Arabic flatbread, soft and foldable.",
     cardDescription:
@@ -84,42 +208,10 @@ export const products: Product[] = [
     iconType: "flatbread",
   },
   {
-    name: "Bread Wraps",
-    slug: "bread-wraps",
-    category: "Flatbread & Wraps",
-    categorySlug: "flatbread-wraps",
-    featured: true,
-    shortDescription: "Thin, pliable wraps and flatbread across functional, flavored directions.",
-    cardDescription:
-      "Soft, flexible wraps and flatbread engineered to hold fillings without tearing, with functional and flavored variants.",
-    useCases: ["Wraps & sandwiches", "Foodservice chains", "Grab-and-go retail"],
-    privateLabelOptions: [
-      "Multiple diameters",
-      "Plain & flavored variants",
-      "Branded film packaging",
-    ],
-    // Flatbread flavor / functional variants — represented as chips, not as
-    // separate product cards in the grid.
-    variants: [
-      "Turmeric",
-      "High Protein",
-      "High Fiber",
-      "Whole Wheat",
-      "Oats",
-      "Barley",
-      "Black Seed",
-      "Chia",
-    ],
-    imagePlaceholderLabel: "Bread wraps photo",
-    iconType: "flatbread",
-  },
-
-  // 2. Bread & Toast
-  {
     name: "Toast",
     slug: "toast",
-    category: "Bread & Toast",
-    categorySlug: "bread-toast",
+    category: "Soft Bread",
+    categorySlug: "soft-bread",
     featured: true,
     shortDescription: "Soft sandwich loaves with an even, sliceable crumb.",
     cardDescription:
@@ -136,8 +228,8 @@ export const products: Product[] = [
   {
     name: "Burger Buns",
     slug: "burger-buns",
-    category: "Buns & Rolls",
-    categorySlug: "buns-rolls",
+    category: "Soft Bread",
+    categorySlug: "soft-bread",
     featured: true,
     shortDescription: "Structured buns with a soft crumb for foodservice and retail.",
     cardDescription:
@@ -154,8 +246,8 @@ export const products: Product[] = [
   {
     name: "Bread Rolls",
     slug: "bread-rolls",
-    category: "Buns & Rolls",
-    categorySlug: "buns-rolls",
+    category: "Soft Bread",
+    categorySlug: "soft-bread",
     shortDescription: "Soft dinner and sandwich rolls in versatile formats.",
     cardDescription:
       "Versatile soft rolls for sandwiches, sliders, and hospitality table service.",
@@ -229,6 +321,7 @@ export const products: Product[] = [
     slug: "maamoul",
     category: "Sweets",
     categorySlug: "sweets",
+    featured: true,
     shortDescription: "Filled semolina pastries with date and nut centers.",
     cardDescription:
       "Traditional filled maa'moul with date and nut centers for seasonal and year-round sales.",
@@ -257,6 +350,24 @@ export const products: Product[] = [
     ],
     imagePlaceholderLabel: "Tamriya photo",
     iconType: "date",
+  },
+  {
+    name: "Cookies",
+    slug: "cookies",
+    category: "Sweets",
+    categorySlug: "sweets",
+    shortDescription:
+      "Cookies designed for bakery and retail-ready sweet ranges, with recipe and nutrition details to be confirmed by verified specification sheets.",
+    cardDescription:
+      "Cookies designed for bakery and retail-ready sweet ranges, with recipe and nutrition details to be confirmed by verified specification sheets.",
+    useCases: ["Retail sweet ranges", "Bakery counters", "Private label brands"],
+    privateLabelOptions: [
+      "Pack format customization",
+      "Branded retail packaging",
+      "Recipe direction developed to brief",
+    ],
+    imagePlaceholderLabel: "Cookies photo",
+    iconType: "maamoul",
   },
 ];
 
@@ -309,24 +420,148 @@ export const productDetails: Record<string, ProductDetail> = {
       "Size / weight / format customization",
     ],
   },
-  "bread-wraps": {
+  "high-protein-bread-wrap": {
     positioning:
-      "Soft, flexible wraps manufactured for sandwiches, cafes, foodservice, and retail packs.",
+      "Functional bread wrap developed for protein-focused healthy bakery ranges.",
     overview: [
-      "Bread wraps are a flexible flatbread format built to hold fillings without tearing. As a manufacturing category, the priority is pliability, consistent diameter, and clean folding performance.",
-      "We manufacture wraps for sandwich and foodservice operators as well as retail packs, with flexible sizing to match different applications and brand briefs.",
+      "The high-protein bread wrap is part of a functional flatbread range, developed for brands building protein-focused healthy bakery lines. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+      "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
     ],
     detailUseCases: [
       "Wraps & sandwiches",
+      "Healthy bakery ranges",
       "Cafes / foodservice",
-      "Retail packs",
-      "Grab-and-go ranges",
+      "Grab-and-go retail",
       "Private label brands",
     ],
     recipeOptions: [
-      "Standard recipe",
-      "Whole wheat / fiber-focused variations where suitable",
-      "Flavored variations where relevant",
+      "Recipe direction developed to brief",
+      "Nutrition profile confirmed via verified specification sheet",
+      "No preservatives where shelf life and process allow",
+      "Size / diameter / format customization",
+    ],
+  },
+  "high-fiber-bread-wrap": {
+    positioning:
+      "Functional bread wrap focused on fiber-conscious bakery positioning.",
+    overview: [
+      "The high-fiber bread wrap is part of a functional flatbread range, developed for fiber-conscious bakery positioning. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+      "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+    ],
+    detailUseCases: [
+      "Wraps & sandwiches",
+      "Healthy bakery ranges",
+      "Cafes / foodservice",
+      "Grab-and-go retail",
+      "Private label brands",
+    ],
+    recipeOptions: [
+      "Recipe direction developed to brief",
+      "Nutrition profile confirmed via verified specification sheet",
+      "No preservatives where shelf life and process allow",
+      "Size / diameter / format customization",
+    ],
+  },
+  "chia-bread-wrap": {
+    positioning:
+      "Bread wrap featuring chia as part of a health-focused flatbread range.",
+    overview: [
+      "The chia bread wrap features chia as part of a health-focused flatbread range. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+      "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+    ],
+    detailUseCases: [
+      "Wraps & sandwiches",
+      "Healthy bakery ranges",
+      "Cafes / foodservice",
+      "Grab-and-go retail",
+      "Private label brands",
+    ],
+    recipeOptions: [
+      "Recipe direction developed to brief",
+      "Nutrition profile confirmed via verified specification sheet",
+      "No preservatives where shelf life and process allow",
+      "Size / diameter / format customization",
+    ],
+  },
+  "oats-bread-wrap": {
+    positioning: "Bread wrap featuring oats for a wholesome bakery profile.",
+    overview: [
+      "The oats bread wrap features oats for a wholesome bakery profile. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+      "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+    ],
+    detailUseCases: [
+      "Wraps & sandwiches",
+      "Healthy bakery ranges",
+      "Cafes / foodservice",
+      "Grab-and-go retail",
+      "Private label brands",
+    ],
+    recipeOptions: [
+      "Recipe direction developed to brief",
+      "Nutrition profile confirmed via verified specification sheet",
+      "No preservatives where shelf life and process allow",
+      "Size / diameter / format customization",
+    ],
+  },
+  "barley-bread-wrap": {
+    positioning:
+      "Bread wrap featuring barley for a hearty grain-forward profile.",
+    overview: [
+      "The barley bread wrap features barley for a hearty grain-forward profile. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+      "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+    ],
+    detailUseCases: [
+      "Wraps & sandwiches",
+      "Healthy bakery ranges",
+      "Cafes / foodservice",
+      "Grab-and-go retail",
+      "Private label brands",
+    ],
+    recipeOptions: [
+      "Recipe direction developed to brief",
+      "Nutrition profile confirmed via verified specification sheet",
+      "No preservatives where shelf life and process allow",
+      "Size / diameter / format customization",
+    ],
+  },
+  "black-seed-bread-wrap": {
+    positioning:
+      "Bread wrap featuring black seed for a distinctive healthy bakery variant.",
+    overview: [
+      "The black seed bread wrap features black seed for a distinctive healthy bakery variant. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+      "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+    ],
+    detailUseCases: [
+      "Wraps & sandwiches",
+      "Healthy bakery ranges",
+      "Cafes / foodservice",
+      "Grab-and-go retail",
+      "Private label brands",
+    ],
+    recipeOptions: [
+      "Recipe direction developed to brief",
+      "Nutrition profile confirmed via verified specification sheet",
+      "No preservatives where shelf life and process allow",
+      "Size / diameter / format customization",
+    ],
+  },
+  "whole-grains-bread-wrap": {
+    positioning:
+      "Bread wrap built around whole grains for everyday healthy bakery positioning.",
+    overview: [
+      "The whole grains bread wrap is built around whole grains for everyday healthy bakery positioning. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+      "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+    ],
+    detailUseCases: [
+      "Wraps & sandwiches",
+      "Healthy bakery ranges",
+      "Cafes / foodservice",
+      "Grab-and-go retail",
+      "Private label brands",
+    ],
+    recipeOptions: [
+      "Recipe direction developed to brief",
+      "Nutrition profile confirmed via verified specification sheet",
       "No preservatives where shelf life and process allow",
       "Size / diameter / format customization",
     ],
@@ -501,6 +736,25 @@ export const productDetails: Record<string, ProductDetail> = {
       "No added sugar where technically suitable",
       "Reduced sugar where suitable",
       "Coatings & inclusions (flavor customization)",
+      "Pack format customization",
+    ],
+  },
+  cookies: {
+    positioning:
+      "Cookies designed for bakery and retail-ready sweet ranges, with recipe and nutrition details to be confirmed by verified specification sheets.",
+    overview: [
+      "Cookies are a sweet bakery category developed for retail-ready and bakery sweet ranges. As a manufacturing category, the focus is consistent format and finish across the run.",
+      "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+    ],
+    detailUseCases: [
+      "Retail sweet ranges",
+      "Bakery counters",
+      "Supermarkets / hypermarkets",
+      "Private label brands",
+    ],
+    recipeOptions: [
+      "Recipe direction developed to brief",
+      "Nutrition profile confirmed via verified specification sheet",
       "Pack format customization",
     ],
   },

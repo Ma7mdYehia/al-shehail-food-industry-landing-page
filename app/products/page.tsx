@@ -53,9 +53,8 @@ export default function ProductsPage() {
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-stone">
                 Explore Al Shehail’s bakery manufacturing range across
-                flatbread &amp; wraps, bread &amp; toast, buns &amp; rolls,
-                pastry, and date sweets — developed for private label, retail,
-                and institutional supply.
+                flatbread &amp; wraps, soft bread, pastry, and sweets —
+                developed for private label, retail, and institutional supply.
               </p>
             </div>
           </div>
