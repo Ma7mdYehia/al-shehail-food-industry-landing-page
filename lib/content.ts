@@ -148,6 +148,8 @@ const heroPrimaryTrust: HeroTrustPoint[] = [
   { label: "Retail Supply Support", icon: "truck" },
 ];
 
+// TODO (Stage 02): replace these manufacturing-only hero slides with
+// homepageHeroSlides from lib/homepageEcosystem.ts (6-slide service ecosystem).
 export const heroSlides: HeroSlide[] = [
   {
     step: 0,
