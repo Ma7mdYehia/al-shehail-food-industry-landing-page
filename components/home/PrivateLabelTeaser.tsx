@@ -1,12 +1,13 @@
 import SectionHeading from "../SectionHeading";
 import TeaserLink from "../TeaserLink";
 import ProcessJourney from "../ProcessJourney";
+import FlowBackdrop from "../decor/FlowBackdrop";
 
 export default function PrivateLabelTeaser() {
   return (
     <section className="section relative overflow-hidden">
-      {/* Subtle dotted-gold texture behind the signature journey */}
-      <div className="bg-dotted-gold pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+      {/* Subtle premium 3D-style abstract flow pattern behind the journey */}
+      <FlowBackdrop />
       <div className="container-x relative">
         <SectionHeading
           eyebrow="Private Label Solutions"

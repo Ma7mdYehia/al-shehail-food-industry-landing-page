@@ -58,7 +58,25 @@ export const productCategories: ProductCategory[] = [
 ];
 
 export const products: Product[] = [
-  // 1. Flatbread & Wraps — functional bread wrap range
+  // 1. Flatbread & Wraps — Arabic flatbread staple + functional bread wrap range
+  {
+    name: "Arabic Bread",
+    slug: "arabic-bread",
+    category: "Flatbread & Wraps",
+    categorySlug: "flatbread-wraps",
+    featured: true,
+    shortDescription: "Traditional round Arabic flatbread, soft and foldable.",
+    cardDescription:
+      "Authentic Arabic flatbread produced for consistent texture and everyday retail demand.",
+    useCases: ["Retail shelf packs", "Shawarma & foodservice", "Institutional catering"],
+    privateLabelOptions: [
+      "Branded retail packaging",
+      "Pack count & size options",
+      "Recipe & size customization",
+    ],
+    imagePlaceholderLabel: "Arabic bread photo",
+    iconType: "flatbread",
+  },
   {
     name: "High-Protein Bread Wrap",
     slug: "high-protein-bread-wrap",
@@ -187,25 +205,7 @@ export const products: Product[] = [
     iconType: "flatbread",
   },
 
-  // 2. Soft Bread — flatbread staple, loaves, buns, and rolls
-  {
-    name: "Arabic Bread",
-    slug: "arabic-bread",
-    category: "Soft Bread",
-    categorySlug: "soft-bread",
-    featured: true,
-    shortDescription: "Traditional round Arabic flatbread, soft and foldable.",
-    cardDescription:
-      "Authentic Arabic flatbread produced for consistent texture and everyday retail demand.",
-    useCases: ["Retail shelf packs", "Shawarma & foodservice", "Institutional catering"],
-    privateLabelOptions: [
-      "Branded retail packaging",
-      "Pack count & size options",
-      "Recipe & size customization",
-    ],
-    imagePlaceholderLabel: "Arabic bread photo",
-    iconType: "flatbread",
-  },
+  // 2. Soft Bread — loaves, buns, and rolls
   {
     name: "Toast",
     slug: "toast",
