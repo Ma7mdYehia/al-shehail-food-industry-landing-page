@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SectionHeading from "@/components/SectionHeading";
 import AssetHint from "@/components/AssetHint";
+import BackgroundVideo from "@/components/BackgroundVideo";
 import PrivateLabelHero from "@/components/private-label/PrivateLabelHero";
 import PrivateLabelSectionNav from "@/components/private-label/PrivateLabelSectionNav";
 import PrivateLabelProcess from "@/components/private-label/PrivateLabelProcess";
@@ -422,11 +423,26 @@ export default function PrivateLabelPage() {
           className="section scroll-mt-36 border-t border-sand/60 bg-warmwhite"
         >
           <div className="container-x">
-            <SectionHeading
-              eyebrow="Certifications & Quality"
-              title="Quality you can put your brand behind"
-              description="Certified standards and a structured, quality-controlled production process help support consistent retail-ready bakery supply."
-            />
+            {/* Premium quality intro banner — subtle decorative video kept only
+                inside this rounded card, behind a warm overlay (video hidden on
+                small screens, gradient fallback remains). */}
+            <div className="relative overflow-hidden rounded-3xl border border-sand bg-cream px-6 py-12 sm:px-10 sm:py-14">
+              <BackgroundVideo
+                src="/assets/videos/quality-certifications-bg.mp4"
+                className="hidden opacity-30 sm:block"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-br from-warmwhite/95 via-cream/85 to-cream/70"
+                aria-hidden
+              />
+              <div className="relative">
+                <SectionHeading
+                  eyebrow="Certifications & Quality"
+                  title="Quality you can put your brand behind"
+                  description="Certified standards and a structured, quality-controlled production process help support consistent retail-ready bakery supply."
+                />
+              </div>
+            </div>
 
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {certifications.map((cert) => {
@@ -560,28 +576,16 @@ export default function PrivateLabelPage() {
         <section className="section">
           <div className="container-x">
             <div className="relative overflow-hidden rounded-3xl border border-champagne/40 bg-gradient-to-br from-warmwhite via-cream to-beige px-6 py-16 text-center shadow-soft sm:px-12 lg:py-20">
-              {/* Subtle static process-line watermark — no blur, no animation */}
-              <svg
-                className="pointer-events-none absolute right-0 top-0 h-full w-1/2 opacity-60"
-                viewBox="0 0 400 400"
-                fill="none"
-                preserveAspectRatio="xMaxYMid slice"
+              {/* Subtle decorative video behind the CTA (hidden on small screens,
+                  gradient fallback remains), under a warm readability overlay. */}
+              <BackgroundVideo
+                src="/assets/videos/from-idea-to-shelf-bg.mp4"
+                className="hidden opacity-35 sm:block"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-br from-warmwhite/95 via-cream/85 to-beige/75"
                 aria-hidden
-              >
-                <path
-                  d="M-20 120 C 150 170, 95 250, 270 280 S 205 380, 430 400"
-                  stroke="#C6A664"
-                  strokeOpacity="0.16"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M-20 180 C 165 230, 115 300, 305 330 S 245 420, 445 440"
-                  stroke="#C6A664"
-                  strokeOpacity="0.1"
-                  strokeWidth="1.5"
-                />
-                <circle cx="270" cy="280" r="4" fill="#C6A664" fillOpacity="0.22" />
-              </svg>
+              />
 
               <div className="relative mx-auto max-w-2xl">
                 <span className="eyebrow">
