@@ -6,8 +6,6 @@ import Products from "@/components/Products";
 import AboutTeaser from "@/components/home/AboutTeaser";
 import ManufacturingProcessSection from "@/components/home/ManufacturingProcessSection";
 import ServicesEcosystem from "@/components/home/ServicesEcosystem";
-import CapabilitiesTeaser from "@/components/home/CapabilitiesTeaser";
-import QualityTeaser from "@/components/home/QualityTeaser";
 import MarketPresenceTeaser from "@/components/home/MarketPresenceTeaser";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
@@ -55,13 +53,11 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <Partners />
         <AboutTeaser />
+        <ServicesEcosystem />
         <Products />
         <ManufacturingProcessSection />
-        <ServicesEcosystem />
-        <CapabilitiesTeaser />
-        <QualityTeaser />
+        <Partners />
         <MarketPresenceTeaser />
         <FinalCTA />
       </main>

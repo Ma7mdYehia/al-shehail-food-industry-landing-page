@@ -12,17 +12,10 @@ import {
 const services = [
   {
     title: "Private Label Manufacturing",
-    text: "Product development and manufacturing support for bakery and food brands.",
+    text: "Product development and bakery manufacturing support for food brands.",
     cta: "Explore Manufacturing",
     href: "/private-label",
     Icon: ProductionIcon,
-  },
-  {
-    title: "Distribution Fleet & Retail Reach",
-    text: "Distribution coordination for finished products moving toward selected retail channels.",
-    cta: "Explore Distribution",
-    href: "/services/distribution",
-    Icon: RetailIcon,
   },
   {
     title: "Packaging & Brand Design",
@@ -32,8 +25,15 @@ const services = [
     Icon: PackagingIcon,
   },
   {
+    title: "Distribution Fleet & Retail Reach",
+    text: "Distribution coordination for finished products moving toward selected retail channels.",
+    cta: "Explore Distribution",
+    href: "/services/distribution",
+    Icon: RetailIcon,
+  },
+  {
     title: "Food Digital Marketing",
-    text: "Digital product communication, launch content, and marketing direction for food brands.",
+    text: "Launch content, product storytelling, and digital communication direction for food brands.",
     cta: "Explore Marketing",
     href: "/services/digital-marketing",
     Icon: DevelopIcon,

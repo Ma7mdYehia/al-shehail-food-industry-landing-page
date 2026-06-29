@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { whatsappLink } from "@/lib/content";
-import { WhatsAppIcon } from "./Icons";
 import BackgroundVideo from "./BackgroundVideo";
 
 export default function FinalCTA() {
@@ -30,16 +28,15 @@ export default function FinalCTA() {
               From Idea to Shelf
             </span>
             <h2 className="heading-serif mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-              Ready to Build a Bakery Product Under Your Brand?
+              Ready to Build Your Food Product?
             </h2>
             <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
-              Share your product idea, target market, and expected volume — our
-              team will help you explore the right private label manufacturing
-              solution.
+              Talk to Al Shehail about manufacturing, packaging, distribution,
+              and product communication support for your food brand.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link href="/contact" className="btn-primary group">
-                Request Consultation
+                Start a Project
                 <svg
                   className="transition-transform duration-300 group-hover:translate-x-1"
                   width="16"
@@ -55,15 +52,9 @@ export default function FinalCTA() {
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </Link>
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary"
-              >
-                <WhatsAppIcon width={16} height={16} />
-                WhatsApp Us
-              </a>
+              <Link href="/services/distribution" className="btn-secondary">
+                Explore Services
+              </Link>
             </div>
           </div>
         </div>

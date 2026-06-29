@@ -24,9 +24,9 @@ export default function MarketPresenceTeaser() {
       <div className="bg-dotted-gold pointer-events-none absolute inset-0 opacity-30" aria-hidden />
       <div className="container-x relative">
         <SectionHeading
-          eyebrow="Market Presence"
-          title="Trusted across leading UAE retail"
-          description="Our products reach shoppers through major hypermarkets, cooperatives, and premium grocery chains across the UAE."
+          eyebrow="Retail & Distribution Partners"
+          title="Selected retail and distribution relationships"
+          description="Retail partners and channel relationships vary by project and market requirements."
         />
 
         <div className="mt-12 flex flex-wrap justify-center gap-3">
