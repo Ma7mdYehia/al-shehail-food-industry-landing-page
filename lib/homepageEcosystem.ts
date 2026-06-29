@@ -179,53 +179,60 @@ export type ManufacturingProcessStep = {
 export const manufacturingProcessNarrative: {
   title: string;
   subtitle: string;
+  note: string;
   steps: ManufacturingProcessStep[];
 } = {
   title: "From Concept to Production",
   subtitle:
     "A clear manufacturing workflow that helps food brands move from product idea to controlled production and retail-ready handoff.",
+  note: "Each workflow is confirmed per project based on product type, recipe, packaging, quantity, and market requirements.",
   steps: [
     {
       title: "Product Idea",
       description:
-        "We start from your brief — category, positioning, and target shelf.",
+        "Understand the product concept, category, target buyer, and intended retail use.",
       possibleAssetKey: "/images/hero-journey/product-idea.webp",
     },
     {
       title: "Recipe Direction",
       description:
-        "The recipe route is defined for taste, texture, and production feasibility.",
+        "Shape the product formula direction around taste, texture, ingredients, and product positioning.",
       possibleAssetKey: "/images/hero-journey/recipe.webp",
     },
     {
       title: "Sampling",
-      description: "Samples are produced and refined through feedback.",
+      description:
+        "Develop and review samples before moving toward production planning.",
       possibleAssetKey: "/images/hero-journey/sampling.webp",
     },
     {
       title: "Packaging Direction",
       description:
-        "Packaging format and presentation are aligned to the product and shelf.",
+        "Align pack format, presentation needs, and retail communication before launch.",
       possibleAssetKey: "/images/hero-journey/packaging.webp",
     },
     {
       title: "Production Planning",
-      description: "Output is planned from sample through to volume.",
+      description:
+        "Organize production requirements, quantities, timing, and operational readiness.",
       possibleAssetKey: null,
     },
     {
       title: "Manufacturing",
-      description: "Scaled production on certified bakery lines.",
+      description:
+        "Produce the product through a controlled bakery manufacturing workflow.",
       possibleAssetKey: "/images/hero-journey/production.webp",
     },
     {
       title: "Quality Control",
-      description: "Checks are applied across handling, production, and packing.",
+      description:
+        "Review product consistency, handling needs, and specification alignment.",
       possibleAssetKey: "/images/hero-journey/qc.webp",
     },
     {
       title: "Retail-Ready Handoff",
-      description: "The finished product is prepared for retail-ready supply.",
+      description:
+        "Prepare the product for next steps such as packing, distribution coordination, or launch support.",
       possibleAssetKey: "/images/hero-journey/retail-ready.webp",
     },
   ],

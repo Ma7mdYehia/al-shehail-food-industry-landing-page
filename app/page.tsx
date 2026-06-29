@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import Partners from "@/components/Partners";
 import Products from "@/components/Products";
 import AboutTeaser from "@/components/home/AboutTeaser";
-import PrivateLabelTeaser from "@/components/home/PrivateLabelTeaser";
+import ManufacturingProcessSection from "@/components/home/ManufacturingProcessSection";
 import ServicesEcosystem from "@/components/home/ServicesEcosystem";
 import CapabilitiesTeaser from "@/components/home/CapabilitiesTeaser";
 import QualityTeaser from "@/components/home/QualityTeaser";
@@ -58,7 +58,7 @@ export default function Home() {
         <Partners />
         <AboutTeaser />
         <Products />
-        <PrivateLabelTeaser />
+        <ManufacturingProcessSection />
         <ServicesEcosystem />
         <CapabilitiesTeaser />
         <QualityTeaser />
