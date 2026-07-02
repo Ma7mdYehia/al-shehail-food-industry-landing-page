@@ -53,11 +53,11 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <Partners />
         <AboutTeaser />
         <ServicesEcosystem />
         <Products />
         <ManufacturingProcessSection />
-        <Partners />
         <MarketPresenceTeaser />
         <FinalCTA />
       </main>
