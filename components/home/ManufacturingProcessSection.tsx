@@ -1,32 +1,12 @@
-import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "../SectionHeading";
-import {
-  DevelopIcon,
-  ProductionIcon,
-  CalendarIcon,
-  PackagingIcon,
-  ShieldCheckIcon,
-  RetailIcon,
-} from "../Icons";
+import ProcessJourney from "../ProcessJourney";
 import { manufacturingProcessNarrative } from "@/lib/homepageEcosystem";
 
-// Homepage "From Concept to Production" section — the single, detailed 8-step
-// manufacturing workflow (the hero no longer repeats it). Reuses the existing
-// /images/hero-journey visuals where available, with a premium icon fallback.
-const FALLBACK_ICONS = [
-  DevelopIcon,
-  ProductionIcon,
-  CalendarIcon,
-  PackagingIcon,
-  CalendarIcon,
-  ProductionIcon,
-  ShieldCheckIcon,
-  RetailIcon,
-];
-
+// Homepage "From Concept to Production" section — restores the premium timeline
+// journey used in the earlier homepage direction instead of the image-card grid.
 export default function ManufacturingProcessSection() {
-  const { title, subtitle, note, steps } = manufacturingProcessNarrative;
+  const { title, subtitle, note } = manufacturingProcessNarrative;
 
   return (
     <section
@@ -36,50 +16,7 @@ export default function ManufacturingProcessSection() {
       <div className="container-x">
         <SectionHeading eyebrow="Manufacturing Process" title={title} description={subtitle} />
 
-        <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, i) => {
-            const Icon = FALLBACK_ICONS[i];
-            return (
-              <li
-                key={step.title}
-                className="card-lift group flex flex-col overflow-hidden rounded-2xl border border-sand bg-cream transition-colors hover:border-champagne/60"
-              >
-                {/* Media — existing process visual, or warm icon fallback */}
-                <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-sand bg-gradient-to-br from-beige via-cream to-sand">
-                  {step.possibleAssetKey ? (
-                    <Image
-                      src={step.possibleAssetKey}
-                      alt={step.title}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <>
-                      <div className="bg-dotted-gold pointer-events-none absolute inset-0 opacity-40" aria-hidden />
-                      <span className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-champagne/40 bg-warmwhite text-gold shadow-card">
-                        <Icon width={26} height={26} />
-                      </span>
-                    </>
-                  )}
-                  <span className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-gold-gradient font-serif text-xs font-bold text-white shadow-card">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
-
-                {/* Body */}
-                <div className="flex flex-1 flex-col p-5">
-                  <h3 className="font-serif text-base font-semibold leading-tight text-ink">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-stone">
-                    {step.description}
-                  </p>
-                </div>
-              </li>
-            );
-          })}
-        </ol>
+        <ProcessJourney />
 
         {/* Careful-claims note */}
         <p className="mx-auto mt-8 max-w-3xl rounded-2xl border border-sand bg-cream px-5 py-4 text-center text-xs leading-relaxed text-stone">
