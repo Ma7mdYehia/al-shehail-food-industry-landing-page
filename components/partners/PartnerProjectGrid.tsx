@@ -57,7 +57,7 @@ export default function PartnerProjectGrid({
             type: "button" as const,
             onClick: open,
             "aria-haspopup": "dialog" as const,
-            "aria-label": `View ${name} project details`,
+            "aria-label": `استعرض تفاصيل مشروع ${name}`,
           };
 
           // ---- Compact (homepage): logo + name only ----
@@ -66,7 +66,7 @@ export default function PartnerProjectGrid({
               <button
                 key={name}
                 {...commonProps}
-                className="group flex items-center gap-3.5 rounded-2xl border border-sand bg-cream px-5 py-5 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne hover:bg-warmwhite hover:shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-warmwhite"
+                className="group flex items-center gap-3.5 rounded-2xl border border-sand bg-cream px-5 py-5 text-start transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne hover:bg-warmwhite hover:shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-warmwhite"
               >
                 {hasAsset(logoPath) ? (
                   <Image
@@ -94,7 +94,7 @@ export default function PartnerProjectGrid({
             <button
               key={name}
               {...commonProps}
-              className="group flex h-full flex-col rounded-3xl border border-sand bg-cream p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:border-champagne hover:bg-warmwhite hover:shadow-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-warmwhite sm:p-7"
+              className="group flex h-full flex-col rounded-3xl border border-sand bg-cream p-6 text-start transition-all duration-300 hover:-translate-y-1 hover:border-champagne hover:bg-warmwhite hover:shadow-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-warmwhite sm:p-7"
             >
               <div className="flex items-center gap-4">
                 {hasAsset(logoPath) ? (
@@ -146,12 +146,12 @@ export default function PartnerProjectGrid({
                   <div className="mt-auto flex items-center justify-between gap-3 pt-6">
                     <span className="text-xs font-semibold text-charcoal">
                       {project.products.length}{" "}
-                      {project.products.length === 1 ? "product" : "products"}
+                      {project.products.length === 1 ? "منتج" : "منتجات"}
                     </span>
                     <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-gold">
-                      Explore project
+                      استعرض المشروع
                       <svg
-                        className="transition-transform duration-300 group-hover:translate-x-0.5"
+                        className="rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5"
                         width="14"
                         height="14"
                         viewBox="0 0 24 24"

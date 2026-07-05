@@ -28,7 +28,7 @@ export default function TeaserLink({
     >
       {label}
       <svg
-        className="transition-transform duration-300 group-hover:translate-x-0.5"
+        className="rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5"
         width="16"
         height="16"
         viewBox="0 0 24 24"

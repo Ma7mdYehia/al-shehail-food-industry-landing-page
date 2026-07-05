@@ -15,46 +15,46 @@ import {
 } from "@/components/Icons";
 
 export const metadata: Metadata = {
-  title: { absolute: "About Al Shehail Food Industries | Bakery Manufacturing UAE" },
+  title: { absolute: "عن الشحيل للصناعات الغذائية | تصنيع مخبوزات في الإمارات" },
   description:
-    "Learn about Al Shehail Food Industries, a UAE-based bakery manufacturing and private label partner supporting product development, certified production, and retail-ready bakery supply.",
+    "تعرّف على الشحيل للصناعات الغذائية، شريك تصنيع مخبوزات وعلامات خاصة مقرّه الإمارات، يدعم تطوير المنتجات والإنتاج المعتمد والتوريد الجاهز للرف.",
   alternates: { canonical: "/about" },
 };
 
 const differentiators = [
   {
-    title: "Product development mindset",
-    text: "We approach every brief as a product to be developed, not just an order to be filled.",
+    title: "عقلية تطوير المنتجات",
+    text: "نتعامل مع كل طلب باعتباره منتجًا نطوّره، لا مجرد أمر ننفّذه.",
     Icon: DevelopIcon,
   },
   {
-    title: "Private label manufacturing support",
-    text: "Dedicated support for brands building bakery ranges under their own label.",
+    title: "دعم تصنيع العلامة الخاصة",
+    text: "دعم مخصَّص للعلامات التي تبني تشكيلات مخبوزات تحت اسمها الخاص.",
     Icon: PackagingIcon,
   },
   {
-    title: "Retail-ready production thinking",
-    text: "Products engineered for shelf life, packaging, and merchandising from the start.",
+    title: "تفكير إنتاجي جاهز للرف",
+    text: "منتجات مصمَّمة منذ البداية للعمر التخزيني والتغليف والعرض في التجزئة.",
     Icon: RetailIcon,
   },
   {
-    title: "Flexible product customization",
-    text: "Recipes, formats, and packaging adapted to the target market and brand brief.",
+    title: "تخصيص مرن للمنتج",
+    text: "وصفات وأشكال وتغليف تتكيّف مع السوق المستهدف وطلب العلامة.",
     Icon: ProductionIcon,
   },
   {
-    title: "Quality-controlled process",
-    text: "A structured, hygiene-controlled process with checks across production.",
+    title: "عملية خاضعة لرقابة الجودة",
+    text: "عملية منظمة وخاضعة لمعايير النظافة، مع فحوصات عبر مراحل الإنتاج.",
     Icon: ShieldCheckIcon,
   },
 ];
 
 const philosophyPoints = [
-  "Modern bakery products built for today’s retail and foodservice demand",
-  "A cleaner ingredient direction where suitable",
-  "Natural ingredients where suitable for the product and process",
-  "Reduced unnecessary additives where suitable",
-  "Recipe testing for quality and batch-to-batch consistency",
+  "منتجات مخبوزات عصرية مبنية لتلبية طلب التجزئة وقطاع المطاعم اليوم",
+  "توجه نحو مكونات أنظف حيثما يكون ذلك مناسبًا",
+  "مكونات طبيعية حيثما يكون ذلك مناسبًا للمنتج والعملية",
+  "تقليل الإضافات غير الضرورية حيثما يكون ذلك مناسبًا",
+  "اختبار الوصفات لضمان الجودة والثبات بين الدفعات",
 ];
 
 export default function AboutPage() {
@@ -63,15 +63,15 @@ export default function AboutPage() {
       <Header />
       <main>
         <PageHero
-          eyebrow="About Al Shehail"
-          title="UAE-Based Bakery Manufacturing Partner"
-          subtitle="Al Shehail Food Industries is a UAE-based bakery manufacturing company specialized in modern bakery products, private label production, and product development for retail and institutional markets."
+          eyebrow="عن الشحيل"
+          title="شريك تصنيع مخبوزات مقرّه الإمارات"
+          subtitle="الشحيل للصناعات الغذائية شركة تصنيع مخبوزات مقرّها الإمارات، متخصصة في منتجات مخبوزات عصرية، وإنتاج بعلامة خاصة، وتطوير منتجات لأسواق التجزئة والقطاع المؤسسي."
         >
           <Link href="/private-label" className="btn-primary">
-            Explore Private Label
+            استعرض العلامة الخاصة
           </Link>
           <Link href="/contact" className="btn-secondary">
-            Contact Us
+            تواصل معنا
           </Link>
         </PageHero>
 
@@ -80,16 +80,16 @@ export default function AboutPage() {
           <div className="container-x">
             <SectionHeading
               align="left"
-              eyebrow="Who We Are"
-              title="A bakery manufacturer built around brands"
-              description="Al Shehail Food Industries is a UAE-based bakery manufacturer with a modern, healthy-leaning production direction. We combine product development, manufacturing, and private label support under one partner — serving retail and institutional markets."
+              eyebrow="من نحن"
+              title="مصنّع مخبوزات مبني حول العلامات التجارية"
+              description="الشحيل للصناعات الغذائية مصنّع مخبوزات مقرّه الإمارات، بتوجه إنتاجي عصري يميل نحو الصحة. نجمع بين تطوير المنتج والتصنيع ودعم العلامة الخاصة تحت شريك واحد — نخدم أسواق التجزئة والقطاع المؤسسي."
             />
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                "UAE-based bakery manufacturer",
-                "Modern & healthy manufacturing direction",
-                "Development + production + private label",
-                "Retail & institutional market focus",
+                "مصنّع مخبوزات مقرّه الإمارات",
+                "توجه تصنيع عصري وصحي",
+                "تطوير + إنتاج + علامة خاصة",
+                "تركيز على أسواق التجزئة والقطاع المؤسسي",
               ].map((item) => (
                 <div
                   key={item}
@@ -106,8 +106,8 @@ export default function AboutPage() {
         <section className="section">
           <div className="container-x">
             <SectionHeading
-              eyebrow="What Makes Us Different"
-              title="More than a bakery production line"
+              eyebrow="ما يميّزنا"
+              title="أكثر من مجرد خط إنتاج مخبوزات"
             />
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {differentiators.map((d) => (
@@ -136,9 +136,9 @@ export default function AboutPage() {
             <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
               <SectionHeading
                 align="left"
-                eyebrow="Manufacturing Philosophy"
-                title="Modern bakery, made with intent"
-                description="We focus on modern bakery products with a cleaner ingredient direction where suitable. Specific formulations depend on the product brief and are subject to recipe testing and shelf-life requirements."
+                eyebrow="فلسفة التصنيع"
+                title="مخبوزات عصرية، بنيّة واضحة"
+                description="نركّز على منتجات مخبوزات عصرية بتوجه مكونات أنظف حيثما يكون ذلك مناسبًا. تعتمد التركيبات المحددة على طلب المنتج وتخضع لاختبار الوصفة ومتطلبات العمر التخزيني."
               />
               <ul className="space-y-3">
                 {philosophyPoints.map((point) => (
@@ -168,7 +168,7 @@ export default function AboutPage() {
               </span>
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
-                  Location
+                  الموقع
                 </p>
                 <p className="mt-1 font-serif text-lg font-semibold text-ink">
                   {company.location}
@@ -179,11 +179,11 @@ export default function AboutPage() {
         </section>
 
         <CtaBand
-          eyebrow="Work With Us"
-          title="Let’s build your bakery product"
-          text="Explore how Al Shehail can develop and manufacture your product under your own brand."
-          primary={{ label: "Explore Private Label", href: "/private-label" }}
-          secondary={{ label: "Contact Us", href: "/contact" }}
+          eyebrow="اعمل معنا"
+          title="لنبنِ منتجك من المخبوزات"
+          text="اكتشف كيف يمكن للشحيل تطوير وتصنيع منتجك تحت علامتك الخاصة."
+          primary={{ label: "استعرض العلامة الخاصة", href: "/private-label" }}
+          secondary={{ label: "تواصل معنا", href: "/contact" }}
         />
       </main>
       <Footer />

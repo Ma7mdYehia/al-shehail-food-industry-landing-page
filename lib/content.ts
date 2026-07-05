@@ -6,10 +6,10 @@ import type { PartnerAssets } from "@/lib/assets";
 
 export const company = {
   name: "Al Shehail Food Industries",
-  shortName: "Al Shehail",
-  positioning: "UAE-Based Bakery Manufacturing & Private Label Partner",
-  coreMessage: "From idea to shelf",
-  location: "New Industrial Area, Umm Al Quwain, UAE",
+  shortName: "الشحيل",
+  positioning: "شريك تصنيع المخبوزات وحلول العلامة الخاصة في الإمارات",
+  coreMessage: "من الفكرة إلى الرف",
+  location: "المنطقة الصناعية الجديدة، أم القيوين، الإمارات العربية المتحدة",
   email: "info@alshehai.ae",
   phone: "+971 54 743 1444",
   // E.164 digits only, used for tel: and wa.me links
@@ -18,26 +18,26 @@ export const company = {
 
 // WhatsApp deep link with a prefilled B2B enquiry message.
 export const whatsappLink = `https://wa.me/${company.phoneDigits}?text=${encodeURIComponent(
-  "Hello Al Shehail, I'd like to discuss a private label bakery project."
+  "مرحبًا الشحيل، أود مناقشة مشروع تصنيع مخبوزات بعلامة خاصة."
 )}`;
 
 // Capabilities and Quality now live inside the merged /private-label page
 // (sections #capabilities and #quality), so they are no longer separate nav
 // items. The old routes redirect there.
 export const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Products", href: "/products" },
-  { label: "Private Label", href: "/private-label" },
-  { label: "Partners", href: "/partners" },
-  { label: "Contact", href: "/contact" },
+  { label: "الرئيسية", href: "/" },
+  { label: "من نحن", href: "/about" },
+  { label: "المنتجات", href: "/products" },
+  { label: "العلامة الخاصة", href: "/private-label" },
+  { label: "الشركاء", href: "/partners" },
+  { label: "تواصل معنا", href: "/contact" },
 ];
 
 export const trustBadges = [
-  "ISO Certified",
-  "HACCP Certified",
-  "Organic Certified",
-  "Carrefour Approved",
+  "معتمدون بشهادة ISO",
+  "معتمدون بشهادة HACCP",
+  "معتمدون عضويًا",
+  "معتمدون لدى كارفور",
 ];
 
 // Manufacturing partners shown on the home + partners pages. Each entry carries
@@ -64,51 +64,51 @@ export type Step = {
 export const privateLabelSteps: Step[] = [
   {
     number: "01",
-    title: "Product Idea",
+    title: "فكرة المنتج",
     description:
-      "We start from your brief — category, positioning, and target shelf — and shape a manufacturable bakery concept.",
+      "نبدأ من طلبك التجاري — الفئة، التموضع، والرف المستهدف — ونشكّلها إلى فكرة مخبوزات قابلة للتصنيع.",
   },
   {
     number: "02",
-    title: "Recipe Development",
+    title: "تطوير الوصفة",
     description:
-      "Our development team formulates the recipe for taste, texture, and clean, repeatable production.",
+      "فريق التطوير لدينا يضبط الوصفة من حيث الطعم والقوام لإنتاج نظيف وقابل للتكرار.",
   },
   {
     number: "03",
-    title: "Sampling",
+    title: "العينات",
     description:
-      "We produce samples and refine through feedback until the product is right for your brand.",
+      "ننتج عينات ونطوّرها بالتغذية الراجعة حتى يصبح المنتج مناسبًا لعلامتك التجارية.",
   },
   {
     number: "04",
-    title: "Costing",
+    title: "دراسة التكلفة",
     description:
-      "Transparent unit costing and specifications so the product works commercially at retail.",
+      "تكلفة شفافة للوحدة ومواصفات واضحة تجعل المنتج مجديًا تجاريًا عند البيع بالتجزئة.",
   },
   {
     number: "05",
-    title: "Packaging",
+    title: "التغليف",
     description:
-      "Private-label packaging engineered for shelf appeal, compliance, and product protection.",
+      "تغليف بعلامتك الخاصة، مصمَّم لجذب الرف والامتثال وحماية المنتج.",
   },
   {
     number: "06",
-    title: "Production",
+    title: "الإنتاج",
     description:
-      "Scaled manufacturing on certified bakery lines with consistent output, batch after batch.",
+      "تصنيع موسَّع على خطوط مخبوزات معتمدة، بإنتاجية ثابتة دفعة بعد دفعة.",
   },
   {
     number: "07",
-    title: "Quality Control",
+    title: "مراقبة الجودة",
     description:
-      "ISO- and HACCP-aligned checks safeguard food safety and quality at every stage.",
+      "فحوصات متوافقة مع معايير ISO وHACCP تحمي سلامة المنتج وجودته في كل مرحلة.",
   },
   {
     number: "08",
-    title: "Retail-Ready Delivery",
+    title: "التسليم الجاهز للرف",
     description:
-      "Finished, branded, retail-ready product supplied reliably to your distribution network.",
+      "منتج جاهز ومعبأ بعلامتك، يُسلَّم بثبات إلى شبكة التوزيع لديك.",
   },
 ];
 
@@ -143,9 +143,9 @@ export type HeroSlide = {
 };
 
 const heroPrimaryTrust: HeroTrustPoint[] = [
-  { label: "ISO / HACCP Systems", icon: "shield-check" },
-  { label: "Private Label Ready", icon: "label" },
-  { label: "Retail Supply Support", icon: "truck" },
+  { label: "أنظمة ISO / HACCP", icon: "shield-check" },
+  { label: "جاهزون للعلامة الخاصة", icon: "label" },
+  { label: "دعم التوريد للتجزئة", icon: "truck" },
 ];
 
 // TODO (Stage 02): replace these manufacturing-only hero slides with
@@ -153,130 +153,130 @@ const heroPrimaryTrust: HeroTrustPoint[] = [
 export const heroSlides: HeroSlide[] = [
   {
     step: 0,
-    eyebrow: "UAE-Based Bakery Manufacturing & Private Label Partner",
-    title: "Private Label Bakery Manufacturing in the UAE",
+    eyebrow: "شريك تصنيع مخبوزات وعلامات خاصة في الإمارات",
+    title: "تصنيع مخبوزات بعلامتك الخاصة في الإمارات",
     description:
-      "From product concept to retail-ready bakery — developed, manufactured, packed, and scaled for modern food brands.",
-    ctaLabel: "Start a Project",
+      "من فكرة المنتج إلى مخبوزات جاهزة للرف — نطوّر، نصنّع، نغلّف، ونوسّع الإنتاج لعلامات غذائية طموحة.",
+    ctaLabel: "ابدأ مشروعك",
     ctaHref: "/contact",
     trustPoints: heroPrimaryTrust,
     image: "/images/hero-journey/product-idea.webp",
-    imageAlt: "Shaping a new bakery product idea and concept",
+    imageAlt: "تشكيل فكرة منتج مخبوزات جديد",
   },
   {
     step: 1,
-    eyebrow: "Recipe Development",
-    title: "Recipes engineered for taste and scale",
+    eyebrow: "تطوير الوصفة",
+    title: "وصفات مصمَّمة للطعم وقابلة للتوسّع",
     description:
-      "Formulated for flavour, texture, and clean, repeatable production on certified lines.",
-    ctaLabel: "Start a Project",
+      "نضبط النكهة والقوام لإنتاج نظيف وقابل للتكرار على خطوط معتمدة.",
+    ctaLabel: "ابدأ مشروعك",
     ctaHref: "/contact",
     image: "/images/hero-journey/recipe.webp",
-    imageAlt: "Developing a bakery recipe in the kitchen",
+    imageAlt: "تطوير وصفة مخبوزات في المطبخ",
   },
   {
     step: 2,
-    eyebrow: "Sampling",
-    title: "Samples refined until they're right",
+    eyebrow: "العينات",
+    title: "عينات نطوّرها حتى تصبح جاهزة",
     description:
-      "We produce and tune samples with your team until the product is ready for your brand.",
+      "ننتج العينات ونضبطها مع فريقك حتى يصبح المنتج جاهزًا لعلامتك.",
     image: "/images/hero-journey/sampling.webp",
-    imageAlt: "Sampling and tasting freshly baked products",
+    imageAlt: "تذوق ومراجعة عينات مخبوزات طازجة",
   },
   {
     step: 3,
-    eyebrow: "Packaging",
-    title: "Retail packaging built for the shelf",
+    eyebrow: "التغليف",
+    title: "تغليف مصمَّم لجذب الرف",
     description:
-      "Private-label packaging designed for shelf appeal, compliance, and product protection.",
-    ctaLabel: "Start a Project",
+      "تغليف بعلامتك الخاصة مصمَّم لجذب الرف والامتثال وحماية المنتج.",
+    ctaLabel: "ابدأ مشروعك",
     ctaHref: "/contact",
     image: "/images/hero-journey/packaging.webp",
-    imageAlt: "Private-label retail bakery packaging",
+    imageAlt: "تغليف تجزئة بعلامة خاصة لمنتجات مخبوزات",
   },
   {
     step: 4,
-    eyebrow: "Production",
-    title: "Scaled production, batch after batch",
+    eyebrow: "الإنتاج",
+    title: "إنتاج موسَّع، دفعة بعد دفعة",
     description:
-      "Consistent output on certified bakery lines, ready to grow with your brand.",
+      "إنتاجية ثابتة على خطوط مخبوزات معتمدة، جاهزة للنمو مع علامتك.",
     trustPoints: heroPrimaryTrust,
     image: "/images/hero-journey/production.webp",
-    imageAlt: "Scaled bakery production line in operation",
+    imageAlt: "خط إنتاج مخبوزات موسَّع أثناء التشغيل",
   },
   {
     step: 5,
-    eyebrow: "Quality Control",
-    title: "Quality assured at every stage",
+    eyebrow: "مراقبة الجودة",
+    title: "جودة مضمونة في كل مرحلة",
     description:
-      "ISO- and HACCP-aligned checks safeguard food safety from line to delivery.",
+      "فحوصات متوافقة مع ISO وHACCP تحمي سلامة الغذاء من خط الإنتاج حتى التسليم.",
     trustPoints: heroPrimaryTrust,
     image: "/images/hero-journey/qc.webp",
-    imageAlt: "Quality control checks on bakery products",
+    imageAlt: "فحوصات مراقبة الجودة على منتجات المخبوزات",
   },
   {
     step: 6,
-    eyebrow: "Retail Ready",
-    title: "Finished, branded, retail-ready",
+    eyebrow: "جاهز للرف",
+    title: "منتج جاهز، معبأ، وجاهز للتوريد",
     description:
-      "Packed and supplied reliably to your distribution network across the UAE.",
-    ctaLabel: "Start a Project",
+      "معبأ ومورَّد بثبات إلى شبكة التوزيع لديك في أنحاء الإمارات.",
+    ctaLabel: "ابدأ مشروعك",
     ctaHref: "/contact",
     trustPoints: heroPrimaryTrust,
     image: "/images/hero-journey/retail-ready.webp",
-    imageAlt: "Retail-ready bakery products on the shelf",
+    imageAlt: "منتجات مخبوزات جاهزة للرف",
   },
 ];
 
 export const capabilities = [
   {
-    title: "Product Development",
+    title: "تطوير المنتجات",
     description:
-      "In-house development to take your concept from brief to finished, shelf-ready product.",
+      "تطوير داخلي يأخذ فكرتك من الطلب الأولي إلى منتج نهائي جاهز للرف.",
   },
   {
-    title: "Private Label Manufacturing",
+    title: "تصنيع العلامة الخاصة",
     description:
-      "Dedicated private label production aligned to your brand and category strategy.",
+      "إنتاج مخصص للعلامة الخاصة يتماشى مع استراتيجية علامتك وفئتك.",
   },
   {
-    title: "Recipe Customization",
+    title: "تخصيص الوصفات",
     description:
-      "Tailored formulations for taste, texture, dietary, and cost requirements.",
+      "تركيبات مصمَّمة حسب الطعم والقوام والمتطلبات الغذائية والتكلفة.",
   },
   {
-    title: "Retail-Ready Packing",
+    title: "تعبئة جاهزة للرف",
     description:
-      "Packaging formats designed for retail merchandising and shelf appeal.",
+      "أشكال تغليف مصمَّمة لعرض المنتج في التجزئة وجذب الرف.",
   },
   {
-    title: "Food Safety Systems",
+    title: "أنظمة سلامة الغذاء",
     description:
-      "Operations governed by recognized food-safety and quality frameworks.",
+      "عمليات تشغيل محكومة بأطر سلامة غذاء وجودة معتمدة.",
   },
   {
-    title: "Scalable Supply",
+    title: "توريد قابل للتوسّع",
     description:
-      "Consistent, repeatable supply to support growing distribution networks.",
+      "توريد ثابت وقابل للتكرار يدعم شبكات توزيع متنامية.",
   },
 ];
 
 export const certifications = [
   {
-    title: "ISO Certified",
-    description: "Quality management systems aligned to international standards.",
+    title: "معتمدون بشهادة ISO",
+    description: "أنظمة إدارة جودة متوافقة مع المعايير الدولية.",
   },
   {
-    title: "HACCP Certified",
-    description: "Hazard analysis and food-safety controls across production.",
+    title: "معتمدون بشهادة HACCP",
+    description: "تحليل مخاطر وضوابط سلامة غذاء عبر خطوط الإنتاج.",
   },
   {
-    title: "Organic Certified",
-    description: "Certified capability for organic product lines.",
+    title: "معتمدون عضويًا",
+    description: "قدرة معتمدة لإنتاج خطوط منتجات عضوية.",
   },
   {
-    title: "Carrefour Approved",
-    description: "Approved supplier credentials for major retail.",
+    title: "معتمدون لدى كارفور",
+    description: "اعتماد كمورّد لدى إحدى كبرى سلاسل التجزئة.",
   },
 ];
 
@@ -295,23 +295,23 @@ export const retailPresence = [
 
 export const whyUsPoints = [
   {
-    title: "End-to-End Partner",
+    title: "شريك من الفكرة إلى الرف",
     description:
-      "One partner from product concept through manufacturing, packing, and supply.",
+      "شريك واحد من فكرة المنتج وحتى التصنيع والتعبئة والتوريد.",
   },
   {
-    title: "Certified Quality",
+    title: "جودة معتمدة",
     description:
-      "Production backed by ISO and HACCP food-safety credentials.",
+      "إنتاج مدعوم بشهادات سلامة غذاء ISO وHACCP.",
   },
   {
-    title: "Retail Proven",
+    title: "حضور مثبت في التجزئة",
     description:
-      "Products present across leading UAE retail and hypermarket chains.",
+      "منتجات حاضرة في كبرى سلاسل التجزئة والهايبرماركت في الإمارات.",
   },
   {
-    title: "Built for Brands",
+    title: "مصمَّم للعلامات التجارية",
     description:
-      "Private label expertise focused on helping your brand win on shelf.",
+      "خبرة في العلامة الخاصة تركّز على مساعدة علامتك على التميّز في الرف.",
   },
 ];

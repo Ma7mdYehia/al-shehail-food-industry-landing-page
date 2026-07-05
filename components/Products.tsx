@@ -11,7 +11,7 @@ import { featuredProducts, productCategories, products } from "@/lib/products";
 const HOME_MAX = 6;
 
 const filters = [
-  { label: "Featured", slug: "featured" },
+  { label: "مختاراتنا", slug: "featured" },
   ...productCategories.map((category) => ({
     label: category.name,
     slug: category.slug,
@@ -32,9 +32,9 @@ export default function Products() {
       <div className="bg-grain pointer-events-none absolute inset-0 opacity-50" aria-hidden />
       <div className="container-x relative">
         <SectionHeading
-          eyebrow="What We Manufacture"
-          title="A complete bakery product range"
-          description="A featured selection from our range — flatbread and wraps, soft bread, pastry, and sweets — manufactured to consistent, retail-ready quality."
+          eyebrow="ماذا نصنّع"
+          title="تشكيلة مخبوزات متكاملة"
+          description="مختارات من تشكيلتنا — خبز مسطح ولفائف، وخبز طري، ومعجنات، وحلويات — نصنّعها بجودة ثابتة وجاهزة للرف."
         />
 
         <div className="mt-10 flex flex-wrap justify-center gap-2.5">
@@ -67,7 +67,7 @@ export default function Products() {
 
         <div className="mt-12 text-center">
           <Link href="/products" className="btn-secondary">
-            View Full Product Catalog
+            استعرض كتالوج المنتجات الكامل
           </Link>
         </div>
       </div>

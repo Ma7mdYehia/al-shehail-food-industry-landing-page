@@ -24,9 +24,9 @@ export default function MarketPresenceTeaser() {
       <div className="bg-dotted-gold pointer-events-none absolute inset-0 opacity-30" aria-hidden />
       <div className="container-x relative">
         <SectionHeading
-          eyebrow="Retail & Distribution Partners"
-          title="Selected retail and distribution relationships"
-          description="Retail partners and channel relationships vary by project and market requirements."
+          eyebrow="شركاء التجزئة والتوزيع"
+          title="علاقات مختارة في التجزئة والتوزيع"
+          description="تختلف علاقات التجزئة والقنوات حسب المشروع ومتطلبات السوق."
         />
 
         <div className="mt-12 flex flex-wrap justify-center gap-3">
@@ -56,7 +56,7 @@ export default function MarketPresenceTeaser() {
         </div>
 
         <div className="mt-10 text-center">
-          <TeaserLink href="/partners" label="View Market Presence" variant="secondary" />
+          <TeaserLink href="/partners" label="استعرض حضورنا في السوق" variant="secondary" />
         </div>
       </div>
     </section>

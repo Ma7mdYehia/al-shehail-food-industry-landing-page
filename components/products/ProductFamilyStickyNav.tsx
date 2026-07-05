@@ -31,7 +31,7 @@ export default function ProductFamilyStickyNav() {
 
   return (
     <nav
-      aria-label="Product families"
+      aria-label="فئات المنتجات"
       aria-hidden={!visible}
       className={`fixed inset-x-0 top-20 z-40 border-y border-sand/60 bg-cream/90 backdrop-blur transition-all duration-300 ${
         visible
@@ -42,7 +42,7 @@ export default function ProductFamilyStickyNav() {
       <div className="container-x">
         <div className="flex gap-2 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <a href="#product-directory" className={linkClass} tabIndex={tabIndex}>
-            All
+            الكل
           </a>
           {productsByCategory.map(({ category }) => (
             <a

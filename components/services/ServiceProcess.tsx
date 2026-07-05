@@ -22,7 +22,7 @@ export default function ServiceProcess({
       <SectionHeading eyebrow={eyebrow} title={title} description={description} />
       <div className="relative mx-auto mt-12 max-w-3xl">
         <span
-          className="absolute bottom-3 left-5 top-3 w-px bg-sand sm:left-6"
+          className="absolute bottom-3 start-5 top-3 w-px bg-sand sm:start-6"
           aria-hidden
         />
         <ol className="space-y-4">

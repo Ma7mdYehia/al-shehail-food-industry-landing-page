@@ -34,8 +34,8 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Params): Metadata {
   const product = getProductBySlug(params.slug);
   if (!product) return {};
-  const title = `${product.name} Manufacturing UAE | Al Shehail Food Industries`;
-  const description = `Private label ${product.name} manufacturing in the UAE with recipe development, packaging support, certified production, and retail-ready supply.`;
+  const title = `تصنيع ${product.name} في الإمارات | الشحيل للصناعات الغذائية`;
+  const description = `تصنيع ${product.name} بعلامة خاصة في الإمارات، مع تطوير الوصفة، ودعم التغليف، والإنتاج المعتمد، والتوريد الجاهز للرف.`;
   return {
     title: { absolute: title },
     description,
@@ -124,10 +124,10 @@ export default function ProductDetailPage({ params }: Params) {
           </div>
           <div className="container-x">
             {/* Breadcrumb */}
-            <nav className="mb-8 flex flex-wrap items-center gap-1.5 text-xs text-stone" aria-label="Breadcrumb">
-              <Link href="/" className="hover:text-gold">Home</Link>
+            <nav className="mb-8 flex flex-wrap items-center gap-1.5 text-xs text-stone" aria-label="مسار التصفح">
+              <Link href="/" className="hover:text-gold">الرئيسية</Link>
               <span>/</span>
-              <Link href="/products" className="hover:text-gold">Products</Link>
+              <Link href="/products" className="hover:text-gold">المنتجات</Link>
               <span>/</span>
               <span className="font-medium text-charcoal">{product.name}</span>
             </nav>
@@ -150,10 +150,10 @@ export default function ProductDetailPage({ params }: Params) {
                     rel="noopener noreferrer"
                     className="btn-primary"
                   >
-                    Request This Product
+                    اطلب هذا المنتج
                   </a>
                   <Link href="/contact" className="btn-secondary">
-                    Discuss Private Label Options
+                    ناقش خيارات العلامة الخاصة
                   </Link>
                 </div>
               </div>
@@ -174,11 +174,11 @@ export default function ProductDetailPage({ params }: Params) {
                     </div>
                   ) : (
                   <div className="relative flex aspect-[4/3] flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-beige via-cream to-sand">
-                    <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-champagne/20 blur-2xl" />
+                    <div className="pointer-events-none absolute -end-10 -top-10 h-40 w-40 rounded-full bg-champagne/20 blur-2xl" />
                     <span className="flex h-20 w-20 items-center justify-center rounded-2xl bg-warmwhite/80 text-gold shadow-card backdrop-blur">
                       <ProductIcon type={product.iconType} width={38} height={38} />
                     </span>
-                    <AssetHint label="Product photo needed" className="mt-5" />
+                    <AssetHint label="صورة المنتج مطلوبة" className="mt-5" />
                   </div>
                   )}
                 </div>
@@ -190,7 +190,7 @@ export default function ProductDetailPage({ params }: Params) {
         {/* 2. Product Overview */}
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
-            <SectionTitle eyebrow="Overview" title="A manufacturing category, built for your brand" />
+            <SectionTitle eyebrow="نظرة عامة" title="فئة تصنيع مبنية لعلامتك" />
             <div className="mt-6 max-w-3xl space-y-4">
               {detail.overview.map((para) => (
                 <p key={para} className="text-base leading-relaxed text-stone sm:text-lg">
@@ -204,7 +204,7 @@ export default function ProductDetailPage({ params }: Params) {
         {/* 3. Use Cases */}
         <section className="section">
           <div className="container-x">
-            <SectionTitle eyebrow="Use Cases" title="Where this product fits" />
+            <SectionTitle eyebrow="حالات الاستخدام" title="أين يُستخدم هذا المنتج" />
             <div className="mt-8">
               <CheckList items={detail.detailUseCases} />
             </div>
@@ -215,13 +215,12 @@ export default function ProductDetailPage({ params }: Params) {
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
             <SectionTitle
-              eyebrow="Custom Recipe Solutions"
-              title="Recipes developed to your target market"
+              eyebrow="حلول وصفة مخصَّصة"
+              title="وصفات تُطوَّر لسوقك المستهدف"
             />
             <p className="mt-6 max-w-3xl text-base leading-relaxed text-stone sm:text-lg">
-              Al Shehail can develop different recipes based on your target
-              market and the purpose of the product. Depending on the product
-              brief, the following directions can be explored:
+              يمكن للشحيل تطوير وصفات مختلفة بناءً على سوقك المستهدف والغرض من
+              المنتج. وبحسب طلب المنتج، يمكن استكشاف التوجهات التالية:
             </p>
             <div className="mt-8 rounded-2xl border border-sand bg-cream p-6 sm:p-8">
               <CheckList items={detail.recipeOptions} />
@@ -236,8 +235,8 @@ export default function ProductDetailPage({ params }: Params) {
         <section className="section">
           <div className="container-x">
             <SectionTitle
-              eyebrow="Private Label Possibilities"
-              title="Manufactured under your brand"
+              eyebrow="إمكانيات العلامة الخاصة"
+              title="مصنَّع تحت علامتك"
             />
             <div className="mt-8 grid gap-8 lg:grid-cols-2 lg:gap-12">
               <CheckList items={privateLabelPoints} />
@@ -249,7 +248,7 @@ export default function ProductDetailPage({ params }: Params) {
         {/* 6. Packaging & Formats */}
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
-            <SectionTitle eyebrow="Packaging & Formats" title="Flexible, retail-ready formats" />
+            <SectionTitle eyebrow="التغليف والأشكال" title="أشكال مرنة وجاهزة للرف" />
             <div className="mt-8">
               <CheckList items={packagingOptions} />
             </div>
@@ -259,7 +258,7 @@ export default function ProductDetailPage({ params }: Params) {
         {/* 7. Quality Note */}
         <section className="section">
           <div className="container-x">
-            <SectionTitle eyebrow="Quality" title="Produced under controlled conditions" />
+            <SectionTitle eyebrow="الجودة" title="يُنتَج ضمن ظروف مضبوطة" />
             <div className="mt-8">
               <CheckList items={qualityPoints} />
             </div>
@@ -270,7 +269,7 @@ export default function ProductDetailPage({ params }: Params) {
         {related.length > 0 && (
           <section className="section border-t border-sand/60 bg-warmwhite">
             <div className="container-x">
-              <SectionTitle eyebrow="Related Products" title="Explore more of our range" />
+              <SectionTitle eyebrow="منتجات ذات صلة" title="استعرض المزيد من تشكيلتنا" />
               <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {related.map((rel) => (
                   <Link
@@ -279,7 +278,7 @@ export default function ProductDetailPage({ params }: Params) {
                     className="group flex flex-col overflow-hidden rounded-2xl border border-sand bg-cream transition-all duration-300 hover:-translate-y-1 hover:border-champagne hover:shadow-soft"
                   >
                     <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br from-beige via-cream to-sand">
-                      <span className="absolute left-4 top-4 rounded-full border border-sand bg-warmwhite/80 px-3 py-1 text-[11px] font-semibold text-gold backdrop-blur">
+                      <span className="absolute start-4 top-4 rounded-full border border-sand bg-warmwhite/80 px-3 py-1 text-[11px] font-semibold text-gold backdrop-blur">
                         {rel.category}
                       </span>
                       <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-warmwhite/80 text-gold shadow-card backdrop-blur">
@@ -294,9 +293,9 @@ export default function ProductDetailPage({ params }: Params) {
                         {rel.shortDescription}
                       </p>
                       <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold">
-                        View Product
+                        استعرض المنتج
                         <svg
-                          className="transition-transform duration-300 group-hover:translate-x-0.5"
+                          className="rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5"
                           width="16"
                           height="16"
                           viewBox="0 0 24 24"
@@ -323,25 +322,24 @@ export default function ProductDetailPage({ params }: Params) {
           <div className="container-x">
             <div className="relative overflow-hidden rounded-3xl border border-champagne/40 bg-gradient-to-br from-warmwhite via-cream to-beige px-6 py-16 text-center shadow-soft sm:px-12 lg:py-20">
               <div className="pointer-events-none absolute inset-0">
-                <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
-                <div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />
+                <div className="absolute -end-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
+                <div className="absolute -bottom-24 -start-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />
               </div>
               <div className="relative mx-auto max-w-2xl">
                 <span className="eyebrow">
                   <span className="h-px w-6 bg-champagne" />
-                  Private Label
+                  العلامة الخاصة
                 </span>
                 <h2 className="heading-serif mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-                  Build This Product Under Your Brand
+                  صنّع هذا المنتج تحت علامتك
                 </h2>
                 <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
-                  Partner with Al Shehail for {product.name.toLowerCase()} —
-                  from recipe development and packaging to certified production
-                  and retail-ready supply.
+                  تعاون مع الشحيل لتصنيع {product.name} — من تطوير الوصفة
+                  والتغليف إلى الإنتاج المعتمد والتوريد الجاهز للرف.
                 </p>
                 <div className="mt-8 flex flex-wrap justify-center gap-4">
                   <Link href="/contact" className="btn-primary">
-                    Request Manufacturing Consultation
+                    اطلب استشارة تصنيع
                   </Link>
                   <a
                     href={waLink}
@@ -350,7 +348,7 @@ export default function ProductDetailPage({ params }: Params) {
                     className="btn-secondary"
                   >
                     <WhatsAppIcon width={16} height={16} />
-                    WhatsApp Us
+                    تواصل عبر واتساب
                   </a>
                 </div>
               </div>

@@ -2,14 +2,14 @@
 // "operating card" visual), stacked on mobile. Static only — no video, no
 // animation, no heavy blur beyond the existing soft glow pattern.
 const heroFlow = [
-  "Idea",
-  "Recipe",
-  "Sample",
-  "Costing",
-  "Packaging",
-  "Production",
-  "QC",
-  "Supply",
+  "الفكرة",
+  "الوصفة",
+  "العينة",
+  "التكلفة",
+  "التغليف",
+  "الإنتاج",
+  "الجودة",
+  "التوريد",
 ];
 
 export default function PrivateLabelHero() {
@@ -28,21 +28,21 @@ export default function PrivateLabelHero() {
           <div className="max-w-xl">
             <span className="eyebrow">
               <span className="h-px w-6 bg-champagne" />
-              Private Label Bakery Manufacturing
+              تصنيع مخبوزات بعلامة خاصة
             </span>
             <h1 className="heading-serif mt-6 text-4xl leading-[1.1] sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
-              Your Bakery Product, Built From Idea to Shelf
+              منتج مخبوزات بعلامتك، من الفكرة إلى الرف
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-stone">
-              Develop, manufacture, package, and supply bakery products under
-              your brand — with certified quality and retail-ready execution.
+              نطوّر ونصنّع ونغلّف ونورّد منتجات مخبوزات بعلامتك — بجودة معتمدة
+              وتنفيذ جاهز للرف.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <a href="/contact" className="btn-primary">
-                Start a Private Label Project
+                ابدأ مشروع علامة خاصة
               </a>
               <a href="#process" className="btn-secondary">
-                Explore the Process
+                استعرض المسار
               </a>
             </div>
           </div>
@@ -57,10 +57,10 @@ export default function PrivateLabelHero() {
               <div className="relative flex items-center justify-between gap-3">
                 <div>
                   <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
-                    Manufacturing System
+                    نظام التصنيع
                   </span>
                   <p className="mt-1 font-serif text-base font-semibold text-ink">
-                    From idea to shelf
+                    من الفكرة إلى الرف
                   </p>
                 </div>
                 <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-gold-gradient font-serif text-xs font-bold text-white shadow-card">
@@ -86,7 +86,7 @@ export default function PrivateLabelHero() {
 
               <div className="relative mt-4 flex items-center gap-2 rounded-xl border border-champagne/40 bg-beige/50 px-3 py-2.5 text-xs font-medium text-charcoal">
                 <span className="h-1.5 w-1.5 flex-none rounded-full bg-gold" aria-hidden />
-                One connected line — product development to retail-ready supply.
+                خط واحد متكامل — من تطوير المنتج إلى التوريد الجاهز للرف.
               </div>
             </div>
           </div>

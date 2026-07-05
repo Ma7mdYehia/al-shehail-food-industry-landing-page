@@ -23,186 +23,186 @@ import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
 export const metadata: Metadata = {
   title: {
     absolute:
-      "Private Label Bakery Manufacturing UAE | Al Shehail Food Industries",
+      "تصنيع مخبوزات بعلامة خاصة في الإمارات | الشحيل للصناعات الغذائية",
   },
   description:
-    "Develop and manufacture bakery products under your brand with Al Shehail Food Industries — from product idea, recipe direction, sampling, packaging, quality control, and retail-ready supply.",
+    "طوّر وصنّع منتجات مخبوزات بعلامتك مع الشحيل للصناعات الغذائية — من فكرة المنتج، وتوجيه الوصفة، والعينات، والتغليف، ومراقبة الجودة، إلى التوريد الجاهز للرف.",
   alternates: { canonical: "/private-label" },
 };
 
 // ── Content (local arrays — merged from Private Label, Capabilities, Quality) ──
 
 const trustProof = [
-  "UAE-based bakery manufacturer",
-  "Private label support",
-  "Product development",
-  "Quality-controlled production",
-  "Retail-ready supply",
+  "مصنّع مخبوزات مقرّه الإمارات",
+  "دعم العلامة الخاصة",
+  "تطوير المنتجات",
+  "إنتاج خاضع لرقابة الجودة",
+  "توريد جاهز للرف",
 ];
 
 const audience = [
-  "Food brands",
-  "Retailers",
-  "Supermarkets & hypermarkets",
-  "Cafes & foodservice operators",
-  "Institutional buyers",
-  "Healthy bakery brands",
-  "Date sweets & bakery snack brands",
+  "العلامات الغذائية",
+  "متاجر التجزئة",
+  "السوبرماركت والهايبرماركت",
+  "المقاهي ومشغّلو قطاع المطاعم",
+  "المشترون المؤسسيون",
+  "علامات المخبوزات الصحية",
+  "علامات حلويات التمر والوجبات الخفيفة",
 ];
 
 const buildScope: { title: string; description: string; tag: string }[] = [
   {
-    title: "Flatbread & Wraps",
-    tag: "Product range",
+    title: "الخبز المسطح واللفائف",
+    tag: "تشكيلة منتجات",
     description:
-      "Arabic bread, functional wraps, and grain-based bread formats for retail and foodservice.",
+      "خبز عربي، ولفائف وظيفية، وأشكال خبز قائمة على الحبوب للتجزئة وقطاع المطاعم.",
   },
   {
-    title: "Soft Bread",
-    tag: "Product range",
+    title: "الخبز الطري",
+    tag: "تشكيلة منتجات",
     description:
-      "Toast, buns, rolls, and everyday bakery formats built for consistent supply.",
+      "توست، وكعك، وأرغفة، وأشكال مخبوزات يومية مبنية لتوريد ثابت.",
   },
   {
-    title: "Pastry",
-    tag: "Product range",
+    title: "المعجنات",
+    tag: "تشكيلة منتجات",
     description:
-      "Croissants, mini croissants, and puff pastry formats for premium bakery ranges.",
+      "كرواسان، وكرواسان صغير، وعجين مورّق لتشكيلات المخابز الراقية.",
   },
   {
-    title: "Sweets",
-    tag: "Product range",
-    description: "Maa'moul, tamriya, cookies, and date-based bakery sweets.",
+    title: "الحلويات",
+    tag: "تشكيلة منتجات",
+    description: "معمول، وتمرية، وبسكويت، وحلويات مخبوزة قائمة على التمر.",
   },
   {
-    title: "Custom Recipe Directions",
-    tag: "Service",
+    title: "توجيهات وصفة مخصَّصة",
+    tag: "خدمة",
     description:
-      "Recipe development based on market position, product testing, and feasibility.",
+      "تطوير الوصفة بناءً على التموضع في السوق، واختبار المنتج، وقابلية التنفيذ.",
   },
   {
-    title: "Packaging Formats",
-    tag: "Service",
+    title: "أشكال التغليف",
+    tag: "خدمة",
     description:
-      "Retail-ready packaging direction based on product type, brand, and supply needs.",
+      "توجيه تغليف جاهز للرف بناءً على نوع المنتج والعلامة واحتياجات التوريد.",
   },
 ];
 
 const capabilityCards = [
   {
-    title: "Product Development",
+    title: "تطوير المنتجات",
     Icon: DevelopIcon,
-    text: "From brief to a finished, manufacturable bakery product.",
+    text: "من الطلب الأولي إلى منتج مخبوزات نهائي وقابل للتصنيع.",
   },
   {
-    title: "Recipe Customization",
+    title: "تخصيص الوصفات",
     Icon: ProductionIcon,
-    text: "Formulations tuned for taste, texture, and positioning.",
+    text: "تركيبات مضبوطة للطعم والقوام والتموضع.",
   },
   {
-    title: "Private Label Manufacturing",
+    title: "تصنيع العلامة الخاصة",
     Icon: PackagingIcon,
-    text: "Production under your brand, to your specification.",
+    text: "إنتاج بعلامتك، وفق مواصفاتك.",
   },
   {
-    title: "Retail-Ready Packing",
+    title: "تعبئة جاهزة للرف",
     Icon: PackagingIcon,
-    text: "Packaging formats prepared for shelf and supply.",
+    text: "أشكال تغليف مجهَّزة للعرض والتوريد.",
   },
   {
-    title: "Scalable Production Planning",
+    title: "تخطيط إنتاج قابل للتوسّع",
     Icon: ProductionIcon,
-    text: "Output planned from sample through to volume.",
+    text: "إنتاجية مخطَّطة من العينة وحتى الكميات الكبيرة.",
   },
   {
-    title: "Quality-Controlled Process",
+    title: "عملية خاضعة لرقابة الجودة",
     Icon: ShieldCheckIcon,
-    text: "Checks across handling, production, and packing.",
+    text: "فحوصات عبر التعامل مع المكونات والإنتاج والتعبئة.",
   },
   {
-    title: "Sampling and Product Iteration",
+    title: "العينات وتطوير المنتج",
     Icon: CalendarIcon,
-    text: "Samples produced and refined to your brief.",
+    text: "عينات تُنتَج وتُطوَّر وفق طلبك.",
   },
   {
-    title: "Market-Ready Product Support",
+    title: "دعم المنتج الجاهز للسوق",
     Icon: RetailIcon,
-    text: "Guidance toward a retail-ready launch.",
+    text: "إرشاد نحو إطلاق جاهز للرف.",
   },
 ];
 
 const recipeDirections = [
-  "Standard recipes",
-  "Health-focused recipes",
-  "Clean label direction",
-  "No added sugar where technically suitable",
-  "Reduced sugar where suitable",
-  "No preservatives where shelf life and process allow",
-  "Whole wheat / fiber-focused directions where suitable",
-  "Size, format, flavor, and filling customization",
+  "وصفات قياسية",
+  "وصفات بتوجه صحي",
+  "توجه مكونات نظيفة",
+  "بدون سكر مضاف حيثما يكون ذلك ممكنًا تقنيًا",
+  "تخفيض السكر حيثما يكون ذلك مناسبًا",
+  "بدون مواد حافظة حيثما يسمح العمر التخزيني والعملية الإنتاجية",
+  "توجهات بالقمح الكامل أو تركّز على الألياف حيثما يكون ذلك مناسبًا",
+  "تخصيص الحجم والشكل والنكهة والحشو",
 ];
 
 const packaging = [
-  "Pack format planning",
-  "Brand-ready packaging support",
-  "Multipack and box direction",
-  "Retail shelf readiness",
-  "Supply preparation",
-  "Launch support",
+  "تخطيط شكل العبوة",
+  "دعم تغليف جاهز للعلامة",
+  "توجيه العبوات المتعددة والصناديق",
+  "جاهزية رفوف التجزئة",
+  "تجهيز التوريد",
+  "دعم الإطلاق",
 ];
 
 const qualityProcess = [
-  "Ingredient handling",
-  "Recipe & batch control",
-  "Hygiene process",
-  "Production records",
-  "Quality inspection",
-  "Packaging checks",
-  "Retail supply standards",
+  "التعامل مع المكونات",
+  "ضبط الوصفة والدفعات",
+  "عملية النظافة",
+  "سجلات الإنتاج",
+  "فحص الجودة",
+  "فحوصات التغليف",
+  "معايير التوريد للتجزئة",
 ];
 
 const certAssetKeys: Record<string, keyof typeof assets.certifications> = {
-  "ISO Certified": "iso",
-  "HACCP Certified": "haccp",
-  "Organic Certified": "organic",
-  "Carrefour Approved": "carrefourApproved",
+  "معتمدون بشهادة ISO": "iso",
+  "معتمدون بشهادة HACCP": "haccp",
+  "معتمدون عضويًا": "organic",
+  "معتمدون لدى كارفور": "carrefourApproved",
 };
 
 const useCases: { title: string; text: string }[] = [
   {
-    title: "Retail private label",
-    text: "Bakery products developed and manufactured under your retail brand.",
+    title: "علامة خاصة للتجزئة",
+    text: "منتجات مخبوزات تُطوَّر وتُصنَّع تحت علامة التجزئة الخاصة بك.",
   },
   {
-    title: "Supermarket supply",
-    text: "Consistent bakery formats prepared for retail shelf requirements.",
+    title: "توريد للسوبرماركت",
+    text: "أشكال مخبوزات ثابتة الجودة مجهَّزة لمتطلبات رفوف التجزئة.",
   },
   {
-    title: "Foodservice supply",
-    text: "Reliable bakery supply for cafes, catering, and operators.",
+    title: "توريد لقطاع المطاعم",
+    text: "توريد مخبوزات موثوق للمقاهي والتموين والمشغّلين.",
   },
   {
-    title: "Healthy bakery product lines",
-    text: "Whole grain, fiber-focused, or market-specific recipe directions where suitable.",
+    title: "خطوط منتجات مخبوزات صحية",
+    text: "توجهات وصفة بالحبوب الكاملة، أو تركّز على الألياف، أو خاصة بالسوق حيثما يكون ذلك مناسبًا.",
   },
   {
-    title: "Date sweets product lines",
-    text: "Traditional and modern date-based sweets for retail and gifting.",
+    title: "خطوط منتجات حلويات التمر",
+    text: "حلويات قائمة على التمر بطابع تقليدي وعصري للتجزئة والهدايا.",
   },
   {
-    title: "Cafe & institutional products",
-    text: "Bakery formats planned for repeatable supply and service needs.",
+    title: "منتجات المقاهي والقطاع المؤسسي",
+    text: "أشكال مخبوزات مخطَّطة لتوريد قابل للتكرار واحتياجات الخدمة.",
   },
 ];
 
 const needFromYou = [
-  "Product idea",
-  "Target market",
-  "Expected volume",
-  "Product format",
-  "Packaging direction",
-  "Required standards or certifications",
-  "Timeline",
+  "فكرة المنتج",
+  "السوق المستهدف",
+  "الكمية المتوقعة",
+  "شكل المنتج",
+  "توجيه التغليف",
+  "المعايير أو الشهادات المطلوبة",
+  "الجدول الزمني",
 ];
 
 // ── Small local building blocks ──
@@ -268,9 +268,9 @@ export default function PrivateLabelPage() {
         <section id="overview" className="section scroll-mt-36">
           <div className="container-x">
             <SectionHeading
-              eyebrow="Who We Build For"
-              title="Built for brands, retailers, and foodservice buyers"
-              description="Whether you are launching a new bakery line or expanding an existing retail range, Al Shehail supports the manufacturing path behind your brand."
+              eyebrow="لمن نصنّع"
+              title="مبني للعلامات وتجار التجزئة ومشتري قطاع المطاعم"
+              description="سواء كنت تطلق خط مخبوزات جديدًا أو توسّع تشكيلة تجزئة قائمة، تدعم الشحيل مسار التصنيع خلف علامتك."
             />
             <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {audience.map((a) => (
@@ -287,9 +287,9 @@ export default function PrivateLabelPage() {
         >
           <div className="container-x">
             <SectionHeading
-              eyebrow="Product Scope"
-              title="What we can build with you"
-              description="A bakery range spanning everyday staples, premium pastry, and date-based sweets — developed and packaged to your brand."
+              eyebrow="نطاق المنتجات"
+              title="ما يمكننا بناؤه معك"
+              description="تشكيلة مخبوزات تمتد من الأساسيات اليومية إلى المعجنات الراقية وحلويات التمر — تُطوَّر وتُغلَّف بعلامتك."
             />
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {buildScope.map((item) => (
@@ -319,9 +319,9 @@ export default function PrivateLabelPage() {
         >
           <div className="container-x">
             <SectionHeading
-              eyebrow="Capabilities"
-              title="Capabilities across the full manufacturing line"
-              description="A connected support model covering product development, recipe direction, sampling, packaging, production planning, quality control, and retail-ready supply."
+              eyebrow="القدرات"
+              title="قدرات تمتد عبر خط التصنيع بالكامل"
+              description="نموذج دعم متكامل يغطي تطوير المنتج، وتوجيه الوصفة، والعينات، والتغليف، وتخطيط الإنتاج، ومراقبة الجودة، والتوريد الجاهز للرف."
             />
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {capabilityCards.map((cap) => (
@@ -351,9 +351,9 @@ export default function PrivateLabelPage() {
         >
           <div className="container-x">
             <SectionHeading
-              eyebrow="From Idea to Shelf"
-              title="A clear path from product idea to retail-ready supply"
-              description="A practical manufacturing journey that helps move your product from early brief to production, packaging, quality checks, and market-ready supply."
+              eyebrow="من الفكرة إلى الرف"
+              title="مسار واضح من فكرة المنتج إلى التوريد الجاهز للرف"
+              description="رحلة تصنيع عملية تساعد على نقل منتجك من الطلب الأولي إلى الإنتاج والتغليف وفحوصات الجودة والتوريد الجاهز للسوق."
             />
             <PrivateLabelProcess />
           </div>
@@ -364,9 +364,9 @@ export default function PrivateLabelPage() {
           <div className="container-x">
             <SectionHeading
               align="left"
-              eyebrow="Recipe & Product Customization"
-              title="Recipes developed to your target market"
-              description="Recipe direction depends on the product brief, market positioning, shelf-life needs, ingredient availability, production feasibility, and regulatory approval."
+              eyebrow="تخصيص الوصفة والمنتج"
+              title="وصفات تُطوَّر لسوقك المستهدف"
+              description="يعتمد توجيه الوصفة على طلب المنتج، والتموضع في السوق، واحتياجات العمر التخزيني، وتوفر المكونات، وقابلية التنفيذ الإنتاجي، والموافقة التنظيمية."
             />
             <ul className="mt-8 grid gap-3 sm:grid-cols-2">
               {recipeDirections.map((r) => (
@@ -379,12 +379,12 @@ export default function PrivateLabelPage() {
               </span>
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
-                  Advisory note
+                  ملاحظة استشارية
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-stone">
-                  All custom recipes are subject to product testing, shelf-life
-                  requirements, ingredient availability, production feasibility,
-                  and regulatory approval.
+                  تخضع جميع الوصفات المخصَّصة لاختبار المنتج، ومتطلبات العمر
+                  التخزيني، وتوفر المكونات، وقابلية التنفيذ الإنتاجي، والموافقة
+                  التنظيمية.
                 </p>
               </div>
             </div>
@@ -395,9 +395,9 @@ export default function PrivateLabelPage() {
         <section className="section border-y border-sand/50 bg-beige/30">
           <div className="container-x">
             <SectionHeading
-              eyebrow="Packaging & Retail Readiness"
-              title="Built for shelf, supply, and brand presentation"
-              description="Private label manufacturing is not only about the recipe. The product also needs the right format, packaging direction, quality checks, and supply readiness."
+              eyebrow="التغليف والجاهزية للتجزئة"
+              title="مصمَّم للرف والتوريد وعرض العلامة"
+              description="التصنيع بعلامة خاصة لا يقتصر على الوصفة وحدها. المنتج يحتاج أيضًا إلى الشكل المناسب، وتوجيه التغليف، وفحوصات الجودة، وجاهزية التوريد."
             />
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {packaging.map((p, i) => (
@@ -437,9 +437,9 @@ export default function PrivateLabelPage() {
               />
               <div className="relative">
                 <SectionHeading
-                  eyebrow="Certifications & Quality"
-                  title="Quality you can put your brand behind"
-                  description="Certified standards and a structured, quality-controlled production process help support consistent retail-ready bakery supply."
+                  eyebrow="الشهادات والجودة"
+                  title="جودة تثق بها علامتك"
+                  description="معايير معتمدة وعملية إنتاج منظمة وخاضعة لرقابة الجودة تدعم توريد مخبوزات ثابت وجاهز للرف."
                 />
               </div>
             </div>
@@ -483,9 +483,9 @@ export default function PrivateLabelPage() {
                     {!hasAsset(logoPath) && (
                       <AssetHint
                         label={
-                          cert.title === "Carrefour Approved"
-                            ? "Approval proof/logo needed"
-                            : "Certificate scan/logo needed"
+                          cert.title === "معتمدون لدى كارفور"
+                            ? "إثبات الاعتماد / الشعار مطلوب"
+                            : "مسح الشهادة / الشعار مطلوب"
                         }
                         className="mt-4"
                       />
@@ -497,7 +497,7 @@ export default function PrivateLabelPage() {
 
             <div className="mt-10">
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-                Quality Process
+                عملية الجودة
               </h3>
               <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {qualityProcess.map((q, i) => (
@@ -522,8 +522,8 @@ export default function PrivateLabelPage() {
         <section className="section border-y border-sand/50 bg-beige/30">
           <div className="container-x">
             <SectionHeading
-              eyebrow="Use Cases"
-              title="Where private label manufacturing applies"
+              eyebrow="حالات الاستخدام"
+              title="أين يُستخدم التصنيع بعلامة خاصة"
             />
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {useCases.map((u) => (
@@ -550,9 +550,9 @@ export default function PrivateLabelPage() {
         >
           <div className="container-x">
             <SectionHeading
-              eyebrow="Start the Conversation"
-              title="What we need to understand your project"
-              description="A clear brief helps our team explore the right product direction, manufacturing fit, and private label supply path."
+              eyebrow="ابدأ الحديث"
+              title="ما نحتاج لفهمه عن مشروعك"
+              description="طلب واضح يساعد فريقنا على استكشاف توجيه المنتج المناسب، والتوافق التصنيعي، ومسار التوريد بعلامة خاصة."
             />
             <div className="mx-auto mt-12 max-w-3xl rounded-3xl border border-sand bg-cream p-6 sm:p-8">
               <ul className="grid gap-3 sm:grid-cols-2">
@@ -560,12 +560,12 @@ export default function PrivateLabelPage() {
                   <CheckCard key={n} label={n} />
                 ))}
               </ul>
-              <div className="mt-7 flex flex-col items-center gap-3 border-t border-sand/70 pt-6 text-center sm:flex-row sm:justify-between sm:text-left">
+              <div className="mt-7 flex flex-col items-center gap-3 border-t border-sand/70 pt-6 text-center sm:flex-row sm:justify-between sm:text-start">
                 <p className="text-sm text-stone">
-                  Share what you have so far — we’ll help shape the rest.
+                  شارك ما لديك حتى الآن — وسنساعدك في تحديد الباقي.
                 </p>
                 <Link href="/contact" className="btn-primary">
-                  Start a Private Label Project
+                  ابدأ مشروع علامة خاصة
                 </Link>
               </div>
             </div>
@@ -590,19 +590,18 @@ export default function PrivateLabelPage() {
               <div className="relative mx-auto max-w-2xl">
                 <span className="eyebrow">
                   <span className="h-px w-6 bg-champagne" />
-                  From Idea to Shelf
+                  من الفكرة إلى الرف
                 </span>
                 <h2 className="heading-serif mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-                  Ready to Build a Bakery Product Under Your Brand?
+                  جاهز لبناء منتج مخبوزات بعلامتك؟
                 </h2>
                 <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
-                  Share your product idea, target market, and expected volume —
-                  our team will help you explore the right private label
-                  manufacturing solution.
+                  شارك فكرة منتجك، وسوقك المستهدف، والكمية المتوقعة — وسيساعدك
+                  فريقنا في استكشاف حل التصنيع بعلامة خاصة الأنسب.
                 </p>
                 <div className="mt-8">
                   <Link href="/contact" className="btn-primary">
-                    Start a Private Label Project
+                    ابدأ مشروع علامة خاصة
                   </Link>
                 </div>
               </div>

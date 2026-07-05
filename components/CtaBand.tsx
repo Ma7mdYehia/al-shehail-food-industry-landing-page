@@ -12,7 +12,7 @@ type Props = {
 
 // Warm, light CTA panel reused at the bottom of the core company pages.
 export default function CtaBand({
-  eyebrow = "Private Label",
+  eyebrow = "العلامة الخاصة",
   title,
   text,
   primary,
@@ -23,8 +23,8 @@ export default function CtaBand({
       <div className="container-x">
         <div className="relative overflow-hidden rounded-3xl border border-champagne/40 bg-gradient-to-br from-warmwhite via-cream to-beige px-6 py-16 text-center shadow-soft sm:px-12 lg:py-20">
           <div className="pointer-events-none absolute inset-0">
-            <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
-            <div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />
+            <div className="absolute -end-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
+            <div className="absolute -bottom-24 -start-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />
           </div>
           <div className="relative mx-auto max-w-2xl">
             <span className="eyebrow">

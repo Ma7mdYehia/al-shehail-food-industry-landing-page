@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { IBM_Plex_Sans_Arabic, Noto_Kufi_Arabic } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-arabic-sans",
   display: "swap",
 });
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
+const notoKufiArabic = Noto_Kufi_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-arabic-kufi",
   display: "swap",
 });
 
@@ -20,21 +22,21 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default:
-      "Al Shehail Food Industries | UAE Private Label Bakery Manufacturing",
-    template: "%s | Al Shehail Food Industries",
+      "الشحيل للصناعات الغذائية | تصنيع مخبوزات وعلامات خاصة في الإمارات",
+    template: "%s | الشحيل للصناعات الغذائية",
   },
   description:
-    "Al Shehail Food Industries is a UAE-based bakery manufacturing and private label partner. From product concept to retail-ready bakery solutions — developed, manufactured, packed, and scaled for modern food brands.",
+    "الشحيل للصناعات الغذائية شريك تصنيع مخبوزات مقره الإمارات، متخصص في حلول العلامة الخاصة. من فكرة المنتج إلى منتج جاهز للتوريد — تطوير، تصنيع، تغليف، وتوريد لعلامات غذائية جادة.",
   keywords: [
-    "private label bakery",
-    "bakery manufacturing UAE",
-    "contract bakery manufacturer",
-    "Al Shehail Food Industries",
-    "B2B bakery supplier",
-    "croissant manufacturer UAE",
-    "Arabic bread manufacturer",
-    "HACCP bakery",
-    "ISO bakery manufacturer",
+    "تصنيع مخبوزات في الإمارات",
+    "علامة خاصة مخبوزات",
+    "مصنع مخبوزات بالعقد",
+    "الشحيل للصناعات الغذائية",
+    "مورد مخبوزات للشركات",
+    "مصنع كرواسان الإمارات",
+    "مصنع خبز عربي",
+    "مخبز معتمد HACCP",
+    "مخبز معتمد ISO",
   ],
   authors: [{ name: "Al Shehail Food Industries" }],
   icons: {
@@ -44,18 +46,18 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "ar_AE",
     url: siteUrl,
-    siteName: "Al Shehail Food Industries",
-    title: "UAE-Based Bakery Manufacturing & Private Label Partner",
+    siteName: "الشحيل للصناعات الغذائية",
+    title: "شريك تصنيع مخبوزات وعلامات خاصة في الإمارات",
     description:
-      "From idea to shelf — Al Shehail develops and manufactures bakery products built for retail success.",
+      "من فكرة المنتج إلى جاهزية الرف — الشحيل تطوّر وتصنّع منتجات مخبوزات مبنية لتنجح في السوق.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Al Shehail Food Industries | Private Label Bakery Manufacturing",
+    title: "الشحيل للصناعات الغذائية | تصنيع مخبوزات وعلامات خاصة",
     description:
-      "From idea to shelf — UAE-based bakery manufacturing and private label partner for modern food brands.",
+      "من فكرة المنتج إلى جاهزية الرف — شريك تصنيع مخبوزات مقره الإمارات لعلامات غذائية جادة.",
   },
   robots: {
     index: true,
@@ -69,7 +71,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html
+      lang="ar-AE"
+      dir="rtl"
+      className={`${ibmPlexSansArabic.variable} ${notoKufiArabic.variable}`}
+    >
       <body>
         {children}
 

@@ -18,112 +18,112 @@ import {
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Packaging & Brand Design | Al Shehail Food Industries",
+    absolute: "التغليف وتصميم العلامة | الشحيل للصناعات الغذائية",
   },
   description:
-    "Food-focused packaging and brand presentation support for products moving from production to retail shelves — packaging direction connected to private-label manufacturing.",
+    "دعم تغليف وعرض علامة مخصَّص للأغذية، للمنتجات المتحرّكة من الإنتاج إلى رفوف التجزئة — توجيه تغليف متصل بمشاريع التصنيع بعلامة خاصة.",
   alternates: { canonical: "/services/brand-design" },
 };
 
 const coverage = [
   {
-    title: "Packaging Visual Direction",
+    title: "توجيه بصري للتغليف",
     description:
-      "Visual direction for food packaging that fits the product category, audience, and retail environment.",
+      "توجيه بصري لتغليف الأغذية يتناسب مع فئة المنتج والجمهور وبيئة التجزئة.",
     Icon: PackagingIcon,
   },
   {
-    title: "Product Naming & Range Structure",
+    title: "تسمية المنتج وبنية التشكيلة",
     description:
-      "Support for organizing product names, variants, and range logic in a clear customer-facing way.",
+      "دعم تنظيم أسماء المنتجات والأصناف ومنطق التشكيلة بطريقة واضحة للعميل.",
     Icon: DevelopIcon,
   },
   {
-    title: "Front-of-Pack Communication",
+    title: "تواصل واجهة العبوة",
     description:
-      "Helping define the key messages that should appear clearly on the pack without overloading the design.",
+      "المساعدة على تحديد الرسائل الأساسية التي يجب أن تظهر بوضوح على العبوة دون إثقال التصميم.",
     Icon: RetailIcon,
   },
   {
-    title: "Retail-Ready Pack Layout",
+    title: "تصميم عبوة جاهز للرف",
     description:
-      "Design direction that considers shelf presence, readability, hierarchy, and product recognition.",
+      "توجيه تصميم يراعي الحضور على الرف، والوضوح، والتسلسل، وسهولة التعرّف على المنتج.",
     Icon: ProductionIcon,
   },
   {
-    title: "Private Label Packaging Support",
+    title: "دعم تغليف العلامة الخاصة",
     description:
-      "Packaging support for brands developing products with Al Shehail's manufacturing team.",
+      "دعم تغليف للعلامات التي تطوّر منتجاتها مع فريق التصنيع لدى الشحيل.",
     Icon: CalendarIcon,
   },
   {
-    title: "Product Story & Claims Review",
+    title: "مراجعة قصة المنتج وادعاءاته",
     description:
-      "Conservative communication guidance to avoid unclear or unsupported product claims.",
+      "إرشاد تواصل محافظ لتجنّب ادعاءات منتج غير واضحة أو غير مدعومة.",
     Icon: ShieldCheckIcon,
   },
 ];
 
 const process = [
   {
-    title: "Product Understanding",
-    text: "Understand the product type, target customer, category, and retail use case.",
+    title: "فهم المنتج",
+    text: "فهم نوع المنتج، والعميل المستهدف، والفئة، وحالة الاستخدام في التجزئة.",
   },
   {
-    title: "Positioning Direction",
-    text: "Define how the product should be presented: healthy, premium, traditional, family, functional, date-based, or pastry.",
+    title: "توجيه التموضع",
+    text: "تحديد كيفية عرض المنتج: صحي، راقٍ، تقليدي، عائلي، وظيفي، قائم على التمر، أو معجنات.",
   },
   {
-    title: "Packaging Structure",
-    text: "Organize the pack hierarchy: product name, variant, benefits, flavor/type, usage, and required information.",
+    title: "بنية العبوة",
+    text: "تنظيم تسلسل العبوة: اسم المنتج، الصنف، الفوائد، النكهة/النوع، الاستخدام، والمعلومات المطلوبة.",
   },
   {
-    title: "Visual Design Direction",
-    text: "Develop the visual look and feel for the packaging, including color direction, typography, imagery, and layout system.",
+    title: "توجيه التصميم البصري",
+    text: "تطوير الشكل والطابع البصري للتغليف، بما يشمل الألوان، والخطوط، والصور، ونظام التخطيط.",
   },
   {
-    title: "Retail-Ready Handoff",
-    text: "Prepare design direction and communication logic to support printing, production, and retail presentation.",
+    title: "التسليم الجاهز للرف",
+    text: "تجهيز توجيه التصميم ومنطق التواصل لدعم الطباعة والإنتاج والعرض في التجزئة.",
   },
 ];
 
 const deliverables = [
-  "Product packaging direction",
-  "Label and pack communication hierarchy",
-  "Product range system",
-  "Variant naming and visual coding",
-  "Front-of-pack message structure",
-  "Social launch visuals direction",
-  "Retail presentation assets direction",
-  "Private label brand presentation",
+  "توجيه تغليف المنتج",
+  "تسلسل تواصل الملصق والعبوة",
+  "نظام تشكيلة المنتج",
+  "تسمية الأصناف والترميز البصري",
+  "بنية رسائل واجهة العبوة",
+  "توجيه مرئيات الإطلاق على وسائل التواصل",
+  "توجيه أصول العرض في التجزئة",
+  "عرض علامة للتصنيع بعلامة خاصة",
 ];
 
 const categories = [
-  "Healthy bread and functional bakery products",
-  "Flatbread and wraps",
-  "Toast, buns, and soft bread",
-  "Croissants and pastry",
-  "Maa'moul, tamriya, cookies, and date-based sweets",
-  "Private-label retail products",
+  "خبز صحي ومنتجات مخبوزات وظيفية",
+  "خبز مسطح ولفائف",
+  "توست، وكعك، وخبز طري",
+  "كرواسان ومعجنات",
+  "معمول، وتمرية، وبسكويت، وحلويات قائمة على التمر",
+  "منتجات تجزئة بعلامة خاصة",
 ];
 
 const related = [
   {
-    title: "Private Label Manufacturing",
+    title: "تصنيع العلامة الخاصة",
     description:
-      "Develop and manufacture bakery products under your brand, end to end.",
+      "طوّر وصنّع منتجات مخبوزات تحت علامتك، من الفكرة إلى الرف.",
     href: "/private-label",
   },
   {
-    title: "Distribution Fleet & Retail Reach",
+    title: "أسطول التوزيع والوصول للتجزئة",
     description:
-      "Distribution coordination that moves finished products toward retail.",
+      "تنسيق توزيع ينقل المنتجات الجاهزة نحو التجزئة.",
     href: "/services/distribution",
   },
   {
-    title: "Food Digital Marketing",
+    title: "التسويق الرقمي الغذائي",
     description:
-      "Digital marketing support to help food products communicate online.",
+      "دعم تسويق رقمي يساعد منتجاتك الغذائية على التواصل عبر الإنترنت.",
     href: "/services/digital-marketing",
   },
 ];
@@ -153,15 +153,15 @@ export default function BrandDesignPage() {
       <main>
         {/* 1. Hero */}
         <PageHero
-          eyebrow="Services · Brand Design"
-          title="Packaging & Brand Design"
-          subtitle="Food-focused packaging and brand presentation support for products moving from production to retail shelves."
+          eyebrow="الخدمات · تصميم العلامة"
+          title="التغليف وتصميم العلامة"
+          subtitle="دعم تغليف وعرض علامة مخصَّص للأغذية، للمنتجات المتحرّكة من الإنتاج إلى رفوف التجزئة."
         >
           <a href="/contact" className="btn-primary">
-            Start a Packaging Project
+            ابدأ مشروع تغليف
           </a>
           <a href="/private-label" className="btn-secondary">
-            Explore Private Label Manufacturing
+            استعرض تصنيع العلامة الخاصة
           </a>
         </PageHero>
 
@@ -171,9 +171,9 @@ export default function BrandDesignPage() {
             <div className="max-w-3xl">
               <SectionHeading
                 align="left"
-                eyebrow="Overview"
-                title="More than a logo — packaging that communicates"
-                description="From product positioning to pack communication, Al Shehail supports food brands with packaging and brand design direction that connects manufacturing, retail presentation, and customer understanding."
+                eyebrow="نظرة عامة"
+                title="أكثر من شعار — تغليف يتحدّث"
+                description="من تموضع المنتج إلى تواصل العبوة، تدعم الشحيل العلامات الغذائية بتوجيه تغليف وتصميم علامة يربط بين التصنيع، والعرض في التجزئة، وفهم العميل."
               />
             </div>
           </div>
@@ -183,9 +183,9 @@ export default function BrandDesignPage() {
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
             <ServiceFeatureGrid
-              eyebrow="What We Support"
-              title="Packaging and brand presentation support"
-              description="Design direction built around food products, retail shelves, and clear customer communication."
+              eyebrow="ما ندعمه"
+              title="دعم التغليف وعرض العلامة"
+              description="توجيه تصميم مبني حول المنتجات الغذائية، ورفوف التجزئة، والتواصل الواضح مع العميل."
               items={coverage}
             />
           </div>
@@ -195,9 +195,9 @@ export default function BrandDesignPage() {
         <section className="section border-y border-sand/50 bg-beige/40">
           <div className="container-x">
             <ServiceProcess
-              eyebrow="How It Works"
-              title="A clear path from product to pack"
-              description="A simple direction-led flow from understanding the product to a retail-ready handoff."
+              eyebrow="كيف نعمل"
+              title="مسار واضح من المنتج إلى العبوة"
+              description="مسار بسيط مبني على التوجيه، من فهم المنتج إلى التسليم الجاهز للرف."
               steps={process}
             />
           </div>
@@ -207,9 +207,9 @@ export default function BrandDesignPage() {
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
             <SectionHeading
-              eyebrow="Deliverables"
-              title="What we can help design"
-              description="Support, direction, and design preparation across packaging and brand presentation."
+              eyebrow="المخرجات"
+              title="ما يمكننا المساعدة في تصميمه"
+              description="دعم وتوجيه وتجهيز تصميم عبر التغليف وعرض العلامة."
             />
             <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {deliverables.map((d) => (
@@ -231,8 +231,8 @@ export default function BrandDesignPage() {
         <section className="section border-y border-sand/50 bg-beige/30">
           <div className="container-x">
             <SectionHeading
-              eyebrow="Category Fit"
-              title="Food categories this fits"
+              eyebrow="ملاءمة الفئة"
+              title="الفئات الغذائية التي تناسبها هذه الخدمة"
             />
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((c) => (
@@ -251,9 +251,9 @@ export default function BrandDesignPage() {
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
             <ServiceRelatedServices
-              eyebrow="One Connected Partner"
-              title="Brand design connects with the wider service ecosystem"
-              description="Packaging and brand design work alongside manufacturing, distribution, and marketing so a product is ready for production and the shelf."
+              eyebrow="شريك واحد متكامل"
+              title="تصميم العلامة يتصل بمنظومة الخدمات الأوسع"
+              description="يعمل التغليف وتصميم العلامة جنبًا إلى جنب مع التصنيع والتوزيع والتسويق، حتى يصبح المنتج جاهزًا للإنتاج والرف."
               items={related}
             />
           </div>
@@ -268,13 +268,12 @@ export default function BrandDesignPage() {
               </span>
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
-                  Before final printing
+                  قبل الطباعة النهائية
                 </p>
                 <p className="mt-1.5 text-sm leading-relaxed text-stone">
-                  Packaging claims, nutrition statements, ingredient callouts,
-                  and compliance details should be confirmed against verified
-                  product specifications and market requirements before final
-                  printing.
+                  يجب اعتماد ادعاءات التغليف، والبيانات الغذائية، والإشارات إلى
+                  المكونات، وتفاصيل الامتثال مقابل مواصفات منتج موثّقة ومتطلبات
+                  السوق قبل الطباعة النهائية.
                 </p>
               </div>
             </div>
@@ -283,11 +282,11 @@ export default function BrandDesignPage() {
 
         {/* 9. Final CTA */}
         <CtaBand
-          eyebrow="Built for the Shelf"
-          title="Need packaging that fits the product and the shelf?"
-          text="Talk to Al Shehail about packaging direction, private-label presentation, and retail-ready food product communication."
-          primary={{ label: "Start a Packaging Project", href: "/contact" }}
-          secondary={{ label: "View Products", href: "/products" }}
+          eyebrow="مصمَّم للرف"
+          title="تحتاج تغليفًا يناسب المنتج والرف؟"
+          text="تحدّث مع الشحيل عن توجيه التغليف، وعرض العلامة الخاصة، وتواصل المنتج الغذائي الجاهز للرف."
+          primary={{ label: "ابدأ مشروع تغليف", href: "/contact" }}
+          secondary={{ label: "استعرض المنتجات", href: "/products" }}
         />
       </main>
       <Footer />

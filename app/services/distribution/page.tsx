@@ -18,101 +18,101 @@ import {
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Distribution Fleet & Retail Reach | Al Shehail Food Industries",
+    absolute: "أسطول التوزيع والوصول للتجزئة | الشحيل للصناعات الغذائية",
   },
   description:
-    "From finished bakery products to retail-ready movement, Al Shehail supports brands with distribution coordination after production — route-to-market and delivery planning confirmed per project.",
+    "من منتجات مخبوزات جاهزة إلى حركة جاهزة للرف، تدعم الشحيل العلامات بتنسيق التوزيع بعد الإنتاج — يُحدَّد مسار الوصول للسوق وتخطيط التسليم لكل مشروع.",
   alternates: { canonical: "/services/distribution" },
 };
 
 const coverage = [
   {
-    title: "Finished Product Movement",
+    title: "حركة المنتج النهائي",
     description:
-      "Support for moving retail-ready bakery products after production.",
+      "دعم نقل منتجات المخبوزات الجاهزة للرف بعد الإنتاج.",
     Icon: PackagingIcon,
   },
   {
-    title: "Retail Channel Coordination",
+    title: "تنسيق قنوات التجزئة",
     description:
-      "Helping organize product flow toward selected retail and sales channels.",
+      "المساعدة على تنظيم تدفق المنتج نحو قنوات التجزئة والبيع المختارة.",
     Icon: RetailIcon,
   },
   {
-    title: "Delivery Planning",
+    title: "تخطيط التسليم",
     description:
-      "Coordination around product readiness, dispatch timing, and route needs.",
+      "تنسيق حول جاهزية المنتج، وتوقيت الشحن، ومتطلبات المسار.",
     Icon: CalendarIcon,
   },
   {
-    title: "Product Handling Awareness",
+    title: "وعي بالتعامل مع المنتج",
     description:
-      "Distribution thinking built around bakery products, packaging condition, and freshness requirements.",
+      "تفكير توزيعي مبني حول منتجات المخبوزات، وحالة التغليف، ومتطلبات الطزاجة.",
     Icon: ShieldCheckIcon,
   },
   {
-    title: "Launch & Replenishment Support",
+    title: "دعم الإطلاق والتزويد المتكرر",
     description:
-      "Useful for product launches, recurring supply, and controlled market rollout.",
+      "مفيد لإطلاق المنتجات، والتوريد المتكرر، والانتشار المضبوط في السوق.",
     Icon: ProductionIcon,
   },
   {
-    title: "Private Label Route-to-Market",
+    title: "مسار السوق للعلامة الخاصة",
     description:
-      "Distribution support that connects with private-label manufacturing projects.",
+      "دعم توزيع يتصل بمشاريع التصنيع بعلامة خاصة.",
     Icon: DevelopIcon,
   },
 ];
 
 const process = [
   {
-    title: "Product Ready",
-    text: "Finished product is confirmed after production and packing.",
+    title: "المنتج جاهز",
+    text: "يُعتمَد المنتج النهائي بعد الإنتاج والتعبئة.",
   },
   {
-    title: "Dispatch Planning",
-    text: "Quantities, timing, and delivery requirements are organized.",
+    title: "تخطيط الشحن",
+    text: "تُنظَّم الكميات والتوقيت ومتطلبات التسليم.",
   },
   {
-    title: "Route Coordination",
-    text: "Distribution movement is planned based on destination and channel needs.",
+    title: "تنسيق المسار",
+    text: "يُخطَّط تحرّك التوزيع بناءً على الوجهة ومتطلبات القناة.",
   },
   {
-    title: "Retail Delivery Support",
-    text: "Products move toward selected retail points or agreed channels.",
+    title: "دعم التسليم للتجزئة",
+    text: "تتحرّك المنتجات نحو نقاط التجزئة المختارة أو القنوات المتفَق عليها.",
   },
   {
-    title: "Follow-Up",
-    text: "Coordination continues around supply rhythm, replenishment, and launch needs.",
+    title: "المتابعة",
+    text: "يستمر التنسيق حول إيقاع التوريد، والتزويد المتكرر، واحتياجات الإطلاق.",
   },
 ];
 
 const audience = [
-  "Food brands launching bakery products",
-  "Private-label clients",
-  "Healthy bread brands",
-  "Retail bakery product owners",
-  "Date-based sweets and pastry brands",
-  "Brands needing production and distribution support from one partner",
+  "علامات غذائية تطلق منتجات مخبوزات",
+  "عملاء العلامة الخاصة",
+  "علامات خبز صحي",
+  "أصحاب منتجات مخبوزات للتجزئة",
+  "علامات حلويات التمر والمعجنات",
+  "علامات تحتاج دعم إنتاج وتوزيع من شريك واحد",
 ];
 
 const related = [
   {
-    title: "Private Label Manufacturing",
+    title: "تصنيع العلامة الخاصة",
     description:
-      "Develop and manufacture bakery products under your brand, end to end.",
+      "طوّر وصنّع منتجات مخبوزات تحت علامتك، من الفكرة إلى الرف.",
     href: "/private-label",
   },
   {
-    title: "Packaging & Brand Design",
+    title: "التغليف وتصميم العلامة",
     description:
-      "Packaging and brand presentation support for retail-ready products.",
+      "دعم التغليف وعرض العلامة للمنتجات الجاهزة للرف.",
     href: "/services/brand-design",
   },
   {
-    title: "Food Digital Marketing",
+    title: "التسويق الرقمي الغذائي",
     description:
-      "Digital marketing support to help food products communicate online.",
+      "دعم تسويق رقمي يساعد منتجاتك الغذائية على التواصل عبر الإنترنت.",
     href: "/services/digital-marketing",
   },
 ];
@@ -124,15 +124,15 @@ export default function DistributionPage() {
       <main>
         {/* 1. Hero */}
         <PageHero
-          eyebrow="Services · Distribution"
-          title="Distribution Fleet & Retail Reach"
-          subtitle="From finished bakery products to retail-ready movement, Al Shehail supports brands with distribution coordination after production."
+          eyebrow="الخدمات · التوزيع"
+          title="أسطول التوزيع والوصول للتجزئة"
+          subtitle="من منتجات مخبوزات جاهزة إلى حركة جاهزة للرف، تدعم الشحيل العلامات بتنسيق التوزيع بعد الإنتاج."
         >
           <a href="/contact" className="btn-primary">
-            Start a Distribution Project
+            ابدأ مشروع توزيع
           </a>
           <a href="/private-label" className="btn-secondary">
-            Explore Private Label Manufacturing
+            استعرض تصنيع العلامة الخاصة
           </a>
         </PageHero>
 
@@ -142,9 +142,9 @@ export default function DistributionPage() {
             <div className="max-w-3xl">
               <SectionHeading
                 align="left"
-                eyebrow="Overview"
-                title="Production is the start, not the finish"
-                description="After manufacturing, the next challenge is getting products prepared, organized, and moved into the right retail channels. Al Shehail's distribution support helps food brands connect production with retail execution."
+                eyebrow="نظرة عامة"
+                title="الإنتاج هو البداية، لا النهاية"
+                description="بعد التصنيع، يكمن التحدي التالي في تجهيز المنتجات وتنظيمها ونقلها إلى قنوات التجزئة الصحيحة. دعم التوزيع لدى الشحيل يساعد العلامات الغذائية على ربط الإنتاج بالتنفيذ في التجزئة."
               />
             </div>
           </div>
@@ -154,9 +154,9 @@ export default function DistributionPage() {
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
             <ServiceFeatureGrid
-              eyebrow="What We Support"
-              title="Distribution support after production"
-              description="Practical, operational support that connects finished products with the right route to market."
+              eyebrow="ما ندعمه"
+              title="دعم توزيع بعد الإنتاج"
+              description="دعم عملي وتشغيلي يربط المنتجات الجاهزة بالمسار الصحيح نحو السوق."
               items={coverage}
             />
           </div>
@@ -166,9 +166,9 @@ export default function DistributionPage() {
         <section className="section border-y border-sand/50 bg-beige/40">
           <div className="container-x">
             <ServiceProcess
-              eyebrow="How It Works"
-              title="A clear path from product ready to retail"
-              description="A simple coordination flow that keeps finished product moving toward its market."
+              eyebrow="كيف نعمل"
+              title="مسار واضح من جاهزية المنتج إلى التجزئة"
+              description="مسار تنسيق بسيط يبقي المنتج الجاهز متحركًا نحو سوقه."
               steps={process}
             />
           </div>
@@ -178,8 +178,8 @@ export default function DistributionPage() {
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
             <SectionHeading
-              eyebrow="Who It's For"
-              title="Built for brands that need more than production"
+              eyebrow="لمن هذه الخدمة"
+              title="مبنية للعلامات التي تحتاج أكثر من الإنتاج"
             />
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {audience.map((a) => (
@@ -198,9 +198,9 @@ export default function DistributionPage() {
         <section className="section border-y border-sand/50 bg-beige/30">
           <div className="container-x">
             <ServiceRelatedServices
-              eyebrow="One Connected Partner"
-              title="Distribution connects with the wider service ecosystem"
-              description="Distribution works alongside manufacturing, packaging, and marketing so a brand can move from idea to market with one partner."
+              eyebrow="شريك واحد متكامل"
+              title="التوزيع يتصل بمنظومة الخدمات الأوسع"
+              description="يعمل التوزيع جنبًا إلى جنب مع التصنيع والتغليف والتسويق، حتى تتحرك علامتك من الفكرة إلى السوق مع شريك واحد."
               items={related}
             />
           </div>
@@ -215,12 +215,12 @@ export default function DistributionPage() {
               </span>
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
-                  How scope is defined
+                  كيف يُحدَّد النطاق
                 </p>
                 <p className="mt-1.5 text-sm leading-relaxed text-stone">
-                  Distribution scope, retail channels, delivery schedule, and
-                  coverage are confirmed per project based on product type,
-                  quantity, packaging, and market requirements.
+                  يُحدَّد نطاق التوزيع، وقنوات التجزئة، وجدول التسليم، والتغطية
+                  لكل مشروع بناءً على نوع المنتج والكمية والتغليف ومتطلبات
+                  السوق.
                 </p>
               </div>
             </div>
@@ -229,11 +229,11 @@ export default function DistributionPage() {
 
         {/* 8. Final CTA */}
         <CtaBand
-          eyebrow="Beyond Production"
-          title="Ready to move your product beyond production?"
-          text="Talk to Al Shehail about production, packing, and distribution support for your food brand."
-          primary={{ label: "Start a Project", href: "/contact" }}
-          secondary={{ label: "View Products", href: "/products" }}
+          eyebrow="ما بعد الإنتاج"
+          title="جاهز لنقل منتجك إلى ما بعد الإنتاج؟"
+          text="تحدّث مع الشحيل عن دعم الإنتاج والتعبئة والتوزيع لعلامتك الغذائية."
+          primary={{ label: "ابدأ مشروعك", href: "/contact" }}
+          secondary={{ label: "استعرض المنتجات", href: "/products" }}
         />
       </main>
       <Footer />

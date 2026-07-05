@@ -16,7 +16,7 @@ export default function SectionHeading({
       className={
         align === "center"
           ? "mx-auto max-w-2xl text-center"
-          : "max-w-2xl text-left"
+          : "max-w-2xl text-start"
       }
     >
       <span className="eyebrow">

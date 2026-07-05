@@ -7,8 +7,8 @@ const inputClass =
   "w-full rounded-xl border border-sand bg-warmwhite px-4 py-3 text-sm text-charcoal placeholder:text-stone/60 transition-colors focus:border-champagne focus:outline-none focus:ring-2 focus:ring-champagne/30";
 const labelClass = "mb-1.5 block text-sm font-medium text-charcoal";
 
-const categoryOptions = [...productCategories.map((c) => c.name), "Other"];
-const productOptions = [...products.map((p) => p.name), "Other"];
+const categoryOptions = [...productCategories.map((c) => c.name), "أخرى"];
+const productOptions = [...products.map((p) => p.name), "أخرى"];
 
 type FormState = {
   fullName: string;
@@ -33,8 +33,8 @@ const initialState: FormState = {
   whatsapp: "",
   category: "",
   product: "",
-  existingRecipe: "No",
-  packagingSupport: "No",
+  existingRecipe: "لا",
+  packagingSupport: "لا",
   quantity: "",
   targetMarket: "",
   message: "",
@@ -42,21 +42,21 @@ const initialState: FormState = {
 
 function buildWhatsAppLink(form: FormState): string {
   const lines = [
-    "New private label manufacturing enquiry — Al Shehail Food Industries",
+    "استفسار تصنيع بعلامة خاصة جديد — الشحيل للصناعات الغذائية",
     "",
-    `Full Name: ${form.fullName || "-"}`,
-    `Company: ${form.companyName || "-"}`,
-    `Country: ${form.country || "-"}`,
-    `Email: ${form.email || "-"}`,
-    `WhatsApp: ${form.whatsapp || "-"}`,
-    `Product Category: ${form.category || "-"}`,
-    `Product of Interest: ${form.product || "-"}`,
-    `Existing recipe: ${form.existingRecipe}`,
-    `Packaging support needed: ${form.packagingSupport}`,
-    `Expected monthly quantity: ${form.quantity || "-"}`,
-    `Target market: ${form.targetMarket || "-"}`,
+    `الاسم الكامل: ${form.fullName || "-"}`,
+    `الشركة: ${form.companyName || "-"}`,
+    `الدولة: ${form.country || "-"}`,
+    `البريد الإلكتروني: ${form.email || "-"}`,
+    `رقم واتساب: ${form.whatsapp || "-"}`,
+    `فئة المنتج: ${form.category || "-"}`,
+    `المنتج المطلوب: ${form.product || "-"}`,
+    `وصفة حالية: ${form.existingRecipe}`,
+    `بحاجة لدعم تغليف: ${form.packagingSupport}`,
+    `الكمية الشهرية المتوقعة: ${form.quantity || "-"}`,
+    `السوق المستهدف: ${form.targetMarket || "-"}`,
     "",
-    `Project brief: ${form.message || "-"}`,
+    `ملخص المشروع: ${form.message || "-"}`,
   ];
   return `https://wa.me/971547431444?text=${encodeURIComponent(lines.join("\n"))}`;
 }
@@ -84,44 +84,44 @@ export default function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="fullName" className={labelClass}>
-            Full Name
+            الاسم الكامل
           </label>
           <input
             id="fullName"
             className={inputClass}
             value={form.fullName}
             onChange={(e) => update("fullName", e.target.value)}
-            placeholder="Your name"
+            placeholder="اسمك"
             required
           />
         </div>
         <div>
           <label htmlFor="companyName" className={labelClass}>
-            Company Name
+            اسم الشركة
           </label>
           <input
             id="companyName"
             className={inputClass}
             value={form.companyName}
             onChange={(e) => update("companyName", e.target.value)}
-            placeholder="Company"
+            placeholder="الشركة"
           />
         </div>
         <div>
           <label htmlFor="country" className={labelClass}>
-            Country
+            الدولة
           </label>
           <input
             id="country"
             className={inputClass}
             value={form.country}
             onChange={(e) => update("country", e.target.value)}
-            placeholder="Country"
+            placeholder="الدولة"
           />
         </div>
         <div>
           <label htmlFor="email" className={labelClass}>
-            Email
+            البريد الإلكتروني
           </label>
           <input
             id="email"
@@ -130,12 +130,13 @@ export default function ContactForm() {
             value={form.email}
             onChange={(e) => update("email", e.target.value)}
             placeholder="you@company.com"
+            dir="ltr"
             required
           />
         </div>
         <div>
           <label htmlFor="whatsapp" className={labelClass}>
-            WhatsApp Number
+            رقم واتساب
           </label>
           <input
             id="whatsapp"
@@ -143,23 +144,24 @@ export default function ContactForm() {
             value={form.whatsapp}
             onChange={(e) => update("whatsapp", e.target.value)}
             placeholder="+971 ..."
+            dir="ltr"
           />
         </div>
         <div>
           <label htmlFor="quantity" className={labelClass}>
-            Expected Monthly Quantity
+            الكمية الشهرية المتوقعة
           </label>
           <input
             id="quantity"
             className={inputClass}
             value={form.quantity}
             onChange={(e) => update("quantity", e.target.value)}
-            placeholder="e.g. cartons / units per month"
+            placeholder="مثال: كراتين / وحدات شهريًا"
           />
         </div>
         <div>
           <label htmlFor="category" className={labelClass}>
-            Product Category
+            فئة المنتج
           </label>
           <select
             id="category"
@@ -167,7 +169,7 @@ export default function ContactForm() {
             value={form.category}
             onChange={(e) => update("category", e.target.value)}
           >
-            <option value="">Select a category</option>
+            <option value="">اختر فئة</option>
             {categoryOptions.map((c) => (
               <option key={c} value={c}>
                 {c}
@@ -177,7 +179,7 @@ export default function ContactForm() {
         </div>
         <div>
           <label htmlFor="product" className={labelClass}>
-            Product of Interest
+            المنتج المطلوب
           </label>
           <select
             id="product"
@@ -185,7 +187,7 @@ export default function ContactForm() {
             value={form.product}
             onChange={(e) => update("product", e.target.value)}
           >
-            <option value="">Select a product</option>
+            <option value="">اختر منتجًا</option>
             {productOptions.map((p) => (
               <option key={p} value={p}>
                 {p}
@@ -195,7 +197,7 @@ export default function ContactForm() {
         </div>
         <div>
           <label htmlFor="existingRecipe" className={labelClass}>
-            Do you have an existing recipe?
+            هل لديك وصفة حالية؟
           </label>
           <select
             id="existingRecipe"
@@ -203,13 +205,13 @@ export default function ContactForm() {
             value={form.existingRecipe}
             onChange={(e) => update("existingRecipe", e.target.value)}
           >
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
+            <option value="لا">لا</option>
+            <option value="نعم">نعم</option>
           </select>
         </div>
         <div>
           <label htmlFor="packagingSupport" className={labelClass}>
-            Do you need packaging support?
+            هل تحتاج إلى دعم في التغليف؟
           </label>
           <select
             id="packagingSupport"
@@ -217,25 +219,25 @@ export default function ContactForm() {
             value={form.packagingSupport}
             onChange={(e) => update("packagingSupport", e.target.value)}
           >
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
+            <option value="لا">لا</option>
+            <option value="نعم">نعم</option>
           </select>
         </div>
         <div className="sm:col-span-2">
           <label htmlFor="targetMarket" className={labelClass}>
-            Target Market
+            السوق المستهدف
           </label>
           <input
             id="targetMarket"
             className={inputClass}
             value={form.targetMarket}
             onChange={(e) => update("targetMarket", e.target.value)}
-            placeholder="e.g. UAE retail, GCC export, foodservice"
+            placeholder="مثال: تجزئة الإمارات، تصدير الخليج، قطاع المطاعم"
           />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor="message" className={labelClass}>
-            Message / Project Brief
+            رسالتك / ملخص المشروع
           </label>
           <textarea
             id="message"
@@ -243,18 +245,18 @@ export default function ContactForm() {
             className={inputClass}
             value={form.message}
             onChange={(e) => update("message", e.target.value)}
-            placeholder="Tell us about your product idea, positioning, and goals."
+            placeholder="أخبرنا عن فكرة منتجك، وتموضعك، وأهدافك."
           />
         </div>
       </div>
 
       <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center">
         <button type="submit" className="btn-primary">
-          Send via WhatsApp
+          إرسال عبر واتساب
         </button>
         <p className="text-xs text-stone">
-          No account needed — submitting prepares a WhatsApp message with your
-          details for our team.
+          لا حاجة لإنشاء حساب — الإرسال يجهّز رسالة واتساب تحتوي على بياناتك
+          لفريقنا.
         </p>
       </div>
 
@@ -263,18 +265,18 @@ export default function ContactForm() {
           role="status"
           className="mt-6 rounded-2xl border border-champagne/50 bg-warmwhite p-5 text-sm leading-relaxed text-charcoal"
         >
-          <span className="font-semibold text-ink">Thank you</span> — your
-          manufacturing request is ready to send on WhatsApp. Our team will
-          review your project details and get back to you shortly.
+          <span className="font-semibold text-ink">شكرًا لك</span> — طلب
+          التصنيع جاهز للإرسال عبر واتساب. سيراجع فريقنا تفاصيل مشروعك ويعاود
+          التواصل معك قريبًا.
           <span className="mt-2 block text-xs text-stone">
-            If WhatsApp didn’t open automatically,{" "}
+            إذا لم يفتح واتساب تلقائيًا،{" "}
             <a
               href={buildWhatsAppLink(form)}
               target="_blank"
               rel="noopener noreferrer"
               className="font-semibold text-gold underline"
             >
-              tap here to open it
+              اضغط هنا لفتحه
             </a>
             .
           </span>

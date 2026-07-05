@@ -8,9 +8,9 @@ import ProductFamilyStickyNav from "@/components/products/ProductFamilyStickyNav
 import { products, productsByCategory } from "@/lib/products";
 
 export const metadata: Metadata = {
-  title: { absolute: "Bakery Products | Al Shehail Food Industries UAE" },
+  title: { absolute: "منتجات المخبوزات | الشحيل للصناعات الغذائية الإمارات" },
   description:
-    "Explore Al Shehail Food Industries’ bakery manufacturing range including flatbread & wraps, soft bread, pastry, and date sweets for private label and retail supply.",
+    "استعرض تشكيلة الشحيل للصناعات الغذائية من المخبوزات — خبز مسطح ولفائف، وخبز طري، ومعجنات، وحلويات تمر — للتصنيع بعلامة خاصة وتوريد التجزئة.",
   alternates: { canonical: "/products" },
 };
 
@@ -23,10 +23,10 @@ const familyIcon: Record<string, ProductIconType> = {
 };
 
 const familyTagline: Record<string, string> = {
-  "flatbread-wraps": "Arabic flatbread & functional wraps",
-  "soft-bread": "Loaves, buns & rolls",
-  pastry: "Croissants & puff pastry",
-  sweets: "Date sweets & cookies",
+  "flatbread-wraps": "خبز عربي ولفائف وظيفية",
+  "soft-bread": "أرغفة وكعك وأرغفة صغيرة",
+  pastry: "كرواسان وعجين مورّق",
+  sweets: "حلويات تمر وبسكويت",
 };
 
 function AllIcon({ size = 30 }: { size?: number }) {
@@ -53,7 +53,7 @@ function AllIcon({ size = 30 }: { size?: number }) {
 function ArrowRight() {
   return (
     <svg
-      className="transition-transform duration-300 group-hover:translate-x-0.5"
+      className="rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5"
       width="15"
       height="15"
       viewBox="0 0 24 24"
@@ -95,7 +95,7 @@ function FamilyCard({
         {name}
       </span>
       <span className="mt-0.5 text-[11px] font-medium text-stone/70">
-        {count} {count === 1 ? "product" : "products"}
+        {count} {count === 1 ? "منتج" : "منتجات"}
       </span>
       <span className="mt-1.5 text-xs leading-snug text-stone">{tagline}</span>
     </a>
@@ -117,14 +117,14 @@ export default function ProductsPage() {
             <div className="max-w-3xl">
               <span className="eyebrow">
                 <span className="h-px w-6 bg-champagne" />
-                Product Directory
+                دليل المنتجات
               </span>
               <h1 className="heading-serif mt-6 text-4xl leading-[1.1] sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
-                Bakery Products by Family
+                منتجات المخبوزات حسب الفئة
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-stone">
-                Browse our manufacturing range by product family — developed for
-                private label, retail, and institutional supply.
+                استعرض تشكيلتنا التصنيعية حسب فئة المنتج — مطوَّرة للعلامة
+                الخاصة، والتجزئة، والتوريد المؤسسي.
               </p>
             </div>
           </div>
@@ -140,9 +140,9 @@ export default function ProductsPage() {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
               <FamilyCard
                 href="#product-directory"
-                name="All Products"
+                name="جميع المنتجات"
                 count={products.length}
-                tagline="The full manufacturing range"
+                tagline="التشكيلة التصنيعية الكاملة"
               >
                 <AllIcon size={30} />
               </FamilyCard>
@@ -183,7 +183,7 @@ export default function ProductsPage() {
                     <span className="eyebrow">
                       <span className="h-px w-6 bg-champagne" />
                       {category.name}
-                      <span className="ml-1 text-stone/70">
+                      <span className="ms-1 text-stone/70">
                         · {items.length}
                       </span>
                     </span>
@@ -198,7 +198,7 @@ export default function ProductsPage() {
                     href="#product-families"
                     className="group inline-flex items-center gap-1.5 text-sm font-semibold text-gold"
                   >
-                    Back to families
+                    العودة إلى الفئات
                     <ArrowRight />
                   </a>
                 </div>
@@ -222,25 +222,24 @@ export default function ProductsPage() {
           <div className="container-x">
             <div className="relative overflow-hidden rounded-3xl border border-champagne/40 bg-gradient-to-br from-warmwhite via-cream to-beige px-6 py-16 text-center shadow-soft sm:px-12 lg:py-20">
               <div className="pointer-events-none absolute inset-0">
-                <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
-                <div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />
+                <div className="absolute -end-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
+                <div className="absolute -bottom-24 -start-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />
               </div>
               <div className="relative mx-auto max-w-2xl">
                 <span className="eyebrow">
                   <span className="h-px w-6 bg-champagne" />
-                  Private Label
+                  العلامة الخاصة
                 </span>
                 <h2 className="heading-serif mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-                  Need a Custom Bakery Product?
+                  تحتاج منتج مخبوزات مخصَّصًا؟
                 </h2>
                 <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
-                  Al Shehail can support product development, recipe
-                  customization, private label manufacturing, packaging, and
-                  retail-ready supply.
+                  يمكن للشحيل دعم تطوير المنتج، وتخصيص الوصفة، والتصنيع بعلامة
+                  خاصة، والتغليف، والتوريد الجاهز للرف.
                 </p>
                 <div className="mt-8">
                   <Link href="/contact" className="btn-primary">
-                    Start a Private Label Project
+                    ابدأ مشروع علامة خاصة
                   </Link>
                 </div>
               </div>

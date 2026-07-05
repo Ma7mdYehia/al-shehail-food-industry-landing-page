@@ -4,23 +4,23 @@ import { DevelopIcon, ProductionIcon, PackagingIcon, RetailIcon } from "../Icons
 
 const cards = [
   {
-    title: "Product Development",
-    text: "From brief to finished, shelf-ready product.",
+    title: "تطوير المنتجات",
+    text: "من الطلب الأولي إلى منتج نهائي جاهز للرف.",
     Icon: DevelopIcon,
   },
   {
-    title: "Recipe Customization",
-    text: "Formulations tailored to your target market.",
+    title: "تخصيص الوصفات",
+    text: "تركيبات مصمَّمة خصيصًا لسوقك المستهدف.",
     Icon: ProductionIcon,
   },
   {
-    title: "Private Label Manufacturing",
-    text: "Production aligned to your brand and category.",
+    title: "تصنيع العلامة الخاصة",
+    text: "إنتاج يتماشى مع علامتك وفئتك.",
     Icon: PackagingIcon,
   },
   {
-    title: "Retail-Ready Supply",
-    text: "Consistent, scalable supply to your network.",
+    title: "توريد جاهز للرف",
+    text: "توريد ثابت وقابل للتوسّع لشبكتك.",
     Icon: RetailIcon,
   },
 ];
@@ -30,9 +30,9 @@ export default function CapabilitiesTeaser() {
     <section className="section bg-warmwhite">
       <div className="container-x">
         <SectionHeading
-          eyebrow="Capabilities"
-          title="What we bring to your brand"
-          description="A full-service manufacturing partner equipped to develop, produce, and supply at retail standard."
+          eyebrow="القدرات"
+          title="ما نقدّمه لعلامتك"
+          description="شريك تصنيع متكامل الخدمات، مجهّز للتطوير والإنتاج والتوريد بمعايير التجزئة."
         />
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -53,7 +53,7 @@ export default function CapabilitiesTeaser() {
         </div>
 
         <div className="mt-10 text-center">
-          <TeaserLink href="/private-label/#capabilities" label="View Capabilities" variant="secondary" />
+          <TeaserLink href="/private-label/#capabilities" label="استعرض القدرات" variant="secondary" />
         </div>
       </div>
     </section>

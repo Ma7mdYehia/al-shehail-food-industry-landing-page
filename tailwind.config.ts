@@ -21,8 +21,8 @@ const config: Config = {
         stone: "#6B655B",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        serif: ["var(--font-playfair)", "Georgia", "serif"],
+        sans: ["var(--font-arabic-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-arabic-kufi)", "var(--font-arabic-sans)", "sans-serif"],
       },
       boxShadow: {
         soft: "0 10px 40px -12px rgba(42, 39, 36, 0.12)",

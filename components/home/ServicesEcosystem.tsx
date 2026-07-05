@@ -11,30 +11,30 @@ import {
 // in compact premium cards. Conservative copy, no claims.
 const services = [
   {
-    title: "Private Label Manufacturing",
-    text: "Product development and bakery manufacturing support for food brands.",
-    cta: "Explore Manufacturing",
+    title: "تصنيع العلامة الخاصة",
+    text: "تطوير المنتج ودعم تصنيع المخبوزات للعلامات الغذائية.",
+    cta: "اكتشف حلول التصنيع",
     href: "/private-label",
     Icon: ProductionIcon,
   },
   {
-    title: "Packaging & Brand Design",
-    text: "Food-focused packaging direction and brand presentation for retail-ready products.",
-    cta: "Explore Brand Design",
+    title: "التغليف وتصميم العلامة",
+    text: "توجيه تغليف مخصَّص للأغذية وعرض علامة للمنتجات الجاهزة للرف.",
+    cta: "استعرض تصميم العلامة",
     href: "/services/brand-design",
     Icon: PackagingIcon,
   },
   {
-    title: "Distribution Fleet & Retail Reach",
-    text: "Distribution coordination for finished products moving toward selected retail channels.",
-    cta: "Explore Distribution",
+    title: "أسطول التوزيع والوصول للتجزئة",
+    text: "تنسيق توزيع المنتجات النهائية نحو قنوات التجزئة المختارة.",
+    cta: "استعرض التوزيع",
     href: "/services/distribution",
     Icon: RetailIcon,
   },
   {
-    title: "Food Digital Marketing",
-    text: "Launch content, product storytelling, and digital communication direction for food brands.",
-    cta: "Explore Marketing",
+    title: "التسويق الرقمي الغذائي",
+    text: "محتوى إطلاق، وسرد قصة المنتج، وتوجيه تواصل رقمي للعلامات الغذائية.",
+    cta: "استعرض التسويق",
     href: "/services/digital-marketing",
     Icon: DevelopIcon,
   },
@@ -43,7 +43,7 @@ const services = [
 function ArrowRight() {
   return (
     <svg
-      className="transition-transform duration-300 group-hover:translate-x-0.5"
+      className="rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5"
       width="15"
       height="15"
       viewBox="0 0 24 24"
@@ -64,9 +64,9 @@ export default function ServicesEcosystem() {
     <section className="section border-y border-sand/60 bg-warmwhite">
       <div className="container-x">
         <SectionHeading
-          eyebrow="Beyond Manufacturing"
-          title="One partner across the food product journey"
-          description="Al Shehail supports food brands across production, packaging, distribution, and digital communication — helping products move from idea to retail-ready execution."
+          eyebrow="ما بعد التصنيع"
+          title="شريك واحد على مدار رحلة منتجك الغذائي"
+          description="تدعم الشحيل العلامات الغذائية عبر الإنتاج، والتغليف، والتوزيع، والتواصل الرقمي — لمرافقة منتجك من الفكرة إلى التنفيذ الجاهز للرف."
         />
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

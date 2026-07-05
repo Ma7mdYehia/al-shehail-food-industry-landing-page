@@ -13,25 +13,25 @@ import PartnerProjectProducts from "./PartnerProjectProducts";
 // projects. These are UI labels only — no values are invented; until a verified
 // specification sheet exists every value reads as pending.
 const NUTRITION_DIMENSIONS = [
-  "Protein",
-  "Carbohydrates",
-  "Sugar",
-  "Fibre",
-  "Calories",
+  "البروتين",
+  "الكربوهيدرات",
+  "السكر",
+  "الألياف",
+  "السعرات الحرارية",
 ];
 
 const NUTRITION_HIGHLIGHT_CATEGORIES: PartnerProject["category"][] = [
-  "Healthy Bakery / Functional Bread",
-  "Organic / Government Food Brand Bakery Production",
+  "مخبوزات صحية / خبز وظيفي",
+  "إنتاج مخبوزات عضوية / لعلامة غذائية حكومية",
 ];
 
 // Short "focus type" label per project category — no new claims, just a concise
 // restatement of the existing category for the quick-facts strip.
 const FOCUS_LABEL: Record<PartnerProject["category"], string> = {
-  "Healthy Bakery / Functional Bread": "Healthy / Functional Bakery",
-  "Organic / Government Food Brand Bakery Production":
-    "Organic / Private Label Bakery",
-  "Date-Based Sweets / Bakery": "Date-Based Sweets",
+  "مخبوزات صحية / خبز وظيفي": "مخبوزات صحية / وظيفية",
+  "إنتاج مخبوزات عضوية / لعلامة غذائية حكومية":
+    "مخبوزات عضوية / علامة خاصة",
+  "حلويات ومخبوزات قائمة على التمر": "حلويات قائمة على التمر",
 };
 
 function monogram(name: string) {
@@ -191,7 +191,7 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
       {/* Warm dim backdrop — click to close */}
       <button
         type="button"
-        aria-label="Close project details"
+        aria-label="إغلاق تفاصيل المشروع"
         tabIndex={-1}
         onClick={onClose}
         className="absolute inset-0 cursor-default bg-ink/60 backdrop-blur-sm"
@@ -248,7 +248,7 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
             type="button"
             data-autofocus
             onClick={onClose}
-            aria-label="Close project details"
+            aria-label="إغلاق تفاصيل المشروع"
             className="flex h-9 w-9 flex-none items-center justify-center rounded-full border border-sand bg-cream text-charcoal transition-colors duration-200 hover:border-champagne hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-warmwhite"
           >
             <svg
@@ -271,15 +271,15 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
         <div className="flex-1 overflow-y-auto px-5 py-6 sm:px-8 sm:py-7">
           {/* Quick facts strip */}
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-            <Fact label="Focus" value={FOCUS_LABEL[project.category]} />
-            <Fact label="Products" value={String(productCount)} />
+            <Fact label="التركيز" value={FOCUS_LABEL[project.category]} />
+            <Fact label="المنتجات" value={String(productCount)} />
             <Fact
-              label="Specification data"
-              value={nutritionVerified ? "Available" : "Pending"}
+              label="بيانات المواصفات"
+              value={nutritionVerified ? "متوفرة" : "قيد الإعداد"}
             />
             <Fact
-              label="Nutrition data"
-              value={nutritionVerified ? "Verified" : "Pending"}
+              label="البيانات الغذائية"
+              value={nutritionVerified ? "موثّقة" : "قيد الإعداد"}
             />
           </div>
 
@@ -289,7 +289,7 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
             <div className="space-y-5 lg:col-span-2">
               <section>
                 <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-                  Overview
+                  نظرة عامة
                 </h3>
                 <div className="mt-3 space-y-3">
                   {project.overview.map((para, i) => (
@@ -303,22 +303,22 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
                 </div>
               </section>
 
-              <Section title="Production Focus">
+              <Section title="محاور الإنتاج">
                 <BulletGrid items={project.productionFocus} />
               </Section>
 
-              <Section title="Ingredient Strategy">
+              <Section title="استراتيجية المكونات">
                 <BulletGrid items={project.ingredientStrategy} />
               </Section>
 
-              <Section title="Process & Fermentation">
+              <Section title="العملية والتخمّر">
                 <BulletGrid items={project.processNotes} />
               </Section>
             </div>
 
             {/* Support column */}
             <div className="space-y-4">
-              <PanelSection title="Nutrition / Product Logic">
+              <PanelSection title="التغذية ومنطق المنتج">
                 {highlightNutrition && (
                   <div className="mb-3 flex flex-wrap gap-2">
                     {NUTRITION_DIMENSIONS.map((dim) => (
@@ -328,7 +328,7 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
                       >
                         {dim}
                         <span className="text-[10px] font-medium text-stone/70">
-                          pending
+                          قيد الإعداد
                         </span>
                       </span>
                     ))}
@@ -337,12 +337,12 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
                 <BulletGrid items={project.nutritionFocus} cols={1} />
                 {!nutritionVerified && (
                   <p className="mt-3 text-xs font-medium text-stone/80">
-                    Nutrition values pending verified specification sheet
+                    القيم الغذائية قيد الاعتماد عبر ورقة مواصفات موثّقة
                   </p>
                 )}
               </PanelSection>
 
-              <PanelSection title="Quality / Compliance Notes">
+              <PanelSection title="ملاحظات الجودة والامتثال">
                 <BulletGrid items={project.complianceNotes} cols={1} />
               </PanelSection>
             </div>
@@ -352,10 +352,10 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
           <section className="mt-7 border-t border-sand/70 pt-5">
             <div className="flex items-center justify-between gap-3">
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-                Products Manufactured
+                المنتجات المصنَّعة
               </h3>
               <span className="text-xs font-medium text-stone">
-                {productCount} {productCount === 1 ? "product" : "products"}
+                {productCount} {productCount === 1 ? "منتج" : "منتجات"}
               </span>
             </div>
             <div className="mt-3">

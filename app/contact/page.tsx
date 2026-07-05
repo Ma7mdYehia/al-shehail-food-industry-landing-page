@@ -8,37 +8,37 @@ import { WhatsAppIcon, PhoneIcon, MailIcon, RetailIcon } from "@/components/Icon
 export const metadata: Metadata = {
   title: {
     absolute:
-      "Contact Al Shehail Food Industries | Private Label Bakery Manufacturing UAE",
+      "تواصل مع الشحيل للصناعات الغذائية | تصنيع مخبوزات بعلامة خاصة في الإمارات",
   },
   description:
-    "Contact Al Shehail Food Industries to discuss private label bakery manufacturing, product development, packaging support, and retail-ready supply in the UAE.",
+    "تواصل مع الشحيل للصناعات الغذائية لمناقشة تصنيع مخبوزات بعلامة خاصة، وتطوير المنتجات، ودعم التغليف، والتوريد الجاهز للرف في الإمارات.",
   alternates: { canonical: "/contact" },
 };
 
 const contactCards = [
   {
-    label: "WhatsApp",
+    label: "واتساب",
     value: company.phone,
     href: whatsappLink,
     external: true,
     Icon: WhatsAppIcon,
   },
   {
-    label: "Call",
+    label: "اتصال",
     value: company.phone,
     href: `tel:+${company.phoneDigits}`,
     external: false,
     Icon: PhoneIcon,
   },
   {
-    label: "Email",
+    label: "البريد الإلكتروني",
     value: company.email,
     href: `mailto:${company.email}`,
     external: false,
     Icon: MailIcon,
   },
   {
-    label: "Location",
+    label: "الموقع",
     value: company.location,
     href: "https://maps.google.com/?q=New+Industrial+Area+Umm+Al+Quwain+UAE",
     external: true,
@@ -49,23 +49,23 @@ const contactCards = [
 const nextSteps = [
   {
     number: "01",
-    title: "We review your product brief",
-    text: "Our team studies your product idea, category, and target market.",
+    title: "نراجع طلب منتجك",
+    text: "يدرس فريقنا فكرة منتجك وفئته والسوق المستهدف.",
   },
   {
     number: "02",
-    title: "We discuss recipe and packaging needs",
-    text: "We align on recipe direction, formats, and packaging requirements.",
+    title: "نناقش احتياجات الوصفة والتغليف",
+    text: "نتفق على توجيه الوصفة والأشكال ومتطلبات التغليف.",
   },
   {
     number: "03",
-    title: "We align on sampling and production",
-    text: "We agree on sampling, specifications, and production requirements.",
+    title: "نتفق على العينات والإنتاج",
+    text: "نتفق على العينات والمواصفات ومتطلبات الإنتاج.",
   },
   {
     number: "04",
-    title: "We prepare the next step",
-    text: "We map out the path to private label manufacturing and supply.",
+    title: "نجهّز الخطوة التالية",
+    text: "نرسم مسار التصنيع بعلامة خاصة والتوريد.",
   },
 ];
 
@@ -84,15 +84,14 @@ export default function ContactPage() {
             <div className="max-w-3xl">
               <span className="eyebrow">
                 <span className="h-px w-6 bg-champagne" />
-                Private Label Manufacturing
+                تصنيع بعلامة خاصة
               </span>
               <h1 className="heading-serif mt-6 text-4xl leading-[1.1] sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
-                Request a Manufacturing Consultation
+                اطلب استشارة تصنيع
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-stone">
-                Tell us about your product idea, target market, and expected
-                volume — our team will help you explore the right bakery
-                manufacturing and private label solution.
+                أخبرنا عن فكرة منتجك، وسوقك المستهدف، والكمية المتوقعة —
+                وسيساعدك فريقنا في استكشاف حل التصنيع والعلامة الخاصة الأنسب.
               </p>
             </div>
           </div>
@@ -118,7 +117,10 @@ export default function ContactPage() {
                     <span className="block text-sm font-semibold text-charcoal">
                       {card.label}
                     </span>
-                    <span className="mt-0.5 block text-sm leading-snug text-stone">
+                    <span
+                      className="mt-0.5 block text-sm leading-snug text-stone"
+                      dir={card.label === "الموقع" ? undefined : "ltr"}
+                    >
                       {card.value}
                     </span>
                   </span>
@@ -134,11 +136,11 @@ export default function ContactPage() {
             <div className="mx-auto max-w-3xl">
               <div className="mb-8 text-center">
                 <h2 className="heading-serif text-3xl sm:text-4xl">
-                  Start your project brief
+                  ابدأ ملخص مشروعك
                 </h2>
                 <p className="mt-3 text-base leading-relaxed text-stone">
-                  Share your details below and we’ll prepare a tailored response
-                  for your private label manufacturing project.
+                  شارك بياناتك أدناه وسنجهّز ردًا مخصَّصًا لمشروع تصنيعك بعلامة
+                  خاصة.
                 </p>
               </div>
               <ContactForm />
@@ -152,10 +154,10 @@ export default function ContactPage() {
             <div className="mx-auto max-w-2xl text-center">
               <span className="eyebrow">
                 <span className="h-px w-6 bg-champagne" />
-                The Process
+                المسار
               </span>
               <h2 className="heading-serif mt-4 text-3xl sm:text-4xl">
-                What happens next?
+                ما الخطوة التالية؟
               </h2>
             </div>
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

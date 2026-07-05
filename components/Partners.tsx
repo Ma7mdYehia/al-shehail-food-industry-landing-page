@@ -8,11 +8,11 @@ export default function Partners() {
         <div className="flex flex-col items-center text-center">
           <span className="eyebrow">
             <span className="h-px w-6 bg-champagne" />
-            Manufacturing Partner For
+            شركاء وثقوا في تصنيع منتجاتهم
           </span>
           <p className="mt-3 max-w-xl text-sm text-stone">
-            Trusted to develop and produce private label bakery ranges for
-            established UAE food brands.
+            الشحيل تطوّر وتصنّع تشكيلات مخبوزات بعلامة خاصة لعلامات غذائية
+            راسخة في الإمارات.
           </p>
         </div>
 
@@ -24,9 +24,9 @@ export default function Partners() {
             href="/partners"
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-gold"
           >
-            View Partners
+            استعرض الشركاء
             <svg
-              className="transition-transform duration-300 group-hover:translate-x-0.5"
+              className="rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5"
               width="16"
               height="16"
               viewBox="0 0 24 24"

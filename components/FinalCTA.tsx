@@ -18,27 +18,27 @@ export default function FinalCTA() {
           <div className="pointer-events-none absolute inset-0">
             <div className="oven-glow absolute inset-x-0 top-0 h-1/2" />
             <div className="bg-dotted-gold absolute inset-0 opacity-25" />
-            <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
-            <div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />
+            <div className="absolute -end-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
+            <div className="absolute -bottom-24 -start-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />
           </div>
 
           <div className="relative mx-auto max-w-2xl">
             <span className="eyebrow">
               <span className="h-px w-6 bg-champagne" />
-              From Idea to Shelf
+              من الفكرة إلى الرف
             </span>
             <h2 className="heading-serif mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-              Ready to Build Your Food Product?
+              جاهز لبناء منتجك الغذائي؟
             </h2>
             <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
-              Talk to Al Shehail about manufacturing, packaging, distribution,
-              and product communication support for your food brand.
+              تواصل مع الشحيل لمناقشة التصنيع، والتغليف، والتوزيع، ودعم التواصل
+              حول منتجك لعلامتك الغذائية.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link href="/contact" className="btn-primary group">
-                Start a Project
+                ابدأ مشروعك
                 <svg
-                  className="transition-transform duration-300 group-hover:translate-x-1"
+                  className="rotate-180 transition-transform duration-300 group-hover:-translate-x-1"
                   width="16"
                   height="16"
                   viewBox="0 0 24 24"
@@ -53,7 +53,7 @@ export default function FinalCTA() {
                 </svg>
               </Link>
               <Link href="/services/distribution" className="btn-secondary">
-                Explore Services
+                استعرض خدماتنا
               </Link>
             </div>
           </div>

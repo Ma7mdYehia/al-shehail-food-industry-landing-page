@@ -3,36 +3,36 @@
 // line, each with a title and short supporting line. Lightweight, no SVG.
 const steps = [
   {
-    title: "Product Brief",
-    text: "We understand the product idea, market, format, and business goal.",
+    title: "طلب المنتج",
+    text: "نفهم فكرة المنتج والسوق والشكل والهدف التجاري.",
   },
   {
-    title: "Recipe Direction",
-    text: "We define the recipe route based on positioning and feasibility.",
+    title: "توجيه الوصفة",
+    text: "نحدّد مسار الوصفة بناءً على التموضع وقابلية التنفيذ.",
   },
   {
-    title: "Sample Development",
-    text: "Initial samples are prepared, reviewed, and refined.",
+    title: "تطوير العينات",
+    text: "تُجهَّز العينات الأولى وتُراجَع وتُطوَّر.",
   },
   {
-    title: "Costing",
-    text: "The product direction is evaluated against cost, format, and volume.",
+    title: "دراسة التكلفة",
+    text: "يُقيَّم توجّه المنتج مقابل التكلفة والشكل والكمية.",
   },
   {
-    title: "Packaging Planning",
-    text: "Packaging direction is aligned with product type and supply needs.",
+    title: "تخطيط التغليف",
+    text: "يُحدَّد توجيه التغليف بما يتماشى مع نوع المنتج واحتياجات التوريد.",
   },
   {
-    title: "Production Setup",
-    text: "The product moves into a controlled production plan.",
+    title: "إعداد الإنتاج",
+    text: "ينتقل المنتج إلى خطة إنتاج مضبوطة.",
   },
   {
-    title: "Quality Control",
-    text: "Checks are applied across handling, production, and packing.",
+    title: "مراقبة الجودة",
+    text: "تُطبَّق الفحوصات عبر التعامل مع المكونات والإنتاج والتعبئة.",
   },
   {
-    title: "Retail-Ready Supply",
-    text: "The final product is prepared for market-ready supply.",
+    title: "توريد جاهز للرف",
+    text: "يُجهَّز المنتج النهائي لتوريد جاهز للسوق.",
   },
 ];
 
@@ -41,7 +41,7 @@ export default function PrivateLabelProcess() {
     <div className="relative mx-auto mt-12 max-w-3xl">
       {/* Connecting line behind the number nodes */}
       <span
-        className="absolute bottom-3 left-5 top-3 w-px bg-sand sm:left-6"
+        className="absolute bottom-3 start-5 top-3 w-px bg-sand sm:start-6"
         aria-hidden
       />
       <ol className="space-y-4">

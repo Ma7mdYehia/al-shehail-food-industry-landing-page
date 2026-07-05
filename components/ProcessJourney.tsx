@@ -27,9 +27,13 @@ type Props = {
   id?: string;
 };
 
+// The alternating left/right grid below is authored for a fixed left-to-right
+// layout so the zigzag stays balanced; `dir="ltr"` isolates it from the page's
+// global RTL so the geometry doesn't invert. Arabic text inside each card is
+// still forced right-aligned via StepCard below.
 export default function ProcessJourney({ id }: Props) {
   return (
-    <div id={id} className="relative mt-14">
+    <div id={id} dir="ltr" className="relative mt-14">
       {/* Central / left production line */}
       <div
         className="pointer-events-none absolute bottom-0 top-0 w-px bg-gradient-to-b from-champagne/40 via-champagne/25 to-transparent max-lg:left-[27px] lg:left-1/2 lg:-translate-x-1/2"
@@ -101,21 +105,17 @@ function StepCard({
     >
       <div
         className={`flex items-center gap-3 ${
-          align === "right" ? "lg:flex-row-reverse lg:text-right" : ""
+          align === "right" ? "lg:flex-row-reverse" : ""
         }`}
       >
         <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-beige">
           <PremiumObject name={object} size={26} />
         </span>
-        <h3 className="font-serif text-base font-semibold text-ink">
+        <h3 dir="rtl" className="text-right font-serif text-base font-semibold text-ink">
           {step.title}
         </h3>
       </div>
-      <p
-        className={`mt-3 text-sm leading-relaxed text-stone ${
-          align === "right" ? "lg:text-right" : ""
-        }`}
-      >
+      <p dir="rtl" className="mt-3 text-right text-sm leading-relaxed text-stone">
         {step.description}
       </p>
     </div>

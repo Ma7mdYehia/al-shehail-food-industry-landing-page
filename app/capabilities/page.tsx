@@ -15,9 +15,9 @@ export default function CapabilitiesRedirect() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-cream px-6 text-center">
       <p className="text-sm text-stone">
-        Redirecting to{" "}
+        جارٍ التحويل إلى{" "}
         <a href={TARGET} className="font-semibold text-gold underline">
-          Private Label — Capabilities
+          العلامة الخاصة — القدرات
         </a>
         …
       </p>

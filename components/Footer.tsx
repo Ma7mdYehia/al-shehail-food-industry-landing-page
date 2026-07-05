@@ -17,16 +17,16 @@ export default function Footer() {
               />
               <span className="flex flex-col leading-none">
                 <span className="font-serif text-base font-semibold text-ink">
-                  Al Shehail
+                  الشحيل
                 </span>
-                <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-stone">
-                  Food Industries
+                <span className="text-[11px] font-medium uppercase text-stone">
+                  للصناعات الغذائية
                 </span>
               </span>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-stone">
-              {company.positioning}. From idea to shelf — developing and
-              manufacturing bakery products built for retail success.
+              {company.positioning}. من الفكرة إلى الرف — نطوّر ونصنّع منتجات
+              مخبوزات مبنية للنجاح في الرف.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {trustBadges.map((badge) => (
@@ -41,8 +41,8 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal">
-              Explore
+            <h3 className="text-xs font-semibold uppercase text-charcoal">
+              الأقسام
             </h3>
             <ul className="mt-4 space-y-2.5">
               {navLinks.map((link) => (
@@ -59,8 +59,8 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal">
-              Get in Touch
+            <h3 className="text-xs font-semibold uppercase text-charcoal">
+              تواصل معنا
             </h3>
             <ul className="mt-4 space-y-2.5 text-sm text-stone">
               <li>{company.location}</li>
@@ -68,6 +68,7 @@ export default function Footer() {
                 <a
                   href={`tel:+${company.phoneDigits}`}
                   className="transition-colors hover:text-gold"
+                  dir="ltr"
                 >
                   {company.phone}
                 </a>
@@ -76,6 +77,7 @@ export default function Footer() {
                 <a
                   href={`mailto:${company.email}`}
                   className="transition-colors hover:text-gold"
+                  dir="ltr"
                 >
                   {company.email}
                 </a>
@@ -87,12 +89,12 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-gold"
                 >
-                  WhatsApp
+                  واتساب
                 </a>
               </li>
               <li>
                 <a href="/contact" className="btn-primary mt-3">
-                  Start a Project
+                  ابدأ مشروعك
                 </a>
               </li>
             </ul>
@@ -101,9 +103,9 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-sand pt-7 text-xs text-stone sm:flex-row">
           <p>
-            © {new Date().getFullYear()} {company.name}. All rights reserved.
+            © {new Date().getFullYear()} {company.name}. جميع الحقوق محفوظة.
           </p>
-          <p>Bakery Manufacturing &amp; Private Label · United Arab Emirates</p>
+          <p>تصنيع مخبوزات وعلامات خاصة · الإمارات العربية المتحدة</p>
         </div>
       </div>
     </footer>

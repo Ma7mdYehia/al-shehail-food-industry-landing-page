@@ -53,15 +53,15 @@ export default function Header() {
           />
           <span className="flex flex-col leading-none">
             <span className="font-serif text-base font-semibold text-ink">
-              Al Shehail
+              الشحيل
             </span>
-            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-stone">
-              Food Industries
+            <span className="text-[11px] font-medium uppercase text-stone">
+              للصناعات الغذائية
             </span>
           </span>
         </a>
 
-        <nav className="hidden items-center gap-5 lg:flex xl:gap-7" aria-label="Primary">
+        <nav className="hidden items-center gap-5 lg:flex xl:gap-7" aria-label="التنقل الرئيسي">
           {primaryNav.map((item) =>
             item.children ? (
               <div key={item.label} className="group relative">
@@ -74,7 +74,7 @@ export default function Header() {
                   <Chevron />
                 </button>
                 {/* Premium flyout — opens on hover and keyboard focus */}
-                <div className="invisible absolute left-0 top-full z-50 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                <div className="invisible absolute start-0 top-full z-50 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
                   <div className="w-64 rounded-2xl border border-sand bg-warmwhite p-2 shadow-soft">
                     {item.children.map((child) => (
                       <a
@@ -102,14 +102,14 @@ export default function Header() {
 
         <div className="hidden lg:block">
           <a href="/contact" className="btn-primary">
-            Start a Project
+            ابدأ مشروعك
           </a>
         </div>
 
         <button
           type="button"
           className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-sand bg-warmwhite text-charcoal lg:hidden"
-          aria-label="Toggle menu"
+          aria-label="تبديل القائمة"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
@@ -133,18 +133,18 @@ export default function Header() {
 
       {open && (
         <div className="border-t border-sand/70 bg-warmwhite lg:hidden">
-          <nav className="container-x flex flex-col gap-1 py-4" aria-label="Mobile">
+          <nav className="container-x flex flex-col gap-1 py-4" aria-label="قائمة الجوال">
             {primaryNav.map((item) =>
               item.children ? (
                 <div key={item.label} className="py-1">
-                  <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
+                  <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase text-gold">
                     {item.label}
                   </p>
                   {item.children.map((child) => (
                     <a
                       key={child.href}
                       href={child.href}
-                      className="block rounded-lg py-2.5 pl-6 pr-3 text-sm font-medium text-charcoal hover:bg-beige"
+                      className="block rounded-lg py-2.5 ps-6 pe-3 text-sm font-medium text-charcoal hover:bg-beige"
                       onClick={() => setOpen(false)}
                     >
                       {child.label}
@@ -167,7 +167,7 @@ export default function Header() {
               className="btn-primary mt-2"
               onClick={() => setOpen(false)}
             >
-              Start a Project
+              ابدأ مشروعك
             </a>
           </nav>
         </div>

@@ -12,17 +12,17 @@ export type NavItem = {
 };
 
 export const serviceLinks: NavChild[] = [
-  { label: "Private Label Manufacturing", href: "/private-label" },
-  { label: "Distribution Fleet", href: "/services/distribution" },
-  { label: "Packaging & Brand Design", href: "/services/brand-design" },
-  { label: "Food Digital Marketing", href: "/services/digital-marketing" },
+  { label: "تصنيع العلامة الخاصة", href: "/private-label" },
+  { label: "أسطول التوزيع", href: "/services/distribution" },
+  { label: "التغليف وتصميم العلامة", href: "/services/brand-design" },
+  { label: "التسويق الرقمي الغذائي", href: "/services/digital-marketing" },
 ];
 
 export const primaryNav: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Products", href: "/products" },
-  { label: "Services", children: serviceLinks },
-  { label: "Partners", href: "/partners" },
-  { label: "Contact", href: "/contact" },
+  { label: "الرئيسية", href: "/" },
+  { label: "من نحن", href: "/about" },
+  { label: "المنتجات", href: "/products" },
+  { label: "الخدمات", children: serviceLinks },
+  { label: "الشركاء", href: "/partners" },
+  { label: "تواصل معنا", href: "/contact" },
 ];

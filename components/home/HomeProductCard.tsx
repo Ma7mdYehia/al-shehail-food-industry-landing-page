@@ -37,7 +37,7 @@ export default function HomeProductCard({ product }: { product: Product }) {
             {/* Soft oven glow + dotted texture */}
             <div className="oven-glow pointer-events-none absolute inset-0" aria-hidden />
             <div className="bg-dotted-gold pointer-events-none absolute inset-0 opacity-50" aria-hidden />
-            <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-champagne/15 blur-2xl" />
+            <div className="pointer-events-none absolute -end-8 -top-8 h-24 w-24 rounded-full bg-champagne/15 blur-2xl" />
 
             {/* Pseudo-3D icon tile */}
             <span className="tilt relative flex h-20 w-20 items-center justify-center rounded-2xl border border-sand bg-warmwhite/90 text-gold shadow-card backdrop-blur">
@@ -51,7 +51,7 @@ export default function HomeProductCard({ product }: { product: Product }) {
         )}
 
         {/* Category badge */}
-        <span className="absolute left-4 top-4 rounded-full border border-sand bg-warmwhite/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold backdrop-blur">
+        <span className="absolute start-4 top-4 rounded-full border border-sand bg-warmwhite/85 px-3 py-1 text-[11px] font-semibold uppercase text-gold backdrop-blur">
           {product.category}
         </span>
       </div>

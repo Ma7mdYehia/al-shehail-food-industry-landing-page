@@ -102,52 +102,52 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
     key: "ecosystem-open",
     type: "video",
     service: "ecosystem",
-    title: "From Product Idea to Retail-Ready Execution",
+    title: "من فكرة المنتج إلى التنفيذ الجاهز للرف",
     subtitle:
-      "Al Shehail supports food brands across manufacturing, packaging, distribution, and product communication.",
-    primaryCta: { label: "Start a Project", href: "/contact" },
-    secondaryCta: { label: "Explore Services", href: "/services/distribution" },
+      "تدعم الشحيل العلامات الغذائية عبر التصنيع، والتغليف، والتوزيع، والتواصل حول المنتج.",
+    primaryCta: { label: "ابدأ مشروعك", href: "/contact" },
+    secondaryCta: { label: "استعرض خدماتنا", href: "/services/distribution" },
     media: null,
   },
   {
     key: "manufacturing",
     type: "image",
     service: "manufacturing",
-    title: "Private Label Food Manufacturing",
+    title: "تصنيع غذائي بعلامة خاصة",
     subtitle:
-      "Product development, sampling, production, and retail-ready bakery manufacturing for food brands.",
-    primaryCta: { label: "Explore Manufacturing", href: "/private-label" },
+      "تطوير المنتج، والعينات، والإنتاج، وتصنيع مخبوزات جاهزة للرف لعلامات غذائية.",
+    primaryCta: { label: "اكتشف حلول التصنيع", href: "/private-label" },
     media: null,
   },
   {
     key: "brand-design",
     type: "image",
     service: "brand-design",
-    title: "Packaging & Brand Design",
+    title: "التغليف وتصميم العلامة",
     subtitle:
-      "Food-focused packaging direction and retail-ready brand presentation for your product range.",
-    primaryCta: { label: "Explore Brand Design", href: "/services/brand-design" },
+      "توجيه تغليف مخصَّص للأغذية وعرض علامة جاهز للرف لتشكيلة منتجاتك.",
+    primaryCta: { label: "استعرض تصميم العلامة", href: "/services/brand-design" },
     media: null,
   },
   {
     key: "distribution",
     type: "image",
     service: "distribution",
-    title: "Distribution Fleet & Retail Reach",
+    title: "أسطول التوزيع والوصول للتجزئة",
     subtitle:
-      "Distribution coordination for finished products moving toward selected retail channels.",
-    primaryCta: { label: "Explore Distribution", href: "/services/distribution" },
+      "تنسيق توزيع المنتجات النهائية نحو قنوات التجزئة المختارة.",
+    primaryCta: { label: "استعرض التوزيع", href: "/services/distribution" },
     media: null,
   },
   {
     key: "digital-marketing",
     type: "image",
     service: "digital-marketing",
-    title: "Food Digital Marketing",
+    title: "التسويق الرقمي الغذائي",
     subtitle:
-      "Launch content, product storytelling, and digital communication direction for food brands.",
+      "محتوى إطلاق، وسرد قصة المنتج، وتوجيه تواصل رقمي للعلامات الغذائية.",
     primaryCta: {
-      label: "Explore Marketing",
+      label: "استعرض التسويق",
       href: "/services/digital-marketing",
     },
     media: null,
@@ -156,10 +156,10 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
     key: "ecosystem-close",
     type: "video",
     service: "ecosystem",
-    title: "One Partner Beyond Manufacturing",
+    title: "شريك واحد يتجاوز التصنيع",
     subtitle:
-      "Build, package, distribute, and communicate your food product through one connected service ecosystem.",
-    primaryCta: { label: "Talk to Al Shehail", href: "/contact" },
+      "طوّر، وغلّف، ووزّع، وتواصل حول منتجك الغذائي من خلال منظومة خدمات متكاملة واحدة.",
+    primaryCta: { label: "تواصل مع الشحيل", href: "/contact" },
     media: null,
   },
 ];
@@ -182,57 +182,57 @@ export const manufacturingProcessNarrative: {
   note: string;
   steps: ManufacturingProcessStep[];
 } = {
-  title: "From Concept to Production",
+  title: "من الفكرة إلى الإنتاج",
   subtitle:
-    "A clear manufacturing workflow that helps food brands move from product idea to controlled production and retail-ready handoff.",
-  note: "Each workflow is confirmed per project based on product type, recipe, packaging, quantity, and market requirements.",
+    "مسار تصنيع واضح يساعد العلامات الغذائية على الانتقال من فكرة المنتج إلى إنتاج مضبوط وتسليم جاهز للرف.",
+  note: "يُحدَّد مسار العمل لكل مشروع بناءً على نوع المنتج والوصفة والتغليف والكمية ومتطلبات السوق.",
   steps: [
     {
-      title: "Product Idea",
+      title: "فكرة المنتج",
       description:
-        "Understand the product concept, category, target buyer, and intended retail use.",
+        "نفهم فكرة المنتج، وفئته، والمشتري المستهدف، والاستخدام المقصود له في التجزئة.",
       possibleAssetKey: "/images/hero-journey/product-idea.webp",
     },
     {
-      title: "Recipe Direction",
+      title: "توجيه الوصفة",
       description:
-        "Shape the product formula direction around taste, texture, ingredients, and product positioning.",
+        "نحدّد اتجاه الوصفة بما يناسب الطعم والقوام والمكونات وتموضع المنتج.",
       possibleAssetKey: "/images/hero-journey/recipe.webp",
     },
     {
-      title: "Sampling",
+      title: "العينات",
       description:
-        "Develop and review samples before moving toward production planning.",
+        "نجهّز العينات ونراجعها معك قبل الانتقال إلى تخطيط الإنتاج.",
       possibleAssetKey: "/images/hero-journey/sampling.webp",
     },
     {
-      title: "Packaging Direction",
+      title: "توجيه التغليف",
       description:
-        "Align pack format, presentation needs, and retail communication before launch.",
+        "نحدّد شكل التغليف واحتياجات العرض قبل الإطلاق.",
       possibleAssetKey: "/images/hero-journey/packaging.webp",
     },
     {
-      title: "Production Planning",
+      title: "تخطيط الإنتاج",
       description:
-        "Organize production requirements, quantities, timing, and operational readiness.",
+        "ننظّم الكميات والتوقيت ومتطلبات التشغيل قبل بدء التصنيع.",
       possibleAssetKey: null,
     },
     {
-      title: "Manufacturing",
+      title: "التصنيع",
       description:
-        "Produce the product through a controlled bakery manufacturing workflow.",
+        "ننفّذ الإنتاج ضمن سير عمل مخبوزات مضبوط.",
       possibleAssetKey: "/images/hero-journey/production.webp",
     },
     {
-      title: "Quality Control",
+      title: "مراقبة الجودة",
       description:
-        "Review product consistency, handling needs, and specification alignment.",
+        "نراجع جودة المنتج وثباته ومطابقته للمواصفات.",
       possibleAssetKey: "/images/hero-journey/qc.webp",
     },
     {
-      title: "Retail-Ready Handoff",
+      title: "التسليم الجاهز للرف",
       description:
-        "Prepare the product for next steps such as packing, distribution coordination, or launch support.",
+        "نسلّم منتجًا جاهزًا للمرحلة التالية، سواء التوزيع أو الإطلاق.",
       possibleAssetKey: "/images/hero-journey/retail-ready.webp",
     },
   ],

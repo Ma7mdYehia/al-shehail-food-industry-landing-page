@@ -14,7 +14,7 @@ export default function ManufacturingProcessSection() {
       className="section scroll-mt-24 border-t border-sand/60 bg-warmwhite"
     >
       <div className="container-x">
-        <SectionHeading eyebrow="Manufacturing Process" title={title} description={subtitle} />
+        <SectionHeading eyebrow="مسار التصنيع" title={title} description={subtitle} />
 
         <ProcessJourney />
 
@@ -28,9 +28,9 @@ export default function ManufacturingProcessSection() {
             href="/private-label"
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-gold"
           >
-            Explore Private Label Manufacturing
+            استعرض تصنيع العلامة الخاصة
             <svg
-              className="transition-transform duration-300 group-hover:translate-x-0.5"
+              className="rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5"
               width="16"
               height="16"
               viewBox="0 0 24 24"

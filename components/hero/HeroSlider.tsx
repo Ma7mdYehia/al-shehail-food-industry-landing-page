@@ -43,11 +43,11 @@ const SERVICE: Record<
   EcosystemHeroService,
   { label: string; Icon: (p: { width?: number; height?: number }) => JSX.Element }
 > = {
-  ecosystem: { label: "Al Shehail Ecosystem", Icon: EcosystemIcon },
-  manufacturing: { label: "Private Label Manufacturing", Icon: ProductionIcon },
-  "brand-design": { label: "Packaging & Brand Design", Icon: PackagingIcon },
-  distribution: { label: "Distribution & Retail Reach", Icon: RetailIcon },
-  "digital-marketing": { label: "Food Digital Marketing", Icon: DevelopIcon },
+  ecosystem: { label: "منظومة الشحيل", Icon: EcosystemIcon },
+  manufacturing: { label: "تصنيع العلامة الخاصة", Icon: ProductionIcon },
+  "brand-design": { label: "التغليف وتصميم العلامة", Icon: PackagingIcon },
+  distribution: { label: "التوزيع والوصول للتجزئة", Icon: RetailIcon },
+  "digital-marketing": { label: "التسويق الرقمي الغذائي", Icon: DevelopIcon },
 };
 
 function usePrefersReducedMotion() {
@@ -185,7 +185,7 @@ export default function HeroSlider() {
             <div className="mt-8 flex flex-wrap gap-4">
               <a href={slide.primaryCta.href} className="btn-primary group">
                 {slide.primaryCta.label}
-                <span className="transition-transform duration-300 group-hover:translate-x-0.5">
+                <span className="rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5">
                   <ArrowIcon />
                 </span>
               </a>
@@ -198,7 +198,7 @@ export default function HeroSlider() {
 
             {/* Slider controls */}
             <div className="mt-10 flex items-center gap-4">
-              <div className="flex items-center gap-2" role="tablist" aria-label="Hero slides">
+              <div className="flex items-center gap-2" role="tablist" aria-label="شرائح الصفحة الرئيسية">
                 {homepageHeroSlides.map((s, i) => {
                   const isActive = i === active;
                   return (
@@ -207,7 +207,7 @@ export default function HeroSlider() {
                       type="button"
                       role="tab"
                       aria-selected={isActive}
-                      aria-label={`Slide ${i + 1}: ${SERVICE[s.service].label}`}
+                      aria-label={`الشريحة ${i + 1}: ${SERVICE[s.service].label}`}
                       onClick={() => go(i)}
                       className={`h-2 rounded-full transition-all duration-300 ${
                         isActive
@@ -222,20 +222,20 @@ export default function HeroSlider() {
                 <button
                   type="button"
                   onClick={() => go(active - 1)}
-                  aria-label="Previous slide"
+                  aria-label="الشريحة السابقة"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-sand bg-warmwhite text-charcoal transition-colors hover:border-champagne hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
+                >
+                  <ArrowIcon />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => go(active + 1)}
+                  aria-label="الشريحة التالية"
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-sand bg-warmwhite text-charcoal transition-colors hover:border-champagne hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
                 >
                   <span className="rotate-180">
                     <ArrowIcon />
                   </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => go(active + 1)}
-                  aria-label="Next slide"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-sand bg-warmwhite text-charcoal transition-colors hover:border-champagne hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
-                >
-                  <ArrowIcon />
                 </button>
               </div>
             </div>

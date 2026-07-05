@@ -24,7 +24,7 @@ type Props = {
 function ArrowRight() {
   return (
     <svg
-      className="transition-transform duration-300 group-hover:translate-x-1"
+      className="rotate-180 transition-transform duration-300 group-hover:-translate-x-1"
       width="16"
       height="16"
       viewBox="0 0 24 24"
@@ -64,7 +64,7 @@ export default function ProductCard({ product, showUseCases = true }: Props) {
             {/* Soft oven glow + dotted texture */}
             <div className="oven-glow pointer-events-none absolute inset-0" aria-hidden />
             <div className="bg-dotted-gold pointer-events-none absolute inset-0 opacity-50" aria-hidden />
-            <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-champagne/15 blur-2xl" />
+            <div className="pointer-events-none absolute -end-8 -top-8 h-24 w-24 rounded-full bg-champagne/15 blur-2xl" />
 
             {/* Pseudo-3D icon tile */}
             <span className="tilt relative flex h-20 w-20 items-center justify-center rounded-2xl border border-sand bg-warmwhite/90 text-gold shadow-card backdrop-blur">
@@ -78,7 +78,7 @@ export default function ProductCard({ product, showUseCases = true }: Props) {
         )}
 
         {/* Category badge */}
-        <span className="absolute left-4 top-4 rounded-full border border-sand bg-warmwhite/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold backdrop-blur">
+        <span className="absolute start-4 top-4 rounded-full border border-sand bg-warmwhite/85 px-3 py-1 text-[11px] font-semibold uppercase text-gold backdrop-blur">
           {product.category}
         </span>
       </div>
@@ -94,8 +94,8 @@ export default function ProductCard({ product, showUseCases = true }: Props) {
 
         {product.variants && product.variants.length > 0 && (
           <div className="mt-3">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gold">
-              Variants
+            <span className="text-[11px] font-semibold uppercase text-gold">
+              الأصناف
             </span>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               {product.variants.map((v) => (
@@ -125,11 +125,11 @@ export default function ProductCard({ product, showUseCases = true }: Props) {
         )}
 
         {!hasAsset(photoPath) && (
-          <AssetHint label={`${product.imagePlaceholderLabel} needed`} className="mt-4" />
+          <AssetHint label={`${product.imagePlaceholderLabel} مطلوبة`} className="mt-4" />
         )}
 
         <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold">
-          View Product
+          استعرض المنتج
           <ArrowRight />
         </span>
       </div>

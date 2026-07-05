@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 // header and highlights the section currently in view via a single
 // IntersectionObserver (no scroll listeners). Horizontally scrollable on mobile.
 const NAV = [
-  { label: "Overview", id: "overview" },
-  { label: "Products", id: "products" },
-  { label: "Capabilities", id: "capabilities" },
-  { label: "Process", id: "process" },
-  { label: "Quality", id: "quality" },
-  { label: "Start Project", id: "start" },
+  { label: "نظرة عامة", id: "overview" },
+  { label: "المنتجات", id: "products" },
+  { label: "القدرات", id: "capabilities" },
+  { label: "المسار", id: "process" },
+  { label: "الجودة", id: "quality" },
+  { label: "ابدأ مشروعك", id: "start" },
 ];
 
 export default function PrivateLabelSectionNav() {
@@ -42,7 +42,7 @@ export default function PrivateLabelSectionNav() {
 
   return (
     <nav
-      aria-label="On this page"
+      aria-label="أقسام هذه الصفحة"
       className="sticky top-20 z-30 border-y border-sand/60 bg-cream/90 backdrop-blur"
     >
       <div className="container-x">

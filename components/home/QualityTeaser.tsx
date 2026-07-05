@@ -5,10 +5,10 @@ import { ShieldCheckIcon } from "../Icons";
 import { trustBadges } from "@/lib/content";
 
 const processSummary = [
-  "Ingredient handling",
-  "Batch control",
-  "Hygiene process",
-  "Quality inspection",
+  "تعامل مع المكونات",
+  "ضبط الدفعات",
+  "عملية نظافة",
+  "فحص الجودة",
 ];
 
 export default function QualityTeaser() {
@@ -26,9 +26,9 @@ export default function QualityTeaser() {
       <div className="bg-grain pointer-events-none absolute inset-0 opacity-50" aria-hidden />
       <div className="container-x relative">
         <SectionHeading
-          eyebrow="Certifications & Quality"
-          title="Quality you can put your brand behind"
-          description="Certified standards and a structured, quality-controlled production process."
+          eyebrow="الشهادات والجودة"
+          title="جودة تثق بها علامتك"
+          description="معايير معتمدة وعملية إنتاج منظمة وخاضعة لرقابة الجودة."
         />
 
         <div className="mt-12 grid gap-5 lg:grid-cols-2 lg:gap-8">
@@ -56,8 +56,8 @@ export default function QualityTeaser() {
           {/* Process summary panel */}
           <div className="glow-border relative overflow-hidden rounded-2xl bg-cream p-6">
             <div className="oven-glow pointer-events-none absolute inset-0" aria-hidden />
-            <p className="relative text-xs font-semibold uppercase tracking-[0.18em] text-gold">
-              Quality Process
+            <p className="relative text-xs font-semibold uppercase text-gold">
+              عملية الجودة
             </p>
             <ul className="relative mt-4 grid grid-cols-2 gap-3">
               {processSummary.map((step) => (
@@ -67,7 +67,7 @@ export default function QualityTeaser() {
                 </li>
               ))}
             </ul>
-            <TeaserLink href="/private-label/#quality" label="View Quality Standards" className="relative mt-6" />
+            <TeaserLink href="/private-label/#quality" label="استعرض معايير الجودة" className="relative mt-6" />
           </div>
         </div>
       </div>

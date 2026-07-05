@@ -17,8 +17,8 @@ export default function AboutTeaser() {
         >
           <source src="/assets/videos/about-al-shehail-bg.mp4" type="video/mp4" />
         </video>
-        {/* Stronger cream wash on the left for the copy, lighter on the right. */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/85 to-cream/50" />
+        {/* Stronger cream wash behind the copy (reading start), lighter toward the far side. */}
+        <div className="absolute inset-0 bg-gradient-to-l from-cream via-cream/85 to-cream/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-cream/70 via-transparent to-warmwhite/40" />
       </div>
 
@@ -28,13 +28,13 @@ export default function AboutTeaser() {
         <div className="max-w-2xl">
           <SectionHeading
             align="left"
-            eyebrow="About Al Shehail"
-            title="UAE-Based Bakery Manufacturing Partner"
-            description="Al Shehail Food Industries is a UAE-based bakery manufacturer specialized in modern bakery products, private label production, and product development for retail and institutional markets."
+            eyebrow="عن الشحيل"
+            title="شريك تصنيع مخبوزات مقرّه الإمارات"
+            description="الشحيل للصناعات الغذائية مصنّع مخبوزات مقرّه الإمارات، متخصص في منتجات مخبوزات عصرية، وإنتاج بعلامة خاصة، وتطوير منتجات لأسواق التجزئة والقطاع المؤسسي."
           />
           <TeaserLink
             href="/about"
-            label="Learn About Al Shehail"
+            label="تعرّف على الشحيل"
             className="mt-6"
           />
         </div>

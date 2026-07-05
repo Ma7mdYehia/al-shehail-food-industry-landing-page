@@ -18,113 +18,113 @@ import {
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Food Digital Marketing | Al Shehail Food Industries",
+    absolute: "التسويق الرقمي الغذائي | الشحيل للصناعات الغذائية",
   },
   description:
-    "Digital marketing support for food products, helping brands communicate clearly from product launch to online customer awareness — built on verified product details.",
+    "دعم تسويق رقمي للمنتجات الغذائية، يساعد العلامات على التواصل بوضوح من إطلاق المنتج إلى الوعي الرقمي لدى العملاء — مبني على تفاصيل منتج موثّقة.",
   alternates: { canonical: "/services/digital-marketing" },
 };
 
 const coverage = [
   {
-    title: "Product Launch Content",
+    title: "محتوى إطلاق المنتج",
     description:
-      "Campaign direction and content planning for new food product launches.",
+      "توجيه حملات وتخطيط محتوى لإطلاق منتجات غذائية جديدة.",
     Icon: CalendarIcon,
   },
   {
-    title: "Social Media Communication",
+    title: "تواصل عبر وسائل التواصل الاجتماعي",
     description:
-      "Clear product messaging for Instagram, Facebook, LinkedIn, and other online channels.",
+      "رسائل منتج واضحة عبر إنستغرام وفيسبوك ولينكدإن وقنوات رقمية أخرى.",
     Icon: RetailIcon,
   },
   {
-    title: "Food Product Storytelling",
+    title: "سرد قصة المنتج الغذائي",
     description:
-      "Turning product features, ingredients, process, and packaging into customer-facing content.",
+      "تحويل مزايا المنتج، والمكونات، والعملية، والتغليف إلى محتوى موجَّه للعميل.",
     Icon: DevelopIcon,
   },
   {
-    title: "Performance Campaign Direction",
+    title: "توجيه حملات الأداء",
     description:
-      "Marketing structure and campaign direction for awareness, lead generation, or retail support.",
+      "بنية تسويقية وتوجيه حملات للوعي، أو توليد العملاء المحتملين، أو دعم التجزئة.",
     Icon: ProductionIcon,
   },
   {
-    title: "Retail & Online Product Assets",
+    title: "أصول منتج للتجزئة والإنترنت",
     description:
-      "Digital content direction for product pages, marketplace listings, and retail communication.",
+      "توجيه محتوى رقمي لصفحات المنتج، وقوائم المتاجر الإلكترونية، وتواصل التجزئة.",
     Icon: PackagingIcon,
   },
   {
-    title: "Private Label Marketing Support",
+    title: "دعم تسويق العلامة الخاصة",
     description:
-      "Marketing support for products developed through Al Shehail's private-label manufacturing service.",
+      "دعم تسويقي للمنتجات المطوَّرة عبر خدمة التصنيع بعلامة خاصة لدى الشحيل.",
     Icon: ShieldCheckIcon,
   },
 ];
 
 const process = [
   {
-    title: "Product Understanding",
-    text: "Understand the product, category, ingredients, target customer, and market positioning.",
+    title: "فهم المنتج",
+    text: "فهم المنتج، والفئة، والمكونات، والعميل المستهدف، والتموضع في السوق.",
   },
   {
-    title: "Message Strategy",
-    text: "Define the key product messages, benefits, use cases, and customer-facing story.",
+    title: "استراتيجية الرسائل",
+    text: "تحديد رسائل المنتج الأساسية، والفوائد، وحالات الاستخدام، والقصة الموجَّهة للعميل.",
   },
   {
-    title: "Content Direction",
-    text: "Plan the content formats needed for launch, social media, website, retail, or paid campaigns.",
+    title: "توجيه المحتوى",
+    text: "تخطيط أشكال المحتوى اللازمة للإطلاق، ووسائل التواصل، والموقع، والتجزئة، أو الحملات المدفوعة.",
   },
   {
-    title: "Campaign Structure",
-    text: "Organize the campaign flow: awareness, product education, retail support, or lead generation.",
+    title: "بنية الحملة",
+    text: "تنظيم مسار الحملة: الوعي، أو تثقيف حول المنتج، أو دعم التجزئة، أو توليد العملاء المحتملين.",
   },
   {
-    title: "Review & Optimization Direction",
-    text: "Review content and campaign direction based on actual market feedback and verified product information.",
+    title: "توجيه المراجعة والتحسين",
+    text: "مراجعة المحتوى وتوجيه الحملة بناءً على تغذية راجعة فعلية من السوق ومعلومات منتج موثّقة.",
   },
 ];
 
 const deliverables = [
-  "Social media content direction",
-  "Launch campaign planning",
-  "Product storytelling",
-  "Product page copy direction",
-  "Marketplace listing content direction",
-  "Paid campaign structure",
-  "Food photography/video brief direction",
-  "Retail promotion communication",
-  "Private-label brand communication",
+  "توجيه محتوى وسائل التواصل الاجتماعي",
+  "تخطيط حملة الإطلاق",
+  "سرد قصة المنتج",
+  "توجيه نصوص صفحة المنتج",
+  "توجيه محتوى قوائم المتاجر الإلكترونية",
+  "بنية الحملات المدفوعة",
+  "توجيه ملخص تصوير/فيديو للأغذية",
+  "تواصل الترويج في التجزئة",
+  "تواصل علامة للتصنيع بعلامة خاصة",
 ];
 
 const categories = [
-  "Healthy bread and functional bakery products",
-  "Flatbread and wraps",
-  "Toast, buns, and soft bread",
-  "Croissants and pastry",
-  "Maa'moul, tamriya, cookies, and date-based sweets",
-  "Private-label food brands",
+  "خبز صحي ومنتجات مخبوزات وظيفية",
+  "خبز مسطح ولفائف",
+  "توست، وكعك، وخبز طري",
+  "كرواسان ومعجنات",
+  "معمول، وتمرية، وبسكويت، وحلويات قائمة على التمر",
+  "علامات غذائية بعلامة خاصة",
 ];
 
 const related = [
   {
-    title: "Private Label Manufacturing",
+    title: "تصنيع العلامة الخاصة",
     description:
-      "Develop and manufacture bakery products under your brand, end to end.",
+      "طوّر وصنّع منتجات مخبوزات تحت علامتك، من الفكرة إلى الرف.",
     href: "/private-label",
   },
   {
-    title: "Packaging & Brand Design",
+    title: "التغليف وتصميم العلامة",
     description:
-      "Food-focused packaging direction and brand presentation for retail.",
+      "توجيه تغليف مخصَّص للأغذية وعرض علامة للتجزئة.",
     href: "/services/brand-design",
   },
   {
-    title: "Distribution Fleet & Retail Reach",
+    title: "أسطول التوزيع والوصول للتجزئة",
     description:
-      "Distribution coordination that moves finished products toward retail.",
+      "تنسيق توزيع ينقل المنتجات الجاهزة نحو التجزئة.",
     href: "/services/distribution",
   },
 ];
@@ -154,15 +154,15 @@ export default function DigitalMarketingPage() {
       <main>
         {/* 1. Hero */}
         <PageHero
-          eyebrow="Services · Digital Marketing"
-          title="Food Digital Marketing"
-          subtitle="Digital marketing support for food products, helping brands communicate clearly from product launch to online customer awareness."
+          eyebrow="الخدمات · التسويق الرقمي"
+          title="التسويق الرقمي الغذائي"
+          subtitle="دعم تسويق رقمي للمنتجات الغذائية، يساعد العلامات على التواصل بوضوح من إطلاق المنتج إلى الوعي الرقمي لدى العملاء."
         >
           <a href="/contact" className="btn-primary">
-            Start a Marketing Project
+            ابدأ مشروع تسويق
           </a>
           <a href="/services/brand-design" className="btn-secondary">
-            Explore Brand Design
+            استعرض تصميم العلامة
           </a>
         </PageHero>
 
@@ -172,9 +172,9 @@ export default function DigitalMarketingPage() {
             <div className="max-w-3xl">
               <SectionHeading
                 align="left"
-                eyebrow="Overview"
-                title="From production story to customer-facing content"
-                description="Al Shehail supports food brands with digital marketing direction built around real product details, packaging communication, and retail readiness — helping products move from production story to customer-facing content."
+                eyebrow="نظرة عامة"
+                title="من قصة الإنتاج إلى محتوى موجَّه للعميل"
+                description="تدعم الشحيل العلامات الغذائية بتوجيه تسويق رقمي مبني حول تفاصيل منتج حقيقية، وتواصل تغليف، وجاهزية للتجزئة — لمرافقة المنتج من قصة الإنتاج إلى محتوى موجَّه للعميل."
               />
             </div>
           </div>
@@ -184,9 +184,9 @@ export default function DigitalMarketingPage() {
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
             <ServiceFeatureGrid
-              eyebrow="What We Support"
-              title="Food-product digital marketing support"
-              description="Marketing direction built around real products, packaging, and retail readiness — not generic content."
+              eyebrow="ما ندعمه"
+              title="دعم تسويق رقمي للمنتجات الغذائية"
+              description="توجيه تسويقي مبني حول منتجات حقيقية وتغليف وجاهزية للتجزئة — لا محتوى عام."
               items={coverage}
             />
           </div>
@@ -196,9 +196,9 @@ export default function DigitalMarketingPage() {
         <section className="section border-y border-sand/50 bg-beige/40">
           <div className="container-x">
             <ServiceProcess
-              eyebrow="How It Works"
-              title="A clear path from product to campaign"
-              description="A simple, direction-led flow from understanding the product to a structured campaign."
+              eyebrow="كيف نعمل"
+              title="مسار واضح من المنتج إلى الحملة"
+              description="مسار بسيط مبني على التوجيه، من فهم المنتج إلى حملة منظَّمة."
               steps={process}
             />
           </div>
@@ -208,9 +208,9 @@ export default function DigitalMarketingPage() {
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
             <SectionHeading
-              eyebrow="Deliverables"
-              title="Where we can support"
-              description="Direction, planning, and content structure across launch and online communication."
+              eyebrow="المخرجات"
+              title="أين يمكننا الدعم"
+              description="توجيه، وتخطيط، وبنية محتوى عبر الإطلاق والتواصل الرقمي."
             />
             <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {deliverables.map((d) => (
@@ -232,8 +232,8 @@ export default function DigitalMarketingPage() {
         <section className="section border-y border-sand/50 bg-beige/30">
           <div className="container-x">
             <SectionHeading
-              eyebrow="Category Fit"
-              title="Food categories this fits"
+              eyebrow="ملاءمة الفئة"
+              title="الفئات الغذائية التي تناسبها هذه الخدمة"
             />
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((c) => (
@@ -252,9 +252,9 @@ export default function DigitalMarketingPage() {
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
             <ServiceRelatedServices
-              eyebrow="One Connected Partner"
-              title="Marketing connects with the wider service ecosystem"
-              description="Digital marketing works alongside manufacturing, packaging, and distribution so a product is communicated as clearly as it is made."
+              eyebrow="شريك واحد متكامل"
+              title="التسويق يتصل بمنظومة الخدمات الأوسع"
+              description="يعمل التسويق الرقمي جنبًا إلى جنب مع التصنيع والتغليف والتوزيع، حتى يُروى المنتج بوضوح بقدر ما يُصنع بإتقان."
               items={related}
             />
           </div>
@@ -269,13 +269,12 @@ export default function DigitalMarketingPage() {
               </span>
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
-                  Before public communication
+                  قبل التواصل العلني
                 </p>
                 <p className="mt-1.5 text-sm leading-relaxed text-stone">
-                  Marketing messages, nutrition statements, product claims, and
-                  ingredient callouts should be based on verified product
-                  specifications before use in campaigns or public
-                  communication.
+                  يجب أن تستند الرسائل التسويقية، والبيانات الغذائية، وادعاءات
+                  المنتج، والإشارات إلى المكونات، إلى مواصفات منتج موثّقة قبل
+                  استخدامها في الحملات أو التواصل العلني.
                 </p>
               </div>
             </div>
@@ -284,11 +283,11 @@ export default function DigitalMarketingPage() {
 
         {/* 9. Final CTA */}
         <CtaBand
-          eyebrow="Launch Online"
-          title="Ready to launch your food product online?"
-          text="Talk to Al Shehail about product communication, launch content, and digital marketing support for your food brand."
-          primary={{ label: "Start a Marketing Project", href: "/contact" }}
-          secondary={{ label: "Explore Products", href: "/products" }}
+          eyebrow="أطلق عبر الإنترنت"
+          title="جاهز لإطلاق منتجك الغذائي عبر الإنترنت؟"
+          text="تحدّث مع الشحيل عن تواصل المنتج، ومحتوى الإطلاق، ودعم التسويق الرقمي لعلامتك الغذائية."
+          primary={{ label: "ابدأ مشروع تسويق", href: "/contact" }}
+          secondary={{ label: "استعرض المنتجات", href: "/products" }}
         />
       </main>
       <Footer />

@@ -15,10 +15,10 @@ import { products } from "@/lib/products";
 export const metadata: Metadata = {
   title: {
     absolute:
-      "Al Shehail Food Industries | Private Label Bakery Manufacturing UAE",
+      "الشحيل للصناعات الغذائية | تصنيع مخبوزات بعلامة خاصة في الإمارات",
   },
   description:
-    "Private label bakery manufacturing in the UAE — bakery product development and retail-ready supply, from idea to shelf, for retail and institutional brands.",
+    "تصنيع مخبوزات بعلامة خاصة في الإمارات — تطوير منتجات مخبوزات وتوريد جاهز للرف، من الفكرة إلى الرف، لعلامات التجزئة والقطاع المؤسسي.",
   alternates: { canonical: "/" },
 };
 
@@ -27,7 +27,7 @@ const jsonLd = {
   "@type": "Organization",
   name: company.name,
   description:
-    "UAE-based bakery manufacturing and private label partner. From idea to shelf — developing and manufacturing bakery products built for retail success.",
+    "شريك تصنيع مخبوزات وعلامات خاصة مقرّه الإمارات. من الفكرة إلى الرف — نطوّر ونصنّع منتجات مخبوزات مبنية للنجاح في الرف.",
   url: "https://www.alshehai.ae",
   address: {
     "@type": "PostalAddress",

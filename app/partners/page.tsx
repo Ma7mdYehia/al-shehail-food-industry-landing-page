@@ -11,9 +11,9 @@ import { retailPresence } from "@/lib/content";
 import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
 
 export const metadata: Metadata = {
-  title: { absolute: "Partners & Market Presence | Al Shehail Food Industries UAE" },
+  title: { absolute: "الشركاء والحضور في السوق | الشحيل للصناعات الغذائية الإمارات" },
   description:
-    "See Al Shehail Food Industries’ manufacturing partners and market presence across leading UAE retail chains, supporting bakery brands with private label and retail-ready production.",
+    "تعرّف على شركاء التصنيع لدى الشحيل للصناعات الغذائية وحضورها في كبرى سلاسل التجزئة بالإمارات، عبر دعم العلامات الغذائية بتصنيع بعلامة خاصة وإنتاج جاهز للرف.",
   alternates: { canonical: "/partners" },
 };
 
@@ -42,12 +42,12 @@ export default function PartnersPage() {
       <Header />
       <main>
         <PageHero
-          eyebrow="Partners & Presence"
-          title="Manufacturing Partners & Market Presence"
-          subtitle="Al Shehail Food Industries supports bakery brands and retail supply through private label manufacturing, product development, and market-ready production."
+          eyebrow="الشركاء والحضور"
+          title="شركاء التصنيع والحضور في السوق"
+          subtitle="تدعم الشحيل للصناعات الغذائية العلامات الغذائية وتوريد التجزئة عبر تصنيع بعلامة خاصة، وتطوير المنتجات، وإنتاج جاهز للسوق."
         >
           <a href="/contact" className="btn-primary">
-            Become a Partner
+            كن شريكًا
           </a>
         </PageHero>
 
@@ -55,9 +55,9 @@ export default function PartnersPage() {
         <section className="section border-t border-sand/60 bg-warmwhite">
           <div className="container-x">
             <SectionHeading
-              eyebrow="Manufacturing Partner For"
-              title="Trusted by established food brands"
-              description="We develop and produce private label bakery ranges for established UAE food brands."
+              eyebrow="شركاء وثقوا في تصنيع منتجاتهم"
+              title="موثوقون لدى علامات غذائية راسخة"
+              description="نطوّر وننتج تشكيلات مخبوزات بعلامة خاصة لعلامات غذائية راسخة في الإمارات."
             />
             {/* Clickable partner cards — each opens its project detail modal */}
             <PartnerProjectGrid className="mt-12" variant="detailed" />
@@ -68,9 +68,9 @@ export default function PartnersPage() {
         <section className="section">
           <div className="container-x">
             <SectionHeading
-              eyebrow="Market Presence"
-              title="Available across leading UAE retail"
-              description="Our products reach shoppers through major hypermarkets, cooperatives, and premium grocery chains across the UAE."
+              eyebrow="الحضور في السوق"
+              title="متوفرون في كبرى منافذ التجزئة بالإمارات"
+              description="تصل منتجاتنا إلى المتسوقين عبر كبرى الهايبرماركت، والجمعيات التعاونية، وسلاسل البقالة الراقية في جميع أنحاء الإمارات."
             />
             <div className="mt-12 overflow-hidden rounded-3xl border border-sand bg-cream">
               <div className="grid grid-cols-2 gap-px bg-sand sm:grid-cols-3 lg:grid-cols-5">
@@ -98,7 +98,7 @@ export default function PartnersPage() {
                     <span className="font-serif text-sm font-semibold leading-tight text-charcoal sm:text-base">
                       {retailer}
                     </span>
-                    {!hasAsset(logoPath) && <AssetHint label="Retail logo needed" />}
+                    {!hasAsset(logoPath) && <AssetHint label="شعار التجزئة مطلوب" />}
                   </div>
                   );
                 })}
@@ -112,19 +112,19 @@ export default function PartnersPage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl text-center">
               <SectionHeading
-                eyebrow="Market Trust"
-                title="Presence built on operational discipline"
-                description="Reaching and staying in major retail environments takes consistency, packaging readiness, dependable quality, and operational discipline across every batch. That is the standard Al Shehail manufactures to."
+                eyebrow="ثقة السوق"
+                title="حضور مبني على انضباط تشغيلي"
+                description="الوصول إلى بيئات التجزئة الكبرى والبقاء فيها يتطلب ثباتًا، وجاهزية تغليف، وجودة موثوقة، وانضباطًا تشغيليًا في كل دفعة. هذا هو المعيار الذي تصنّع الشحيل وفقه."
               />
             </div>
           </div>
         </section>
 
         <CtaBand
-          eyebrow="Partner With Us"
-          title="Manufacture Your Bakery Brand With Al Shehail"
-          text="Talk to our team about private label manufacturing, product development, and retail-ready supply."
-          primary={{ label: "Contact Us", href: "/contact" }}
+          eyebrow="كن شريكًا معنا"
+          title="صنّع علامتك من المخبوزات مع الشحيل"
+          text="تحدّث مع فريقنا عن التصنيع بعلامة خاصة، وتطوير المنتجات، والتوريد الجاهز للرف."
+          primary={{ label: "تواصل معنا", href: "/contact" }}
         />
       </main>
       <Footer />

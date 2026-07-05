@@ -10,15 +10,15 @@ export default function PrivateLabelTeaser() {
       <FlowBackdrop />
       <div className="container-x relative">
         <SectionHeading
-          eyebrow="Private Label Solutions"
-          title="From idea to shelf, end to end"
-          description="One connected manufacturing line — product development, recipe, sampling, costing, packaging, production, quality control, and retail-ready supply."
+          eyebrow="حلول العلامة الخاصة"
+          title="من الفكرة إلى الرف، خطوة بخطوة"
+          description="خط تصنيع متكامل — تطوير المنتج، والوصفة، والعينات، ودراسة التكلفة، والتغليف، والإنتاج، ومراقبة الجودة، والتوريد الجاهز للرف."
         />
 
         <ProcessJourney />
 
         <div className="mt-12 text-center">
-          <TeaserLink href="/private-label" label="Explore Private Label" variant="secondary" />
+          <TeaserLink href="/private-label" label="استعرض العلامة الخاصة" variant="secondary" />
         </div>
       </div>
     </section>

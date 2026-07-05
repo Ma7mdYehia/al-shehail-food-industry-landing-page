@@ -18,9 +18,9 @@ function monogram(name: string) {
 // Public-facing, conservative status labels. "needs-data" maps to "Spec pending"
 // to stay honest about the verified-specification-sheet placeholder state.
 const STATUS_LABEL: Record<PartnerProductStatus, string> = {
-  active: "Active",
-  planned: "Planned",
-  "needs-data": "Spec pending",
+  active: "نشط",
+  planned: "مخطَّط",
+  "needs-data": "بانتظار المواصفات",
 };
 
 // Warm premium badge colors — no harsh red, even for the pending state.
@@ -70,7 +70,7 @@ function ImagePlaceholder({
       </span>
       {caption && (
         <span className="text-[11px] font-medium text-stone/70">
-          Product photography pending
+          صورة المنتج قيد التجهيز
         </span>
       )}
     </div>
@@ -104,7 +104,7 @@ export default function PartnerProjectProducts({
                 }
                 aria-expanded={isSelected}
                 aria-controls={previewId}
-                className={`group flex h-full w-full flex-col overflow-hidden rounded-2xl border bg-warmwhite text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne hover:shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream ${
+                className={`group flex h-full w-full flex-col overflow-hidden rounded-2xl border bg-warmwhite text-start transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne hover:shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream ${
                   isSelected
                     ? "border-champagne shadow-card ring-1 ring-champagne"
                     : "border-sand"
@@ -151,10 +151,10 @@ export default function PartnerProjectProducts({
                     </div>
                   )}
                   <span className="mt-auto inline-flex items-center gap-1 pt-2 text-xs font-semibold text-gold">
-                    {isSelected ? "Hide details" : "Preview details"}
+                    {isSelected ? "إخفاء التفاصيل" : "معاينة التفاصيل"}
                     <svg
                       className={`transition-transform duration-300 ${
-                        isSelected ? "rotate-90" : "group-hover:translate-x-0.5"
+                        isSelected ? "rotate-90" : "rotate-180 group-hover:-translate-x-0.5"
                       }`}
                       width="14"
                       height="14"
@@ -184,7 +184,7 @@ export default function PartnerProjectProducts({
           className="animate-fade-up mt-4 overflow-hidden rounded-2xl border border-champagne/60 bg-cream shadow-card"
         >
           <div className="grid gap-0 sm:grid-cols-[15rem_1fr]">
-            <div className="relative flex aspect-[3/2] items-center justify-center border-b border-sand bg-beige bg-dotted-gold sm:aspect-auto sm:border-b-0 sm:border-r">
+            <div className="relative flex aspect-[3/2] items-center justify-center border-b border-sand bg-beige bg-dotted-gold sm:aspect-auto sm:border-b-0 sm:border-e">
               {selected.image ? (
                 <Image
                   src={selected.image}
@@ -212,7 +212,7 @@ export default function PartnerProjectProducts({
                 <button
                   type="button"
                   onClick={() => setSelectedSlug(null)}
-                  aria-label="Close product preview"
+                  aria-label="إغلاق معاينة المنتج"
                   className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-sand bg-warmwhite text-charcoal transition-colors duration-200 hover:border-champagne hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
                 >
                   <svg
@@ -236,7 +236,7 @@ export default function PartnerProjectProducts({
               </p>
 
               <h5 className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
-                Key product notes
+                ملاحظات المنتج الرئيسية
               </h5>
               <ul className="mt-2 space-y-1.5">
                 {selected.keyNotes.map((note, i) => (
@@ -251,11 +251,11 @@ export default function PartnerProjectProducts({
               </ul>
 
               <h5 className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
-                Nutrition highlights
+                أبرز القيم الغذائية
               </h5>
               {nutritionPending(selected) ? (
                 <p className="mt-2 text-sm font-medium text-stone/80">
-                  Nutrition values pending verified specification sheet
+                  القيم الغذائية قيد الاعتماد عبر ورقة مواصفات موثّقة
                 </p>
               ) : (
                 <ul className="mt-2 space-y-1.5">

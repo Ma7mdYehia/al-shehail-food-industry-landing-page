@@ -14,13 +14,13 @@ import { PremiumObject, type PremiumObjectName } from "../visuals/PremiumObjects
 // (a shortened, presentation-only view of lib/content privateLabelSteps) and
 // map 1:1 to lib/content heroSlides.
 const FLOW: { label: string; object: PremiumObjectName }[] = [
-  { label: "Product Idea", object: "recipe" },
-  { label: "Recipe", object: "flour" },
-  { label: "Sampling", object: "croissant" },
-  { label: "Packaging", object: "carton" },
-  { label: "Production", object: "bun" },
-  { label: "QC", object: "qc" },
-  { label: "Retail Ready", object: "retail" },
+  { label: "فكرة المنتج", object: "recipe" },
+  { label: "الوصفة", object: "flour" },
+  { label: "العينات", object: "croissant" },
+  { label: "التغليف", object: "carton" },
+  { label: "الإنتاج", object: "bun" },
+  { label: "الجودة", object: "qc" },
+  { label: "جاهز للرف", object: "retail" },
 ];
 
 type Props = {
@@ -32,7 +32,7 @@ type Props = {
 
 export default function HeroSystem({ active, onSelect }: Props) {
   return (
-    <MouseGlow className="mouse-glow mouse-glow-border relative mx-auto w-full max-w-[17rem] rounded-3xl lg:mr-0 lg:ml-auto lg:max-h-[calc(100vh-9rem)] xl:max-w-[18rem]">
+    <MouseGlow className="mouse-glow mouse-glow-border relative mx-auto w-full max-w-[17rem] rounded-3xl lg:me-0 lg:ms-auto lg:max-h-[calc(100vh-9rem)] xl:max-w-[18rem]">
       <div className="glow-border relative overflow-hidden rounded-3xl bg-warmwhite/90 p-1.5 shadow-soft backdrop-blur-md sm:p-2">
         {/* Layered premium background */}
         <div className="oven-glow pointer-events-none absolute inset-0" aria-hidden />
@@ -43,11 +43,11 @@ export default function HeroSystem({ active, onSelect }: Props) {
           {/* Header */}
           <div className="flex items-center justify-between gap-2.5">
             <div>
-              <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-gold sm:text-[10px]">
-                Manufacturing System
+              <span className="text-[9px] font-semibold uppercase text-gold sm:text-[10px]">
+                نظام التصنيع
               </span>
               <p className="mt-0.5 font-serif text-sm font-semibold leading-tight text-ink">
-                From idea to shelf
+                من الفكرة إلى الرف
               </p>
             </div>
             <span className="flex h-7 w-7 flex-none items-center justify-center rounded-xl bg-gold-gradient font-serif text-xs font-bold text-white shadow-card">
@@ -65,8 +65,8 @@ export default function HeroSystem({ active, onSelect }: Props) {
                     type="button"
                     onClick={() => onSelect(i)}
                     aria-current={isActive ? "step" : undefined}
-                    aria-label={`Stage ${i + 1}: ${step.label}`}
-                    className={`group flex min-h-[2rem] w-full items-center gap-2.5 rounded-xl border px-2 py-0.5 text-left transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-1 focus-visible:ring-offset-warmwhite ${
+                    aria-label={`المرحلة ${i + 1}: ${step.label}`}
+                    className={`group flex min-h-[2rem] w-full items-center gap-2.5 rounded-xl border px-2 py-0.5 text-start transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-1 focus-visible:ring-offset-warmwhite ${
                       isActive
                         ? "border-champagne/70 bg-cream shadow-card"
                         : "border-transparent hover:border-sand/70 hover:bg-cream/60"
