@@ -25,8 +25,8 @@ export default function Footer() {
               </span>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-stone">
-              {company.positioning}. من الفكرة إلى الرف — نطوّر ونصنّع منتجات
-              مخبوزات مبنية للنجاح في الرف.
+              {company.positioning}. نساعد العلامات الغذائية على تطوير وتصنيع
+              وتغليف منتجات مخبوزات جاهزة للسوق.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {trustBadges.map((badge) => (
@@ -42,7 +42,7 @@ export default function Footer() {
 
           <div>
             <h3 className="text-xs font-semibold uppercase text-charcoal">
-              الأقسام
+              روابط الموقع
             </h3>
             <ul className="mt-4 space-y-2.5">
               {navLinks.map((link) => (
@@ -105,7 +105,7 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} {company.name}. جميع الحقوق محفوظة.
           </p>
-          <p>تصنيع مخبوزات وعلامات خاصة · الإمارات العربية المتحدة</p>
+          <p>تصنيع مخبوزات وحلول علامة خاصة · الإمارات العربية المتحدة</p>
         </div>
       </div>
     </footer>
