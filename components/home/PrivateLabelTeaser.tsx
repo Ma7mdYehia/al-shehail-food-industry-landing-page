@@ -2,8 +2,9 @@ import SectionHeading from "../SectionHeading";
 import TeaserLink from "../TeaserLink";
 import ProcessJourney from "../ProcessJourney";
 import FlowBackdrop from "../decor/FlowBackdrop";
+import type { Locale } from "@/lib/i18n";
 
-export default function PrivateLabelTeaser() {
+export default function PrivateLabelTeaser({ locale = "en" }: { locale?: Locale }) {
   return (
     <section className="section relative overflow-hidden">
       {/* Subtle premium 3D-style abstract flow pattern behind the journey */}
@@ -15,7 +16,7 @@ export default function PrivateLabelTeaser() {
           description="One connected manufacturing line — product development, recipe, sampling, costing, packaging, production, quality control, and retail-ready supply."
         />
 
-        <ProcessJourney />
+        <ProcessJourney locale={locale} />
 
         <div className="mt-12 text-center">
           <TeaserLink href="/private-label" label="Explore Private Label" variant="secondary" />

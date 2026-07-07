@@ -1,7 +1,11 @@
 import Image from "next/image";
 import { company, navLinks, trustBadges, whatsappLink } from "@/lib/content";
+import { ui } from "@/lib/dictionary";
+import { localeHref, type Locale } from "@/lib/i18n";
 
-export default function Footer() {
+export default function Footer({ locale }: { locale: Locale }) {
+  const t = ui[locale];
+
   return (
     <footer className="border-t border-sand bg-warmwhite">
       <div className="container-x py-16">
@@ -17,24 +21,23 @@ export default function Footer() {
               />
               <span className="flex flex-col leading-none">
                 <span className="font-serif text-base font-semibold text-ink">
-                  Al Shehail
+                  {t.brand.line1}
                 </span>
                 <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-stone">
-                  Food Industries
+                  {t.brand.line2}
                 </span>
               </span>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-stone">
-              {company.positioning}. From idea to shelf — developing and
-              manufacturing bakery products built for retail success.
+              {company.positioning[locale]}. {t.footer.tagline}
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {trustBadges.map((badge) => (
                 <span
-                  key={badge}
+                  key={badge.en}
                   className="rounded-full border border-sand bg-cream px-3 py-1 text-[11px] font-semibold text-charcoal"
                 >
-                  {badge}
+                  {badge[locale]}
                 </span>
               ))}
             </div>
@@ -42,16 +45,16 @@ export default function Footer() {
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal">
-              Explore
+              {t.footer.explore}
             </h3>
             <ul className="mt-4 space-y-2.5">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
-                    href={link.href}
+                    href={localeHref(link.href, locale)}
                     className="text-sm text-stone transition-colors hover:text-gold"
                   >
-                    {link.label}
+                    {link.label[locale]}
                   </a>
                 </li>
               ))}
@@ -60,14 +63,15 @@ export default function Footer() {
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal">
-              Get in Touch
+              {t.footer.getInTouch}
             </h3>
             <ul className="mt-4 space-y-2.5 text-sm text-stone">
-              <li>{company.location}</li>
+              <li>{company.location[locale]}</li>
               <li>
                 <a
                   href={`tel:+${company.phoneDigits}`}
                   className="transition-colors hover:text-gold"
+                  dir="ltr"
                 >
                   {company.phone}
                 </a>
@@ -82,17 +86,17 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={whatsappLink}
+                  href={whatsappLink(locale)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-gold"
                 >
-                  WhatsApp
+                  {t.footer.whatsapp}
                 </a>
               </li>
               <li>
-                <a href="/contact" className="btn-primary mt-3">
-                  Start a Project
+                <a href={localeHref("/contact", locale)} className="btn-primary mt-3">
+                  {t.footer.startProject}
                 </a>
               </li>
             </ul>
@@ -101,9 +105,9 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-sand pt-7 text-xs text-stone sm:flex-row">
           <p>
-            © {new Date().getFullYear()} {company.name}. All rights reserved.
+            © {new Date().getFullYear()} {company.name}. {t.footer.rights}
           </p>
-          <p>Bakery Manufacturing &amp; Private Label · United Arab Emirates</p>
+          <p>{t.footer.strip}</p>
         </div>
       </div>
     </footer>

@@ -7,17 +7,63 @@ import {
   NEEDS_VERIFICATION,
   type PartnerProject,
 } from "@/lib/partnerProjects";
+import type { Locale, Localized } from "@/lib/i18n";
 import PartnerProjectProducts from "./PartnerProjectProducts";
 
-// Nutrition dimensions surfaced for healthy / functional and organic bakery
-// projects. These are UI labels only — no values are invented; until a verified
-// specification sheet exists every value reads as pending.
-const NUTRITION_DIMENSIONS = [
-  "Protein",
-  "Carbohydrates",
-  "Sugar",
-  "Fibre",
-  "Calories",
+// Modal-internal UI strings (chrome). Shared partner strings live in
+// lib/dictionary; these are specific to this dialog.
+const L = {
+  en: {
+    close: "Close project details",
+    focus: "Focus",
+    products: "Products",
+    specData: "Specification data",
+    nutritionData: "Nutrition data",
+    available: "Available",
+    pending: "Pending",
+    verified: "Verified",
+    pendingWord: "pending",
+    overview: "Overview",
+    productionFocus: "Production Focus",
+    ingredientStrategy: "Ingredient Strategy",
+    processFermentation: "Process & Fermentation",
+    nutritionLogic: "Nutrition / Product Logic",
+    qualityCompliance: "Quality / Compliance Notes",
+    productsManufactured: "Products Manufactured",
+    nutritionPending: "Nutrition values pending verified specification sheet",
+    productWord: "product",
+    productsWord: "products",
+  },
+  ar: {
+    close: "إغلاق تفاصيل المشروع",
+    focus: "التركيز",
+    products: "المنتجات",
+    specData: "بيانات المواصفات",
+    nutritionData: "البيانات الغذائية",
+    available: "متوفّرة",
+    pending: "قيد التأكيد",
+    verified: "موثّقة",
+    pendingWord: "قيد التأكيد",
+    overview: "نظرة عامة",
+    productionFocus: "تركيز الإنتاج",
+    ingredientStrategy: "استراتيجية المكوّنات",
+    processFermentation: "العملية والتخمير",
+    nutritionLogic: "منطق التغذية / المنتج",
+    qualityCompliance: "ملاحظات الجودة / الامتثال",
+    productsManufactured: "المنتجات المُصنَّعة",
+    nutritionPending: "القيم الغذائية قيد التأكيد من ورقة مواصفات موثّقة",
+    productWord: "منتج",
+    productsWord: "منتجات",
+  },
+} as const;
+
+// Nutrition dimension labels — UI only, no invented values.
+const NUTRITION_DIMENSIONS: Localized[] = [
+  { en: "Protein", ar: "بروتين" },
+  { en: "Carbohydrates", ar: "كربوهيدرات" },
+  { en: "Sugar", ar: "سكر" },
+  { en: "Fibre", ar: "ألياف" },
+  { en: "Calories", ar: "سعرات" },
 ];
 
 const NUTRITION_HIGHLIGHT_CATEGORIES: PartnerProject["category"][] = [
@@ -25,13 +71,19 @@ const NUTRITION_HIGHLIGHT_CATEGORIES: PartnerProject["category"][] = [
   "Organic / Government Food Brand Bakery Production",
 ];
 
-// Short "focus type" label per project category — no new claims, just a concise
-// restatement of the existing category for the quick-facts strip.
-const FOCUS_LABEL: Record<PartnerProject["category"], string> = {
-  "Healthy Bakery / Functional Bread": "Healthy / Functional Bakery",
-  "Organic / Government Food Brand Bakery Production":
-    "Organic / Private Label Bakery",
-  "Date-Based Sweets / Bakery": "Date-Based Sweets",
+const FOCUS_LABEL: Record<PartnerProject["category"], Localized> = {
+  "Healthy Bakery / Functional Bread": {
+    en: "Healthy / Functional Bakery",
+    ar: "مخبوزات صحية / وظيفية",
+  },
+  "Organic / Government Food Brand Bakery Production": {
+    en: "Organic / Private Label Bakery",
+    ar: "مخبوزات عضوية / علامة خاصة",
+  },
+  "Date-Based Sweets / Bakery": {
+    en: "Date-Based Sweets",
+    ar: "حلويات بالتمر",
+  },
 };
 
 function monogram(name: string) {
@@ -40,7 +92,6 @@ function monogram(name: string) {
   return (words[0][0] + words[1][0]).toUpperCase();
 }
 
-/** Main-column section: divider heading + content. */
 function Section({
   title,
   children,
@@ -58,7 +109,6 @@ function Section({
   );
 }
 
-/** Support-column section: framed card for visual separation. */
 function PanelSection({
   title,
   children,
@@ -76,7 +126,6 @@ function PanelSection({
   );
 }
 
-/** Renders a string[] as soft bullet cards (1 or 2 columns). */
 function BulletGrid({ items, cols = 2 }: { items: string[]; cols?: 1 | 2 }) {
   return (
     <ul
@@ -114,11 +163,13 @@ function Fact({ label, value }: { label: string; value: string }) {
 type Props = {
   project: PartnerProject | null;
   onClose: () => void;
+  locale: Locale;
 };
 
-export default function PartnerProjectModal({ project, onClose }: Props) {
+export default function PartnerProjectModal({ project, onClose, locale }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
+  const s = L[locale];
 
   useEffect(() => {
     if (!project) return;
@@ -129,7 +180,6 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
     body.style.overflow = "hidden";
 
     const panel = panelRef.current;
-    // Send focus into the dialog (close button) on open.
     panel?.querySelector<HTMLElement>("[data-autofocus]")?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
@@ -138,7 +188,6 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
         onClose();
         return;
       }
-      // Simple focus trap so keyboard users stay inside the dialog.
       if (e.key === "Tab" && panel) {
         const focusables = panel.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
@@ -173,7 +222,6 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
   const highlightNutrition = NUTRITION_HIGHLIGHT_CATEGORIES.includes(
     project.category
   );
-  // Until any product has verified nutrition, surface the pending note.
   const nutritionVerified = project.products.some(
     (p) =>
       p.nutritionHighlights.length > 0 &&
@@ -188,28 +236,21 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
       aria-modal="true"
       aria-labelledby={titleId}
     >
-      {/* Warm dim backdrop — click to close */}
       <button
         type="button"
-        aria-label="Close project details"
+        aria-label={s.close}
         tabIndex={-1}
         onClick={onClose}
         className="absolute inset-0 cursor-default bg-ink/60 backdrop-blur-sm"
       />
 
-      {/* Panel */}
       <div
         ref={panelRef}
         className="animate-fade-up relative flex max-h-[93vh] w-[96vw] max-w-6xl flex-col overflow-hidden rounded-2xl border border-sand bg-cream shadow-lift sm:max-h-[90vh] sm:w-[90vw] sm:rounded-3xl"
       >
-        {/* Sticky header */}
         <div className="relative flex items-start gap-4 border-b border-sand bg-warmwhite px-5 py-5 sm:gap-5 sm:px-8 sm:py-6">
-          <div
-            className="oven-glow pointer-events-none absolute inset-0"
-            aria-hidden
-          />
+          <div className="oven-glow pointer-events-none absolute inset-0" aria-hidden />
 
-          {/* Logo / monogram in a framed tile */}
           {hasAsset(logoPath) ? (
             <span className="flex h-14 flex-none items-center justify-center rounded-2xl border border-sand bg-cream px-3 shadow-card sm:h-16">
               <Image
@@ -231,7 +272,7 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
 
           <div className="min-w-0 flex-1">
             <span className="inline-flex items-center rounded-full border border-champagne/60 bg-cream px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-gold">
-              {project.category}
+              {project.categoryLabel[locale]}
             </span>
             <h2
               id={titleId}
@@ -240,7 +281,7 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
               {project.partnerName}
             </h2>
             <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-stone sm:text-[15px]">
-              {project.positioning}
+              {project.positioning[locale]}
             </p>
           </div>
 
@@ -248,7 +289,7 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
             type="button"
             data-autofocus
             onClick={onClose}
-            aria-label="Close project details"
+            aria-label={s.close}
             className="flex h-9 w-9 flex-none items-center justify-center rounded-full border border-sand bg-cream text-charcoal transition-colors duration-200 hover:border-champagne hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-warmwhite"
           >
             <svg
@@ -267,29 +308,25 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
           </button>
         </div>
 
-        {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto px-5 py-6 sm:px-8 sm:py-7">
-          {/* Quick facts strip */}
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-            <Fact label="Focus" value={FOCUS_LABEL[project.category]} />
-            <Fact label="Products" value={String(productCount)} />
+            <Fact label={s.focus} value={FOCUS_LABEL[project.category][locale]} />
+            <Fact label={s.products} value={String(productCount)} />
             <Fact
-              label="Specification data"
-              value={nutritionVerified ? "Available" : "Pending"}
+              label={s.specData}
+              value={nutritionVerified ? s.available : s.pending}
             />
             <Fact
-              label="Nutrition data"
-              value={nutritionVerified ? "Verified" : "Pending"}
+              label={s.nutritionData}
+              value={nutritionVerified ? s.verified : s.pending}
             />
           </div>
 
-          {/* Two-column body */}
           <div className="mt-6 grid gap-6 lg:grid-cols-3">
-            {/* Main column */}
             <div className="space-y-5 lg:col-span-2">
               <section>
                 <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-                  Overview
+                  {s.overview}
                 </h3>
                 <div className="mt-3 space-y-3">
                   {project.overview.map((para, i) => (
@@ -297,69 +334,68 @@ export default function PartnerProjectModal({ project, onClose }: Props) {
                       key={i}
                       className="text-sm leading-relaxed text-charcoal sm:text-[15px]"
                     >
-                      {para}
+                      {para[locale]}
                     </p>
                   ))}
                 </div>
               </section>
 
-              <Section title="Production Focus">
-                <BulletGrid items={project.productionFocus} />
+              <Section title={s.productionFocus}>
+                <BulletGrid items={project.productionFocus.map((x) => x[locale])} />
               </Section>
 
-              <Section title="Ingredient Strategy">
-                <BulletGrid items={project.ingredientStrategy} />
+              <Section title={s.ingredientStrategy}>
+                <BulletGrid items={project.ingredientStrategy.map((x) => x[locale])} />
               </Section>
 
-              <Section title="Process & Fermentation">
-                <BulletGrid items={project.processNotes} />
+              <Section title={s.processFermentation}>
+                <BulletGrid items={project.processNotes.map((x) => x[locale])} />
               </Section>
             </div>
 
-            {/* Support column */}
             <div className="space-y-4">
-              <PanelSection title="Nutrition / Product Logic">
+              <PanelSection title={s.nutritionLogic}>
                 {highlightNutrition && (
                   <div className="mb-3 flex flex-wrap gap-2">
                     {NUTRITION_DIMENSIONS.map((dim) => (
                       <span
-                        key={dim}
+                        key={dim.en}
                         className="inline-flex items-center gap-1.5 rounded-full border border-sand bg-cream px-3 py-1 text-xs font-semibold text-charcoal"
                       >
-                        {dim}
+                        {dim[locale]}
                         <span className="text-[10px] font-medium text-stone/70">
-                          pending
+                          {s.pendingWord}
                         </span>
                       </span>
                     ))}
                   </div>
                 )}
-                <BulletGrid items={project.nutritionFocus} cols={1} />
+                <BulletGrid items={project.nutritionFocus.map((x) => x[locale])} cols={1} />
                 {!nutritionVerified && (
                   <p className="mt-3 text-xs font-medium text-stone/80">
-                    Nutrition values pending verified specification sheet
+                    {s.nutritionPending}
                   </p>
                 )}
               </PanelSection>
 
-              <PanelSection title="Quality / Compliance Notes">
-                <BulletGrid items={project.complianceNotes} cols={1} />
+              <PanelSection title={s.qualityCompliance}>
+                <BulletGrid items={project.complianceNotes.map((x) => x[locale])} cols={1} />
               </PanelSection>
             </div>
           </div>
 
-          {/* Products Manufactured — full width */}
           <section className="mt-7 border-t border-sand/70 pt-5">
             <div className="flex items-center justify-between gap-3">
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-                Products Manufactured
+                {s.productsManufactured}
               </h3>
               <span className="text-xs font-medium text-stone">
-                {productCount} {productCount === 1 ? "product" : "products"}
+                {productCount}{" "}
+                {productCount === 1 ? s.productWord : s.productsWord}
               </span>
             </div>
             <div className="mt-3">
-              <PartnerProjectProducts products={project.products} />
+              <PartnerProjectProducts products={project.products} locale={locale} />
             </div>
           </section>
         </div>

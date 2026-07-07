@@ -14,12 +14,13 @@ type Props = {
   title: string;
   description?: string;
   items: RelatedService[];
+  exploreLabel?: string;
 };
 
 function ArrowRight() {
   return (
     <svg
-      className="transition-transform duration-300 group-hover:translate-x-0.5"
+      className="transition-transform duration-300 group-hover:translate-x-0.5 rtl:-scale-x-100"
       width="15"
       height="15"
       viewBox="0 0 24 24"
@@ -40,6 +41,7 @@ export default function ServiceRelatedServices({
   title,
   description,
   items,
+  exploreLabel = "Explore",
 }: Props) {
   return (
     <>
@@ -58,7 +60,7 @@ export default function ServiceRelatedServices({
               {item.description}
             </p>
             <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold">
-              Explore
+              {exploreLabel}
               <ArrowRight />
             </span>
           </Link>

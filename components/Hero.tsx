@@ -1,6 +1,7 @@
 import HeroSlider from "./hero/HeroSlider";
+import type { Locale } from "@/lib/i18n";
 
-export default function Hero() {
+export default function Hero({ locale }: { locale: Locale }) {
   return (
     <section
       id="top"
@@ -15,7 +16,7 @@ export default function Hero() {
         <div className="absolute top-40 -left-24 h-96 w-96 rounded-full bg-sand/30 blur-3xl" />
       </div>
 
-      <HeroSlider />
+      <HeroSlider locale={locale} />
     </section>
   );
 }

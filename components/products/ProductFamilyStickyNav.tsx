@@ -2,14 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { productsByCategory } from "@/lib/products";
+import type { Locale } from "@/lib/i18n";
 
-// Sticky quick-jump nav for the /products directory. It stays hidden while the
-// Product Family Directory cards (#product-families) are visible, then fades in
-// pinned under the header once the user scrolls past them. Uses a single
-// IntersectionObserver (no scroll-event spam) and `fixed` positioning so it
-// reserves no layout space while hidden.
-export default function ProductFamilyStickyNav() {
+const L = {
+  en: { aria: "Product families", all: "All" },
+  ar: { aria: "عائلات المنتجات", all: "الكل" },
+} as const;
+
+// Sticky quick-jump nav for the /products directory.
+export default function ProductFamilyStickyNav({ locale }: { locale: Locale }) {
   const [visible, setVisible] = useState(false);
+  const t = L[locale];
 
   useEffect(() => {
     const target = document.getElementById("product-families");
@@ -17,8 +20,6 @@ export default function ProductFamilyStickyNav() {
 
     const observer = new IntersectionObserver(
       ([entry]) => setVisible(!entry.isIntersecting),
-      // Offset the top by the fixed header height so the nav reveals exactly as
-      // the family cards slide under the header.
       { rootMargin: "-80px 0px 0px 0px", threshold: 0 }
     );
     observer.observe(target);
@@ -31,7 +32,7 @@ export default function ProductFamilyStickyNav() {
 
   return (
     <nav
-      aria-label="Product families"
+      aria-label={t.aria}
       aria-hidden={!visible}
       className={`fixed inset-x-0 top-20 z-40 border-y border-sand/60 bg-cream/90 backdrop-blur transition-all duration-300 ${
         visible
@@ -42,7 +43,7 @@ export default function ProductFamilyStickyNav() {
       <div className="container-x">
         <div className="flex gap-2 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <a href="#product-directory" className={linkClass} tabIndex={tabIndex}>
-            All
+            {t.all}
           </a>
           {productsByCategory.map(({ category }) => (
             <a
@@ -51,7 +52,7 @@ export default function ProductFamilyStickyNav() {
               className={linkClass}
               tabIndex={tabIndex}
             >
-              {category.name}
+              {category.name[locale]}
             </a>
           ))}
         </div>

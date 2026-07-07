@@ -3,6 +3,7 @@ import TeaserLink from "../TeaserLink";
 import BackgroundVideo from "../BackgroundVideo";
 import { ShieldCheckIcon } from "../Icons";
 import { trustBadges } from "@/lib/content";
+import type { Locale } from "@/lib/i18n";
 
 const processSummary = [
   "Ingredient handling",
@@ -11,7 +12,7 @@ const processSummary = [
   "Quality inspection",
 ];
 
-export default function QualityTeaser() {
+export default function QualityTeaser({ locale = "en" }: { locale?: Locale }) {
   return (
     <section className="section relative overflow-hidden">
       {/* Subtle decorative background video + warm wash for readability */}
@@ -36,7 +37,7 @@ export default function QualityTeaser() {
           <div className="grid grid-cols-2 gap-4">
             {trustBadges.map((badge) => (
               <div
-                key={badge}
+                key={badge.en}
                 className="card-lift group flex items-center gap-3 rounded-2xl border border-sand bg-warmwhite p-4 shadow-card hover:border-champagne/60 hover:shadow-glow"
               >
                 {/* Premium seal */}
@@ -47,7 +48,7 @@ export default function QualityTeaser() {
                   </span>
                 </span>
                 <span className="font-serif text-sm font-semibold text-ink">
-                  {badge}
+                  {badge[locale]}
                 </span>
               </div>
             ))}

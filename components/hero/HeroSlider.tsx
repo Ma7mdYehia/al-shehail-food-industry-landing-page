@@ -13,6 +13,7 @@ import {
   RetailIcon,
   DevelopIcon,
 } from "@/components/Icons";
+import { localeHref, type Locale, type Localized } from "@/lib/i18n";
 
 // Calm autoplay cadence — slow enough to read each slide.
 const AUTOPLAY_MS = 6000;
@@ -41,13 +42,28 @@ function EcosystemIcon({ width = 22, height = 22 }: { width?: number; height?: n
 
 const SERVICE: Record<
   EcosystemHeroService,
-  { label: string; Icon: (p: { width?: number; height?: number }) => JSX.Element }
+  { label: Localized; Icon: (p: { width?: number; height?: number }) => JSX.Element }
 > = {
-  ecosystem: { label: "Al Shehail Ecosystem", Icon: EcosystemIcon },
-  manufacturing: { label: "Private Label Manufacturing", Icon: ProductionIcon },
-  "brand-design": { label: "Packaging & Brand Design", Icon: PackagingIcon },
-  distribution: { label: "Distribution & Retail Reach", Icon: RetailIcon },
-  "digital-marketing": { label: "Food Digital Marketing", Icon: DevelopIcon },
+  ecosystem: {
+    label: { en: "Al Shehail Ecosystem", ar: "منظومة الشحيل" },
+    Icon: EcosystemIcon,
+  },
+  manufacturing: {
+    label: { en: "Private Label Manufacturing", ar: "التصنيع بعلامة خاصة" },
+    Icon: ProductionIcon,
+  },
+  "brand-design": {
+    label: { en: "Packaging & Brand Design", ar: "التغليف وتصميم العلامة" },
+    Icon: PackagingIcon,
+  },
+  distribution: {
+    label: { en: "Distribution & Retail Reach", ar: "التوزيع والوصول للتجزئة" },
+    Icon: RetailIcon,
+  },
+  "digital-marketing": {
+    label: { en: "Food Digital Marketing", ar: "التسويق الرقمي للأغذية" },
+    Icon: DevelopIcon,
+  },
 };
 
 function usePrefersReducedMotion() {
@@ -82,7 +98,7 @@ function ArrowIcon() {
 
 /** Right-side media frame: renders the slide video/image when present, or a
  *  premium service-themed fallback panel when the asset isn't supplied yet. */
-function HeroMedia({ slide }: { slide: EcosystemHeroSlide }) {
+function HeroMedia({ slide, locale }: { slide: EcosystemHeroSlide; locale: Locale }) {
   const { label, Icon } = SERVICE[slide.service];
 
   return (
@@ -102,7 +118,7 @@ function HeroMedia({ slide }: { slide: EcosystemHeroSlide }) {
       ) : slide.media ? (
         <Image
           src={slide.media}
-          alt={slide.title}
+          alt={slide.title[locale]}
           fill
           sizes="(max-width: 1024px) 100vw, 40vw"
           priority
@@ -119,10 +135,10 @@ function HeroMedia({ slide }: { slide: EcosystemHeroSlide }) {
               <Icon width={26} height={26} />
             </span>
             <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gold">
-              {label}
+              {label[locale]}
             </span>
             <span className="max-w-xs font-serif text-base font-semibold leading-tight text-ink">
-              {slide.title}
+              {slide.title[locale]}
             </span>
           </div>
         </>
@@ -131,7 +147,7 @@ function HeroMedia({ slide }: { slide: EcosystemHeroSlide }) {
   );
 }
 
-export default function HeroSlider() {
+export default function HeroSlider({ locale }: { locale: Locale }) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
@@ -165,33 +181,33 @@ export default function HeroSlider() {
           <div className="max-w-xl">
             <span className="eyebrow">
               <span className="h-px w-6 bg-champagne" />
-              {service.label}
+              {service.label[locale]}
             </span>
 
             <h1
               key={`t-${active}`}
               className="heading-serif mt-6 max-w-xl animate-fade-up text-4xl leading-[1.12] sm:text-[2.4rem] lg:text-[2.85rem] lg:leading-[1.1]"
             >
-              {slide.title}
+              {slide.title[locale]}
             </h1>
 
             <p
               key={`d-${active}`}
               className="mt-5 max-w-lg animate-fade-up text-base leading-relaxed text-stone sm:text-lg"
             >
-              {slide.subtitle}
+              {slide.subtitle[locale]}
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
-              <a href={slide.primaryCta.href} className="btn-primary group">
-                {slide.primaryCta.label}
-                <span className="transition-transform duration-300 group-hover:translate-x-0.5">
+              <a href={localeHref(slide.primaryCta.href, locale)} className="btn-primary group">
+                {slide.primaryCta.label[locale]}
+                <span className="transition-transform duration-300 group-hover:translate-x-0.5 rtl:-scale-x-100">
                   <ArrowIcon />
                 </span>
               </a>
               {slide.secondaryCta && (
-                <a href={slide.secondaryCta.href} className="btn-secondary">
-                  {slide.secondaryCta.label}
+                <a href={localeHref(slide.secondaryCta.href, locale)} className="btn-secondary">
+                  {slide.secondaryCta.label[locale]}
                 </a>
               )}
             </div>
@@ -207,7 +223,7 @@ export default function HeroSlider() {
                       type="button"
                       role="tab"
                       aria-selected={isActive}
-                      aria-label={`Slide ${i + 1}: ${SERVICE[s.service].label}`}
+                      aria-label={`${i + 1}: ${SERVICE[s.service].label[locale]}`}
                       onClick={() => go(i)}
                       className={`h-2 rounded-full transition-all duration-300 ${
                         isActive
@@ -244,7 +260,7 @@ export default function HeroSlider() {
           {/* Media frame */}
           <div className="order-first lg:order-none lg:justify-self-end lg:max-w-md">
             <div key={`m-${active}`} className="animate-fade-up [animation-delay:100ms]">
-              <HeroMedia slide={slide} />
+              <HeroMedia slide={slide} locale={locale} />
             </div>
           </div>
         </div>

@@ -1,32 +1,33 @@
 import Link from "next/link";
 import PartnerProjectGrid from "./partners/PartnerProjectGrid";
+import { ui } from "@/lib/dictionary";
+import { localeHref, type Locale } from "@/lib/i18n";
 
-export default function Partners() {
+export default function Partners({ locale }: { locale: Locale }) {
+  const t = ui[locale].home.partners;
+
   return (
     <section className="border-y border-sand/60 bg-warmwhite py-14 sm:py-16">
       <div className="container-x">
         <div className="flex flex-col items-center text-center">
           <span className="eyebrow">
             <span className="h-px w-6 bg-champagne" />
-            Manufacturing Partner For
+            {t.eyebrow}
           </span>
-          <p className="mt-3 max-w-xl text-sm text-stone">
-            Trusted to develop and produce private label bakery ranges for
-            established UAE food brands.
-          </p>
+          <p className="mt-3 max-w-xl text-sm text-stone">{t.blurb}</p>
         </div>
 
         {/* Clickable partner cards — clean logo + name, open the project modal */}
-        <PartnerProjectGrid className="mt-10" variant="compact" />
+        <PartnerProjectGrid className="mt-10" variant="compact" locale={locale} />
 
         <div className="mt-10 text-center">
           <Link
-            href="/partners"
+            href={localeHref("/partners", locale)}
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-gold"
           >
-            View Partners
+            {t.cta}
             <svg
-              className="transition-transform duration-300 group-hover:translate-x-0.5"
+              className="transition-transform duration-300 group-hover:translate-x-0.5 rtl:-scale-x-100"
               width="16"
               height="16"
               viewBox="0 0 24 24"

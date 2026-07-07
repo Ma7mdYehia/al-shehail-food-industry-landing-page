@@ -1,7 +1,11 @@
 import SectionHeading from "../SectionHeading";
 import TeaserLink from "../TeaserLink";
+import { ui } from "@/lib/dictionary";
+import { localeHref, type Locale } from "@/lib/i18n";
 
-export default function AboutTeaser() {
+export default function AboutTeaser({ locale }: { locale: Locale }) {
+  const t = ui[locale].home.about;
+
   return (
     <section className="section relative overflow-hidden">
       {/* Subtle warm background video — muted, looping, no controls. Warm light
@@ -28,13 +32,13 @@ export default function AboutTeaser() {
         <div className="max-w-2xl">
           <SectionHeading
             align="left"
-            eyebrow="About Al Shehail"
-            title="UAE-Based Bakery Manufacturing Partner"
-            description="Al Shehail Food Industries is a UAE-based bakery manufacturer specialized in modern bakery products, private label production, and product development for retail and institutional markets."
+            eyebrow={t.eyebrow}
+            title={t.title}
+            description={t.description}
           />
           <TeaserLink
-            href="/about"
-            label="Learn About Al Shehail"
+            href={localeHref("/about", locale)}
+            label={t.cta}
             className="mt-6"
           />
         </div>

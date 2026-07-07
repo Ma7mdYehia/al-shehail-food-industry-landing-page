@@ -2,11 +2,17 @@ import Link from "next/link";
 import SectionHeading from "../SectionHeading";
 import ProcessJourney from "../ProcessJourney";
 import { manufacturingProcessNarrative } from "@/lib/homepageEcosystem";
+import { ui } from "@/lib/dictionary";
+import { localeHref, type Locale } from "@/lib/i18n";
 
-// Homepage "From Concept to Production" section — restores the premium timeline
-// journey used in the earlier homepage direction instead of the image-card grid.
-export default function ManufacturingProcessSection() {
+// Homepage "From Concept to Production" section — premium timeline journey.
+export default function ManufacturingProcessSection({
+  locale,
+}: {
+  locale: Locale;
+}) {
   const { title, subtitle, note } = manufacturingProcessNarrative;
+  const t = ui[locale].home.process;
 
   return (
     <section
@@ -14,23 +20,27 @@ export default function ManufacturingProcessSection() {
       className="section scroll-mt-24 border-t border-sand/60 bg-warmwhite"
     >
       <div className="container-x">
-        <SectionHeading eyebrow="Manufacturing Process" title={title} description={subtitle} />
+        <SectionHeading
+          eyebrow={t.eyebrow}
+          title={title[locale]}
+          description={subtitle[locale]}
+        />
 
-        <ProcessJourney />
+        <ProcessJourney locale={locale} />
 
         {/* Careful-claims note */}
         <p className="mx-auto mt-8 max-w-3xl rounded-2xl border border-sand bg-cream px-5 py-4 text-center text-xs leading-relaxed text-stone">
-          {note}
+          {note[locale]}
         </p>
 
         <div className="mt-10 text-center">
           <Link
-            href="/private-label"
+            href={localeHref("/private-label", locale)}
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-gold"
           >
-            Explore Private Label Manufacturing
+            {t.cta}
             <svg
-              className="transition-transform duration-300 group-hover:translate-x-0.5"
+              className="transition-transform duration-300 group-hover:translate-x-0.5 rtl:-scale-x-100"
               width="16"
               height="16"
               viewBox="0 0 24 24"

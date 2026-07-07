@@ -1,4 +1,5 @@
 import { privateLabelSteps } from "@/lib/content";
+import type { Locale } from "@/lib/i18n";
 import {
   PremiumObject,
   type PremiumObjectName,
@@ -23,16 +24,17 @@ const STEP_OBJECTS: PremiumObjectName[] = [
 ];
 
 type Props = {
+  locale: Locale;
   /** Optional id for in-page anchoring. */
   id?: string;
 };
 
-export default function ProcessJourney({ id }: Props) {
+export default function ProcessJourney({ locale, id }: Props) {
   return (
     <div id={id} className="relative mt-14">
       {/* Central / left production line */}
       <div
-        className="pointer-events-none absolute bottom-0 top-0 w-px bg-gradient-to-b from-champagne/40 via-champagne/25 to-transparent max-lg:left-[27px] lg:left-1/2 lg:-translate-x-1/2"
+        className="pointer-events-none absolute bottom-0 top-0 w-px bg-gradient-to-b from-champagne/40 via-champagne/25 to-transparent max-lg:left-[27px] lg:left-1/2 lg:-translate-x-1/2 rtl:max-lg:left-auto rtl:max-lg:right-[27px]"
         aria-hidden
       >
         {/* Travelling pulse */}
@@ -53,8 +55,24 @@ export default function ProcessJourney({ id }: Props) {
                   leftSide ? "lg:pr-12 lg:text-right" : "lg:order-3 lg:pl-12"
                 }`}
               >
-                {leftSide && <StepCard step={step} object={STEP_OBJECTS[i]} align="right" />}
-                {!leftSide && <StepCard step={step} object={STEP_OBJECTS[i]} align="left" />}
+                {leftSide && (
+                  <StepCard
+                    title={step.title[locale]}
+                    description={step.description[locale]}
+                    number={step.number}
+                    object={STEP_OBJECTS[i]}
+                    align="right"
+                  />
+                )}
+                {!leftSide && (
+                  <StepCard
+                    title={step.title[locale]}
+                    description={step.description[locale]}
+                    number={step.number}
+                    object={STEP_OBJECTS[i]}
+                    align="left"
+                  />
+                )}
               </div>
 
               {/* Node marker on the line */}
@@ -69,7 +87,13 @@ export default function ProcessJourney({ id }: Props) {
 
               {/* Mobile card / desktop empty balancer */}
               <div className="flex-1 lg:order-1 lg:hidden">
-                <StepCard step={step} object={STEP_OBJECTS[i]} align="left" />
+                <StepCard
+                  title={step.title[locale]}
+                  description={step.description[locale]}
+                  number={step.number}
+                  object={STEP_OBJECTS[i]}
+                  align="left"
+                />
               </div>
               {/* Desktop empty side balancer */}
               <div
@@ -85,11 +109,14 @@ export default function ProcessJourney({ id }: Props) {
 }
 
 function StepCard({
-  step,
+  title,
+  description,
   object,
   align,
 }: {
-  step: { number: string; title: string; description: string };
+  title: string;
+  description: string;
+  number: string;
   object: PremiumObjectName;
   align: "left" | "right";
 }) {
@@ -107,16 +134,14 @@ function StepCard({
         <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-beige">
           <PremiumObject name={object} size={26} />
         </span>
-        <h3 className="font-serif text-base font-semibold text-ink">
-          {step.title}
-        </h3>
+        <h3 className="font-serif text-base font-semibold text-ink">{title}</h3>
       </div>
       <p
         className={`mt-3 text-sm leading-relaxed text-stone ${
           align === "right" ? "lg:text-right" : ""
         }`}
       >
-        {step.description}
+        {description}
       </p>
     </div>
   );

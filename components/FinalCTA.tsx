@@ -1,7 +1,11 @@
 import Link from "next/link";
 import BackgroundVideo from "./BackgroundVideo";
+import { ui } from "@/lib/dictionary";
+import { localeHref, type Locale } from "@/lib/i18n";
 
-export default function FinalCTA() {
+export default function FinalCTA({ locale }: { locale: Locale }) {
+  const t = ui[locale].home.finalCta;
+
   return (
     <section id="contact" className="section">
       <div className="container-x">
@@ -25,20 +29,19 @@ export default function FinalCTA() {
           <div className="relative mx-auto max-w-2xl">
             <span className="eyebrow">
               <span className="h-px w-6 bg-champagne" />
-              From Idea to Shelf
+              {t.eyebrow}
             </span>
             <h2 className="heading-serif mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-              Ready to Build Your Food Product?
+              {t.title}
             </h2>
             <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
-              Talk to Al Shehail about manufacturing, packaging, distribution,
-              and product communication support for your food brand.
+              {t.description}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <Link href="/contact" className="btn-primary group">
-                Start a Project
+              <Link href={localeHref("/contact", locale)} className="btn-primary group">
+                {t.primary}
                 <svg
-                  className="transition-transform duration-300 group-hover:translate-x-1"
+                  className="transition-transform duration-300 group-hover:translate-x-1 rtl:-scale-x-100"
                   width="16"
                   height="16"
                   viewBox="0 0 24 24"
@@ -52,8 +55,8 @@ export default function FinalCTA() {
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </Link>
-              <Link href="/services/distribution" className="btn-secondary">
-                Explore Services
+              <Link href={localeHref("/services/distribution", locale)} className="btn-secondary">
+                {t.secondary}
               </Link>
             </div>
           </div>

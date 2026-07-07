@@ -11,6 +11,9 @@ import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import { company } from "@/lib/content";
 import { products } from "@/lib/products";
+import type { Locale } from "@/lib/i18n";
+
+const locale: Locale = "en";
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +22,10 @@ export const metadata: Metadata = {
   },
   description:
     "Private label bakery manufacturing in the UAE — bakery product development and retail-ready supply, from idea to shelf, for retail and institutional brands.",
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    languages: { en: "/", ar: "/ar" },
+  },
 };
 
 const jsonLd = {
@@ -29,6 +35,7 @@ const jsonLd = {
   description:
     "UAE-based bakery manufacturing and private label partner. From idea to shelf — developing and manufacturing bakery products built for retail success.",
   url: "https://www.alshehai.ae",
+  inLanguage: "en",
   address: {
     "@type": "PostalAddress",
     streetAddress: "New Industrial Area",
@@ -39,7 +46,7 @@ const jsonLd = {
   telephone: company.phone,
   makesOffer: products.map((p) => ({
     "@type": "Offer",
-    itemOffered: { "@type": "Product", name: p.name },
+    itemOffered: { "@type": "Product", name: p.name.en },
   })),
 };
 
@@ -50,18 +57,18 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header />
+      <Header locale={locale} />
       <main>
-        <Hero />
-        <Partners />
-        <AboutTeaser />
-        <ServicesEcosystem />
-        <Products />
-        <ManufacturingProcessSection />
-        <MarketPresenceTeaser />
-        <FinalCTA />
+        <Hero locale={locale} />
+        <Partners locale={locale} />
+        <AboutTeaser locale={locale} />
+        <ServicesEcosystem locale={locale} />
+        <Products locale={locale} />
+        <ManufacturingProcessSection locale={locale} />
+        <MarketPresenceTeaser locale={locale} />
+        <FinalCTA locale={locale} />
       </main>
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

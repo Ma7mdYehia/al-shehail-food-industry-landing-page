@@ -1,20 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Locale } from "@/lib/i18n";
 
-// Sticky in-page nav for the long /private-label page. Pins under the fixed
-// header and highlights the section currently in view via a single
-// IntersectionObserver (no scroll listeners). Horizontally scrollable on mobile.
-const NAV = [
-  { label: "Overview", id: "overview" },
-  { label: "Products", id: "products" },
-  { label: "Capabilities", id: "capabilities" },
-  { label: "Process", id: "process" },
-  { label: "Quality", id: "quality" },
-  { label: "Start Project", id: "start" },
+// Sticky in-page nav for the long /private-label page.
+const NAV: { label: { en: string; ar: string }; id: string }[] = [
+  { label: { en: "Overview", ar: "نظرة عامة" }, id: "overview" },
+  { label: { en: "Products", ar: "المنتجات" }, id: "products" },
+  { label: { en: "Capabilities", ar: "القدرات" }, id: "capabilities" },
+  { label: { en: "Process", ar: "العملية" }, id: "process" },
+  { label: { en: "Quality", ar: "الجودة" }, id: "quality" },
+  { label: { en: "Start Project", ar: "ابدأ مشروعك" }, id: "start" },
 ];
 
-export default function PrivateLabelSectionNav() {
+const L = { en: { aria: "On this page" }, ar: { aria: "في هذه الصفحة" } } as const;
+
+export default function PrivateLabelSectionNav({ locale }: { locale: Locale }) {
   const [active, setActive] = useState<string>(NAV[0].id);
 
   useEffect(() => {
@@ -27,13 +28,9 @@ export default function PrivateLabelSectionNav() {
       (entries) => {
         const visible = entries
           .filter((e) => e.isIntersecting)
-          .sort(
-            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top
-          );
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible[0]) setActive(visible[0].target.id);
       },
-      // Top offset clears the header (80) + this nav (~52); bottom margin makes a
-      // section "active" while its top sits in the upper part of the viewport.
       { rootMargin: "-140px 0px -55% 0px", threshold: 0 }
     );
     sections.forEach((s) => observer.observe(s));
@@ -42,7 +39,7 @@ export default function PrivateLabelSectionNav() {
 
   return (
     <nav
-      aria-label="On this page"
+      aria-label={L[locale].aria}
       className="sticky top-20 z-30 border-y border-sand/60 bg-cream/90 backdrop-blur"
     >
       <div className="container-x">
@@ -60,7 +57,7 @@ export default function PrivateLabelSectionNav() {
                     : "border-sand bg-warmwhite text-charcoal hover:border-champagne hover:text-gold"
                 }`}
               >
-                {n.label}
+                {n.label[locale]}
               </a>
             );
           })}

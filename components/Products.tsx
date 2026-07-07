@@ -5,21 +5,24 @@ import Link from "next/link";
 import SectionHeading from "./SectionHeading";
 import HomeProductCard from "./home/HomeProductCard";
 import { featuredProducts, productCategories, products } from "@/lib/products";
+import { ui } from "@/lib/dictionary";
+import { localeHref, type Locale } from "@/lib/i18n";
 
 // Homepage "What We Manufacture" teaser — filtered views stay concise and capped
 // at six products. The full catalog lives on /products.
 const HOME_MAX = 6;
 
-const filters = [
-  { label: "Featured", slug: "featured" },
-  ...productCategories.map((category) => ({
-    label: category.name,
-    slug: category.slug,
-  })),
-];
-
-export default function Products() {
+export default function Products({ locale }: { locale: Locale }) {
   const [active, setActive] = useState("featured");
+  const t = ui[locale].home.products;
+
+  const filters = [
+    { label: t.featured, slug: "featured" },
+    ...productCategories.map((category) => ({
+      label: category.name[locale],
+      slug: category.slug,
+    })),
+  ];
 
   const visible = (
     active === "featured"
@@ -32,9 +35,9 @@ export default function Products() {
       <div className="bg-grain pointer-events-none absolute inset-0 opacity-50" aria-hidden />
       <div className="container-x relative">
         <SectionHeading
-          eyebrow="What We Manufacture"
-          title="A complete bakery product range"
-          description="A featured selection from our range — flatbread and wraps, soft bread, pastry, and sweets — manufactured to consistent, retail-ready quality."
+          eyebrow={t.eyebrow}
+          title={t.title}
+          description={t.description}
         />
 
         <div className="mt-10 flex flex-wrap justify-center gap-2.5">
@@ -61,13 +64,13 @@ export default function Products() {
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((product) => (
-            <HomeProductCard key={product.slug} product={product} />
+            <HomeProductCard key={product.slug} product={product} locale={locale} />
           ))}
         </div>
 
         <div className="mt-12 text-center">
-          <Link href="/products" className="btn-secondary">
-            View Full Product Catalog
+          <Link href={localeHref("/products", locale)} className="btn-secondary">
+            {t.viewCatalog}
           </Link>
         </div>
       </div>

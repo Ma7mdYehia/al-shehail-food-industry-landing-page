@@ -3,6 +3,8 @@ import SectionHeading from "../SectionHeading";
 import TeaserLink from "../TeaserLink";
 import { retailPresence } from "@/lib/content";
 import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
+import { ui } from "@/lib/dictionary";
+import { localeHref, type Locale } from "@/lib/i18n";
 
 // Maps retailer display name → asset key in the manifest
 const retailAssetKeys: Record<string, keyof typeof assets.retail> = {
@@ -18,15 +20,17 @@ const retailAssetKeys: Record<string, keyof typeof assets.retail> = {
   "Waitrose UAE":         "waitroseUae",
 };
 
-export default function MarketPresenceTeaser() {
+export default function MarketPresenceTeaser({ locale }: { locale: Locale }) {
+  const t = ui[locale].home.market;
+
   return (
     <section className="section relative overflow-hidden bg-warmwhite">
       <div className="bg-dotted-gold pointer-events-none absolute inset-0 opacity-30" aria-hidden />
       <div className="container-x relative">
         <SectionHeading
-          eyebrow="Retail & Distribution Partners"
-          title="Selected retail and distribution relationships"
-          description="Retail partners and channel relationships vary by project and market requirements."
+          eyebrow={t.eyebrow}
+          title={t.title}
+          description={t.description}
         />
 
         <div className="mt-12 flex flex-wrap justify-center gap-3">
@@ -56,7 +60,7 @@ export default function MarketPresenceTeaser() {
         </div>
 
         <div className="mt-10 text-center">
-          <TeaserLink href="/partners" label="View Market Presence" variant="secondary" />
+          <TeaserLink href={localeHref("/partners", locale)} label={t.cta} variant="secondary" />
         </div>
       </div>
     </section>
