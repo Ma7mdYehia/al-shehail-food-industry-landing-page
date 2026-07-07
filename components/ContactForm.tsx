@@ -42,17 +42,17 @@ const initialState: FormState = {
 
 function buildWhatsAppLink(form: FormState): string {
   const lines = [
-    "استفسار تصنيع بعلامة خاصة جديد — الشحيل للصناعات الغذائية",
+    "استفسار جديد عن تصنيع مخبوزات بعلامة خاصة — الشحيل للصناعات الغذائية",
     "",
-    `الاسم الكامل: ${form.fullName || "-"}`,
+    `الاسم: ${form.fullName || "-"}`,
     `الشركة: ${form.companyName || "-"}`,
     `الدولة: ${form.country || "-"}`,
     `البريد الإلكتروني: ${form.email || "-"}`,
     `رقم واتساب: ${form.whatsapp || "-"}`,
     `فئة المنتج: ${form.category || "-"}`,
     `المنتج المطلوب: ${form.product || "-"}`,
-    `وصفة حالية: ${form.existingRecipe}`,
-    `بحاجة لدعم تغليف: ${form.packagingSupport}`,
+    `هل توجد وصفة حالية؟ ${form.existingRecipe}`,
+    `هل يحتاج المشروع دعم تغليف؟ ${form.packagingSupport}`,
     `الكمية الشهرية المتوقعة: ${form.quantity || "-"}`,
     `السوق المستهدف: ${form.targetMarket || "-"}`,
     "",
@@ -91,20 +91,20 @@ export default function ContactForm() {
             className={inputClass}
             value={form.fullName}
             onChange={(e) => update("fullName", e.target.value)}
-            placeholder="اسمك"
+            placeholder="اكتب اسمك"
             required
           />
         </div>
         <div>
           <label htmlFor="companyName" className={labelClass}>
-            اسم الشركة
+            اسم الشركة أو العلامة
           </label>
           <input
             id="companyName"
             className={inputClass}
             value={form.companyName}
             onChange={(e) => update("companyName", e.target.value)}
-            placeholder="الشركة"
+            placeholder="اسم الشركة"
           />
         </div>
         <div>
@@ -116,7 +116,7 @@ export default function ContactForm() {
             className={inputClass}
             value={form.country}
             onChange={(e) => update("country", e.target.value)}
-            placeholder="الدولة"
+            placeholder="مثال: الإمارات"
           />
         </div>
         <div>
@@ -156,7 +156,7 @@ export default function ContactForm() {
             className={inputClass}
             value={form.quantity}
             onChange={(e) => update("quantity", e.target.value)}
-            placeholder="مثال: كراتين / وحدات شهريًا"
+            placeholder="مثال: كراتين أو وحدات شهريًا"
           />
         </div>
         <div>
@@ -169,7 +169,7 @@ export default function ContactForm() {
             value={form.category}
             onChange={(e) => update("category", e.target.value)}
           >
-            <option value="">اختر فئة</option>
+            <option value="">اختر الفئة</option>
             {categoryOptions.map((c) => (
               <option key={c} value={c}>
                 {c}
@@ -187,7 +187,7 @@ export default function ContactForm() {
             value={form.product}
             onChange={(e) => update("product", e.target.value)}
           >
-            <option value="">اختر منتجًا</option>
+            <option value="">اختر المنتج</option>
             {productOptions.map((p) => (
               <option key={p} value={p}>
                 {p}
@@ -211,7 +211,7 @@ export default function ContactForm() {
         </div>
         <div>
           <label htmlFor="packagingSupport" className={labelClass}>
-            هل تحتاج إلى دعم في التغليف؟
+            هل تحتاج دعمًا في التغليف؟
           </label>
           <select
             id="packagingSupport"
@@ -232,12 +232,12 @@ export default function ContactForm() {
             className={inputClass}
             value={form.targetMarket}
             onChange={(e) => update("targetMarket", e.target.value)}
-            placeholder="مثال: تجزئة الإمارات، تصدير الخليج، قطاع المطاعم"
+            placeholder="مثال: تجزئة الإمارات، الخليج، قطاع المطاعم"
           />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor="message" className={labelClass}>
-            رسالتك / ملخص المشروع
+            ملخص المشروع
           </label>
           <textarea
             id="message"
@@ -245,7 +245,7 @@ export default function ContactForm() {
             className={inputClass}
             value={form.message}
             onChange={(e) => update("message", e.target.value)}
-            placeholder="أخبرنا عن فكرة منتجك، وتموضعك، وأهدافك."
+            placeholder="اكتب فكرة المنتج، التموضع، أو أي تفاصيل مهمة لفريقنا."
           />
         </div>
       </div>
@@ -255,8 +255,7 @@ export default function ContactForm() {
           إرسال عبر واتساب
         </button>
         <p className="text-xs text-stone">
-          لا حاجة لإنشاء حساب — الإرسال يجهّز رسالة واتساب تحتوي على بياناتك
-          لفريقنا.
+          عند الضغط على الإرسال سيتم تجهيز رسالة واتساب تحتوي على بيانات المشروع.
         </p>
       </div>
 
@@ -265,9 +264,9 @@ export default function ContactForm() {
           role="status"
           className="mt-6 rounded-2xl border border-champagne/50 bg-warmwhite p-5 text-sm leading-relaxed text-charcoal"
         >
-          <span className="font-semibold text-ink">شكرًا لك</span> — طلب
-          التصنيع جاهز للإرسال عبر واتساب. سيراجع فريقنا تفاصيل مشروعك ويعاود
-          التواصل معك قريبًا.
+          <span className="font-semibold text-ink">شكرًا لك</span> — تم تجهيز
+          رسالة المشروع عبر واتساب. راجعها وأرسلها لفريقنا حتى نبدأ مناقشة
+          التفاصيل.
           <span className="mt-2 block text-xs text-stone">
             إذا لم يفتح واتساب تلقائيًا،{" "}
             <a
