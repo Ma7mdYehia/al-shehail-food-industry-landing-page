@@ -31,18 +31,18 @@ export default function PrivateLabelHero() {
               تصنيع مخبوزات بعلامة خاصة
             </span>
             <h1 className="heading-serif mt-6 text-4xl leading-[1.1] sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
-              منتج مخبوزات بعلامتك، من الفكرة إلى الرف
+              منتج مخبوزات باسم علامتك، جاهز للسوق
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-stone">
-              نطوّر ونصنّع ونغلّف ونورّد منتجات مخبوزات بعلامتك — بجودة معتمدة
-              وتنفيذ جاهز للرف.
+              نساعدك على تطوير المنتج، ضبط الوصفة، تجهيز التغليف، وتنفيذ
+              الإنتاج بشكل منظم يناسب قنوات البيع في الإمارات والخليج.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <a href="/contact" className="btn-primary">
                 ابدأ مشروع علامة خاصة
               </a>
               <a href="#process" className="btn-secondary">
-                استعرض المسار
+                استعرض خطوات العمل
               </a>
             </div>
           </div>
@@ -57,10 +57,10 @@ export default function PrivateLabelHero() {
               <div className="relative flex items-center justify-between gap-3">
                 <div>
                   <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
-                    نظام التصنيع
+                    مسار المشروع
                   </span>
                   <p className="mt-1 font-serif text-base font-semibold text-ink">
-                    من الفكرة إلى الرف
+                    من فكرة المنتج إلى التوريد
                   </p>
                 </div>
                 <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-gold-gradient font-serif text-xs font-bold text-white shadow-card">
@@ -86,7 +86,7 @@ export default function PrivateLabelHero() {
 
               <div className="relative mt-4 flex items-center gap-2 rounded-xl border border-champagne/40 bg-beige/50 px-3 py-2.5 text-xs font-medium text-charcoal">
                 <span className="h-1.5 w-1.5 flex-none rounded-full bg-gold" aria-hidden />
-                خط واحد متكامل — من تطوير المنتج إلى التوريد الجاهز للرف.
+                مسار واحد يجمع تطوير المنتج، التصنيع، التغليف، والتوريد.
               </div>
             </div>
           </div>
