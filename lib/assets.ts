@@ -12,6 +12,15 @@
 //   /public/assets/certifications/ — certificate scans / certifying-body logos
 //   /public/assets/retail/         — retail chain logos
 //   /public/assets/og/             — Open Graph / social share image
+//
+// Every key below falls into one of three states — worth knowing for a future
+// media/DB migration (see docs/database-readiness-map.md, media_assets table):
+//   ACTIVE   — has a real path, wired to visible content today.
+//   PENDING  — a real content slot with no file yet (value is null); drop the
+//              file into /public/assets/... and set the path to go live.
+//   LEGACY   — no current data references this key at all (kept only for
+//              backward compatibility / a possible future use); do not repurpose
+//              it for something new, add a fresh key instead.
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -25,13 +34,17 @@ export type BrandAssets = {
 export type PartnerAssets = {
   halsaBake: AssetPath;
   ektifa: AssetPath;
+  // LEGACY: reserved for a possible future 4th manufacturing partner — there
+  // is no "Al Taj" entry in lib/content.ts's manufacturingPartners yet.
   alTaj: AssetPath;
   alTahan: AssetPath;
 };
 
 export type ProductAssets = {
   arabicBread: AssetPath;
-  breadWraps: AssetPath; // legacy/generic — kept for backward compatibility
+  // LEGACY: no product has slug "bread-wraps" anymore (superseded by the
+  // specific wrap variants below) — kept for backward compatibility only.
+  breadWraps: AssetPath;
   highProteinBreadWrap: AssetPath;
   highFiberBreadWrap: AssetPath;
   chiaBreadWrap: AssetPath;
@@ -99,20 +112,22 @@ export type AssetManifest = {
 
 export const assets: AssetManifest = {
   brand: {
-    logoHorizontal: null, // /assets/brand/al-shehail-logo.svg (pending)
-    logoMark: "/assets/brand/al-shehail-icon.svg",
+    logoMark: "/assets/brand/al-shehail-icon.svg", // ACTIVE
+    logoHorizontal: null, // PENDING — /assets/brand/al-shehail-logo.svg
   },
 
   partners: {
+    // ACTIVE
     halsaBake: "/assets/partners/halsa-bake.png",
     ektifa: "/assets/partners/ektifa.png",
-    alTaj: null,
     alTahan: "/assets/partners/al-tahan.png",
+    // LEGACY (see PartnerAssets type comment above)
+    alTaj: null,
   },
 
   products: {
+    // ACTIVE — all 17 current products have a real photo
     arabicBread: "/assets/products/arabic-bread.webp",
-    breadWraps: null,     // legacy generic wrap — no longer used by a product
     highProteinBreadWrap: "/assets/products/high-protein-bread-wrap.webp",
     highFiberBreadWrap: "/assets/products/high-fiber-bread-wrap.webp",
     chiaBreadWrap: "/assets/products/chia-bread-wrap.webp",
@@ -129,9 +144,12 @@ export const assets: AssetManifest = {
     maamoul: "/assets/products/maamoul.webp",
     tamriya: "/assets/products/tamriya.webp",
     cookies: "/assets/products/cookies.webp",
+    // LEGACY (see ProductAssets type comment above)
+    breadWraps: null,
   },
 
   factory: {
+    // PENDING — all factory photography awaits real files
     exterior: null,       // /assets/factory/exterior.webp
     productionLine: null, // /assets/factory/production-line.webp
     packagingLine: null,  // /assets/factory/packaging-line.webp
@@ -140,6 +158,7 @@ export const assets: AssetManifest = {
   },
 
   certifications: {
+    // PENDING — all certification marks await real files
     iso: null,              // /assets/certifications/iso.svg (or .webp)
     haccp: null,            // /assets/certifications/haccp.svg (or .webp)
     organic: null,          // /assets/certifications/organic.svg (or .webp)
@@ -147,6 +166,7 @@ export const assets: AssetManifest = {
   },
 
   retail: {
+    // ACTIVE — all 10 retail chain logos have real files
     carrefour: "/assets/retail/carrefour.png",
     unionCoop: "/assets/retail/union-coop.png",
     abuDhabiCoop: "/assets/retail/abu-dhabi-coop.png",
@@ -160,13 +180,15 @@ export const assets: AssetManifest = {
   },
 
   og: {
+    // PENDING
     default: null, // /assets/og/al-shehail-og.jpg (1200×630)
   },
 };
 
 // Single source of truth mapping a product slug → its key in assets.products.
 // Used by every product card / detail view so the slug→asset wiring lives in
-// one place.
+// one place. "bread-wraps" is LEGACY: no current product has this slug (see
+// ProductAssets.breadWraps above); kept only for backward compatibility.
 export const productAssetKeyBySlug: Record<string, keyof ProductAssets> = {
   "arabic-bread": "arabicBread",
   "bread-wraps": "breadWraps",
