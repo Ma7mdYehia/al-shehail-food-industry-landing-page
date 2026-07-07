@@ -1,4 +1,10 @@
-// Centralized content for Al Shehail Food Industries landing page.
+// Company/brand info and generic reusable content data for Al Shehail Food
+// Industries: company details, trust badges, private label steps,
+// manufacturing partners, and general capabilities/certifications/retail
+// presence/why-us data. Navigation lives in lib/navigation.ts; product data
+// lives in lib/products/; this file is not a dumping ground for page-specific
+// or legacy content — see docs/legacy-hero-slides.md for archived material.
+//
 // NOTE: No unverified figures (capacity, outlet counts, team size, factory
 // size) are included. Use verified assets/data when available.
 //
@@ -37,18 +43,6 @@ export function whatsappLink(locale: Locale): string {
     whatsappEnquiry[locale]
   )}`;
 }
-
-// Capabilities and Quality now live inside the merged /private-label page
-// (sections #capabilities and #quality), so they are no longer separate nav
-// items. The old routes redirect there.
-export const navLinks: { label: Localized; href: string }[] = [
-  { label: { en: "Home", ar: "الرئيسية" }, href: "/" },
-  { label: { en: "About", ar: "من نحن" }, href: "/about" },
-  { label: { en: "Products", ar: "المنتجات" }, href: "/products" },
-  { label: { en: "Private Label", ar: "العلامة الخاصة" }, href: "/private-label" },
-  { label: { en: "Partners", ar: "الشركاء" }, href: "/partners" },
-  { label: { en: "Contact", ar: "تواصل معنا" }, href: "/contact" },
-];
 
 export const trustBadges: Localized[] = [
   { en: "ISO Certified", ar: "معتمدون بشهادة ISO" },
@@ -142,50 +136,6 @@ export const privateLabelSteps: Step[] = [
       en: "Finished, branded, retail-ready product supplied reliably to your distribution network.",
       ar: "منتج نهائي بعلامتك ومهيأ للرف، يُورَّد بثبات إلى شبكة التوزيع لديك.",
     },
-  },
-];
-
-// ── Hero slider (legacy manufacturing-only variant) ──────────────────────────
-// NOTE: The live homepage hero uses homepageHeroSlides from lib/homepageEcosystem.
-// This block is retained for reference and is not rendered; kept English-only.
-
-export type HeroTrustIcon = "shield-check" | "label" | "truck";
-
-export type HeroTrustPoint = {
-  label: string;
-  icon: HeroTrustIcon;
-};
-
-export type HeroSlide = {
-  step: number;
-  eyebrow?: string;
-  title: string;
-  description: string;
-  ctaLabel?: string;
-  ctaHref?: string;
-  trustPoints?: HeroTrustPoint[];
-  image: string;
-  imageAlt: string;
-};
-
-const heroPrimaryTrust: HeroTrustPoint[] = [
-  { label: "ISO / HACCP Systems", icon: "shield-check" },
-  { label: "Private Label Ready", icon: "label" },
-  { label: "Retail Supply Support", icon: "truck" },
-];
-
-export const heroSlides: HeroSlide[] = [
-  {
-    step: 0,
-    eyebrow: "UAE-Based Bakery Manufacturing & Private Label Partner",
-    title: "Private Label Bakery Manufacturing in the UAE",
-    description:
-      "From product concept to retail-ready bakery — developed, manufactured, packed, and scaled for modern food brands.",
-    ctaLabel: "Start a Project",
-    ctaHref: "/contact",
-    trustPoints: heroPrimaryTrust,
-    image: "/images/hero-journey/product-idea.webp",
-    imageAlt: "Shaping a new bakery product idea and concept",
   },
 ];
 

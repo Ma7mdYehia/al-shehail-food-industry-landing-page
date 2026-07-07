@@ -11,8 +11,7 @@ import { PremiumObject, type PremiumObjectName } from "../visuals/PremiumObjects
 // factory image exists.
 //
 // These seven labels are a visual abstraction of the private-label flow
-// (a shortened, presentation-only view of lib/content privateLabelSteps) and
-// map 1:1 to lib/content heroSlides.
+// (a shortened, presentation-only view of lib/content privateLabelSteps).
 const FLOW: { label: string; object: PremiumObjectName }[] = [
   { label: "Product Idea", object: "recipe" },
   { label: "Recipe", object: "flour" },

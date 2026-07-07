@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { company, navLinks, trustBadges, whatsappLink } from "@/lib/content";
+import { company, trustBadges, whatsappLink } from "@/lib/content";
+import { footerNav } from "@/lib/navigation";
 import { ui } from "@/lib/dictionary";
 import { localeHref, type Locale } from "@/lib/i18n";
 
@@ -48,7 +49,7 @@ export default function Footer({ locale }: { locale: Locale }) {
               {t.footer.explore}
             </h3>
             <ul className="mt-4 space-y-2.5">
-              {navLinks.map((link) => (
+              {footerNav.map((link) => (
                 <li key={link.href}>
                   <a
                     href={localeHref(link.href, locale)}

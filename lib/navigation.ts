@@ -1,10 +1,10 @@
-// Primary header navigation. Kept separate from lib/content `navLinks` (which
-// the footer uses as a flat list) because the header needs a "Services"
-// dropdown grouping the service pages. Private Label Manufacturing lives under
-// Services here — it reuses the existing /private-label page (no duplication).
+// Single source of truth for site navigation: the header's primary nav (with
+// its "Services" dropdown) and the footer's flat link list. Private Label
+// Manufacturing lives under Services here — it reuses the existing
+// /private-label page (no duplication).
 //
 // Labels are bilingual; hrefs are stored canonically (English, unprefixed) and
-// the Header prefixes `/ar` per locale via localeHref().
+// components prefix `/ar` per locale via localeHref().
 
 import type { Localized } from "@/lib/i18n";
 
@@ -40,6 +40,18 @@ export const primaryNav: NavItem[] = [
   { label: { en: "About", ar: "من نحن" }, href: "/about" },
   { label: { en: "Products", ar: "المنتجات" }, href: "/products" },
   { label: { en: "Services", ar: "خدماتنا" }, children: serviceLinks },
+  { label: { en: "Partners", ar: "الشركاء" }, href: "/partners" },
+  { label: { en: "Contact", ar: "تواصل معنا" }, href: "/contact" },
+];
+
+// Flat link list for the footer. Capabilities and Quality now live inside the
+// merged /private-label page (sections #capabilities and #quality), so they
+// are no longer separate nav items — the old routes redirect there.
+export const footerNav: NavChild[] = [
+  { label: { en: "Home", ar: "الرئيسية" }, href: "/" },
+  { label: { en: "About", ar: "من نحن" }, href: "/about" },
+  { label: { en: "Products", ar: "المنتجات" }, href: "/products" },
+  { label: { en: "Private Label", ar: "العلامة الخاصة" }, href: "/private-label" },
   { label: { en: "Partners", ar: "الشركاء" }, href: "/partners" },
   { label: { en: "Contact", ar: "تواصل معنا" }, href: "/contact" },
 ];
