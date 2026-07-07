@@ -190,3 +190,12 @@
     transform: none;
   }
 }
+
+/* Arabic RTL locale: neutralize letter-spacing everywhere. Arabic script is
+   cursive and its letterforms must stay joined — tracked/uppercase label
+   treatments carried over from the English design would otherwise break letter
+   connections. Unlayered so it wins over the tracking utilities regardless of
+   source order. */
+html[dir="rtl"] * {
+  letter-spacing: normal;
+}

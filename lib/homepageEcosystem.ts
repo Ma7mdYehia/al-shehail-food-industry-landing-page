@@ -1,14 +1,15 @@
-// Homepage restructure content map (Stage 01 — data only).
+// Homepage service-ecosystem content map.
 //
-// This file is a centralized reference for the upcoming homepage "service
-// ecosystem" direction. Nothing here is wired into the live homepage yet; it is
-// the planned structure + copy for Stage 02 (hero slider refactor, 8-step
-// process rebuild, and final service-section placement).
+// Section B (homepageHeroSlides) drives the live hero slider; Section C
+// (manufacturingProcessNarrative) drives the concept-to-production section.
+// Section A is an internal planning reference and is not rendered (kept English).
 //
 // Wording is intentionally conservative — no guaranteed distribution, retail
-// access, sales, or marketing results.
+// access, sales, or marketing results. Text fields are bilingual (Localized).
 
-// ── A. Recommended homepage journey ─────────────────────────────────────────
+import type { Localized } from "@/lib/i18n";
+
+// ── A. Homepage journey reference (not rendered) ─────────────────────────────
 
 export type HomepageJourneySection = {
   key: string;
@@ -23,22 +24,20 @@ export const homepageJourneySections: HomepageJourneySection[] = [
     title: "Hero Ecosystem Slider",
     purpose:
       "Open with the wider Al Shehail ecosystem (manufacturing, packaging, distribution, marketing) instead of a manufacturing-only message.",
-    notes:
-      "Stage 02: replace the manufacturing-only hero slides with homepageHeroSlides below.",
+    notes: "Live: driven by homepageHeroSlides below.",
   },
   {
     key: "about",
     title: "About Al Shehail",
     purpose: "Establish who Al Shehail is and the UAE-based manufacturing base.",
-    notes: "Reuse existing AboutTeaser; no redesign in this stage.",
+    notes: "Reuse existing AboutTeaser.",
   },
   {
     key: "beyond-manufacturing",
     title: "Beyond Manufacturing Services",
     purpose:
-      "Introduce the 4-service ecosystem as compact cards (already added as ServicesEcosystem).",
-    notes:
-      "Keep the 'Beyond Manufacturing' title. Stage 02 may adjust placement.",
+      "Introduce the 4-service ecosystem as compact cards (ServicesEcosystem).",
+    notes: "Keep the 'Beyond Manufacturing' title.",
   },
   {
     key: "products",
@@ -51,8 +50,7 @@ export const homepageJourneySections: HomepageJourneySection[] = [
     title: "Manufacturing Process",
     purpose:
       "Keep the detailed concept-to-production workflow later in the page (not in the hero).",
-    notes:
-      "Stage 02: rebuild around manufacturingProcessNarrative below; reuse existing process visuals.",
+    notes: "Driven by manufacturingProcessNarrative below.",
   },
   {
     key: "partner-projects",
@@ -74,7 +72,7 @@ export const homepageJourneySections: HomepageJourneySection[] = [
   },
 ];
 
-// ── B. Planned 6-slide ecosystem hero ───────────────────────────────────────
+// ── B. Ecosystem hero slides (live) ──────────────────────────────────────────
 
 export type HeroSlideType = "video" | "image";
 
@@ -89,10 +87,10 @@ export type EcosystemHeroSlide = {
   key: string;
   type: HeroSlideType;
   service: EcosystemHeroService;
-  title: string;
-  subtitle: string;
-  primaryCta: { label: string; href: string };
-  secondaryCta?: { label: string; href: string };
+  title: Localized;
+  subtitle: Localized;
+  primaryCta: { label: Localized; href: string };
+  secondaryCta?: { label: Localized; href: string };
   /** Media path under /public, or null until the ecosystem hero asset exists. */
   media: string | null;
 };
@@ -102,52 +100,92 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
     key: "ecosystem-open",
     type: "video",
     service: "ecosystem",
-    title: "From Product Idea to Retail-Ready Execution",
-    subtitle:
-      "Al Shehail supports food brands across manufacturing, packaging, distribution, and product communication.",
-    primaryCta: { label: "Start a Project", href: "/contact" },
-    secondaryCta: { label: "Explore Services", href: "/services/distribution" },
+    title: {
+      en: "From Product Idea to Retail-Ready Execution",
+      ar: "من فكرة المنتج إلى تنفيذ جاهز للرف",
+    },
+    subtitle: {
+      en: "Al Shehail supports food brands across manufacturing, packaging, distribution, and product communication.",
+      ar: "يدعم الشحيل العلامات الغذائية عبر التصنيع والتغليف والتوزيع والتواصل حول المنتج.",
+    },
+    primaryCta: {
+      label: { en: "Start a Project", ar: "ابدأ مشروعك" },
+      href: "/contact",
+    },
+    secondaryCta: {
+      label: { en: "Explore Services", ar: "استكشف الخدمات" },
+      href: "/services/distribution",
+    },
     media: null,
   },
   {
     key: "manufacturing",
     type: "image",
     service: "manufacturing",
-    title: "Private Label Food Manufacturing",
-    subtitle:
-      "Product development, sampling, production, and retail-ready bakery manufacturing for food brands.",
-    primaryCta: { label: "Explore Manufacturing", href: "/private-label" },
+    title: {
+      en: "Private Label Food Manufacturing",
+      ar: "تصنيع الأغذية بعلامة خاصة",
+    },
+    subtitle: {
+      en: "Product development, sampling, production, and retail-ready bakery manufacturing for food brands.",
+      ar: "تطوير المنتجات والعينات والإنتاج وتصنيع المخبوزات المهيأة للرف للعلامات الغذائية.",
+    },
+    primaryCta: {
+      label: { en: "Explore Manufacturing", ar: "استكشف التصنيع" },
+      href: "/private-label",
+    },
     media: null,
   },
   {
     key: "brand-design",
     type: "image",
     service: "brand-design",
-    title: "Packaging & Brand Design",
-    subtitle:
-      "Food-focused packaging direction and retail-ready brand presentation for your product range.",
-    primaryCta: { label: "Explore Brand Design", href: "/services/brand-design" },
+    title: {
+      en: "Packaging & Brand Design",
+      ar: "التغليف وتصميم العلامة",
+    },
+    subtitle: {
+      en: "Food-focused packaging direction and retail-ready brand presentation for your product range.",
+      ar: "توجيه تغليف متخصص في الأغذية وعرض للعلامة يليق بالرف لتشكيلة منتجاتك.",
+    },
+    primaryCta: {
+      label: { en: "Explore Brand Design", ar: "استكشف تصميم العلامة" },
+      href: "/services/brand-design",
+    },
     media: null,
   },
   {
     key: "distribution",
     type: "image",
     service: "distribution",
-    title: "Distribution Fleet & Retail Reach",
-    subtitle:
-      "Distribution coordination for finished products moving toward selected retail channels.",
-    primaryCta: { label: "Explore Distribution", href: "/services/distribution" },
+    title: {
+      en: "Distribution Fleet & Retail Reach",
+      ar: "أسطول التوزيع والوصول للتجزئة",
+    },
+    subtitle: {
+      en: "Distribution coordination for finished products moving toward selected retail channels.",
+      ar: "تنسيق توزيع المنتجات الجاهزة نحو قنوات تجزئة مختارة.",
+    },
+    primaryCta: {
+      label: { en: "Explore Distribution", ar: "استكشف التوزيع" },
+      href: "/services/distribution",
+    },
     media: null,
   },
   {
     key: "digital-marketing",
     type: "image",
     service: "digital-marketing",
-    title: "Food Digital Marketing",
-    subtitle:
-      "Launch content, product storytelling, and digital communication direction for food brands.",
+    title: {
+      en: "Food Digital Marketing",
+      ar: "التسويق الرقمي للأغذية",
+    },
+    subtitle: {
+      en: "Launch content, product storytelling, and digital communication direction for food brands.",
+      ar: "محتوى الإطلاق وسرد قصة المنتج وتوجيه التواصل الرقمي للعلامات الغذائية.",
+    },
     primaryCta: {
-      label: "Explore Marketing",
+      label: { en: "Explore Marketing", ar: "استكشف التسويق" },
       href: "/services/digital-marketing",
     },
     media: null,
@@ -156,83 +194,108 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
     key: "ecosystem-close",
     type: "video",
     service: "ecosystem",
-    title: "One Partner Beyond Manufacturing",
-    subtitle:
-      "Build, package, distribute, and communicate your food product through one connected service ecosystem.",
-    primaryCta: { label: "Talk to Al Shehail", href: "/contact" },
+    title: {
+      en: "One Partner Beyond Manufacturing",
+      ar: "شريك واحد أبعد من التصنيع",
+    },
+    subtitle: {
+      en: "Build, package, distribute, and communicate your food product through one connected service ecosystem.",
+      ar: "صنّع منتجك الغذائي وغلّفه ووزّعه وتواصل حوله عبر منظومة خدمات واحدة مترابطة.",
+    },
+    primaryCta: {
+      label: { en: "Talk to Al Shehail", ar: "تحدّث إلى الشحيل" },
+      href: "/contact",
+    },
     media: null,
   },
 ];
 
 // ── C. Manufacturing process narrative (8-step section) ──────────────────────
-// Cleaner content direction for the concept-to-production section that stays
-// later in the homepage. `possibleAssetKey` references existing images in
-// /public where one fits; null where a placeholder is still needed. No files
-// are moved in this stage.
 
 export type ManufacturingProcessStep = {
-  title: string;
-  description: string;
+  title: Localized;
+  description: Localized;
   possibleAssetKey: string | null;
 };
 
 export const manufacturingProcessNarrative: {
-  title: string;
-  subtitle: string;
-  note: string;
+  title: Localized;
+  subtitle: Localized;
+  note: Localized;
   steps: ManufacturingProcessStep[];
 } = {
-  title: "From Concept to Production",
-  subtitle:
-    "A clear manufacturing workflow that helps food brands move from product idea to controlled production and retail-ready handoff.",
-  note: "Each workflow is confirmed per project based on product type, recipe, packaging, quantity, and market requirements.",
+  title: { en: "From Concept to Production", ar: "من الفكرة إلى الإنتاج" },
+  subtitle: {
+    en: "A clear manufacturing workflow that helps food brands move from product idea to controlled production and retail-ready handoff.",
+    ar: "مسار تصنيع واضح يساعد العلامات الغذائية على الانتقال من فكرة المنتج إلى إنتاج محكوم وتسليم مهيأ للرف.",
+  },
+  note: {
+    en: "Each workflow is confirmed per project based on product type, recipe, packaging, quantity, and market requirements.",
+    ar: "يُحدَّد كل مسار عمل لكل مشروع بحسب نوع المنتج والوصفة والتغليف والكمية ومتطلبات السوق.",
+  },
   steps: [
     {
-      title: "Product Idea",
-      description:
-        "Understand the product concept, category, target buyer, and intended retail use.",
+      title: { en: "Product Idea", ar: "فكرة المنتج" },
+      description: {
+        en: "Understand the product concept, category, target buyer, and intended retail use.",
+        ar: "فهم فكرة المنتج وفئته والمشتري المستهدف والاستخدام المقصود في التجزئة.",
+      },
       possibleAssetKey: "/images/hero-journey/product-idea.webp",
     },
     {
-      title: "Recipe Direction",
-      description:
-        "Shape the product formula direction around taste, texture, ingredients, and product positioning.",
+      title: { en: "Recipe Direction", ar: "توجيه الوصفة" },
+      description: {
+        en: "Shape the product formula direction around taste, texture, ingredients, and product positioning.",
+        ar: "تشكيل توجه تركيبة المنتج حول الطعم والقوام والمكوّنات وتموضع المنتج.",
+      },
       possibleAssetKey: "/images/hero-journey/recipe.webp",
     },
     {
-      title: "Sampling",
-      description:
-        "Develop and review samples before moving toward production planning.",
+      title: { en: "Sampling", ar: "العينات" },
+      description: {
+        en: "Develop and review samples before moving toward production planning.",
+        ar: "تطوير العينات ومراجعتها قبل الانتقال إلى تخطيط الإنتاج.",
+      },
       possibleAssetKey: "/images/hero-journey/sampling.webp",
     },
     {
-      title: "Packaging Direction",
-      description:
-        "Align pack format, presentation needs, and retail communication before launch.",
+      title: { en: "Packaging Direction", ar: "توجيه التغليف" },
+      description: {
+        en: "Align pack format, presentation needs, and retail communication before launch.",
+        ar: "مواءمة شكل العبوة ومتطلبات العرض والتواصل في التجزئة قبل الإطلاق.",
+      },
       possibleAssetKey: "/images/hero-journey/packaging.webp",
     },
     {
-      title: "Production Planning",
-      description:
-        "Organize production requirements, quantities, timing, and operational readiness.",
+      title: { en: "Production Planning", ar: "تخطيط الإنتاج" },
+      description: {
+        en: "Organize production requirements, quantities, timing, and operational readiness.",
+        ar: "تنظيم متطلبات الإنتاج والكميات والتوقيت والجاهزية التشغيلية.",
+      },
       possibleAssetKey: null,
     },
     {
-      title: "Manufacturing",
-      description:
-        "Produce the product through a controlled bakery manufacturing workflow.",
+      title: { en: "Manufacturing", ar: "التصنيع" },
+      description: {
+        en: "Produce the product through a controlled bakery manufacturing workflow.",
+        ar: "إنتاج المنتج عبر مسار تصنيع مخبوزات محكوم.",
+      },
       possibleAssetKey: "/images/hero-journey/production.webp",
     },
     {
-      title: "Quality Control",
-      description:
-        "Review product consistency, handling needs, and specification alignment.",
+      title: { en: "Quality Control", ar: "مراقبة الجودة" },
+      description: {
+        en: "Review product consistency, handling needs, and specification alignment.",
+        ar: "مراجعة ثبات المنتج ومتطلبات المناولة والتوافق مع المواصفات.",
+      },
       possibleAssetKey: "/images/hero-journey/qc.webp",
     },
     {
-      title: "Retail-Ready Handoff",
-      description:
-        "Prepare the product for next steps such as packing, distribution coordination, or launch support.",
+      title: { en: "Retail-Ready Handoff", ar: "تسليم مهيأ للرف" },
+      description: {
+        en: "Prepare the product for next steps such as packing, distribution coordination, or launch support.",
+        ar: "تجهيز المنتج للخطوات التالية مثل التعبئة وتنسيق التوزيع أو دعم الإطلاق.",
+      },
       possibleAssetKey: "/images/hero-journey/retail-ready.webp",
     },
   ],

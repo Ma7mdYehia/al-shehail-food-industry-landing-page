@@ -1,29 +1,36 @@
 // Centralized "Single Partner Project" data model for Al Shehail Food Industries.
 //
-// This is the single source of truth for the partner-project system: each entry
-// describes one manufacturing partner's project (positioning, production focus,
-// ingredient strategy, process notes, nutrition focus, compliance notes) and the
-// products produced under it. It is data only — the popup / detail UI is built in
-// a later stage and consumes these structures + helpers.
+// Single source of truth for the partner-project system. Data only — the popup /
+// detail UI consumes these structures + helpers.
 //
 // Guardrails (important):
 //   • No unverified numbers, nutrition values, certifications, or claims.
 //   • Anything not yet verified uses NEEDS_VERIFICATION as a clear placeholder.
-//   • Process / nutrition language is phrased as capability, not a per-SKU claim,
-//     until a verified specification sheet confirms it.
+//   • Process / nutrition language is phrased as capability, not a per-SKU claim.
+//
+// Bilingual: display text fields are Localized ({ en, ar }). `category` stays an
+// English union key used for logic; `categoryLabel` carries the display text.
 
 import type { PartnerAssets, AssetPath } from "@/lib/assets";
 import { assets } from "@/lib/assets";
+import type { Localized } from "@/lib/i18n";
 
 // ── Placeholder marker ───────────────────────────────────────────────────────
-// Use this anywhere a verified figure or claim is still missing, so the UI and
-// future editors can clearly see what still needs real data.
-export const NEEDS_VERIFICATION =
-  "To be added from verified specification sheet";
+export const NEEDS_VERIFICATION: Localized = {
+  en: "To be added from verified specification sheet",
+  ar: "يُضاف من ورقة مواصفات موثّقة",
+};
+
+/** Build a "<label>: <needs verification>" Localized line. */
+function nv(en: string, ar: string): Localized {
+  return {
+    en: `${en}: ${NEEDS_VERIFICATION.en}`,
+    ar: `${ar}: ${NEEDS_VERIFICATION.ar}`,
+  };
+}
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
-/** Lifecycle / data-readiness state of a single product within a project. */
 export type PartnerProductStatus = "active" | "planned" | "needs-data";
 
 export type PartnerProjectCategory =
@@ -31,54 +38,31 @@ export type PartnerProjectCategory =
   | "Organic / Government Food Brand Bakery Production"
   | "Date-Based Sweets / Bakery";
 
-/**
- * A single product produced under a partner project. Kept intentionally light
- * for now; richer per-product detail (full nutrition tables, formats, packaging)
- * can be layered on later without breaking this shape.
- */
 export type PartnerProjectProduct = {
-  /** Unique within its project; used for future product-detail routing. */
   slug: string;
-  name: string;
-  /** Free-text product category label (e.g. "Soft Bread", "Date Sweets"). */
-  category: string;
-  shortDescription: string;
-  /** Image path under /public, or null to fall back to a placeholder in the UI. */
+  name: Localized;
+  category: Localized;
+  shortDescription: Localized;
   image: string | null;
-  /** Conservative, verified-safe product notes. */
-  keyNotes: string[];
-  /**
-   * Nutrition highlights. Until a verified spec sheet exists these stay as a
-   * single NEEDS_VERIFICATION placeholder rather than invented values.
-   */
-  nutritionHighlights: string[];
+  keyNotes: Localized[];
+  nutritionHighlights: Localized[];
   status: PartnerProductStatus;
 };
 
-/** One manufacturing partner's project. */
 export type PartnerProject = {
-  /** URL/lookup slug for the project. */
   slug: string;
   partnerName: string;
-  /** Key into assets.partners for the official logo (or null if none). */
   partnerAssetKey: keyof PartnerAssets | null;
-  /** Resolved logo path from the asset manifest (null until a file is supplied). */
   logoPath: AssetPath;
   category: PartnerProjectCategory;
-  /** One-line positioning statement. */
-  positioning: string;
-  /** Longer-form overview paragraphs. */
-  overview: string[];
-  /** What the project produces / specializes in. */
-  productionFocus: string[];
-  /** Ingredient sourcing & formulation direction. */
-  ingredientStrategy: string[];
-  /** Fermentation / process capability notes. */
-  processNotes: string[];
-  /** Nutrition dimensions the project is built around (not numeric claims). */
-  nutritionFocus: string[];
-  /** Quality / compliance / clean-label direction. */
-  complianceNotes: string[];
+  categoryLabel: Localized;
+  positioning: Localized;
+  overview: Localized[];
+  productionFocus: Localized[];
+  ingredientStrategy: Localized[];
+  processNotes: Localized[];
+  nutritionFocus: Localized[];
+  complianceNotes: Localized[];
   products: PartnerProjectProduct[];
 };
 
@@ -92,149 +76,211 @@ export const partnerProjects: PartnerProject[] = [
     partnerAssetKey: "halsaBake",
     logoPath: assets.partners.halsaBake,
     category: "Healthy Bakery / Functional Bread",
-    positioning:
-      "Healthy bakery production focused on clean ingredients, long fermentation, and stronger nutrition profiles.",
+    categoryLabel: {
+      en: "Healthy Bakery / Functional Bread",
+      ar: "مخبوزات صحية / خبز وظيفي",
+    },
+    positioning: {
+      en: "Healthy bakery production focused on clean ingredients, long fermentation, and stronger nutrition profiles.",
+      ar: "إنتاج مخبوزات صحية يركّز على المكوّنات النظيفة والتخمير الطويل وملامح تغذية أقوى.",
+    },
     overview: [
-      "HÄLSA Bake is a healthy and functional bakery project: breads developed around clean-label ingredients, natural fermentation, and a stronger nutrition direction than standard bakery lines.",
-      "The range spans everyday healthy staples — flatbread, toast, buns, and samoon — alongside functional breads such as high-protein, high-fibre, and seeded loaves.",
+      {
+        en: "HÄLSA Bake is a healthy and functional bakery project: breads developed around clean-label ingredients, natural fermentation, and a stronger nutrition direction than standard bakery lines.",
+        ar: "مشروع HÄLSA Bake مشروع مخبوزات صحية ووظيفية: أنواع خبز مطوَّرة حول مكوّنات نظيفة وتخمير طبيعي وتوجه تغذية أقوى من خطوط المخبوزات الاعتيادية.",
+      },
+      {
+        en: "The range spans everyday healthy staples — flatbread, toast, buns, and samoon — alongside functional breads such as high-protein, high-fibre, and seeded loaves.",
+        ar: "تمتد التشكيلة عبر الأساسيات الصحية اليومية — خبز مسطّح وتوست وأرغفة وصمون — إلى جانب أنواع خبز وظيفية مثل عالي البروتين وعالي الألياف والأرغفة بالبذور.",
+      },
     ],
     productionFocus: [
-      "Healthy bakery products for everyday retail",
-      "Functional breads (protein, fibre, seeded directions)",
-      "Whole-grain and oats-based breads",
+      { en: "Healthy bakery products for everyday retail", ar: "منتجات مخبوزات صحية للتجزئة اليومية" },
+      { en: "Functional breads (protein, fibre, seeded directions)", ar: "أنواع خبز وظيفية (توجهات البروتين والألياف والبذور)" },
+      { en: "Whole-grain and oats-based breads", ar: "أنواع خبز بالحبوب الكاملة والشوفان" },
     ],
     ingredientStrategy: [
-      "Clean-label ingredient direction",
-      "Organic ingredients where applicable and verified",
-      "No added sugar / low sugar positioning only where verified per SKU",
+      { en: "Clean-label ingredient direction", ar: "توجه مكوّنات نظيفة" },
+      { en: "Organic ingredients where applicable and verified", ar: "مكوّنات عضوية حيثما ينطبق ويُوثَّق" },
+      { en: "No added sugar / low sugar positioning only where verified per SKU", ar: "تموضع بدون سكر مضاف / قليل السكر فقط حيثما يُوثَّق لكل صنف" },
     ],
     processNotes: [
-      "Natural sourdough / long-fermentation process capability",
-      "Fermentation can reach 12 hours, and up to 24 hours, as a process capability — confirmed per SKU against a verified specification sheet",
+      { en: "Natural sourdough / long-fermentation process capability", ar: "قدرة عملية على العجين المخمّر الطبيعي / التخمير الطويل" },
+      {
+        en: "Fermentation can reach 12 hours, and up to 24 hours, as a process capability — confirmed per SKU against a verified specification sheet",
+        ar: "قد يصل التخمير إلى 12 ساعة، وحتى 24 ساعة، كقدرة عملية — يُؤكَّد لكل صنف مقابل ورقة مواصفات موثّقة",
+      },
     ],
     nutritionFocus: [
-      "Protein profile",
-      "Carbohydrate profile",
-      "Sugar profile",
-      "Fibre profile",
-      "Calorie profile",
-      `Per-product values: ${NEEDS_VERIFICATION}`,
+      { en: "Protein profile", ar: "ملمح البروتين" },
+      { en: "Carbohydrate profile", ar: "ملمح الكربوهيدرات" },
+      { en: "Sugar profile", ar: "ملمح السكر" },
+      { en: "Fibre profile", ar: "ملمح الألياف" },
+      { en: "Calorie profile", ar: "ملمح السعرات" },
+      nv("Per-product values", "قيم كل منتج"),
     ],
     complianceNotes: [
-      "Clean-label formulation direction",
-      `Nutrition facts and any functional claims: ${NEEDS_VERIFICATION}`,
+      { en: "Clean-label formulation direction", ar: "توجه تركيبة نظيفة المكوّنات" },
+      nv("Nutrition facts and any functional claims", "الحقائق الغذائية وأي ادعاءات وظيفية"),
     ],
     products: [
       {
         slug: "healthy-flatbread",
-        name: "Healthy Flatbread",
-        category: "Flat Bread",
-        shortDescription:
-          "Soft, foldable flatbread produced with a clean-label, healthy direction.",
+        name: { en: "Healthy Flatbread", ar: "خبز مسطّح صحي" },
+        category: { en: "Flat Bread", ar: "خبز مسطّح" },
+        shortDescription: {
+          en: "Soft, foldable flatbread produced with a clean-label, healthy direction.",
+          ar: "خبز مسطّح طري قابل للطي يُنتَج بتوجه صحي نظيف المكوّنات.",
+        },
         image: null,
         keyNotes: [
-          "Clean-label ingredient direction",
-          "Everyday healthy retail format",
+          { en: "Clean-label ingredient direction", ar: "توجه مكوّنات نظيفة" },
+          { en: "Everyday healthy retail format", ar: "شكل تجزئة صحي يومي" },
         ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "healthy-toast",
-        name: "Healthy Toast",
-        category: "Soft Bread",
-        shortDescription:
-          "Sliced toast loaf positioned for a healthier everyday range.",
+        name: { en: "Healthy Toast", ar: "توست صحي" },
+        category: { en: "Soft Bread", ar: "خبز طري" },
+        shortDescription: {
+          en: "Sliced toast loaf positioned for a healthier everyday range.",
+          ar: "رغيف توست مقطّع مموضَع لتشكيلة يومية أكثر صحة.",
+        },
         image: null,
-        keyNotes: ["Sliced loaf format", "Clean-label direction"],
+        keyNotes: [
+          { en: "Sliced loaf format", ar: "شكل رغيف مقطّع" },
+          { en: "Clean-label direction", ar: "توجه نظيف المكوّنات" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "burger-buns",
-        name: "Burger Buns",
-        category: "Soft Bread",
-        shortDescription: "Soft burger buns produced to a healthier specification.",
+        name: { en: "Burger Buns", ar: "خبز برجر" },
+        category: { en: "Soft Bread", ar: "خبز طري" },
+        shortDescription: {
+          en: "Soft burger buns produced to a healthier specification.",
+          ar: "خبز برجر طري يُنتَج وفق مواصفة أكثر صحة.",
+        },
         image: null,
-        keyNotes: ["Consistent bun sizing", "Clean-label direction"],
+        keyNotes: [
+          { en: "Consistent bun sizing", ar: "ثبات حجم الأرغفة" },
+          { en: "Clean-label direction", ar: "توجه نظيف المكوّنات" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "samoon",
-        name: "Samoon",
-        category: "Soft Bread",
-        shortDescription: "Regional samoon bread produced with a healthy direction.",
+        name: { en: "Samoon", ar: "صمون" },
+        category: { en: "Soft Bread", ar: "خبز طري" },
+        shortDescription: {
+          en: "Regional samoon bread produced with a healthy direction.",
+          ar: "خبز صمون محلي يُنتَج بتوجه صحي.",
+        },
         image: null,
-        keyNotes: ["Traditional samoon format", "Clean-label direction"],
+        keyNotes: [
+          { en: "Traditional samoon format", ar: "شكل صمون تقليدي" },
+          { en: "Clean-label direction", ar: "توجه نظيف المكوّنات" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "high-protein-bread",
-        name: "High-Protein Bread",
-        category: "Functional Bread",
-        shortDescription:
-          "Bread positioned around a higher-protein profile.",
+        name: { en: "High-Protein Bread", ar: "خبز عالي البروتين" },
+        category: { en: "Functional Bread", ar: "خبز وظيفي" },
+        shortDescription: {
+          en: "Bread positioned around a higher-protein profile.",
+          ar: "خبز مموضَع حول ملمح بروتين أعلى.",
+        },
         image: null,
         keyNotes: [
-          "Higher-protein positioning",
-          `Protein content claim: ${NEEDS_VERIFICATION}`,
+          { en: "Higher-protein positioning", ar: "تموضع أعلى بالبروتين" },
+          nv("Protein content claim", "ادعاء محتوى البروتين"),
         ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "high-fiber-bread",
-        name: "High-Fibre Bread",
-        category: "Functional Bread",
-        shortDescription: "Bread positioned around a higher-fibre profile.",
+        name: { en: "High-Fibre Bread", ar: "خبز عالي الألياف" },
+        category: { en: "Functional Bread", ar: "خبز وظيفي" },
+        shortDescription: {
+          en: "Bread positioned around a higher-fibre profile.",
+          ar: "خبز مموضَع حول ملمح ألياف أعلى.",
+        },
         image: null,
         keyNotes: [
-          "Higher-fibre positioning",
-          `Fibre content claim: ${NEEDS_VERIFICATION}`,
+          { en: "Higher-fibre positioning", ar: "تموضع أعلى بالألياف" },
+          nv("Fibre content claim", "ادعاء محتوى الألياف"),
         ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "whole-wheat-bread",
-        name: "Whole Wheat Bread",
-        category: "Whole Grain",
-        shortDescription: "Whole wheat bread for a wholesome everyday range.",
+        name: { en: "Whole Wheat Bread", ar: "خبز القمح الكامل" },
+        category: { en: "Whole Grain", ar: "حبوب كاملة" },
+        shortDescription: {
+          en: "Whole wheat bread for a wholesome everyday range.",
+          ar: "خبز قمح كامل لتشكيلة يومية مغذّية.",
+        },
         image: null,
-        keyNotes: ["Whole wheat formulation", "Clean-label direction"],
+        keyNotes: [
+          { en: "Whole wheat formulation", ar: "تركيبة قمح كامل" },
+          { en: "Clean-label direction", ar: "توجه نظيف المكوّنات" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "oats-bread",
-        name: "Oats Bread",
-        category: "Whole Grain",
-        shortDescription: "Oats-based bread for a wholesome, hearty profile.",
+        name: { en: "Oats Bread", ar: "خبز الشوفان" },
+        category: { en: "Whole Grain", ar: "حبوب كاملة" },
+        shortDescription: {
+          en: "Oats-based bread for a wholesome, hearty profile.",
+          ar: "خبز قائم على الشوفان لملمح مغذٍّ وشهي.",
+        },
         image: null,
-        keyNotes: ["Oats-based formulation", "Clean-label direction"],
+        keyNotes: [
+          { en: "Oats-based formulation", ar: "تركيبة قائمة على الشوفان" },
+          { en: "Clean-label direction", ar: "توجه نظيف المكوّنات" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "chia-bread",
-        name: "Chia Bread",
-        category: "Functional / Seeded Bread",
-        shortDescription: "Seeded bread made with chia for a functional direction.",
+        name: { en: "Chia Bread", ar: "خبز الشيا" },
+        category: { en: "Functional / Seeded Bread", ar: "خبز وظيفي / بالبذور" },
+        shortDescription: {
+          en: "Seeded bread made with chia for a functional direction.",
+          ar: "خبز بالبذور مصنوع بالشيا لتوجه وظيفي.",
+        },
         image: null,
-        keyNotes: ["Chia-seeded formulation", "Functional positioning"],
+        keyNotes: [
+          { en: "Chia-seeded formulation", ar: "تركيبة بذور الشيا" },
+          { en: "Functional positioning", ar: "تموضع وظيفي" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "black-seed-bread",
-        name: "Black Seed Bread",
-        category: "Functional / Seeded Bread",
-        shortDescription:
-          "Seeded bread made with black seed for a functional direction.",
+        name: { en: "Black Seed Bread", ar: "خبز حبة البركة" },
+        category: { en: "Functional / Seeded Bread", ar: "خبز وظيفي / بالبذور" },
+        shortDescription: {
+          en: "Seeded bread made with black seed for a functional direction.",
+          ar: "خبز بالبذور مصنوع بحبة البركة لتوجه وظيفي.",
+        },
         image: null,
-        keyNotes: ["Black-seed formulation", "Functional positioning"],
+        keyNotes: [
+          { en: "Black-seed formulation", ar: "تركيبة حبة البركة" },
+          { en: "Functional positioning", ar: "تموضع وظيفي" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
@@ -248,116 +294,171 @@ export const partnerProjects: PartnerProject[] = [
     partnerAssetKey: "ektifa",
     logoPath: assets.partners.ektifa,
     category: "Organic / Government Food Brand Bakery Production",
-    positioning:
-      "Bakery production using EKTIFA supplied ingredients and private-label development support.",
+    categoryLabel: {
+      en: "Organic / Government Food Brand Bakery Production",
+      ar: "إنتاج مخبوزات لعلامة غذائية عضوية / حكومية",
+    },
+    positioning: {
+      en: "Bakery production using EKTIFA supplied ingredients and private-label development support.",
+      ar: "إنتاج مخبوزات باستخدام مكوّنات مورَّدة من EKTIFA مع دعم تطوير العلامة الخاصة.",
+    },
     overview: [
-      "The EKTIFA project covers bakery production built on EKTIFA-supplied ingredients, with Al Shehail providing private-label development and manufacturing support.",
-      "The range spans French bakery, soft breads, and date-based sweets, produced to the brand's specification.",
+      {
+        en: "The EKTIFA project covers bakery production built on EKTIFA-supplied ingredients, with Al Shehail providing private-label development and manufacturing support.",
+        ar: "يغطي مشروع EKTIFA إنتاج مخبوزات قائم على مكوّنات مورَّدة من EKTIFA، مع توفير الشحيل لدعم تطوير العلامة الخاصة والتصنيع.",
+      },
+      {
+        en: "The range spans French bakery, soft breads, and date-based sweets, produced to the brand's specification.",
+        ar: "تمتد التشكيلة عبر المخبوزات الفرنسية والخبز الطري والحلويات بالتمر، مُنتَجة وفق مواصفة العلامة.",
+      },
     ],
     productionFocus: [
-      "Private-label bakery production for the EKTIFA brand",
-      "French bakery, soft breads, and date-based sweets",
-      "Development support from concept to retail-ready supply",
+      { en: "Private-label bakery production for the EKTIFA brand", ar: "إنتاج مخبوزات بعلامة خاصة لعلامة EKTIFA" },
+      { en: "French bakery, soft breads, and date-based sweets", ar: "مخبوزات فرنسية وخبز طري وحلويات بالتمر" },
+      { en: "Development support from concept to retail-ready supply", ar: "دعم التطوير من الفكرة إلى توريد جاهز للرف" },
     ],
     ingredientStrategy: [
-      "Produced with EKTIFA-supplied wheat flour, whole-wheat flour, and semolina",
-      "Natural milk used where applicable",
-      `Organic ingredient scope and any organic claims: ${NEEDS_VERIFICATION}`,
+      { en: "Produced with EKTIFA-supplied wheat flour, whole-wheat flour, and semolina", ar: "مُنتَج بدقيق القمح ودقيق القمح الكامل والسميد المورَّد من EKTIFA" },
+      { en: "Natural milk used where applicable", ar: "يُستخدم الحليب الطبيعي حيثما ينطبق" },
+      nv("Organic ingredient scope and any organic claims", "نطاق المكوّنات العضوية وأي ادعاءات عضوية"),
     ],
     processNotes: [
-      "Standard bakery and lamination processes per product type",
-      `Fermentation / process specifics per SKU: ${NEEDS_VERIFICATION}`,
+      { en: "Standard bakery and lamination processes per product type", ar: "عمليات مخبوزات وترقيق قياسية حسب نوع المنتج" },
+      nv("Fermentation / process specifics per SKU", "تفاصيل التخمير / العملية لكل صنف"),
     ],
     nutritionFocus: [
-      "Profile varies by product type",
-      `Per-product nutrition values: ${NEEDS_VERIFICATION}`,
+      { en: "Profile varies by product type", ar: "يختلف الملمح حسب نوع المنتج" },
+      nv("Per-product nutrition values", "القيم الغذائية لكل منتج"),
     ],
     complianceNotes: [
-      "Produced to the partner brand's ingredient and product specification",
-      `Certifications and organic verification: ${NEEDS_VERIFICATION}`,
+      { en: "Produced to the partner brand's ingredient and product specification", ar: "مُنتَج وفق مواصفة مكوّنات ومنتج العلامة الشريكة" },
+      nv("Certifications and organic verification", "الشهادات والتوثيق العضوي"),
     ],
     products: [
       {
         slug: "mini-croissant",
-        name: "Mini Croissant",
-        category: "French Bakery",
-        shortDescription: "Laminated mini croissant for bakery and cafe shelves.",
+        name: { en: "Mini Croissant", ar: "كرواسان ميني" },
+        category: { en: "French Bakery", ar: "مخبوزات فرنسية" },
+        shortDescription: {
+          en: "Laminated mini croissant for bakery and cafe shelves.",
+          ar: "كرواسان ميني مورّق لرفوف المخابز والمقاهي.",
+        },
         image: null,
-        keyNotes: ["Laminated French bakery", "Produced to brand specification"],
+        keyNotes: [
+          { en: "Laminated French bakery", ar: "مخبوزات فرنسية مورّقة" },
+          { en: "Produced to brand specification", ar: "مُنتَج وفق مواصفة العلامة" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "burger-buns",
-        name: "Burger Buns",
-        category: "Soft Bread",
-        shortDescription: "Soft burger buns produced to brand specification.",
+        name: { en: "Burger Buns", ar: "خبز برجر" },
+        category: { en: "Soft Bread", ar: "خبز طري" },
+        shortDescription: {
+          en: "Soft burger buns produced to brand specification.",
+          ar: "خبز برجر طري مُنتَج وفق مواصفة العلامة.",
+        },
         image: null,
-        keyNotes: ["Consistent bun sizing", "EKTIFA-supplied flour"],
+        keyNotes: [
+          { en: "Consistent bun sizing", ar: "ثبات حجم الأرغفة" },
+          { en: "EKTIFA-supplied flour", ar: "دقيق مورَّد من EKTIFA" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "samoon",
-        name: "Samoon",
-        category: "Soft Bread",
-        shortDescription: "Regional samoon bread produced to brand specification.",
+        name: { en: "Samoon", ar: "صمون" },
+        category: { en: "Soft Bread", ar: "خبز طري" },
+        shortDescription: {
+          en: "Regional samoon bread produced to brand specification.",
+          ar: "خبز صمون محلي مُنتَج وفق مواصفة العلامة.",
+        },
         image: null,
-        keyNotes: ["Traditional samoon format", "EKTIFA-supplied flour"],
+        keyNotes: [
+          { en: "Traditional samoon format", ar: "شكل صمون تقليدي" },
+          { en: "EKTIFA-supplied flour", ar: "دقيق مورَّد من EKTIFA" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "toast",
-        name: "Toast",
-        category: "Soft Bread",
-        shortDescription: "Sliced toast loaf produced to brand specification.",
+        name: { en: "Toast", ar: "توست" },
+        category: { en: "Soft Bread", ar: "خبز طري" },
+        shortDescription: {
+          en: "Sliced toast loaf produced to brand specification.",
+          ar: "رغيف توست مقطّع مُنتَج وفق مواصفة العلامة.",
+        },
         image: null,
-        keyNotes: ["Sliced loaf format", "EKTIFA-supplied flour"],
+        keyNotes: [
+          { en: "Sliced loaf format", ar: "شكل رغيف مقطّع" },
+          { en: "EKTIFA-supplied flour", ar: "دقيق مورَّد من EKTIFA" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "maamoul",
-        name: "Maamoul",
-        category: "Date Sweets",
-        shortDescription: "Filled date maamoul produced to brand specification.",
+        name: { en: "Maamoul", ar: "معمول" },
+        category: { en: "Date Sweets", ar: "حلويات بالتمر" },
+        shortDescription: {
+          en: "Filled date maamoul produced to brand specification.",
+          ar: "معمول محشوّ بالتمر مُنتَج وفق مواصفة العلامة.",
+        },
         image: null,
-        keyNotes: ["Date-filled sweet", "Traditional format"],
+        keyNotes: [
+          { en: "Date-filled sweet", ar: "حلوى محشوّة بالتمر" },
+          { en: "Traditional format", ar: "شكل تقليدي" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "large-croissant",
-        name: "Large Croissant",
-        category: "French Bakery",
-        shortDescription: "Full-size laminated croissant for bakery shelves.",
+        name: { en: "Large Croissant", ar: "كرواسان كبير" },
+        category: { en: "French Bakery", ar: "مخبوزات فرنسية" },
+        shortDescription: {
+          en: "Full-size laminated croissant for bakery shelves.",
+          ar: "كرواسان مورّق بالحجم الكامل لرفوف المخابز.",
+        },
         image: null,
-        keyNotes: ["Laminated French bakery", "Produced to brand specification"],
+        keyNotes: [
+          { en: "Laminated French bakery", ar: "مخبوزات فرنسية مورّقة" },
+          { en: "Produced to brand specification", ar: "مُنتَج وفق مواصفة العلامة" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "pate",
-        name: "Pâté",
-        category: "French Bakery / Pastry",
-        shortDescription: "Pastry pâté produced to brand specification.",
+        name: { en: "Pâté", ar: "باتيه" },
+        category: { en: "French Bakery / Pastry", ar: "مخبوزات فرنسية / معجنات" },
+        shortDescription: {
+          en: "Pastry pâté produced to brand specification.",
+          ar: "معجنات باتيه مُنتَجة وفق مواصفة العلامة.",
+        },
         image: null,
         keyNotes: [
-          "Pastry format",
-          `Filling / recipe details: ${NEEDS_VERIFICATION}`,
+          { en: "Pastry format", ar: "شكل معجنات" },
+          nv("Filling / recipe details", "تفاصيل الحشو / الوصفة"),
         ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "tamriya",
-        name: "Tamriya",
-        category: "Date Sweets",
-        shortDescription:
-          "Date-based sweet built around dates, ghee, and sesame tahini.",
+        name: { en: "Tamriya", ar: "تمرية" },
+        category: { en: "Date Sweets", ar: "حلويات بالتمر" },
+        shortDescription: {
+          en: "Date-based sweet built around dates, ghee, and sesame tahini.",
+          ar: "حلوى قائمة على التمر مبنية على التمر والسمن وطحينة السمسم.",
+        },
         image: null,
-        keyNotes: ["Made with dates, ghee, and sesame tahini"],
+        keyNotes: [
+          { en: "Made with dates, ghee, and sesame tahini", ar: "مصنوعة من التمر والسمن وطحينة السمسم" },
+        ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
@@ -371,58 +472,75 @@ export const partnerProjects: PartnerProject[] = [
     partnerAssetKey: "alTahan",
     logoPath: assets.partners.alTahan,
     category: "Date-Based Sweets / Bakery",
-    positioning:
-      "Date-based bakery sweets with a focus on traditional taste and cleaner sweetening direction where possible.",
+    categoryLabel: {
+      en: "Date-Based Sweets / Bakery",
+      ar: "حلويات ومخبوزات بالتمر",
+    },
+    positioning: {
+      en: "Date-based bakery sweets with a focus on traditional taste and cleaner sweetening direction where possible.",
+      ar: "حلويات مخبوزة قائمة على التمر تركّز على الطعم التقليدي وتوجه تحلية أنظف حيثما أمكن.",
+    },
     overview: [
-      "The Al Tahan project focuses on traditional date-based sweets — maamoul and tamriya — produced for authentic taste.",
-      "Where possible, the direction leans toward cleaner sweetening (such as natural sweetening with honey where applicable), without claiming a sugar-free product.",
+      {
+        en: "The Al Tahan project focuses on traditional date-based sweets — maamoul and tamriya — produced for authentic taste.",
+        ar: "يركّز مشروع الطحان على الحلويات التقليدية القائمة على التمر — المعمول والتمرية — المُنتَجة لطعم أصيل.",
+      },
+      {
+        en: "Where possible, the direction leans toward cleaner sweetening (such as natural sweetening with honey where applicable), without claiming a sugar-free product.",
+        ar: "حيثما أمكن، يميل التوجه نحو تحلية أنظف (مثل التحلية الطبيعية بالعسل حيثما ينطبق)، دون ادعاء منتج خالٍ من السكر.",
+      },
     ],
     productionFocus: [
-      "Date-based sweets and bakery",
-      "Traditional maamoul and tamriya",
+      { en: "Date-based sweets and bakery", ar: "حلويات ومخبوزات قائمة على التمر" },
+      { en: "Traditional maamoul and tamriya", ar: "معمول وتمرية تقليديان" },
     ],
     ingredientStrategy: [
-      "Date-forward recipes",
-      "Lower-sugar direction where possible",
-      "Replacing artificial sweeteners with natural sweetening directions (e.g. honey) where applicable",
-      "No sugar-free claim is made",
+      { en: "Date-forward recipes", ar: "وصفات يتصدّرها التمر" },
+      { en: "Lower-sugar direction where possible", ar: "توجه أقل سكرًا حيثما أمكن" },
+      { en: "Replacing artificial sweeteners with natural sweetening directions (e.g. honey) where applicable", ar: "استبدال المحلّيات الصناعية بتوجهات تحلية طبيعية (مثل العسل) حيثما ينطبق" },
+      { en: "No sugar-free claim is made", ar: "لا يُقدَّم ادعاء خلوّ من السكر" },
     ],
     processNotes: [
-      "Traditional sweets preparation per product",
-      `Process specifics per SKU: ${NEEDS_VERIFICATION}`,
+      { en: "Traditional sweets preparation per product", ar: "تحضير حلويات تقليدي لكل منتج" },
+      nv("Process specifics per SKU", "تفاصيل العملية لكل صنف"),
     ],
     nutritionFocus: [
-      "Date-based sugar profile",
-      `Per-product nutrition values: ${NEEDS_VERIFICATION}`,
+      { en: "Date-based sugar profile", ar: "ملمح سكر قائم على التمر" },
+      nv("Per-product nutrition values", "القيم الغذائية لكل منتج"),
     ],
     complianceNotes: [
-      "Conservative, verified claims only",
-      `Nutrition facts and sweetening claims: ${NEEDS_VERIFICATION}`,
+      { en: "Conservative, verified claims only", ar: "ادعاءات متحفّظة وموثّقة فقط" },
+      nv("Nutrition facts and sweetening claims", "الحقائق الغذائية وادعاءات التحلية"),
     ],
     products: [
       {
         slug: "maamoul",
-        name: "Maamoul",
-        category: "Date Sweets",
-        shortDescription: "Traditional filled date maamoul.",
+        name: { en: "Maamoul", ar: "معمول" },
+        category: { en: "Date Sweets", ar: "حلويات بالتمر" },
+        shortDescription: {
+          en: "Traditional filled date maamoul.",
+          ar: "معمول تمر محشوّ تقليدي.",
+        },
         image: null,
         keyNotes: [
-          "Date-filled sweet",
-          "Cleaner sweetening direction where possible",
+          { en: "Date-filled sweet", ar: "حلوى محشوّة بالتمر" },
+          { en: "Cleaner sweetening direction where possible", ar: "توجه تحلية أنظف حيثما أمكن" },
         ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
       },
       {
         slug: "tamriya",
-        name: "Tamriya",
-        category: "Date Sweets",
-        shortDescription:
-          "Date-based sweet built around dates, ghee, and sesame tahini.",
+        name: { en: "Tamriya", ar: "تمرية" },
+        category: { en: "Date Sweets", ar: "حلويات بالتمر" },
+        shortDescription: {
+          en: "Date-based sweet built around dates, ghee, and sesame tahini.",
+          ar: "حلوى قائمة على التمر مبنية على التمر والسمن وطحينة السمسم.",
+        },
         image: null,
         keyNotes: [
-          "Made with dates, ghee, and sesame tahini",
-          "Natural sweetening direction where applicable — not sugar-free",
+          { en: "Made with dates, ghee, and sesame tahini", ar: "مصنوعة من التمر والسمن وطحينة السمسم" },
+          { en: "Natural sweetening direction where applicable — not sugar-free", ar: "توجه تحلية طبيعية حيثما ينطبق — وليست خالية من السكر" },
         ],
         nutritionHighlights: [NEEDS_VERIFICATION],
         status: "needs-data",
@@ -433,22 +551,18 @@ export const partnerProjects: PartnerProject[] = [
 
 // ── Lookup helpers ───────────────────────────────────────────────────────────
 
-/** Map of project slug → project, for O(1) lookups. */
 export const partnerProjectBySlug: Record<string, PartnerProject> =
   Object.fromEntries(partnerProjects.map((p) => [p.slug, p]));
 
-/** Map of partner name → project, for connecting existing partner entries. */
 export const partnerProjectByPartnerName: Record<string, PartnerProject> =
   Object.fromEntries(partnerProjects.map((p) => [p.partnerName, p]));
 
-/** Returns the project for a slug, or undefined if none exists. */
 export function getPartnerProjectBySlug(
   slug: string
 ): PartnerProject | undefined {
   return partnerProjectBySlug[slug];
 }
 
-/** Returns the project for a partner name, or undefined if none exists. */
 export function getPartnerProjectByPartnerName(
   name: string
 ): PartnerProject | undefined {
@@ -457,51 +571,49 @@ export function getPartnerProjectByPartnerName(
 
 /**
  * Conservative "strength" chips for partner cards, derived only from the
- * existing project wording — no new claims are introduced. Sugar wording maps to
- * the softer "Sugar-Conscious" rather than a hard "Sugar Free"; preservative /
- * clean-label wording maps to "Clean Label Direction".
+ * existing project wording — no new claims are introduced. Matching runs on the
+ * English source text; chips are returned bilingual.
  */
-export function getProjectStrengthChips(project: PartnerProject): string[] {
+export function getProjectStrengthChips(project: PartnerProject): Localized[] {
   const text = [
-    project.positioning,
+    project.positioning.en,
     project.category,
-    ...project.productionFocus,
-    ...project.ingredientStrategy,
-    ...project.processNotes,
-    ...project.nutritionFocus,
-    ...project.complianceNotes,
+    ...project.productionFocus.map((x) => x.en),
+    ...project.ingredientStrategy.map((x) => x.en),
+    ...project.processNotes.map((x) => x.en),
+    ...project.nutritionFocus.map((x) => x.en),
+    ...project.complianceNotes.map((x) => x.en),
   ]
     .join(" ")
     .toLowerCase();
 
-  const chips: string[] = [];
+  const chips: Localized[] = [];
 
   if (
     project.category === "Healthy Bakery / Functional Bread" ||
     project.category === "Organic / Government Food Brand Bakery Production"
   ) {
-    chips.push("Nutrition-Focused");
+    chips.push({ en: "Nutrition-Focused", ar: "تركيز على التغذية" });
   }
   if (project.category === "Date-Based Sweets / Bakery") {
-    chips.push("Date-Based Sweets");
+    chips.push({ en: "Date-Based Sweets", ar: "حلويات بالتمر" });
   }
-  if (text.includes("organic")) chips.push("Organic Direction");
+  if (text.includes("organic")) chips.push({ en: "Organic Direction", ar: "توجه عضوي" });
   if (
     text.includes("long-fermentation") ||
     text.includes("long fermentation") ||
     text.includes("sourdough")
   ) {
-    chips.push("Long Fermentation");
+    chips.push({ en: "Long Fermentation", ar: "تخمير طويل" });
   }
   if (text.includes("clean-label") || text.includes("clean label")) {
-    chips.push("Clean Label Direction");
+    chips.push({ en: "Clean Label Direction", ar: "توجه نظيف المكوّنات" });
   }
-  if (text.includes("sugar")) chips.push("Sugar-Conscious");
+  if (text.includes("sugar")) chips.push({ en: "Sugar-Conscious", ar: "واعٍ بالسكر" });
 
   return chips;
 }
 
-/** Finds a single product within a project by both slugs. */
 export function getPartnerProjectProduct(
   projectSlug: string,
   productSlug: string
@@ -511,7 +623,6 @@ export function getPartnerProjectProduct(
   );
 }
 
-/** All product entries still awaiting verified data, across every project. */
 export function getProductsNeedingData(): {
   projectSlug: string;
   product: PartnerProjectProduct;
