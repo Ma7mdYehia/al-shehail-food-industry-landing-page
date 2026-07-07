@@ -1,85 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { productCategories, products } from "@/lib/products";
+import { productCategories, products } from "@/lib/products/catalog";
+import { contactFormCopy } from "@/lib/pageCopy";
 import type { Locale } from "@/lib/i18n";
 
 const inputClass =
   "w-full rounded-xl border border-sand bg-warmwhite px-4 py-3 text-sm text-charcoal placeholder:text-stone/60 transition-colors focus:border-champagne focus:outline-none focus:ring-2 focus:ring-champagne/30";
 const labelClass = "mb-1.5 block text-sm font-medium text-charcoal";
-
-// Component chrome strings per locale.
-const L = {
-  en: {
-    fullName: "Full Name",
-    yourName: "Your name",
-    company: "Company Name",
-    companyPh: "Company",
-    country: "Country",
-    countryPh: "Country",
-    email: "Email",
-    emailPh: "you@company.com",
-    whatsapp: "WhatsApp Number",
-    whatsappPh: "+971 ...",
-    quantity: "Expected Monthly Quantity",
-    quantityPh: "e.g. cartons / units per month",
-    category: "Product Category",
-    selectCategory: "Select a category",
-    product: "Product of Interest",
-    selectProduct: "Select a product",
-    other: "Other",
-    existingRecipe: "Do you have an existing recipe?",
-    packagingSupport: "Do you need packaging support?",
-    no: "No",
-    yes: "Yes",
-    targetMarket: "Target Market",
-    targetMarketPh: "e.g. UAE retail, GCC export, foodservice",
-    message: "Message / Project Brief",
-    messagePh: "Tell us about your product idea, positioning, and goals.",
-    send: "Send via WhatsApp",
-    helper:
-      "No account needed — submitting prepares a WhatsApp message with your details for our team.",
-    thankYou: "Thank you",
-    successBody:
-      "— your manufacturing request is ready to send on WhatsApp. Our team will review your project details and get back to you shortly.",
-    ifNotOpen: "If WhatsApp didn’t open automatically,",
-    tapHere: "tap here to open it",
-  },
-  ar: {
-    fullName: "الاسم الكامل",
-    yourName: "اسمك",
-    company: "اسم الشركة",
-    companyPh: "الشركة",
-    country: "الدولة",
-    countryPh: "الدولة",
-    email: "البريد الإلكتروني",
-    emailPh: "you@company.com",
-    whatsapp: "رقم واتساب",
-    whatsappPh: "+971 ...",
-    quantity: "الكمية الشهرية المتوقعة",
-    quantityPh: "مثال: كراتين / وحدات شهريًا",
-    category: "فئة المنتج",
-    selectCategory: "اختر فئة",
-    product: "المنتج محل الاهتمام",
-    selectProduct: "اختر منتجًا",
-    other: "أخرى",
-    existingRecipe: "هل لديك وصفة حالية؟",
-    packagingSupport: "هل تحتاج إلى دعم في التغليف؟",
-    no: "لا",
-    yes: "نعم",
-    targetMarket: "السوق المستهدف",
-    targetMarketPh: "مثال: تجزئة الإمارات، تصدير الخليج، خدمات الطعام",
-    message: "الرسالة / موجز المشروع",
-    messagePh: "أخبرنا عن فكرة منتجك وتموضعه وأهدافك.",
-    send: "أرسل عبر واتساب",
-    helper: "لا حاجة لحساب — الإرسال يجهّز رسالة واتساب بتفاصيلك لفريقنا.",
-    thankYou: "شكرًا لك",
-    successBody:
-      "— طلب التصنيع الخاص بك جاهز للإرسال عبر واتساب. سيراجع فريقنا تفاصيل مشروعك ويعاود التواصل معك قريبًا.",
-    ifNotOpen: "إذا لم يفتح واتساب تلقائيًا،",
-    tapHere: "اضغط هنا لفتحه",
-  },
-} as const;
 
 type FormState = {
   fullName: string;
@@ -156,7 +84,7 @@ function buildWhatsAppLink(form: FormState, locale: Locale): string {
 export default function ContactForm({ locale }: { locale: Locale }) {
   const [form, setForm] = useState<FormState>(initialState);
   const [submitted, setSubmitted] = useState(false);
-  const t = L[locale];
+  const t = contactFormCopy[locale];
 
   const categoryOptions = [
     ...productCategories.map((c) => c.name[locale]),
