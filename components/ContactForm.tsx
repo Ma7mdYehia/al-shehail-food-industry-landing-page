@@ -112,6 +112,8 @@ const initialState: FormState = {
 };
 
 function buildWhatsAppLink(form: FormState, locale: Locale): string {
+  const yesNo = (value: string) =>
+    locale === "ar" ? (value === "Yes" ? "نعم" : "لا") : value;
   const lines =
     locale === "ar"
       ? [
@@ -124,8 +126,8 @@ function buildWhatsAppLink(form: FormState, locale: Locale): string {
           `واتساب: ${form.whatsapp || "-"}`,
           `فئة المنتج: ${form.category || "-"}`,
           `المنتج محل الاهتمام: ${form.product || "-"}`,
-          `وصفة حالية: ${form.existingRecipe}`,
-          `دعم التغليف مطلوب: ${form.packagingSupport}`,
+          `وصفة حالية: ${yesNo(form.existingRecipe)}`,
+          `دعم التغليف مطلوب: ${yesNo(form.packagingSupport)}`,
           `الكمية الشهرية المتوقعة: ${form.quantity || "-"}`,
           `السوق المستهدف: ${form.targetMarket || "-"}`,
           "",
