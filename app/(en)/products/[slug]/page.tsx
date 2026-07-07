@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import ProductDetailPage from "@/components/pages/ProductDetailPage";
-import { products, getProductBySlug } from "@/lib/products";
+import { products, getProductBySlug } from "@/lib/products/catalog";
 
 type Params = { params: { slug: string } };
 

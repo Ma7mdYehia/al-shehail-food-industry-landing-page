@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AssetHint from "./AssetHint";
 import ProductIcon from "./ProductIcon";
-import type { Product } from "@/lib/products";
+import type { Product } from "@/lib/products/types";
 import { localeHref, type Locale } from "@/lib/i18n";
 import {
   assets,

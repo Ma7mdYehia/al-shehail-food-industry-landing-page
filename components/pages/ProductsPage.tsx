@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import ProductIcon, { type ProductIconType } from "@/components/ProductIcon";
 import ProductFamilyStickyNav from "@/components/products/ProductFamilyStickyNav";
-import { products, productsByCategory } from "@/lib/products";
+import { products, productsByCategory } from "@/lib/products/catalog";
 import { localeHref, type Locale, type Localized } from "@/lib/i18n";
 
 const familyIcon: Record<string, ProductIconType> = {

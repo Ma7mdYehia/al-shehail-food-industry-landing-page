@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { productsByCategory } from "@/lib/products";
+import { productsByCategory } from "@/lib/products/catalog";
 import type { Locale } from "@/lib/i18n";
 
 const L = {

@@ -12,16 +12,15 @@ import {
   getAssetAlt,
   productAssetKeyBySlug,
 } from "@/lib/assets";
+import { getProductBySlug, getRelatedProducts } from "@/lib/products/catalog";
 import {
-  getProductBySlug,
   getProductDetail,
-  getRelatedProducts,
   whatsappForProduct,
   recipeDisclaimer,
   privateLabelPoints,
   packagingOptions,
   qualityPoints,
-} from "@/lib/products";
+} from "@/lib/products/details";
 import { localeHref, type Locale } from "@/lib/i18n";
 
 const L = {

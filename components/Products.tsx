@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import SectionHeading from "./SectionHeading";
 import HomeProductCard from "./home/HomeProductCard";
-import { featuredProducts, productCategories, products } from "@/lib/products";
+import { featuredProducts, productCategories, products } from "@/lib/products/catalog";
 import { ui } from "@/lib/dictionary";
 import { localeHref, type Locale } from "@/lib/i18n";
 

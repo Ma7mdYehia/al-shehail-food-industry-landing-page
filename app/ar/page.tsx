@@ -10,7 +10,7 @@ import MarketPresenceTeaser from "@/components/home/MarketPresenceTeaser";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import { company } from "@/lib/content";
-import { products } from "@/lib/products";
+import { products } from "@/lib/products/catalog";
 import type { Locale } from "@/lib/i18n";
 
 const locale: Locale = "ar";

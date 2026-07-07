@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { products } from "@/lib/products";
+import { products } from "@/lib/products/catalog";
 
 const baseUrl = "https://www.alshehai.ae";
 
