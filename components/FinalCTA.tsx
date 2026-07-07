@@ -25,14 +25,14 @@ export default function FinalCTA() {
           <div className="relative mx-auto max-w-2xl">
             <span className="eyebrow">
               <span className="h-px w-6 bg-champagne" />
-              من الفكرة إلى الرف
+              من الفكرة إلى السوق
             </span>
             <h2 className="heading-serif mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-              جاهز لبناء منتجك الغذائي؟
+              جاهز تطلق منتج مخبوزات بعلامتك؟
             </h2>
             <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
-              تواصل مع الشحيل لمناقشة التصنيع، والتغليف، والتوزيع، ودعم التواصل
-              حول منتجك لعلامتك الغذائية.
+              تواصل مع الشحيل لمناقشة التصنيع، التغليف، التوريد، وطريقة تقديم
+              المنتج لعملائك بشكل واضح ومهني.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link href="/contact" className="btn-primary group">
