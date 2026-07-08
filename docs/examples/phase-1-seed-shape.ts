@@ -165,7 +165,7 @@ const serviceSeeds: ServiceSeed[] = [
     slug: "distribution",
     meta_title_localized: {
       en: "Distribution Fleet & Retail Reach | Al Shehail Food Industries",
-      ar: "أسطول التوزيع والوصول للتجزئة | الشحيل للصناعات الغذائية",
+      ar: "أسطول التوزيع والوصول للتجزئة | الشهيل للصناعات الغذائية",
     },
     meta_description_localized: {
       en: "Distribution coordination that connects finished bakery products with the right route to market.",

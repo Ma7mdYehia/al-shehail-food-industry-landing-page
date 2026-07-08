@@ -12,7 +12,7 @@ export function generateMetadata({ params }: Params): Metadata {
   const product = getProductBySlug(params.slug);
   if (!product) return {};
   const name = product.name.ar;
-  const title = `تصنيع ${name} في الإمارات | الشحيل للصناعات الغذائية`;
+  const title = `تصنيع ${name} في الإمارات | الشهيل للصناعات الغذائية`;
   const description = `تصنيع ${name} بعلامة خاصة في الإمارات مع تطوير الوصفة ودعم التغليف والإنتاج المعتمد والتوريد الجاهز للرف.`;
   return {
     title: { absolute: title },

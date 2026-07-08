@@ -106,7 +106,7 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
     },
     subtitle: {
       en: "Al Shehail supports food brands across manufacturing, packaging, distribution, and product communication.",
-      ar: "يدعم الشحيل العلامات الغذائية عبر التصنيع والتغليف والتوزيع والتواصل حول المنتج.",
+      ar: "يدعم الشهيل العلامات الغذائية عبر التصنيع والتغليف والتوزيع والتواصل حول المنتج.",
     },
     primaryCta: {
       label: { en: "Start a Project", ar: "ابدأ مشروعك" },
@@ -203,7 +203,7 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
       ar: "صنّع منتجك الغذائي وغلّفه ووزّعه وتواصل حوله عبر منظومة خدمات واحدة مترابطة.",
     },
     primaryCta: {
-      label: { en: "Talk to Al Shehail", ar: "تحدّث إلى الشحيل" },
+      label: { en: "Talk to Al Shehail", ar: "تحدّث إلى الشهيل" },
       href: "/contact",
     },
     media: null,

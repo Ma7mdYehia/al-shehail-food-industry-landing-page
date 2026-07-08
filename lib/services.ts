@@ -111,17 +111,17 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     slug: "distribution",
     metaTitle: {
       en: "Distribution Fleet & Retail Reach | Al Shehail Food Industries",
-      ar: "أسطول التوزيع والوصول للتجزئة | الشحيل للصناعات الغذائية",
+      ar: "أسطول التوزيع والوصول للتجزئة | الشهيل للصناعات الغذائية",
     },
     metaDescription: {
       en: "From finished bakery products to retail-ready movement, Al Shehail supports brands with distribution coordination after production — route-to-market and delivery planning confirmed per project.",
-      ar: "من المنتجات الجاهزة إلى الحركة المهيأة للرف، يدعم الشحيل العلامات بتنسيق التوزيع بعد الإنتاج — يُحدَّد مسار السوق وتخطيط التسليم لكل مشروع.",
+      ar: "من المنتجات الجاهزة إلى الحركة المهيأة للرف، يدعم الشهيل العلامات بتنسيق التوزيع بعد الإنتاج — يُحدَّد مسار السوق وتخطيط التسليم لكل مشروع.",
     },
     heroEyebrow: { en: "Services · Distribution", ar: "الخدمات · التوزيع" },
     heroTitle: { en: "Distribution Fleet & Retail Reach", ar: "أسطول التوزيع والوصول للتجزئة" },
     heroSubtitle: {
       en: "From finished bakery products to retail-ready movement, Al Shehail supports brands with distribution coordination after production.",
-      ar: "من المنتجات الجاهزة إلى الحركة المهيأة للرف، يدعم الشحيل العلامات بتنسيق التوزيع بعد الإنتاج.",
+      ar: "من المنتجات الجاهزة إلى الحركة المهيأة للرف، يدعم الشهيل العلامات بتنسيق التوزيع بعد الإنتاج.",
     },
     heroPrimary: { label: { en: "Start a Distribution Project", ar: "ابدأ مشروع توزيع" }, href: "/contact" },
     heroSecondary: {
@@ -132,7 +132,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     introTitle: { en: "Production is the start, not the finish", ar: "الإنتاج هو البداية، لا النهاية" },
     introDesc: {
       en: "After manufacturing, the next challenge is getting products prepared, organized, and moved into the right retail channels. Al Shehail's distribution support helps food brands connect production with retail execution.",
-      ar: "بعد التصنيع، يكون التحدي التالي هو تجهيز المنتجات وتنظيمها ونقلها إلى قنوات التجزئة المناسبة. يساعد دعم التوزيع لدى الشحيل العلامات الغذائية على ربط الإنتاج بتنفيذ التجزئة.",
+      ar: "بعد التصنيع، يكون التحدي التالي هو تجهيز المنتجات وتنظيمها ونقلها إلى قنوات التجزئة المناسبة. يساعد دعم التوزيع لدى الشهيل العلامات الغذائية على ربط الإنتاج بتنفيذ التجزئة.",
     },
     coverageEyebrow: { en: "What We Support", ar: "ما ندعمه" },
     coverageTitle: { en: "Distribution support after production", ar: "دعم التوزيع بعد الإنتاج" },
@@ -213,7 +213,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ctaTitle: { en: "Ready to move your product beyond production?", ar: "جاهز لنقل منتجك أبعد من الإنتاج؟" },
     ctaText: {
       en: "Talk to Al Shehail about production, packing, and distribution support for your food brand.",
-      ar: "تحدّث إلى الشحيل حول دعم الإنتاج والتعبئة والتوزيع لعلامتك الغذائية.",
+      ar: "تحدّث إلى الشهيل حول دعم الإنتاج والتعبئة والتوزيع لعلامتك الغذائية.",
     },
     ctaPrimary: { label: { en: "Start a Project", ar: "ابدأ مشروعك" }, href: "/contact" },
     ctaSecondary: { label: { en: "View Products", ar: "عرض المنتجات" }, href: "/products" },
@@ -223,7 +223,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     slug: "brand-design",
     metaTitle: {
       en: "Packaging & Brand Design | Al Shehail Food Industries",
-      ar: "التغليف وتصميم العلامة | الشحيل للصناعات الغذائية",
+      ar: "التغليف وتصميم العلامة | الشهيل للصناعات الغذائية",
     },
     metaDescription: {
       en: "Food-focused packaging and brand presentation support for products moving from production to retail shelves — packaging direction connected to private-label manufacturing.",
@@ -244,7 +244,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     introTitle: { en: "More than a logo — packaging that communicates", ar: "أكثر من شعار — تغليف يتواصل" },
     introDesc: {
       en: "From product positioning to pack communication, Al Shehail supports food brands with packaging and brand design direction that connects manufacturing, retail presentation, and customer understanding.",
-      ar: "من تموضع المنتج إلى تواصل العبوة، يدعم الشحيل العلامات الغذائية بتوجيه تغليف وتصميم علامة يربط التصنيع وعرض التجزئة وفهم العميل.",
+      ar: "من تموضع المنتج إلى تواصل العبوة، يدعم الشهيل العلامات الغذائية بتوجيه تغليف وتصميم علامة يربط التصنيع وعرض التجزئة وفهم العميل.",
     },
     coverageEyebrow: { en: "What We Support", ar: "ما ندعمه" },
     coverageTitle: { en: "Packaging and brand presentation support", ar: "دعم التغليف وعرض العلامة" },
@@ -275,7 +275,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
       },
       {
         title: { en: "Private Label Packaging Support", ar: "دعم تغليف العلامة الخاصة" },
-        description: { en: "Packaging support for brands developing products with Al Shehail's manufacturing team.", ar: "دعم تغليف للعلامات التي تطوّر منتجات مع فريق التصنيع لدى الشحيل." },
+        description: { en: "Packaging support for brands developing products with Al Shehail's manufacturing team.", ar: "دعم تغليف للعلامات التي تطوّر منتجات مع فريق التصنيع لدى الشهيل." },
         icon: "calendar",
       },
       {
@@ -333,7 +333,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ctaTitle: { en: "Need packaging that fits the product and the shelf?", ar: "تحتاج تغليفًا يناسب المنتج والرف؟" },
     ctaText: {
       en: "Talk to Al Shehail about packaging direction, private-label presentation, and retail-ready food product communication.",
-      ar: "تحدّث إلى الشحيل حول توجيه التغليف وعرض العلامة الخاصة وتواصل المنتج الغذائي المهيأ للرف.",
+      ar: "تحدّث إلى الشهيل حول توجيه التغليف وعرض العلامة الخاصة وتواصل المنتج الغذائي المهيأ للرف.",
     },
     ctaPrimary: { label: { en: "Start a Packaging Project", ar: "ابدأ مشروع تغليف" }, href: "/contact" },
     ctaSecondary: { label: { en: "View Products", ar: "عرض المنتجات" }, href: "/products" },
@@ -343,7 +343,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     slug: "digital-marketing",
     metaTitle: {
       en: "Food Digital Marketing | Al Shehail Food Industries",
-      ar: "التسويق الرقمي للأغذية | الشحيل للصناعات الغذائية",
+      ar: "التسويق الرقمي للأغذية | الشهيل للصناعات الغذائية",
     },
     metaDescription: {
       en: "Digital marketing support for food products, helping brands communicate clearly from product launch to online customer awareness — built on verified product details.",
@@ -364,7 +364,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     introTitle: { en: "From production story to customer-facing content", ar: "من قصة الإنتاج إلى محتوى يواجه العميل" },
     introDesc: {
       en: "Al Shehail supports food brands with digital marketing direction built around real product details, packaging communication, and retail readiness — helping products move from production story to customer-facing content.",
-      ar: "يدعم الشحيل العلامات الغذائية بتوجيه تسويق رقمي مبني حول تفاصيل منتج حقيقية وتواصل التغليف والجاهزية للتجزئة — لينتقل المنتج من قصة الإنتاج إلى محتوى يواجه العميل.",
+      ar: "يدعم الشهيل العلامات الغذائية بتوجيه تسويق رقمي مبني حول تفاصيل منتج حقيقية وتواصل التغليف والجاهزية للتجزئة — لينتقل المنتج من قصة الإنتاج إلى محتوى يواجه العميل.",
     },
     coverageEyebrow: { en: "What We Support", ar: "ما ندعمه" },
     coverageTitle: { en: "Food-product digital marketing support", ar: "دعم تسويق رقمي للمنتج الغذائي" },
@@ -400,7 +400,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
       },
       {
         title: { en: "Private Label Marketing Support", ar: "دعم تسويق العلامة الخاصة" },
-        description: { en: "Marketing support for products developed through Al Shehail's private-label manufacturing service.", ar: "دعم تسويقي للمنتجات المطوَّرة عبر خدمة التصنيع بعلامة خاصة لدى الشحيل." },
+        description: { en: "Marketing support for products developed through Al Shehail's private-label manufacturing service.", ar: "دعم تسويقي للمنتجات المطوَّرة عبر خدمة التصنيع بعلامة خاصة لدى الشهيل." },
         icon: "shield",
       },
     ],
@@ -454,7 +454,7 @@ export const services: Record<ServiceSlug, ServiceContent> = {
     ctaTitle: { en: "Ready to launch your food product online?", ar: "جاهز لإطلاق منتجك الغذائي عبر الإنترنت؟" },
     ctaText: {
       en: "Talk to Al Shehail about product communication, launch content, and digital marketing support for your food brand.",
-      ar: "تحدّث إلى الشحيل حول تواصل المنتج ومحتوى الإطلاق ودعم التسويق الرقمي لعلامتك الغذائية.",
+      ar: "تحدّث إلى الشهيل حول تواصل المنتج ومحتوى الإطلاق ودعم التسويق الرقمي لعلامتك الغذائية.",
     },
     ctaPrimary: { label: { en: "Start a Marketing Project", ar: "ابدأ مشروع تسويق" }, href: "/contact" },
     ctaSecondary: { label: { en: "Explore Products", ar: "استكشف المنتجات" }, href: "/products" },

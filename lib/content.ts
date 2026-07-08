@@ -35,7 +35,7 @@ export const company = {
 // WhatsApp deep link with a prefilled B2B enquiry message, per locale.
 const whatsappEnquiry: Localized = {
   en: "Hello Al Shehail, I'd like to discuss a private label bakery project.",
-  ar: "مرحبًا الشحيل، أود مناقشة مشروع تصنيع مخبوزات بعلامة خاصة.",
+  ar: "مرحبًا الشهيل، أود مناقشة مشروع تصنيع مخبوزات بعلامة خاصة.",
 };
 
 export function whatsappLink(locale: Locale): string {

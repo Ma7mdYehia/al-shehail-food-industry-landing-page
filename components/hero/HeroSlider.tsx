@@ -45,7 +45,7 @@ const SERVICE: Record<
   { label: Localized; Icon: (p: { width?: number; height?: number }) => JSX.Element }
 > = {
   ecosystem: {
-    label: { en: "Al Shehail Ecosystem", ar: "منظومة الشحيل" },
+    label: { en: "Al Shehail Ecosystem", ar: "منظومة الشهيل" },
     Icon: EcosystemIcon,
   },
   manufacturing: {

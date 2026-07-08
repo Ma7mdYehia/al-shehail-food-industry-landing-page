@@ -45,7 +45,7 @@ function buildWhatsAppLink(form: FormState, locale: Locale): string {
   const lines =
     locale === "ar"
       ? [
-          "استفسار تصنيع بعلامة خاصة جديد — الشحيل للصناعات الغذائية",
+          "استفسار تصنيع بعلامة خاصة جديد — الشهيل للصناعات الغذائية",
           "",
           `الاسم الكامل: ${form.fullName || "-"}`,
           `الشركة: ${form.companyName || "-"}`,

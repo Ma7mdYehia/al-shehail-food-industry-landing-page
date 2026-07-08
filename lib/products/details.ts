@@ -31,7 +31,7 @@ export const productDetails: Record<string, ProductDetail> = {
       },
       {
         en: "Al Shehail produces Arabic bread for retail shelves and institutional supply, with formats and recipes that can be adapted to a brand's target market and price positioning.",
-        ar: "ينتج الشحيل الخبز العربي لرفوف التجزئة وتوريد المؤسسات، بأشكال ووصفات يمكن تكييفها مع السوق المستهدف والتموضع السعري للعلامة.",
+        ar: "ينتج الشهيل الخبز العربي لرفوف التجزئة وتوريد المؤسسات، بأشكال ووصفات يمكن تكييفها مع السوق المستهدف والتموضع السعري للعلامة.",
       },
     ],
     detailUseCases: [
@@ -150,7 +150,7 @@ export const productDetails: Record<string, ProductDetail> = {
       },
       {
         en: "Al Shehail produces sliced bread for family retail packs and sandwich use, with recipes and loaf formats that can be tailored to brand and market.",
-        ar: "ينتج الشحيل الخبز المقطّع لعبوات التجزئة العائلية واستخدام السندويتش، بوصفات وأشكال أرغفة يمكن تكييفها مع العلامة والسوق.",
+        ar: "ينتج الشهيل الخبز المقطّع لعبوات التجزئة العائلية واستخدام السندويتش، بوصفات وأشكال أرغفة يمكن تكييفها مع العلامة والسوق.",
       },
     ],
     detailUseCases: [
@@ -221,7 +221,7 @@ export const productDetails: Record<string, ProductDetail> = {
       },
       {
         en: "Al Shehail manufactures rolls for hospitality and foodservice as well as retail and private label packs, with size and shape options to suit the application.",
-        ar: "يصنّع الشحيل الأرغفة للضيافة وخدمات الطعام وكذلك للتجزئة وعبوات العلامة الخاصة، بخيارات حجم وشكل تناسب الاستخدام.",
+        ar: "يصنّع الشهيل الأرغفة للضيافة وخدمات الطعام وكذلك للتجزئة وعبوات العلامة الخاصة، بخيارات حجم وشكل تناسب الاستخدام.",
       },
     ],
     detailUseCases: [
@@ -288,7 +288,7 @@ export const productDetails: Record<string, ProductDetail> = {
       },
       {
         en: "Al Shehail manufactures plain and filled mini croissants for grab-and-go retail, breakfast, and snacking multipacks, in baked or frozen supply formats.",
-        ar: "يصنّع الشحيل الكرواسان الميني السادة والمحشوّ للتجزئة السريعة والإفطار وعبوات التسالي المتعددة، بأشكال توريد مخبوزة أو مجمّدة.",
+        ar: "يصنّع الشهيل الكرواسان الميني السادة والمحشوّ للتجزئة السريعة والإفطار وعبوات التسالي المتعددة، بأشكال توريد مخبوزة أو مجمّدة.",
       },
     ],
     detailUseCases: [
@@ -347,7 +347,7 @@ export const productDetails: Record<string, ProductDetail> = {
       },
       {
         en: "Al Shehail manufactures date- and nut-filled maa'moul for retail and premium gifting, with fillings, sizes, and pack formats tailored to the brand and season.",
-        ar: "يصنّع الشحيل المعمول المحشوّ بالتمر والمكسرات للتجزئة والهدايا الراقية، بحشوات وأحجام وأشكال عبوات مصمَّمة حسب العلامة والموسم.",
+        ar: "يصنّع الشهيل المعمول المحشوّ بالتمر والمكسرات للتجزئة والهدايا الراقية، بحشوات وأحجام وأشكال عبوات مصمَّمة حسب العلامة والموسم.",
       },
     ],
     detailUseCases: [
@@ -471,7 +471,7 @@ export const qualityPoints: Localized[] = [
 export function whatsappForProduct(productName: string, locale: Locale): string {
   const message =
     locale === "ar"
-      ? `مرحبًا فريق الشحيل، أنا مهتم بالتصنيع بعلامة خاصة لمنتج ${productName}. يرجى التواصل معي لمناقشة تطوير المنتج وخيارات الوصفة والتغليف والتوريد.`
+      ? `مرحبًا فريق الشهيل، أنا مهتم بالتصنيع بعلامة خاصة لمنتج ${productName}. يرجى التواصل معي لمناقشة تطوير المنتج وخيارات الوصفة والتغليف والتوريد.`
       : `Hello Al Shehail team, I am interested in private label manufacturing for ${productName}. Please contact me to discuss product development, recipe options, packaging, and supply.`;
   return `https://wa.me/971547431444?text=${encodeURIComponent(message)}`;
 }
