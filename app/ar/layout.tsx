@@ -1,22 +1,33 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans_Arabic, Noto_Kufi_Arabic } from "next/font/google";
+import localFont from "next/font/local";
 import "../globals.css";
 
-// Arabic fonts are bound to the SAME CSS variable names the English layout uses
-// (--font-inter for body/sans, --font-playfair for headings/serif) so the shared
-// Tailwind config resolves to the correct script per locale with no config change.
-const arabicSans = IBM_Plex_Sans_Arabic({
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
+// Self-hosted Arabic fonts (no next/font/google, no runtime requests to
+// fonts.googleapis.com / fonts.gstatic.com). Files live in app/fonts/arabic/
+// and are licensed under the SIL Open Font License — see
+// docs/font-licenses.md and public/fonts/arabic/LICENSES/ for full text and
+// provenance. Bound to the SAME CSS variable names the English layout uses
+// (--font-inter for body/sans, --font-playfair for headings/serif) so the
+// shared Tailwind config resolves to the correct script per locale with no
+// config change.
+const arabicSans = localFont({
+  src: [
+    { path: "../fonts/arabic/IBMPlexSansArabic-Regular.ttf", weight: "400", style: "normal" },
+    { path: "../fonts/arabic/IBMPlexSansArabic-Medium.ttf", weight: "500", style: "normal" },
+    { path: "../fonts/arabic/IBMPlexSansArabic-SemiBold.ttf", weight: "600", style: "normal" },
+    { path: "../fonts/arabic/IBMPlexSansArabic-Bold.ttf", weight: "700", style: "normal" },
+  ],
   variable: "--font-inter",
   display: "swap",
 });
 
-const arabicKufi = Noto_Kufi_Arabic({
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700", "800"],
+// Kufam is a variable font (weight axis 400-900) — a single file covers the
+// full weight range the design needs (500/600/700), so no weight array.
+const arabicHeading = localFont({
+  src: "../fonts/arabic/Kufam-VariableFont_wght.ttf",
   variable: "--font-playfair",
   display: "swap",
+  weight: "400 700",
 });
 
 const siteUrl = "https://www.alshehai.ae";
@@ -77,7 +88,7 @@ export default function ArabicRootLayout({
     <html
       lang="ar"
       dir="rtl"
-      className={`${arabicSans.variable} ${arabicKufi.variable}`}
+      className={`${arabicSans.variable} ${arabicHeading.variable}`}
     >
       <body>{children}</body>
     </html>
