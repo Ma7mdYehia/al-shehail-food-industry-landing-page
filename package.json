@@ -7,7 +7,9 @@
     "build": "next build",
     "build:static": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed:export": "node scripts/export-phase-1-seed.mjs",
+    "seed:validate": "node scripts/validate-phase-1-seed.mjs"
   },
   "dependencies": {
     "next": "14.2.5",

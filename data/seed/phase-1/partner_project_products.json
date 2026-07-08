@@ -1,0 +1,202 @@
+[
+  {
+    "id": "ppp_halsa_bake_healthy_flatbread",
+    "partner_project_id": "proj_halsa_bake",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "Healthy Flatbread",
+      "ar": "خبز مسطّح صحي"
+    },
+    "sort_order": 0
+  },
+  {
+    "id": "ppp_halsa_bake_healthy_toast",
+    "partner_project_id": "proj_halsa_bake",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "Healthy Toast",
+      "ar": "توست صحي"
+    },
+    "sort_order": 1
+  },
+  {
+    "id": "ppp_halsa_bake_burger_buns",
+    "partner_project_id": "proj_halsa_bake",
+    "product_id": "prod_burger_buns",
+    "product_name_localized": {
+      "en": "Burger Buns",
+      "ar": "خبز برجر"
+    },
+    "sort_order": 2
+  },
+  {
+    "id": "ppp_halsa_bake_samoon",
+    "partner_project_id": "proj_halsa_bake",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "Samoon",
+      "ar": "صمون"
+    },
+    "sort_order": 3
+  },
+  {
+    "id": "ppp_halsa_bake_high_protein_bread",
+    "partner_project_id": "proj_halsa_bake",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "High-Protein Bread",
+      "ar": "خبز عالي البروتين"
+    },
+    "sort_order": 4
+  },
+  {
+    "id": "ppp_halsa_bake_high_fiber_bread",
+    "partner_project_id": "proj_halsa_bake",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "High-Fibre Bread",
+      "ar": "خبز عالي الألياف"
+    },
+    "sort_order": 5
+  },
+  {
+    "id": "ppp_halsa_bake_whole_wheat_bread",
+    "partner_project_id": "proj_halsa_bake",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "Whole Wheat Bread",
+      "ar": "خبز القمح الكامل"
+    },
+    "sort_order": 6
+  },
+  {
+    "id": "ppp_halsa_bake_oats_bread",
+    "partner_project_id": "proj_halsa_bake",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "Oats Bread",
+      "ar": "خبز الشوفان"
+    },
+    "sort_order": 7
+  },
+  {
+    "id": "ppp_halsa_bake_chia_bread",
+    "partner_project_id": "proj_halsa_bake",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "Chia Bread",
+      "ar": "خبز الشيا"
+    },
+    "sort_order": 8
+  },
+  {
+    "id": "ppp_halsa_bake_black_seed_bread",
+    "partner_project_id": "proj_halsa_bake",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "Black Seed Bread",
+      "ar": "خبز حبة البركة"
+    },
+    "sort_order": 9
+  },
+  {
+    "id": "ppp_ektifa_mini_croissant",
+    "partner_project_id": "proj_ektifa",
+    "product_id": "prod_mini_croissant",
+    "product_name_localized": {
+      "en": "Mini Croissant",
+      "ar": "كرواسان ميني"
+    },
+    "sort_order": 0
+  },
+  {
+    "id": "ppp_ektifa_burger_buns",
+    "partner_project_id": "proj_ektifa",
+    "product_id": "prod_burger_buns",
+    "product_name_localized": {
+      "en": "Burger Buns",
+      "ar": "خبز برجر"
+    },
+    "sort_order": 1
+  },
+  {
+    "id": "ppp_ektifa_samoon",
+    "partner_project_id": "proj_ektifa",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "Samoon",
+      "ar": "صمون"
+    },
+    "sort_order": 2
+  },
+  {
+    "id": "ppp_ektifa_toast",
+    "partner_project_id": "proj_ektifa",
+    "product_id": "prod_toast",
+    "product_name_localized": {
+      "en": "Toast",
+      "ar": "توست"
+    },
+    "sort_order": 3
+  },
+  {
+    "id": "ppp_ektifa_maamoul",
+    "partner_project_id": "proj_ektifa",
+    "product_id": "prod_maamoul",
+    "product_name_localized": {
+      "en": "Maamoul",
+      "ar": "معمول"
+    },
+    "sort_order": 4
+  },
+  {
+    "id": "ppp_ektifa_large_croissant",
+    "partner_project_id": "proj_ektifa",
+    "product_id": null,
+    "product_name_localized": {
+      "en": "Large Croissant",
+      "ar": "كرواسان كبير"
+    },
+    "sort_order": 5
+  },
+  {
+    "id": "ppp_ektifa_pate",
+    "partner_project_id": "proj_ektifa",
+    "product_id": "prod_pate",
+    "product_name_localized": {
+      "en": "Pâté",
+      "ar": "باتيه"
+    },
+    "sort_order": 6
+  },
+  {
+    "id": "ppp_ektifa_tamriya",
+    "partner_project_id": "proj_ektifa",
+    "product_id": "prod_tamriya",
+    "product_name_localized": {
+      "en": "Tamriya",
+      "ar": "تمرية"
+    },
+    "sort_order": 7
+  },
+  {
+    "id": "ppp_al_tahan_maamoul",
+    "partner_project_id": "proj_al_tahan",
+    "product_id": "prod_maamoul",
+    "product_name_localized": {
+      "en": "Maamoul",
+      "ar": "معمول"
+    },
+    "sort_order": 0
+  },
+  {
+    "id": "ppp_al_tahan_tamriya",
+    "partner_project_id": "proj_al_tahan",
+    "product_id": "prod_tamriya",
+    "product_name_localized": {
+      "en": "Tamriya",
+      "ar": "تمرية"
+    },
+    "sort_order": 1
+  }
+]

@@ -1,0 +1,170 @@
+[
+  {
+    "id": "svc_distribution",
+    "slug": "distribution",
+    "meta_title_localized": {
+      "en": "Distribution Fleet & Retail Reach | Al Shehail Food Industries",
+      "ar": "أسطول التوزيع والوصول للتجزئة | الشحيل للصناعات الغذائية"
+    },
+    "meta_description_localized": {
+      "en": "From finished bakery products to retail-ready movement, Al Shehail supports brands with distribution coordination after production — route-to-market and delivery planning confirmed per project.",
+      "ar": "من المنتجات الجاهزة إلى الحركة المهيأة للرف، يدعم الشحيل العلامات بتنسيق التوزيع بعد الإنتاج — يُحدَّد مسار السوق وتخطيط التسليم لكل مشروع."
+    },
+    "hero_eyebrow_localized": {
+      "en": "Services · Distribution",
+      "ar": "الخدمات · التوزيع"
+    },
+    "hero_title_localized": {
+      "en": "Distribution Fleet & Retail Reach",
+      "ar": "أسطول التوزيع والوصول للتجزئة"
+    },
+    "hero_subtitle_localized": {
+      "en": "From finished bakery products to retail-ready movement, Al Shehail supports brands with distribution coordination after production.",
+      "ar": "من المنتجات الجاهزة إلى الحركة المهيأة للرف، يدعم الشحيل العلامات بتنسيق التوزيع بعد الإنتاج."
+    },
+    "cta_json": {
+      "heroPrimary": {
+        "label": {
+          "en": "Start a Distribution Project",
+          "ar": "ابدأ مشروع توزيع"
+        },
+        "href": "/contact"
+      },
+      "heroSecondary": {
+        "label": {
+          "en": "Explore Private Label Manufacturing",
+          "ar": "استكشف التصنيع بعلامة خاصة"
+        },
+        "href": "/private-label"
+      },
+      "ctaPrimary": {
+        "label": {
+          "en": "Start a Project",
+          "ar": "ابدأ مشروعك"
+        },
+        "href": "/contact"
+      },
+      "ctaSecondary": {
+        "label": {
+          "en": "View Products",
+          "ar": "عرض المنتجات"
+        },
+        "href": "/products"
+      }
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "svc_brand_design",
+    "slug": "brand-design",
+    "meta_title_localized": {
+      "en": "Packaging & Brand Design | Al Shehail Food Industries",
+      "ar": "التغليف وتصميم العلامة | الشحيل للصناعات الغذائية"
+    },
+    "meta_description_localized": {
+      "en": "Food-focused packaging and brand presentation support for products moving from production to retail shelves — packaging direction connected to private-label manufacturing.",
+      "ar": "دعم تغليف وعرض علامة متخصص في الأغذية للمنتجات المنتقلة من الإنتاج إلى رفوف التجزئة — توجيه تغليف متصل بالتصنيع بعلامة خاصة."
+    },
+    "hero_eyebrow_localized": {
+      "en": "Services · Brand Design",
+      "ar": "الخدمات · تصميم العلامة"
+    },
+    "hero_title_localized": {
+      "en": "Packaging & Brand Design",
+      "ar": "التغليف وتصميم العلامة"
+    },
+    "hero_subtitle_localized": {
+      "en": "Food-focused packaging and brand presentation support for products moving from production to retail shelves.",
+      "ar": "دعم تغليف وعرض علامة متخصص في الأغذية للمنتجات المنتقلة من الإنتاج إلى رفوف التجزئة."
+    },
+    "cta_json": {
+      "heroPrimary": {
+        "label": {
+          "en": "Start a Packaging Project",
+          "ar": "ابدأ مشروع تغليف"
+        },
+        "href": "/contact"
+      },
+      "heroSecondary": {
+        "label": {
+          "en": "Explore Private Label Manufacturing",
+          "ar": "استكشف التصنيع بعلامة خاصة"
+        },
+        "href": "/private-label"
+      },
+      "ctaPrimary": {
+        "label": {
+          "en": "Start a Packaging Project",
+          "ar": "ابدأ مشروع تغليف"
+        },
+        "href": "/contact"
+      },
+      "ctaSecondary": {
+        "label": {
+          "en": "View Products",
+          "ar": "عرض المنتجات"
+        },
+        "href": "/products"
+      }
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "svc_digital_marketing",
+    "slug": "digital-marketing",
+    "meta_title_localized": {
+      "en": "Food Digital Marketing | Al Shehail Food Industries",
+      "ar": "التسويق الرقمي للأغذية | الشحيل للصناعات الغذائية"
+    },
+    "meta_description_localized": {
+      "en": "Digital marketing support for food products, helping brands communicate clearly from product launch to online customer awareness — built on verified product details.",
+      "ar": "دعم تسويق رقمي للمنتجات الغذائية يساعد العلامات على التواصل بوضوح من إطلاق المنتج إلى وعي العميل عبر الإنترنت — مبني على تفاصيل منتج موثّقة."
+    },
+    "hero_eyebrow_localized": {
+      "en": "Services · Digital Marketing",
+      "ar": "الخدمات · التسويق الرقمي"
+    },
+    "hero_title_localized": {
+      "en": "Food Digital Marketing",
+      "ar": "التسويق الرقمي للأغذية"
+    },
+    "hero_subtitle_localized": {
+      "en": "Digital marketing support for food products, helping brands communicate clearly from product launch to online customer awareness.",
+      "ar": "دعم تسويق رقمي للمنتجات الغذائية يساعد العلامات على التواصل بوضوح من إطلاق المنتج إلى وعي العميل عبر الإنترنت."
+    },
+    "cta_json": {
+      "heroPrimary": {
+        "label": {
+          "en": "Start a Marketing Project",
+          "ar": "ابدأ مشروع تسويق"
+        },
+        "href": "/contact"
+      },
+      "heroSecondary": {
+        "label": {
+          "en": "Explore Brand Design",
+          "ar": "استكشف تصميم العلامة"
+        },
+        "href": "/services/brand-design"
+      },
+      "ctaPrimary": {
+        "label": {
+          "en": "Start a Marketing Project",
+          "ar": "ابدأ مشروع تسويق"
+        },
+        "href": "/contact"
+      },
+      "ctaSecondary": {
+        "label": {
+          "en": "Explore Products",
+          "ar": "استكشف المنتجات"
+        },
+        "href": "/products"
+      }
+    },
+    "sort_order": 2,
+    "is_active": true
+  }
+]

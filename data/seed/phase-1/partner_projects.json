@@ -1,0 +1,285 @@
+[
+  {
+    "id": "proj_halsa_bake",
+    "partner_id": "partner_halsa_bake",
+    "slug": "halsa-bake",
+    "title_localized": {
+      "en": "HÄLSA Bake — Healthy Bakery / Functional Bread",
+      "ar": "HÄLSA Bake — مخبوزات صحية / خبز وظيفي"
+    },
+    "summary_localized": {
+      "en": "Healthy bakery production focused on clean ingredients, long fermentation, and stronger nutrition profiles.",
+      "ar": "إنتاج مخبوزات صحية يركّز على المكوّنات النظيفة والتخمير الطويل وملامح تغذية أقوى."
+    },
+    "project_detail_json": {
+      "categoryLabel": {
+        "en": "Healthy Bakery / Functional Bread",
+        "ar": "مخبوزات صحية / خبز وظيفي"
+      },
+      "overview": [
+        {
+          "en": "HÄLSA Bake is a healthy and functional bakery project: breads developed around clean-label ingredients, natural fermentation, and a stronger nutrition direction than standard bakery lines.",
+          "ar": "مشروع HÄLSA Bake مشروع مخبوزات صحية ووظيفية: أنواع خبز مطوَّرة حول مكوّنات نظيفة وتخمير طبيعي وتوجه تغذية أقوى من خطوط المخبوزات الاعتيادية."
+        },
+        {
+          "en": "The range spans everyday healthy staples — flatbread, toast, buns, and samoon — alongside functional breads such as high-protein, high-fibre, and seeded loaves.",
+          "ar": "تمتد التشكيلة عبر الأساسيات الصحية اليومية — خبز مسطّح وتوست وأرغفة وصمون — إلى جانب أنواع خبز وظيفية مثل عالي البروتين وعالي الألياف والأرغفة بالبذور."
+        }
+      ],
+      "productionFocus": [
+        {
+          "en": "Healthy bakery products for everyday retail",
+          "ar": "منتجات مخبوزات صحية للتجزئة اليومية"
+        },
+        {
+          "en": "Functional breads (protein, fibre, seeded directions)",
+          "ar": "أنواع خبز وظيفية (توجهات البروتين والألياف والبذور)"
+        },
+        {
+          "en": "Whole-grain and oats-based breads",
+          "ar": "أنواع خبز بالحبوب الكاملة والشوفان"
+        }
+      ],
+      "ingredientStrategy": [
+        {
+          "en": "Clean-label ingredient direction",
+          "ar": "توجه مكوّنات نظيفة"
+        },
+        {
+          "en": "Organic ingredients where applicable and verified",
+          "ar": "مكوّنات عضوية حيثما ينطبق ويُوثَّق"
+        },
+        {
+          "en": "No added sugar / low sugar positioning only where verified per SKU",
+          "ar": "تموضع بدون سكر مضاف / قليل السكر فقط حيثما يُوثَّق لكل صنف"
+        }
+      ],
+      "processNotes": [
+        {
+          "en": "Natural sourdough / long-fermentation process capability",
+          "ar": "قدرة عملية على العجين المخمّر الطبيعي / التخمير الطويل"
+        },
+        {
+          "en": "Fermentation can reach 12 hours, and up to 24 hours, as a process capability — confirmed per SKU against a verified specification sheet",
+          "ar": "قد يصل التخمير إلى 12 ساعة، وحتى 24 ساعة، كقدرة عملية — يُؤكَّد لكل صنف مقابل ورقة مواصفات موثّقة"
+        }
+      ],
+      "nutritionFocus": [
+        {
+          "en": "Protein profile",
+          "ar": "ملمح البروتين"
+        },
+        {
+          "en": "Carbohydrate profile",
+          "ar": "ملمح الكربوهيدرات"
+        },
+        {
+          "en": "Sugar profile",
+          "ar": "ملمح السكر"
+        },
+        {
+          "en": "Fibre profile",
+          "ar": "ملمح الألياف"
+        },
+        {
+          "en": "Calorie profile",
+          "ar": "ملمح السعرات"
+        },
+        {
+          "en": "Per-product values: To be added from verified specification sheet",
+          "ar": "قيم كل منتج: يُضاف من ورقة مواصفات موثّقة"
+        }
+      ],
+      "complianceNotes": [
+        {
+          "en": "Clean-label formulation direction",
+          "ar": "توجه تركيبة نظيفة المكوّنات"
+        },
+        {
+          "en": "Nutrition facts and any functional claims: To be added from verified specification sheet",
+          "ar": "الحقائق الغذائية وأي ادعاءات وظيفية: يُضاف من ورقة مواصفات موثّقة"
+        }
+      ]
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "proj_ektifa",
+    "partner_id": "partner_ektifa",
+    "slug": "ektifa",
+    "title_localized": {
+      "en": "EKTIFA — Organic / Government Food Brand Bakery Production",
+      "ar": "EKTIFA — إنتاج مخبوزات لعلامة غذائية عضوية / حكومية"
+    },
+    "summary_localized": {
+      "en": "Bakery production using EKTIFA supplied ingredients and private-label development support.",
+      "ar": "إنتاج مخبوزات باستخدام مكوّنات مورَّدة من EKTIFA مع دعم تطوير العلامة الخاصة."
+    },
+    "project_detail_json": {
+      "categoryLabel": {
+        "en": "Organic / Government Food Brand Bakery Production",
+        "ar": "إنتاج مخبوزات لعلامة غذائية عضوية / حكومية"
+      },
+      "overview": [
+        {
+          "en": "The EKTIFA project covers bakery production built on EKTIFA-supplied ingredients, with Al Shehail providing private-label development and manufacturing support.",
+          "ar": "يغطي مشروع EKTIFA إنتاج مخبوزات قائم على مكوّنات مورَّدة من EKTIFA، مع توفير الشحيل لدعم تطوير العلامة الخاصة والتصنيع."
+        },
+        {
+          "en": "The range spans French bakery, soft breads, and date-based sweets, produced to the brand's specification.",
+          "ar": "تمتد التشكيلة عبر المخبوزات الفرنسية والخبز الطري والحلويات بالتمر، مُنتَجة وفق مواصفة العلامة."
+        }
+      ],
+      "productionFocus": [
+        {
+          "en": "Private-label bakery production for the EKTIFA brand",
+          "ar": "إنتاج مخبوزات بعلامة خاصة لعلامة EKTIFA"
+        },
+        {
+          "en": "French bakery, soft breads, and date-based sweets",
+          "ar": "مخبوزات فرنسية وخبز طري وحلويات بالتمر"
+        },
+        {
+          "en": "Development support from concept to retail-ready supply",
+          "ar": "دعم التطوير من الفكرة إلى توريد جاهز للرف"
+        }
+      ],
+      "ingredientStrategy": [
+        {
+          "en": "Produced with EKTIFA-supplied wheat flour, whole-wheat flour, and semolina",
+          "ar": "مُنتَج بدقيق القمح ودقيق القمح الكامل والسميد المورَّد من EKTIFA"
+        },
+        {
+          "en": "Natural milk used where applicable",
+          "ar": "يُستخدم الحليب الطبيعي حيثما ينطبق"
+        },
+        {
+          "en": "Organic ingredient scope and any organic claims: To be added from verified specification sheet",
+          "ar": "نطاق المكوّنات العضوية وأي ادعاءات عضوية: يُضاف من ورقة مواصفات موثّقة"
+        }
+      ],
+      "processNotes": [
+        {
+          "en": "Standard bakery and lamination processes per product type",
+          "ar": "عمليات مخبوزات وترقيق قياسية حسب نوع المنتج"
+        },
+        {
+          "en": "Fermentation / process specifics per SKU: To be added from verified specification sheet",
+          "ar": "تفاصيل التخمير / العملية لكل صنف: يُضاف من ورقة مواصفات موثّقة"
+        }
+      ],
+      "nutritionFocus": [
+        {
+          "en": "Profile varies by product type",
+          "ar": "يختلف الملمح حسب نوع المنتج"
+        },
+        {
+          "en": "Per-product nutrition values: To be added from verified specification sheet",
+          "ar": "القيم الغذائية لكل منتج: يُضاف من ورقة مواصفات موثّقة"
+        }
+      ],
+      "complianceNotes": [
+        {
+          "en": "Produced to the partner brand's ingredient and product specification",
+          "ar": "مُنتَج وفق مواصفة مكوّنات ومنتج العلامة الشريكة"
+        },
+        {
+          "en": "Certifications and organic verification: To be added from verified specification sheet",
+          "ar": "الشهادات والتوثيق العضوي: يُضاف من ورقة مواصفات موثّقة"
+        }
+      ]
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "proj_al_tahan",
+    "partner_id": "partner_al_tahan",
+    "slug": "al-tahan",
+    "title_localized": {
+      "en": "Al Tahan — Date-Based Sweets / Bakery",
+      "ar": "Al Tahan — حلويات ومخبوزات بالتمر"
+    },
+    "summary_localized": {
+      "en": "Date-based bakery sweets with a focus on traditional taste and cleaner sweetening direction where possible.",
+      "ar": "حلويات مخبوزة قائمة على التمر تركّز على الطعم التقليدي وتوجه تحلية أنظف حيثما أمكن."
+    },
+    "project_detail_json": {
+      "categoryLabel": {
+        "en": "Date-Based Sweets / Bakery",
+        "ar": "حلويات ومخبوزات بالتمر"
+      },
+      "overview": [
+        {
+          "en": "The Al Tahan project focuses on traditional date-based sweets — maamoul and tamriya — produced for authentic taste.",
+          "ar": "يركّز مشروع الطحان على الحلويات التقليدية القائمة على التمر — المعمول والتمرية — المُنتَجة لطعم أصيل."
+        },
+        {
+          "en": "Where possible, the direction leans toward cleaner sweetening (such as natural sweetening with honey where applicable), without claiming a sugar-free product.",
+          "ar": "حيثما أمكن، يميل التوجه نحو تحلية أنظف (مثل التحلية الطبيعية بالعسل حيثما ينطبق)، دون ادعاء منتج خالٍ من السكر."
+        }
+      ],
+      "productionFocus": [
+        {
+          "en": "Date-based sweets and bakery",
+          "ar": "حلويات ومخبوزات قائمة على التمر"
+        },
+        {
+          "en": "Traditional maamoul and tamriya",
+          "ar": "معمول وتمرية تقليديان"
+        }
+      ],
+      "ingredientStrategy": [
+        {
+          "en": "Date-forward recipes",
+          "ar": "وصفات يتصدّرها التمر"
+        },
+        {
+          "en": "Lower-sugar direction where possible",
+          "ar": "توجه أقل سكرًا حيثما أمكن"
+        },
+        {
+          "en": "Replacing artificial sweeteners with natural sweetening directions (e.g. honey) where applicable",
+          "ar": "استبدال المحلّيات الصناعية بتوجهات تحلية طبيعية (مثل العسل) حيثما ينطبق"
+        },
+        {
+          "en": "No sugar-free claim is made",
+          "ar": "لا يُقدَّم ادعاء خلوّ من السكر"
+        }
+      ],
+      "processNotes": [
+        {
+          "en": "Traditional sweets preparation per product",
+          "ar": "تحضير حلويات تقليدي لكل منتج"
+        },
+        {
+          "en": "Process specifics per SKU: To be added from verified specification sheet",
+          "ar": "تفاصيل العملية لكل صنف: يُضاف من ورقة مواصفات موثّقة"
+        }
+      ],
+      "nutritionFocus": [
+        {
+          "en": "Date-based sugar profile",
+          "ar": "ملمح سكر قائم على التمر"
+        },
+        {
+          "en": "Per-product nutrition values: To be added from verified specification sheet",
+          "ar": "القيم الغذائية لكل منتج: يُضاف من ورقة مواصفات موثّقة"
+        }
+      ],
+      "complianceNotes": [
+        {
+          "en": "Conservative, verified claims only",
+          "ar": "ادعاءات متحفّظة وموثّقة فقط"
+        },
+        {
+          "en": "Nutrition facts and sweetening claims: To be added from verified specification sheet",
+          "ar": "الحقائق الغذائية وادعاءات التحلية: يُضاف من ورقة مواصفات موثّقة"
+        }
+      ]
+    },
+    "sort_order": 2,
+    "is_active": true
+  }
+]

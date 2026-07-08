@@ -1,0 +1,1960 @@
+[
+  {
+    "id": "opt_arabic_bread_use_case_0",
+    "product_id": "prod_arabic_bread",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Retail shelf packs",
+      "ar": "عبوات رفوف التجزئة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_arabic_bread_use_case_1",
+    "product_id": "prod_arabic_bread",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Shawarma & foodservice",
+      "ar": "شاورما وخدمات طعام"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_arabic_bread_use_case_2",
+    "product_id": "prod_arabic_bread",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Institutional catering",
+      "ar": "تموين المؤسسات"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_arabic_bread_private_label_option_0",
+    "product_id": "prod_arabic_bread",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded retail packaging",
+      "ar": "تغليف تجزئة بعلامتك"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_arabic_bread_private_label_option_1",
+    "product_id": "prod_arabic_bread",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Pack count & size options",
+      "ar": "خيارات العدد والحجم"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_arabic_bread_private_label_option_2",
+    "product_id": "prod_arabic_bread",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Recipe & size customization",
+      "ar": "تخصيص الوصفة والحجم"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_arabic_bread_recipe_option_0",
+    "product_id": "prod_arabic_bread",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Standard recipe",
+      "ar": "وصفة قياسية"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_arabic_bread_recipe_option_1",
+    "product_id": "prod_arabic_bread",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Whole wheat / fiber-focused variations where suitable",
+      "ar": "خيارات القمح الكامل / الغنية بالألياف حيثما يناسب"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_arabic_bread_recipe_option_2",
+    "product_id": "prod_arabic_bread",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_arabic_bread_recipe_option_3",
+    "product_id": "prod_arabic_bread",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / weight / format customization",
+      "ar": "تخصيص الحجم / الوزن / الشكل"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_protein_bread_wrap_use_case_0",
+    "product_id": "prod_high_protein_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Wraps & sandwiches",
+      "ar": "لفائف وسندويتشات"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_protein_bread_wrap_use_case_1",
+    "product_id": "prod_high_protein_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Healthy bakery ranges",
+      "ar": "تشكيلات مخبوزات صحية"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_protein_bread_wrap_use_case_2",
+    "product_id": "prod_high_protein_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Grab-and-go retail",
+      "ar": "تجزئة سريعة للأخذ"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_protein_bread_wrap_private_label_option_0",
+    "product_id": "prod_high_protein_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Multiple diameters",
+      "ar": "أقطار متعددة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_protein_bread_wrap_private_label_option_1",
+    "product_id": "prod_high_protein_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded film packaging",
+      "ar": "تغليف فيلم بعلامتك"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_protein_bread_wrap_private_label_option_2",
+    "product_id": "prod_high_protein_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Recipe & format customization",
+      "ar": "تخصيص الوصفة والشكل"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_protein_bread_wrap_recipe_option_0",
+    "product_id": "prod_high_protein_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Recipe direction developed to brief",
+      "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_protein_bread_wrap_recipe_option_1",
+    "product_id": "prod_high_protein_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Nutrition profile confirmed via verified specification sheet",
+      "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_protein_bread_wrap_recipe_option_2",
+    "product_id": "prod_high_protein_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_protein_bread_wrap_recipe_option_3",
+    "product_id": "prod_high_protein_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / diameter / format customization",
+      "ar": "تخصيص الحجم / القطر / الشكل"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_fiber_bread_wrap_use_case_0",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Wraps & sandwiches",
+      "ar": "لفائف وسندويتشات"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_fiber_bread_wrap_use_case_1",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Healthy bakery ranges",
+      "ar": "تشكيلات مخبوزات صحية"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_fiber_bread_wrap_use_case_2",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Grab-and-go retail",
+      "ar": "تجزئة سريعة للأخذ"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_fiber_bread_wrap_private_label_option_0",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Multiple diameters",
+      "ar": "أقطار متعددة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_fiber_bread_wrap_private_label_option_1",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded film packaging",
+      "ar": "تغليف فيلم بعلامتك"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_fiber_bread_wrap_private_label_option_2",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Recipe & format customization",
+      "ar": "تخصيص الوصفة والشكل"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_fiber_bread_wrap_recipe_option_0",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Recipe direction developed to brief",
+      "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_fiber_bread_wrap_recipe_option_1",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Nutrition profile confirmed via verified specification sheet",
+      "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_fiber_bread_wrap_recipe_option_2",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_high_fiber_bread_wrap_recipe_option_3",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / diameter / format customization",
+      "ar": "تخصيص الحجم / القطر / الشكل"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_chia_bread_wrap_use_case_0",
+    "product_id": "prod_chia_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Wraps & sandwiches",
+      "ar": "لفائف وسندويتشات"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_chia_bread_wrap_use_case_1",
+    "product_id": "prod_chia_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Healthy bakery ranges",
+      "ar": "تشكيلات مخبوزات صحية"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_chia_bread_wrap_use_case_2",
+    "product_id": "prod_chia_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Grab-and-go retail",
+      "ar": "تجزئة سريعة للأخذ"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_chia_bread_wrap_private_label_option_0",
+    "product_id": "prod_chia_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Multiple diameters",
+      "ar": "أقطار متعددة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_chia_bread_wrap_private_label_option_1",
+    "product_id": "prod_chia_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded film packaging",
+      "ar": "تغليف فيلم بعلامتك"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_chia_bread_wrap_private_label_option_2",
+    "product_id": "prod_chia_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Recipe & format customization",
+      "ar": "تخصيص الوصفة والشكل"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_chia_bread_wrap_recipe_option_0",
+    "product_id": "prod_chia_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Recipe direction developed to brief",
+      "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_chia_bread_wrap_recipe_option_1",
+    "product_id": "prod_chia_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Nutrition profile confirmed via verified specification sheet",
+      "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_chia_bread_wrap_recipe_option_2",
+    "product_id": "prod_chia_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_chia_bread_wrap_recipe_option_3",
+    "product_id": "prod_chia_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / diameter / format customization",
+      "ar": "تخصيص الحجم / القطر / الشكل"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_oats_bread_wrap_use_case_0",
+    "product_id": "prod_oats_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Wraps & sandwiches",
+      "ar": "لفائف وسندويتشات"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_oats_bread_wrap_use_case_1",
+    "product_id": "prod_oats_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Healthy bakery ranges",
+      "ar": "تشكيلات مخبوزات صحية"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_oats_bread_wrap_use_case_2",
+    "product_id": "prod_oats_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Grab-and-go retail",
+      "ar": "تجزئة سريعة للأخذ"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_oats_bread_wrap_private_label_option_0",
+    "product_id": "prod_oats_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Multiple diameters",
+      "ar": "أقطار متعددة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_oats_bread_wrap_private_label_option_1",
+    "product_id": "prod_oats_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded film packaging",
+      "ar": "تغليف فيلم بعلامتك"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_oats_bread_wrap_private_label_option_2",
+    "product_id": "prod_oats_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Recipe & format customization",
+      "ar": "تخصيص الوصفة والشكل"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_oats_bread_wrap_recipe_option_0",
+    "product_id": "prod_oats_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Recipe direction developed to brief",
+      "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_oats_bread_wrap_recipe_option_1",
+    "product_id": "prod_oats_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Nutrition profile confirmed via verified specification sheet",
+      "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_oats_bread_wrap_recipe_option_2",
+    "product_id": "prod_oats_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_oats_bread_wrap_recipe_option_3",
+    "product_id": "prod_oats_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / diameter / format customization",
+      "ar": "تخصيص الحجم / القطر / الشكل"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_barley_bread_wrap_use_case_0",
+    "product_id": "prod_barley_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Wraps & sandwiches",
+      "ar": "لفائف وسندويتشات"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_barley_bread_wrap_use_case_1",
+    "product_id": "prod_barley_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Healthy bakery ranges",
+      "ar": "تشكيلات مخبوزات صحية"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_barley_bread_wrap_use_case_2",
+    "product_id": "prod_barley_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Grab-and-go retail",
+      "ar": "تجزئة سريعة للأخذ"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_barley_bread_wrap_private_label_option_0",
+    "product_id": "prod_barley_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Multiple diameters",
+      "ar": "أقطار متعددة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_barley_bread_wrap_private_label_option_1",
+    "product_id": "prod_barley_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded film packaging",
+      "ar": "تغليف فيلم بعلامتك"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_barley_bread_wrap_private_label_option_2",
+    "product_id": "prod_barley_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Recipe & format customization",
+      "ar": "تخصيص الوصفة والشكل"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_barley_bread_wrap_recipe_option_0",
+    "product_id": "prod_barley_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Recipe direction developed to brief",
+      "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_barley_bread_wrap_recipe_option_1",
+    "product_id": "prod_barley_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Nutrition profile confirmed via verified specification sheet",
+      "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_barley_bread_wrap_recipe_option_2",
+    "product_id": "prod_barley_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_barley_bread_wrap_recipe_option_3",
+    "product_id": "prod_barley_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / diameter / format customization",
+      "ar": "تخصيص الحجم / القطر / الشكل"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_black_seed_bread_wrap_use_case_0",
+    "product_id": "prod_black_seed_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Wraps & sandwiches",
+      "ar": "لفائف وسندويتشات"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_black_seed_bread_wrap_use_case_1",
+    "product_id": "prod_black_seed_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Healthy bakery ranges",
+      "ar": "تشكيلات مخبوزات صحية"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_black_seed_bread_wrap_use_case_2",
+    "product_id": "prod_black_seed_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Grab-and-go retail",
+      "ar": "تجزئة سريعة للأخذ"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_black_seed_bread_wrap_private_label_option_0",
+    "product_id": "prod_black_seed_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Multiple diameters",
+      "ar": "أقطار متعددة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_black_seed_bread_wrap_private_label_option_1",
+    "product_id": "prod_black_seed_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded film packaging",
+      "ar": "تغليف فيلم بعلامتك"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_black_seed_bread_wrap_private_label_option_2",
+    "product_id": "prod_black_seed_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Recipe & format customization",
+      "ar": "تخصيص الوصفة والشكل"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_black_seed_bread_wrap_recipe_option_0",
+    "product_id": "prod_black_seed_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Recipe direction developed to brief",
+      "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_black_seed_bread_wrap_recipe_option_1",
+    "product_id": "prod_black_seed_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Nutrition profile confirmed via verified specification sheet",
+      "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_black_seed_bread_wrap_recipe_option_2",
+    "product_id": "prod_black_seed_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_black_seed_bread_wrap_recipe_option_3",
+    "product_id": "prod_black_seed_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / diameter / format customization",
+      "ar": "تخصيص الحجم / القطر / الشكل"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_whole_grains_bread_wrap_use_case_0",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Wraps & sandwiches",
+      "ar": "لفائف وسندويتشات"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_whole_grains_bread_wrap_use_case_1",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Healthy bakery ranges",
+      "ar": "تشكيلات مخبوزات صحية"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_whole_grains_bread_wrap_use_case_2",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Grab-and-go retail",
+      "ar": "تجزئة سريعة للأخذ"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_whole_grains_bread_wrap_private_label_option_0",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Multiple diameters",
+      "ar": "أقطار متعددة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_whole_grains_bread_wrap_private_label_option_1",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded film packaging",
+      "ar": "تغليف فيلم بعلامتك"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_whole_grains_bread_wrap_private_label_option_2",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Recipe & format customization",
+      "ar": "تخصيص الوصفة والشكل"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_whole_grains_bread_wrap_recipe_option_0",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Recipe direction developed to brief",
+      "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_whole_grains_bread_wrap_recipe_option_1",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Nutrition profile confirmed via verified specification sheet",
+      "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_whole_grains_bread_wrap_recipe_option_2",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_whole_grains_bread_wrap_recipe_option_3",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / diameter / format customization",
+      "ar": "تخصيص الحجم / القطر / الشكل"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_use_case_0",
+    "product_id": "prod_toast",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Retail sandwich bread",
+      "ar": "خبز سندويتش للتجزئة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_use_case_1",
+    "product_id": "prod_toast",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Foodservice toasting",
+      "ar": "تحميص لخدمات الطعام"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_use_case_2",
+    "product_id": "prod_toast",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Breakfast ranges",
+      "ar": "تشكيلات الإفطار"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_private_label_option_0",
+    "product_id": "prod_toast",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "White, brown & milk variants",
+      "ar": "خيارات أبيض وأسمر وبالحليب"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_private_label_option_1",
+    "product_id": "prod_toast",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Loaf size & slice thickness",
+      "ar": "حجم الرغيف وسماكة الشريحة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_private_label_option_2",
+    "product_id": "prod_toast",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded bag packaging",
+      "ar": "تغليف أكياس بعلامتك"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_recipe_option_0",
+    "product_id": "prod_toast",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Standard recipe",
+      "ar": "وصفة قياسية"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_recipe_option_1",
+    "product_id": "prod_toast",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Whole wheat / fiber-focused variations where suitable",
+      "ar": "خيارات القمح الكامل / الغنية بالألياف حيثما يناسب"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_recipe_option_2",
+    "product_id": "prod_toast",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Reduced sugar where suitable",
+      "ar": "سكر مخفّض حيثما يناسب"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_recipe_option_3",
+    "product_id": "prod_toast",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_toast_recipe_option_4",
+    "product_id": "prod_toast",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Loaf size / slice thickness customization",
+      "ar": "تخصيص حجم الرغيف / سماكة الشريحة"
+    },
+    "sort_order": 4,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_use_case_0",
+    "product_id": "prod_burger_buns",
+    "type": "use_case",
+    "label_localized": {
+      "en": "QSR & foodservice",
+      "ar": "مطاعم سريعة وخدمات طعام"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_use_case_1",
+    "product_id": "prod_burger_buns",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Retail bun multipacks",
+      "ar": "عبوات برجر متعددة للتجزئة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_use_case_2",
+    "product_id": "prod_burger_buns",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Catering",
+      "ar": "تموين"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_private_label_option_0",
+    "product_id": "prod_burger_buns",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Seeded & plain tops",
+      "ar": "أسطح بالبذور أو سادة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_private_label_option_1",
+    "product_id": "prod_burger_buns",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Diameter & weight options",
+      "ar": "خيارات القطر والوزن"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_private_label_option_2",
+    "product_id": "prod_burger_buns",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded multipacks",
+      "ar": "عبوات متعددة بعلامتك"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_recipe_option_0",
+    "product_id": "prod_burger_buns",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Standard recipe",
+      "ar": "وصفة قياسية"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_recipe_option_1",
+    "product_id": "prod_burger_buns",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Seeded & topping variations",
+      "ar": "خيارات البذور والأسطح"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_recipe_option_2",
+    "product_id": "prod_burger_buns",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Whole wheat / fiber-focused variations where suitable",
+      "ar": "خيارات القمح الكامل / الغنية بالألياف حيثما يناسب"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_recipe_option_3",
+    "product_id": "prod_burger_buns",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_burger_buns_recipe_option_4",
+    "product_id": "prod_burger_buns",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Diameter / weight / format customization",
+      "ar": "تخصيص القطر / الوزن / الشكل"
+    },
+    "sort_order": 4,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_use_case_0",
+    "product_id": "prod_bread_rolls",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Sliders & mini sandwiches",
+      "ar": "سلايدرز وسندويتشات صغيرة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_use_case_1",
+    "product_id": "prod_bread_rolls",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Hospitality table service",
+      "ar": "تقديم الضيافة على المائدة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_use_case_2",
+    "product_id": "prod_bread_rolls",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Retail packs",
+      "ar": "عبوات تجزئة"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_private_label_option_0",
+    "product_id": "prod_bread_rolls",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Plain, seeded & milk variants",
+      "ar": "خيارات سادة وبالبذور وبالحليب"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_private_label_option_1",
+    "product_id": "prod_bread_rolls",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Roll size & shape",
+      "ar": "حجم الرغيف وشكله"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_private_label_option_2",
+    "product_id": "prod_bread_rolls",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded packaging",
+      "ar": "تغليف بعلامتك"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_recipe_option_0",
+    "product_id": "prod_bread_rolls",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Standard recipe",
+      "ar": "وصفة قياسية"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_recipe_option_1",
+    "product_id": "prod_bread_rolls",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Whole wheat / fiber-focused variations where suitable",
+      "ar": "خيارات القمح الكامل / الغنية بالألياف حيثما يناسب"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_recipe_option_2",
+    "product_id": "prod_bread_rolls",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Seeded & flavor variations",
+      "ar": "خيارات البذور والنكهات"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_recipe_option_3",
+    "product_id": "prod_bread_rolls",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No preservatives where shelf life and process allow",
+      "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_bread_rolls_recipe_option_4",
+    "product_id": "prod_bread_rolls",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / shape / format customization",
+      "ar": "تخصيص الحجم / الشكل / الصيغة"
+    },
+    "sort_order": 4,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_use_case_0",
+    "product_id": "prod_croissant",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Cafe & bakery counters",
+      "ar": "مقاهٍ وأركان مخابز"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_use_case_1",
+    "product_id": "prod_croissant",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Hotel breakfast",
+      "ar": "إفطار الفنادق"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_use_case_2",
+    "product_id": "prod_croissant",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Premium retail",
+      "ar": "تجزئة راقية"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_private_label_option_0",
+    "product_id": "prod_croissant",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Plain & filled variants",
+      "ar": "خيارات سادة ومحشوّة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_private_label_option_1",
+    "product_id": "prod_croissant",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Baked or ready-to-bake frozen",
+      "ar": "مخبوز أو مجمّد جاهز للخَبز"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_private_label_option_2",
+    "product_id": "prod_croissant",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded packaging",
+      "ar": "تغليف بعلامتك"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_recipe_option_0",
+    "product_id": "prod_croissant",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Standard laminated recipe",
+      "ar": "وصفة ترقيق قياسية"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_recipe_option_1",
+    "product_id": "prod_croissant",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Plain or filled options",
+      "ar": "خيارات سادة أو محشوّة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_recipe_option_2",
+    "product_id": "prod_croissant",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Reduced sugar where suitable",
+      "ar": "سكر مخفّض حيثما يناسب"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_recipe_option_3",
+    "product_id": "prod_croissant",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / weight / format customization",
+      "ar": "تخصيص الحجم / الوزن / الشكل"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_croissant_recipe_option_4",
+    "product_id": "prod_croissant",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Baked or ready-to-bake frozen format where suitable",
+      "ar": "شكل مخبوز أو مجمّد جاهز للخَبز حيثما يناسب"
+    },
+    "sort_order": 4,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_use_case_0",
+    "product_id": "prod_mini_croissant",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Grab-and-go retail",
+      "ar": "تجزئة سريعة للأخذ"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_use_case_1",
+    "product_id": "prod_mini_croissant",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Breakfast buffets",
+      "ar": "بوفيهات الإفطار"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_use_case_2",
+    "product_id": "prod_mini_croissant",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Snacking multipacks",
+      "ar": "عبوات تسالي متعددة"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_private_label_option_0",
+    "product_id": "prod_mini_croissant",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Plain & filled",
+      "ar": "سادة ومحشوّ"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_private_label_option_1",
+    "product_id": "prod_mini_croissant",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Multipack counts",
+      "ar": "أعداد العبوات المتعددة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_private_label_option_2",
+    "product_id": "prod_mini_croissant",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Frozen or baked supply",
+      "ar": "توريد مجمّد أو مخبوز"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_recipe_option_0",
+    "product_id": "prod_mini_croissant",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Standard laminated recipe",
+      "ar": "وصفة ترقيق قياسية"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_recipe_option_1",
+    "product_id": "prod_mini_croissant",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Plain or filled options",
+      "ar": "خيارات سادة أو محشوّة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_recipe_option_2",
+    "product_id": "prod_mini_croissant",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Reduced sugar where suitable",
+      "ar": "سكر مخفّض حيثما يناسب"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_recipe_option_3",
+    "product_id": "prod_mini_croissant",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Multipack count / format customization",
+      "ar": "تخصيص عدد العبوة المتعددة / الشكل"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_mini_croissant_recipe_option_4",
+    "product_id": "prod_mini_croissant",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Baked or frozen supply where suitable",
+      "ar": "توريد مخبوز أو مجمّد حيثما يناسب"
+    },
+    "sort_order": 4,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_use_case_0",
+    "product_id": "prod_pate",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Savory snacks",
+      "ar": "تسالي مالحة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_use_case_1",
+    "product_id": "prod_pate",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Sweet pastries",
+      "ar": "معجنات حلوة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_use_case_2",
+    "product_id": "prod_pate",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Cafe & retail ranges",
+      "ar": "تشكيلات المقاهي والتجزئة"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_private_label_option_0",
+    "product_id": "prod_pate",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Sweet & savory fillings",
+      "ar": "حشوات حلوة ومالحة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_private_label_option_1",
+    "product_id": "prod_pate",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Shape & size options",
+      "ar": "خيارات الشكل والحجم"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_private_label_option_2",
+    "product_id": "prod_pate",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Frozen ready-to-bake",
+      "ar": "مجمّد جاهز للخَبز"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_recipe_option_0",
+    "product_id": "prod_pate",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Standard puff pastry recipe",
+      "ar": "وصفة معجنات ورقية قياسية"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_recipe_option_1",
+    "product_id": "prod_pate",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Savory or sweet fillings",
+      "ar": "حشوات مالحة أو حلوة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_recipe_option_2",
+    "product_id": "prod_pate",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Reduced sugar (sweet formats) where suitable",
+      "ar": "سكر مخفّض (للأشكال الحلوة) حيثما يناسب"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_recipe_option_3",
+    "product_id": "prod_pate",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / shape / format customization",
+      "ar": "تخصيص الحجم / الشكل / الصيغة"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_pate_recipe_option_4",
+    "product_id": "prod_pate",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Frozen ready-to-bake format where suitable",
+      "ar": "شكل مجمّد جاهز للخَبز حيثما يناسب"
+    },
+    "sort_order": 4,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_use_case_0",
+    "product_id": "prod_maamoul",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Seasonal gifting",
+      "ar": "هدايا المواسم"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_use_case_1",
+    "product_id": "prod_maamoul",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Retail confectionery",
+      "ar": "حلويات التجزئة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_use_case_2",
+    "product_id": "prod_maamoul",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Hospitality",
+      "ar": "الضيافة"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_private_label_option_0",
+    "product_id": "prod_maamoul",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Date, pistachio & walnut fills",
+      "ar": "حشوات التمر والفستق والجوز"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_private_label_option_1",
+    "product_id": "prod_maamoul",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Gift & retail packaging",
+      "ar": "تغليف هدايا وتجزئة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_private_label_option_2",
+    "product_id": "prod_maamoul",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Assorted boxes",
+      "ar": "علب متنوعة"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_recipe_option_0",
+    "product_id": "prod_maamoul",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Standard recipe",
+      "ar": "وصفة قياسية"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_recipe_option_1",
+    "product_id": "prod_maamoul",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Date / pistachio / walnut fillings",
+      "ar": "حشوات التمر / الفستق / الجوز"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_recipe_option_2",
+    "product_id": "prod_maamoul",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Reduced sugar where suitable",
+      "ar": "سكر مخفّض حيثما يناسب"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_recipe_option_3",
+    "product_id": "prod_maamoul",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No added sugar where technically suitable",
+      "ar": "بدون سكر مضاف حيثما يناسب تقنيًا"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_maamoul_recipe_option_4",
+    "product_id": "prod_maamoul",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Size / format customization",
+      "ar": "تخصيص الحجم / الشكل"
+    },
+    "sort_order": 4,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_use_case_0",
+    "product_id": "prod_tamriya",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Healthy snacking",
+      "ar": "تسالي صحية"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_use_case_1",
+    "product_id": "prod_tamriya",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Retail confectionery",
+      "ar": "حلويات التجزئة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_use_case_2",
+    "product_id": "prod_tamriya",
+    "type": "use_case",
+    "label_localized": {
+      "en": "On-the-go formats",
+      "ar": "أشكال للتناول السريع"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_private_label_option_0",
+    "product_id": "prod_tamriya",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Coatings & inclusions",
+      "ar": "طبقات وإضافات"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_private_label_option_1",
+    "product_id": "prod_tamriya",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Pack formats",
+      "ar": "أشكال العبوات"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_private_label_option_2",
+    "product_id": "prod_tamriya",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded retail packaging",
+      "ar": "تغليف تجزئة بعلامتك"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_recipe_option_0",
+    "product_id": "prod_tamriya",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Standard recipe",
+      "ar": "وصفة قياسية"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_recipe_option_1",
+    "product_id": "prod_tamriya",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Clean label where technically suitable",
+      "ar": "مكوّنات نظيفة حيثما يناسب تقنيًا"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_recipe_option_2",
+    "product_id": "prod_tamriya",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "No added sugar where technically suitable",
+      "ar": "بدون سكر مضاف حيثما يناسب تقنيًا"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_recipe_option_3",
+    "product_id": "prod_tamriya",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Reduced sugar where suitable",
+      "ar": "سكر مخفّض حيثما يناسب"
+    },
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_recipe_option_4",
+    "product_id": "prod_tamriya",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Coatings & inclusions (flavor customization)",
+      "ar": "طبقات وإضافات (تخصيص النكهة)"
+    },
+    "sort_order": 4,
+    "is_active": true
+  },
+  {
+    "id": "opt_tamriya_recipe_option_5",
+    "product_id": "prod_tamriya",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Pack format customization",
+      "ar": "تخصيص شكل العبوة"
+    },
+    "sort_order": 5,
+    "is_active": true
+  },
+  {
+    "id": "opt_cookies_use_case_0",
+    "product_id": "prod_cookies",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Retail sweet ranges",
+      "ar": "تشكيلات حلويات التجزئة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_cookies_use_case_1",
+    "product_id": "prod_cookies",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Bakery counters",
+      "ar": "أركان المخابز"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_cookies_use_case_2",
+    "product_id": "prod_cookies",
+    "type": "use_case",
+    "label_localized": {
+      "en": "Private label brands",
+      "ar": "علامات خاصة"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_cookies_private_label_option_0",
+    "product_id": "prod_cookies",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Pack format customization",
+      "ar": "تخصيص شكل العبوة"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_cookies_private_label_option_1",
+    "product_id": "prod_cookies",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Branded retail packaging",
+      "ar": "تغليف تجزئة بعلامتك"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_cookies_private_label_option_2",
+    "product_id": "prod_cookies",
+    "type": "private_label_option",
+    "label_localized": {
+      "en": "Recipe direction developed to brief",
+      "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "opt_cookies_recipe_option_0",
+    "product_id": "prod_cookies",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Recipe direction developed to brief",
+      "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "opt_cookies_recipe_option_1",
+    "product_id": "prod_cookies",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Nutrition profile confirmed via verified specification sheet",
+      "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "opt_cookies_recipe_option_2",
+    "product_id": "prod_cookies",
+    "type": "recipe_option",
+    "label_localized": {
+      "en": "Pack format customization",
+      "ar": "تخصيص شكل العبوة"
+    },
+    "sort_order": 2,
+    "is_active": true
+  }
+]

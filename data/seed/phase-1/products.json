@@ -1,0 +1,376 @@
+[
+  {
+    "id": "prod_arabic_bread",
+    "category_id": "cat_flatbread_wraps",
+    "slug": "arabic-bread",
+    "name_localized": {
+      "en": "Arabic Bread",
+      "ar": "خبز عربي"
+    },
+    "short_description_localized": {
+      "en": "Traditional round Arabic flatbread, soft and foldable.",
+      "ar": "خبز عربي مسطّح تقليدي مستدير، طري وقابل للطي."
+    },
+    "card_description_localized": {
+      "en": "Authentic Arabic flatbread produced for consistent texture and everyday retail demand.",
+      "ar": "خبز عربي أصيل يُنتَج بقوام ثابت يلبّي الطلب اليومي في التجزئة."
+    },
+    "image_asset_id": "media_product_arabic_bread",
+    "icon_type": "flatbread",
+    "featured": true,
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "prod_high_protein_bread_wrap",
+    "category_id": "cat_flatbread_wraps",
+    "slug": "high-protein-bread-wrap",
+    "name_localized": {
+      "en": "High-Protein Bread Wrap",
+      "ar": "لفافة خبز عالية البروتين"
+    },
+    "short_description_localized": {
+      "en": "Functional bread wrap developed for protein-focused healthy bakery ranges.",
+      "ar": "لفافة خبز وظيفية مطوَّرة لتشكيلات مخبوزات صحية تركّز على البروتين."
+    },
+    "card_description_localized": {
+      "en": "Functional bread wrap developed for protein-focused healthy bakery ranges.",
+      "ar": "لفافة خبز وظيفية مطوَّرة لتشكيلات مخبوزات صحية تركّز على البروتين."
+    },
+    "image_asset_id": "media_product_high_protein_bread_wrap",
+    "icon_type": "flatbread",
+    "featured": true,
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "prod_high_fiber_bread_wrap",
+    "category_id": "cat_flatbread_wraps",
+    "slug": "high-fiber-bread-wrap",
+    "name_localized": {
+      "en": "High-Fiber Bread Wrap",
+      "ar": "لفافة خبز عالية الألياف"
+    },
+    "short_description_localized": {
+      "en": "Functional bread wrap focused on fiber-conscious bakery positioning.",
+      "ar": "لفافة خبز وظيفية تركّز على تموضع مخبوزات غني بالألياف."
+    },
+    "card_description_localized": {
+      "en": "Functional bread wrap focused on fiber-conscious bakery positioning.",
+      "ar": "لفافة خبز وظيفية تركّز على تموضع مخبوزات غني بالألياف."
+    },
+    "image_asset_id": "media_product_high_fiber_bread_wrap",
+    "icon_type": "flatbread",
+    "featured": false,
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "prod_chia_bread_wrap",
+    "category_id": "cat_flatbread_wraps",
+    "slug": "chia-bread-wrap",
+    "name_localized": {
+      "en": "Chia Bread Wrap",
+      "ar": "لفافة خبز بالشيا"
+    },
+    "short_description_localized": {
+      "en": "Bread wrap featuring chia as part of a health-focused flatbread range.",
+      "ar": "لفافة خبز بالشيا ضمن تشكيلة خبز مسطّح تركّز على الصحة."
+    },
+    "card_description_localized": {
+      "en": "Bread wrap featuring chia as part of a health-focused flatbread range.",
+      "ar": "لفافة خبز بالشيا ضمن تشكيلة خبز مسطّح تركّز على الصحة."
+    },
+    "image_asset_id": "media_product_chia_bread_wrap",
+    "icon_type": "flatbread",
+    "featured": false,
+    "sort_order": 3,
+    "is_active": true
+  },
+  {
+    "id": "prod_oats_bread_wrap",
+    "category_id": "cat_flatbread_wraps",
+    "slug": "oats-bread-wrap",
+    "name_localized": {
+      "en": "Oats Bread Wrap",
+      "ar": "لفافة خبز بالشوفان"
+    },
+    "short_description_localized": {
+      "en": "Bread wrap featuring oats for a wholesome bakery profile.",
+      "ar": "لفافة خبز بالشوفان لملمح مخبوزات مغذٍّ."
+    },
+    "card_description_localized": {
+      "en": "Bread wrap featuring oats for a wholesome bakery profile.",
+      "ar": "لفافة خبز بالشوفان لملمح مخبوزات مغذٍّ."
+    },
+    "image_asset_id": "media_product_oats_bread_wrap",
+    "icon_type": "flatbread",
+    "featured": false,
+    "sort_order": 4,
+    "is_active": true
+  },
+  {
+    "id": "prod_barley_bread_wrap",
+    "category_id": "cat_flatbread_wraps",
+    "slug": "barley-bread-wrap",
+    "name_localized": {
+      "en": "Barley Bread Wrap",
+      "ar": "لفافة خبز بالشعير"
+    },
+    "short_description_localized": {
+      "en": "Bread wrap featuring barley for a hearty grain-forward profile.",
+      "ar": "لفافة خبز بالشعير لملمح غني بالحبوب."
+    },
+    "card_description_localized": {
+      "en": "Bread wrap featuring barley for a hearty grain-forward profile.",
+      "ar": "لفافة خبز بالشعير لملمح غني بالحبوب."
+    },
+    "image_asset_id": "media_product_barley_bread_wrap",
+    "icon_type": "flatbread",
+    "featured": false,
+    "sort_order": 5,
+    "is_active": true
+  },
+  {
+    "id": "prod_black_seed_bread_wrap",
+    "category_id": "cat_flatbread_wraps",
+    "slug": "black-seed-bread-wrap",
+    "name_localized": {
+      "en": "Black Seed Bread Wrap",
+      "ar": "لفافة خبز بحبة البركة"
+    },
+    "short_description_localized": {
+      "en": "Bread wrap featuring black seed for a distinctive healthy bakery variant.",
+      "ar": "لفافة خبز بحبة البركة لخيار مخبوزات صحي مميّز."
+    },
+    "card_description_localized": {
+      "en": "Bread wrap featuring black seed for a distinctive healthy bakery variant.",
+      "ar": "لفافة خبز بحبة البركة لخيار مخبوزات صحي مميّز."
+    },
+    "image_asset_id": "media_product_black_seed_bread_wrap",
+    "icon_type": "flatbread",
+    "featured": false,
+    "sort_order": 6,
+    "is_active": true
+  },
+  {
+    "id": "prod_whole_grains_bread_wrap",
+    "category_id": "cat_flatbread_wraps",
+    "slug": "whole-grains-bread-wrap",
+    "name_localized": {
+      "en": "Whole Grains Bread Wrap",
+      "ar": "لفافة خبز بالحبوب الكاملة"
+    },
+    "short_description_localized": {
+      "en": "Bread wrap built around whole grains for everyday healthy bakery positioning.",
+      "ar": "لفافة خبز قائمة على الحبوب الكاملة لتموضع مخبوزات صحي يومي."
+    },
+    "card_description_localized": {
+      "en": "Bread wrap built around whole grains for everyday healthy bakery positioning.",
+      "ar": "لفافة خبز قائمة على الحبوب الكاملة لتموضع مخبوزات صحي يومي."
+    },
+    "image_asset_id": "media_product_whole_grains_bread_wrap",
+    "icon_type": "flatbread",
+    "featured": false,
+    "sort_order": 7,
+    "is_active": true
+  },
+  {
+    "id": "prod_toast",
+    "category_id": "cat_soft_bread",
+    "slug": "toast",
+    "name_localized": {
+      "en": "Toast",
+      "ar": "توست"
+    },
+    "short_description_localized": {
+      "en": "Soft sandwich loaves with an even, sliceable crumb.",
+      "ar": "أرغفة سندويتش طرية بقوام متجانس قابل للتقطيع."
+    },
+    "card_description_localized": {
+      "en": "Consistent toast loaves engineered for shelf life, slicing, and sandwich builds.",
+      "ar": "أرغفة توست ثابتة الجودة مصمَّمة لمدة صلاحية جيدة وتقطيع متقن وسندويتشات."
+    },
+    "image_asset_id": "media_product_toast",
+    "icon_type": "loaf",
+    "featured": true,
+    "sort_order": 8,
+    "is_active": true
+  },
+  {
+    "id": "prod_burger_buns",
+    "category_id": "cat_soft_bread",
+    "slug": "burger-buns",
+    "name_localized": {
+      "en": "Burger Buns",
+      "ar": "خبز برجر"
+    },
+    "short_description_localized": {
+      "en": "Structured buns with a soft crumb for foodservice and retail.",
+      "ar": "خبز برجر متماسك بقوام طري لخدمات الطعام والتجزئة."
+    },
+    "card_description_localized": {
+      "en": "Reliable burger buns with the structure to hold builds and a soft, even crumb.",
+      "ar": "خبز برجر موثوق بتماسك يحمل المكوّنات وقوام طري متجانس."
+    },
+    "image_asset_id": "media_product_burger_buns",
+    "icon_type": "bun",
+    "featured": true,
+    "sort_order": 9,
+    "is_active": true
+  },
+  {
+    "id": "prod_bread_rolls",
+    "category_id": "cat_soft_bread",
+    "slug": "bread-rolls",
+    "name_localized": {
+      "en": "Bread Rolls",
+      "ar": "أرغفة صغيرة"
+    },
+    "short_description_localized": {
+      "en": "Soft dinner and sandwich rolls in versatile formats.",
+      "ar": "أرغفة صغيرة طرية للعشاء والسندويتشات بأشكال متعددة."
+    },
+    "card_description_localized": {
+      "en": "Versatile soft rolls for sandwiches, sliders, and hospitality table service.",
+      "ar": "أرغفة صغيرة طرية متعددة الاستخدام للسندويتشات والسلايدرز وتقديم الضيافة."
+    },
+    "image_asset_id": "media_product_bread_rolls",
+    "icon_type": "samoon",
+    "featured": false,
+    "sort_order": 10,
+    "is_active": true
+  },
+  {
+    "id": "prod_croissant",
+    "category_id": "cat_pastry",
+    "slug": "croissant",
+    "name_localized": {
+      "en": "Croissant",
+      "ar": "كرواسان"
+    },
+    "short_description_localized": {
+      "en": "Laminated butter-style croissants with flaky layers.",
+      "ar": "كرواسان مورّق على طراز الزبدة بطبقات هشة."
+    },
+    "card_description_localized": {
+      "en": "Premium laminated croissants with crisp, flaky layers for bakery and cafe shelves.",
+      "ar": "كرواسان مورّق فاخر بطبقات مقرمشة هشة لرفوف المخابز والمقاهي."
+    },
+    "image_asset_id": "media_product_croissant",
+    "icon_type": "croissantLarge",
+    "featured": false,
+    "sort_order": 11,
+    "is_active": true
+  },
+  {
+    "id": "prod_mini_croissant",
+    "category_id": "cat_pastry",
+    "slug": "mini-croissant",
+    "name_localized": {
+      "en": "Mini Croissant",
+      "ar": "كرواسان ميني"
+    },
+    "short_description_localized": {
+      "en": "Bite-size laminated croissants for grab-and-go.",
+      "ar": "كرواسان مورّق بحجم اللقمة للتجزئة السريعة."
+    },
+    "card_description_localized": {
+      "en": "Laminated mini croissants ideal for grab-and-go, breakfast packs, and platters.",
+      "ar": "كرواسان ميني مورّق مثالي للتجزئة السريعة وعبوات الإفطار وأطباق التقديم."
+    },
+    "image_asset_id": "media_product_mini_croissant",
+    "icon_type": "croissant",
+    "featured": true,
+    "sort_order": 12,
+    "is_active": true
+  },
+  {
+    "id": "prod_pate",
+    "category_id": "cat_pastry",
+    "slug": "pate",
+    "name_localized": {
+      "en": "Pate",
+      "ar": "معجنات ورقية"
+    },
+    "short_description_localized": {
+      "en": "Layered puff pastry products, sweet and savory.",
+      "ar": "منتجات معجنات ورقية طبقية، حلوة ومالحة."
+    },
+    "card_description_localized": {
+      "en": "Layered puff pastry products across sweet and savory formats for varied ranges.",
+      "ar": "منتجات معجنات ورقية طبقية بأشكال حلوة ومالحة لتشكيلات متنوعة."
+    },
+    "image_asset_id": "media_product_pate",
+    "icon_type": "puff",
+    "featured": false,
+    "sort_order": 13,
+    "is_active": true
+  },
+  {
+    "id": "prod_maamoul",
+    "category_id": "cat_sweets",
+    "slug": "maamoul",
+    "name_localized": {
+      "en": "Maa'moul",
+      "ar": "معمول"
+    },
+    "short_description_localized": {
+      "en": "Filled semolina pastries with date and nut centers.",
+      "ar": "معجنات سميد محشوّة بمركز التمر والمكسرات."
+    },
+    "card_description_localized": {
+      "en": "Traditional filled maa'moul with date and nut centers for seasonal and year-round sales.",
+      "ar": "معمول تقليدي محشوّ بالتمر والمكسرات للمبيعات الموسمية وعلى مدار العام."
+    },
+    "image_asset_id": "media_product_maamoul",
+    "icon_type": "maamoul",
+    "featured": true,
+    "sort_order": 14,
+    "is_active": true
+  },
+  {
+    "id": "prod_tamriya",
+    "category_id": "cat_sweets",
+    "slug": "tamriya",
+    "name_localized": {
+      "en": "Tamriya",
+      "ar": "تمرية"
+    },
+    "short_description_localized": {
+      "en": "Wholesome date-based sweets and balls.",
+      "ar": "حلويات وكرات مغذّية قائمة على التمر."
+    },
+    "card_description_localized": {
+      "en": "Date-based tamriya sweets built for the health-aware shopper and snacking ranges.",
+      "ar": "حلويات تمرية قائمة على التمر مصمَّمة للمتسوق المهتم بالصحة وتشكيلات التسالي."
+    },
+    "image_asset_id": "media_product_tamriya",
+    "icon_type": "date",
+    "featured": false,
+    "sort_order": 15,
+    "is_active": true
+  },
+  {
+    "id": "prod_cookies",
+    "category_id": "cat_sweets",
+    "slug": "cookies",
+    "name_localized": {
+      "en": "Cookies",
+      "ar": "كوكيز"
+    },
+    "short_description_localized": {
+      "en": "Cookies designed for bakery and retail-ready sweet ranges, with recipe and nutrition details to be confirmed by verified specification sheets.",
+      "ar": "كوكيز مصمَّمة لتشكيلات حلويات المخابز والجاهزة للتجزئة، مع تفاصيل الوصفة والقيم الغذائية التي تُؤكَّد عبر أوراق مواصفات موثّقة."
+    },
+    "card_description_localized": {
+      "en": "Cookies designed for bakery and retail-ready sweet ranges, with recipe and nutrition details to be confirmed by verified specification sheets.",
+      "ar": "كوكيز مصمَّمة لتشكيلات حلويات المخابز والجاهزة للتجزئة، مع تفاصيل الوصفة والقيم الغذائية التي تُؤكَّد عبر أوراق مواصفات موثّقة."
+    },
+    "image_asset_id": "media_product_cookies",
+    "icon_type": "maamoul",
+    "featured": false,
+    "sort_order": 16,
+    "is_active": true
+  }
+]

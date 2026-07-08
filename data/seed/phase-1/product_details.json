@@ -1,0 +1,1034 @@
+[
+  {
+    "id": "detail_arabic_bread",
+    "product_id": "prod_arabic_bread",
+    "positioning_localized": {
+      "en": "Everyday Arabic flatbread, manufactured for consistent quality across retail and institutional supply.",
+      "ar": "خبز عربي مسطّح يومي، يُصنَّع بجودة ثابتة عبر توريد التجزئة والمؤسسات."
+    },
+    "overview_localized": [
+      {
+        "en": "Arabic bread is one of the region's highest-demand everyday breads. As a manufacturing category, the focus is on a soft, foldable texture and dependable batch-to-batch consistency at volume.",
+        "ar": "الخبز العربي من أكثر أنواع الخبز اليومي طلبًا في المنطقة. وكفئة تصنيع، ينصبّ التركيز على قوام طري قابل للطي وثبات موثوق بين الدفعات على نطاق واسع."
+      },
+      {
+        "en": "Al Shehail produces Arabic bread for retail shelves and institutional supply, with formats and recipes that can be adapted to a brand's target market and price positioning.",
+        "ar": "ينتج الشحيل الخبز العربي لرفوف التجزئة وتوريد المؤسسات، بأشكال ووصفات يمكن تكييفها مع السوق المستهدف والتموضع السعري للعلامة."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Retail shelves",
+        "ar": "رفوف التجزئة"
+      },
+      {
+        "en": "Supermarkets / hypermarkets",
+        "ar": "أسواق / هايبرماركت"
+      },
+      {
+        "en": "Cafes / foodservice",
+        "ar": "مقاهٍ / خدمات طعام"
+      },
+      {
+        "en": "Institutional & catering supply",
+        "ar": "توريد المؤسسات والتموين"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Standard recipe",
+        "ar": "وصفة قياسية"
+      },
+      {
+        "en": "Whole wheat / fiber-focused variations where suitable",
+        "ar": "خيارات القمح الكامل / الغنية بالألياف حيثما يناسب"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Size / weight / format customization",
+        "ar": "تخصيص الحجم / الوزن / الشكل"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_high_protein_bread_wrap",
+    "product_id": "prod_high_protein_bread_wrap",
+    "positioning_localized": {
+      "en": "Functional bread wrap developed for protein-focused healthy bakery ranges.",
+      "ar": "لفافة خبز وظيفية مطوَّرة لتشكيلات مخبوزات صحية تركّز على البروتين."
+    },
+    "overview_localized": [
+      {
+        "en": "The high-protein bread wrap is part of a functional flatbread range, developed for brands building protein-focused healthy bakery lines. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+        "ar": "لفافة الخبز عالية البروتين جزء من تشكيلة خبز مسطّح وظيفية، مطوَّرة للعلامات التي تبني خطوط مخبوزات صحية تركّز على البروتين. كفئة تصنيع، ينصبّ التركيز على لفافة مرنة بقطر ثابت وأداء طي نظيف."
+      },
+      {
+        "en": "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+        "ar": "يُطوَّر توجيه الوصفة والقيم الغذائية حسب طلب العلامة، وتُؤكَّد عبر أوراق مواصفات موثّقة قبل تقديم أي ادعاء غذائي."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Wraps & sandwiches",
+        "ar": "لفائف وسندويتشات"
+      },
+      {
+        "en": "Healthy bakery ranges",
+        "ar": "تشكيلات مخبوزات صحية"
+      },
+      {
+        "en": "Cafes / foodservice",
+        "ar": "مقاهٍ / خدمات طعام"
+      },
+      {
+        "en": "Grab-and-go retail",
+        "ar": "تجزئة سريعة للأخذ"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Recipe direction developed to brief",
+        "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+      },
+      {
+        "en": "Nutrition profile confirmed via verified specification sheet",
+        "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Size / diameter / format customization",
+        "ar": "تخصيص الحجم / القطر / الشكل"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_high_fiber_bread_wrap",
+    "product_id": "prod_high_fiber_bread_wrap",
+    "positioning_localized": {
+      "en": "Functional bread wrap focused on fiber-conscious bakery positioning.",
+      "ar": "لفافة خبز وظيفية تركّز على تموضع مخبوزات غني بالألياف."
+    },
+    "overview_localized": [
+      {
+        "en": "The high-fiber bread wrap is part of a functional flatbread range, developed for fiber-conscious bakery positioning. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+        "ar": "لفافة الخبز عالية الألياف جزء من تشكيلة خبز مسطّح وظيفية، مطوَّرة لتموضع مخبوزات غني بالألياف. كفئة تصنيع، ينصبّ التركيز على لفافة مرنة بقطر ثابت وأداء طي نظيف."
+      },
+      {
+        "en": "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+        "ar": "يُطوَّر توجيه الوصفة والقيم الغذائية حسب طلب العلامة، وتُؤكَّد عبر أوراق مواصفات موثّقة قبل تقديم أي ادعاء غذائي."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Wraps & sandwiches",
+        "ar": "لفائف وسندويتشات"
+      },
+      {
+        "en": "Healthy bakery ranges",
+        "ar": "تشكيلات مخبوزات صحية"
+      },
+      {
+        "en": "Cafes / foodservice",
+        "ar": "مقاهٍ / خدمات طعام"
+      },
+      {
+        "en": "Grab-and-go retail",
+        "ar": "تجزئة سريعة للأخذ"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Recipe direction developed to brief",
+        "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+      },
+      {
+        "en": "Nutrition profile confirmed via verified specification sheet",
+        "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Size / diameter / format customization",
+        "ar": "تخصيص الحجم / القطر / الشكل"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_chia_bread_wrap",
+    "product_id": "prod_chia_bread_wrap",
+    "positioning_localized": {
+      "en": "Bread wrap featuring chia as part of a health-focused flatbread range.",
+      "ar": "لفافة خبز بالشيا ضمن تشكيلة خبز مسطّح تركّز على الصحة."
+    },
+    "overview_localized": [
+      {
+        "en": "The chia bread wrap features chia as part of a health-focused flatbread range. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+        "ar": "لفافة خبز الشيا تضم الشيا ضمن تشكيلة خبز مسطّح تركّز على الصحة. كفئة تصنيع، ينصبّ التركيز على لفافة مرنة بقطر ثابت وأداء طي نظيف."
+      },
+      {
+        "en": "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+        "ar": "يُطوَّر توجيه الوصفة والقيم الغذائية حسب طلب العلامة، وتُؤكَّد عبر أوراق مواصفات موثّقة قبل تقديم أي ادعاء غذائي."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Wraps & sandwiches",
+        "ar": "لفائف وسندويتشات"
+      },
+      {
+        "en": "Healthy bakery ranges",
+        "ar": "تشكيلات مخبوزات صحية"
+      },
+      {
+        "en": "Cafes / foodservice",
+        "ar": "مقاهٍ / خدمات طعام"
+      },
+      {
+        "en": "Grab-and-go retail",
+        "ar": "تجزئة سريعة للأخذ"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Recipe direction developed to brief",
+        "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+      },
+      {
+        "en": "Nutrition profile confirmed via verified specification sheet",
+        "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Size / diameter / format customization",
+        "ar": "تخصيص الحجم / القطر / الشكل"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_oats_bread_wrap",
+    "product_id": "prod_oats_bread_wrap",
+    "positioning_localized": {
+      "en": "Bread wrap featuring oats for a wholesome bakery profile.",
+      "ar": "لفافة خبز بالشوفان لملمح مخبوزات مغذٍّ."
+    },
+    "overview_localized": [
+      {
+        "en": "The oats bread wrap features oats for a wholesome bakery profile. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+        "ar": "لفافة خبز الشوفان تضم الشوفان لملمح مخبوزات مغذٍّ. كفئة تصنيع، ينصبّ التركيز على لفافة مرنة بقطر ثابت وأداء طي نظيف."
+      },
+      {
+        "en": "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+        "ar": "يُطوَّر توجيه الوصفة والقيم الغذائية حسب طلب العلامة، وتُؤكَّد عبر أوراق مواصفات موثّقة قبل تقديم أي ادعاء غذائي."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Wraps & sandwiches",
+        "ar": "لفائف وسندويتشات"
+      },
+      {
+        "en": "Healthy bakery ranges",
+        "ar": "تشكيلات مخبوزات صحية"
+      },
+      {
+        "en": "Cafes / foodservice",
+        "ar": "مقاهٍ / خدمات طعام"
+      },
+      {
+        "en": "Grab-and-go retail",
+        "ar": "تجزئة سريعة للأخذ"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Recipe direction developed to brief",
+        "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+      },
+      {
+        "en": "Nutrition profile confirmed via verified specification sheet",
+        "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Size / diameter / format customization",
+        "ar": "تخصيص الحجم / القطر / الشكل"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_barley_bread_wrap",
+    "product_id": "prod_barley_bread_wrap",
+    "positioning_localized": {
+      "en": "Bread wrap featuring barley for a hearty grain-forward profile.",
+      "ar": "لفافة خبز بالشعير لملمح غني بالحبوب."
+    },
+    "overview_localized": [
+      {
+        "en": "The barley bread wrap features barley for a hearty grain-forward profile. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+        "ar": "لفافة خبز الشعير تضم الشعير لملمح غني بالحبوب. كفئة تصنيع، ينصبّ التركيز على لفافة مرنة بقطر ثابت وأداء طي نظيف."
+      },
+      {
+        "en": "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+        "ar": "يُطوَّر توجيه الوصفة والقيم الغذائية حسب طلب العلامة، وتُؤكَّد عبر أوراق مواصفات موثّقة قبل تقديم أي ادعاء غذائي."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Wraps & sandwiches",
+        "ar": "لفائف وسندويتشات"
+      },
+      {
+        "en": "Healthy bakery ranges",
+        "ar": "تشكيلات مخبوزات صحية"
+      },
+      {
+        "en": "Cafes / foodservice",
+        "ar": "مقاهٍ / خدمات طعام"
+      },
+      {
+        "en": "Grab-and-go retail",
+        "ar": "تجزئة سريعة للأخذ"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Recipe direction developed to brief",
+        "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+      },
+      {
+        "en": "Nutrition profile confirmed via verified specification sheet",
+        "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Size / diameter / format customization",
+        "ar": "تخصيص الحجم / القطر / الشكل"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_black_seed_bread_wrap",
+    "product_id": "prod_black_seed_bread_wrap",
+    "positioning_localized": {
+      "en": "Bread wrap featuring black seed for a distinctive healthy bakery variant.",
+      "ar": "لفافة خبز بحبة البركة لخيار مخبوزات صحي مميّز."
+    },
+    "overview_localized": [
+      {
+        "en": "The black seed bread wrap features black seed for a distinctive healthy bakery variant. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+        "ar": "لفافة خبز حبة البركة تضم حبة البركة لخيار مخبوزات صحي مميّز. كفئة تصنيع، ينصبّ التركيز على لفافة مرنة بقطر ثابت وأداء طي نظيف."
+      },
+      {
+        "en": "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+        "ar": "يُطوَّر توجيه الوصفة والقيم الغذائية حسب طلب العلامة، وتُؤكَّد عبر أوراق مواصفات موثّقة قبل تقديم أي ادعاء غذائي."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Wraps & sandwiches",
+        "ar": "لفائف وسندويتشات"
+      },
+      {
+        "en": "Healthy bakery ranges",
+        "ar": "تشكيلات مخبوزات صحية"
+      },
+      {
+        "en": "Cafes / foodservice",
+        "ar": "مقاهٍ / خدمات طعام"
+      },
+      {
+        "en": "Grab-and-go retail",
+        "ar": "تجزئة سريعة للأخذ"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Recipe direction developed to brief",
+        "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+      },
+      {
+        "en": "Nutrition profile confirmed via verified specification sheet",
+        "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Size / diameter / format customization",
+        "ar": "تخصيص الحجم / القطر / الشكل"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_whole_grains_bread_wrap",
+    "product_id": "prod_whole_grains_bread_wrap",
+    "positioning_localized": {
+      "en": "Bread wrap built around whole grains for everyday healthy bakery positioning.",
+      "ar": "لفافة خبز قائمة على الحبوب الكاملة لتموضع مخبوزات صحي يومي."
+    },
+    "overview_localized": [
+      {
+        "en": "The whole grains bread wrap is built around whole grains for everyday healthy bakery positioning. As a manufacturing category, the focus is a pliable wrap with consistent diameter and clean folding performance.",
+        "ar": "لفافة خبز الحبوب الكاملة قائمة على الحبوب الكاملة لتموضع مخبوزات صحي يومي. كفئة تصنيع، ينصبّ التركيز على لفافة مرنة بقطر ثابت وأداء طي نظيف."
+      },
+      {
+        "en": "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+        "ar": "يُطوَّر توجيه الوصفة والقيم الغذائية حسب طلب العلامة، وتُؤكَّد عبر أوراق مواصفات موثّقة قبل تقديم أي ادعاء غذائي."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Wraps & sandwiches",
+        "ar": "لفائف وسندويتشات"
+      },
+      {
+        "en": "Healthy bakery ranges",
+        "ar": "تشكيلات مخبوزات صحية"
+      },
+      {
+        "en": "Cafes / foodservice",
+        "ar": "مقاهٍ / خدمات طعام"
+      },
+      {
+        "en": "Grab-and-go retail",
+        "ar": "تجزئة سريعة للأخذ"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Recipe direction developed to brief",
+        "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+      },
+      {
+        "en": "Nutrition profile confirmed via verified specification sheet",
+        "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Size / diameter / format customization",
+        "ar": "تخصيص الحجم / القطر / الشكل"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_toast",
+    "product_id": "prod_toast",
+    "positioning_localized": {
+      "en": "Sliced sandwich bread with a soft crumb, manufactured shelf-ready for family retail packs.",
+      "ar": "خبز سندويتش مقطّع بقوام طري، يُصنَّع جاهزًا للرف لعبوات التجزئة العائلية."
+    },
+    "overview_localized": [
+      {
+        "en": "Toast and sandwich bread is a staple retail category where soft crumb, even slicing, and reliable shelf life are essential. As a manufacturing category, consistency across every loaf is the priority.",
+        "ar": "التوست وخبز السندويتش فئة تجزئة أساسية يكون فيها القوام الطري والتقطيع المتجانس ومدة الصلاحية الموثوقة أمورًا جوهرية. وكفئة تصنيع، يكون الثبات في كل رغيف هو الأولوية."
+      },
+      {
+        "en": "Al Shehail produces sliced bread for family retail packs and sandwich use, with recipes and loaf formats that can be tailored to brand and market.",
+        "ar": "ينتج الشحيل الخبز المقطّع لعبوات التجزئة العائلية واستخدام السندويتش، بوصفات وأشكال أرغفة يمكن تكييفها مع العلامة والسوق."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Family retail packs",
+        "ar": "عبوات تجزئة عائلية"
+      },
+      {
+        "en": "Sandwich production",
+        "ar": "إنتاج السندويتش"
+      },
+      {
+        "en": "Supermarkets / hypermarkets",
+        "ar": "أسواق / هايبرماركت"
+      },
+      {
+        "en": "Foodservice toasting",
+        "ar": "تحميص لخدمات الطعام"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Standard recipe",
+        "ar": "وصفة قياسية"
+      },
+      {
+        "en": "Whole wheat / fiber-focused variations where suitable",
+        "ar": "خيارات القمح الكامل / الغنية بالألياف حيثما يناسب"
+      },
+      {
+        "en": "Reduced sugar where suitable",
+        "ar": "سكر مخفّض حيثما يناسب"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Loaf size / slice thickness customization",
+        "ar": "تخصيص حجم الرغيف / سماكة الشريحة"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_burger_buns",
+    "product_id": "prod_burger_buns",
+    "positioning_localized": {
+      "en": "Burger buns built with structure and consistency for foodservice and retail.",
+      "ar": "خبز برجر بتماسك وثبات لخدمات الطعام والتجزئة."
+    },
+    "overview_localized": [
+      {
+        "en": "Burger buns are a foodservice and retail category where structure, soft crumb, and consistent sizing directly affect the final build. As a manufacturing category, repeatability is critical.",
+        "ar": "خبز البرجر فئة لخدمات الطعام والتجزئة يؤثر فيها التماسك والقوام الطري وثبات الحجم مباشرةً على التكوين النهائي. وكفئة تصنيع، تكون قابلية التكرار أمرًا حاسمًا."
+      },
+      {
+        "en": "We manufacture burger buns in different sizes for QSR, foodservice, and retail multipacks, with topping and format options matched to the brand brief.",
+        "ar": "نصنّع خبز البرجر بأحجام مختلفة للمطاعم السريعة وخدمات الطعام وعبوات التجزئة المتعددة، مع خيارات أسطح وأشكال تُطابق طلب العلامة."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "QSR & foodservice",
+        "ar": "مطاعم سريعة وخدمات طعام"
+      },
+      {
+        "en": "Retail bun multipacks",
+        "ar": "عبوات برجر متعددة للتجزئة"
+      },
+      {
+        "en": "Catering",
+        "ar": "تموين"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Standard recipe",
+        "ar": "وصفة قياسية"
+      },
+      {
+        "en": "Seeded & topping variations",
+        "ar": "خيارات البذور والأسطح"
+      },
+      {
+        "en": "Whole wheat / fiber-focused variations where suitable",
+        "ar": "خيارات القمح الكامل / الغنية بالألياف حيثما يناسب"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Diameter / weight / format customization",
+        "ar": "تخصيص القطر / الوزن / الشكل"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_bread_rolls",
+    "product_id": "prod_bread_rolls",
+    "positioning_localized": {
+      "en": "Soft rolls for meals and sandwiches, manufactured for foodservice, retail, and private label packs.",
+      "ar": "أرغفة صغيرة طرية للوجبات والسندويتشات، تُصنَّع لخدمات الطعام والتجزئة وعبوات العلامة الخاصة."
+    },
+    "overview_localized": [
+      {
+        "en": "Bread rolls are a versatile soft-bread category for meals, sliders, and sandwiches. As a manufacturing category, the focus is a tender crumb and consistent shape across formats.",
+        "ar": "الأرغفة الصغيرة فئة خبز طري متعددة الاستخدام للوجبات والسلايدرز والسندويتشات. وكفئة تصنيع، ينصبّ التركيز على قوام طري وشكل ثابت عبر الأشكال المختلفة."
+      },
+      {
+        "en": "Al Shehail manufactures rolls for hospitality and foodservice as well as retail and private label packs, with size and shape options to suit the application.",
+        "ar": "يصنّع الشحيل الأرغفة للضيافة وخدمات الطعام وكذلك للتجزئة وعبوات العلامة الخاصة، بخيارات حجم وشكل تناسب الاستخدام."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Hospitality & foodservice",
+        "ar": "ضيافة وخدمات طعام"
+      },
+      {
+        "en": "Sliders & mini sandwiches",
+        "ar": "سلايدرز وسندويتشات صغيرة"
+      },
+      {
+        "en": "Retail packs",
+        "ar": "عبوات تجزئة"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Standard recipe",
+        "ar": "وصفة قياسية"
+      },
+      {
+        "en": "Whole wheat / fiber-focused variations where suitable",
+        "ar": "خيارات القمح الكامل / الغنية بالألياف حيثما يناسب"
+      },
+      {
+        "en": "Seeded & flavor variations",
+        "ar": "خيارات البذور والنكهات"
+      },
+      {
+        "en": "No preservatives where shelf life and process allow",
+        "ar": "بدون مواد حافظة حيثما تسمح مدة الصلاحية والعملية"
+      },
+      {
+        "en": "Size / shape / format customization",
+        "ar": "تخصيص الحجم / الشكل / الصيغة"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_croissant",
+    "product_id": "prod_croissant",
+    "positioning_localized": {
+      "en": "Laminated croissants, plain or filled, manufactured for retail and cafe supply.",
+      "ar": "كرواسان مورّق، سادة أو محشوّ، يُصنَّع لتوريد التجزئة والمقاهي."
+    },
+    "overview_localized": [
+      {
+        "en": "Croissants are a laminated bakery category defined by crisp, flaky layers and a rich crumb. As a manufacturing category, lamination consistency and bake quality are the priorities.",
+        "ar": "الكرواسان فئة مخبوزات مورّقة تتميّز بطبقات مقرمشة هشة وقوام غني. وكفئة تصنيع، يكون ثبات الترقيق وجودة الخَبز هما الأولوية."
+      },
+      {
+        "en": "We manufacture plain and filled croissants for cafe, bakery, and premium retail supply, available in baked or ready-to-bake formats depending on the brief.",
+        "ar": "نصنّع الكرواسان السادة والمحشوّ لتوريد المقاهي والمخابز والتجزئة الراقية، متاحًا بأشكال مخبوزة أو جاهزة للخَبز بحسب الطلب."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Cafes & bakery counters",
+        "ar": "مقاهٍ وأركان مخابز"
+      },
+      {
+        "en": "Hotel breakfast",
+        "ar": "إفطار الفنادق"
+      },
+      {
+        "en": "Premium retail",
+        "ar": "تجزئة راقية"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Standard laminated recipe",
+        "ar": "وصفة ترقيق قياسية"
+      },
+      {
+        "en": "Plain or filled options",
+        "ar": "خيارات سادة أو محشوّة"
+      },
+      {
+        "en": "Reduced sugar where suitable",
+        "ar": "سكر مخفّض حيثما يناسب"
+      },
+      {
+        "en": "Size / weight / format customization",
+        "ar": "تخصيص الحجم / الوزن / الشكل"
+      },
+      {
+        "en": "Baked or ready-to-bake frozen format where suitable",
+        "ar": "شكل مخبوز أو مجمّد جاهز للخَبز حيثما يناسب"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_mini_croissant",
+    "product_id": "prod_mini_croissant",
+    "positioning_localized": {
+      "en": "Bite-size laminated croissants for grab-and-go, multipack, and breakfast or snack ranges.",
+      "ar": "كرواسان مورّق بحجم اللقمة للتجزئة السريعة والعبوات المتعددة وتشكيلات الإفطار أو التسالي."
+    },
+    "overview_localized": [
+      {
+        "en": "Mini croissants bring laminated bakery quality to smaller, snackable formats. As a manufacturing category, the focus is consistent size and lamination at higher piece counts.",
+        "ar": "يقدّم الكرواسان الميني جودة المخبوزات المورّقة بأشكال أصغر مناسبة للتسالي. وكفئة تصنيع، ينصبّ التركيز على ثبات الحجم والترقيق عند أعداد قطع أعلى."
+      },
+      {
+        "en": "Al Shehail manufactures plain and filled mini croissants for grab-and-go retail, breakfast, and snacking multipacks, in baked or frozen supply formats.",
+        "ar": "يصنّع الشحيل الكرواسان الميني السادة والمحشوّ للتجزئة السريعة والإفطار وعبوات التسالي المتعددة، بأشكال توريد مخبوزة أو مجمّدة."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Grab-and-go retail",
+        "ar": "تجزئة سريعة للأخذ"
+      },
+      {
+        "en": "Breakfast & snack ranges",
+        "ar": "تشكيلات الإفطار والتسالي"
+      },
+      {
+        "en": "Multipacks",
+        "ar": "عبوات متعددة"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Standard laminated recipe",
+        "ar": "وصفة ترقيق قياسية"
+      },
+      {
+        "en": "Plain or filled options",
+        "ar": "خيارات سادة أو محشوّة"
+      },
+      {
+        "en": "Reduced sugar where suitable",
+        "ar": "سكر مخفّض حيثما يناسب"
+      },
+      {
+        "en": "Multipack count / format customization",
+        "ar": "تخصيص عدد العبوة المتعددة / الشكل"
+      },
+      {
+        "en": "Baked or frozen supply where suitable",
+        "ar": "توريد مخبوز أو مجمّد حيثما يناسب"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_pate",
+    "product_id": "prod_pate",
+    "positioning_localized": {
+      "en": "Layered puff pastry in savory and sweet formats, with filled options for cafe, retail, and freezer ranges where suitable.",
+      "ar": "معجنات ورقية طبقية بأشكال مالحة وحلوة، مع خيارات محشوّة لتشكيلات المقاهي والتجزئة والمجمّدات حيثما يناسب."
+    },
+    "overview_localized": [
+      {
+        "en": "Pate (puff pastry) is a layered bakery category spanning savory and sweet formats. As a manufacturing category, the priority is even lamination and reliable rise across shapes.",
+        "ar": "المعجنات الورقية فئة مخبوزات طبقية تشمل الأشكال المالحة والحلوة. وكفئة تصنيع، تكون الأولوية للترقيق المتجانس والانتفاخ الموثوق عبر الأشكال."
+      },
+      {
+        "en": "We manufacture filled and unfilled puff pastry products for cafe, retail, and freezer ranges where suitable, with shapes and fillings matched to the product brief.",
+        "ar": "نصنّع منتجات معجنات ورقية محشوّة وغير محشوّة لتشكيلات المقاهي والتجزئة والمجمّدات حيثما يناسب، بأشكال وحشوات تُطابق طلب المنتج."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Savory snacks",
+        "ar": "تسالي مالحة"
+      },
+      {
+        "en": "Sweet pastries",
+        "ar": "معجنات حلوة"
+      },
+      {
+        "en": "Cafes / foodservice",
+        "ar": "مقاهٍ / خدمات طعام"
+      },
+      {
+        "en": "Freezer / ready-to-bake where suitable",
+        "ar": "مجمّد / جاهز للخَبز حيثما يناسب"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Standard puff pastry recipe",
+        "ar": "وصفة معجنات ورقية قياسية"
+      },
+      {
+        "en": "Savory or sweet fillings",
+        "ar": "حشوات مالحة أو حلوة"
+      },
+      {
+        "en": "Reduced sugar (sweet formats) where suitable",
+        "ar": "سكر مخفّض (للأشكال الحلوة) حيثما يناسب"
+      },
+      {
+        "en": "Size / shape / format customization",
+        "ar": "تخصيص الحجم / الشكل / الصيغة"
+      },
+      {
+        "en": "Frozen ready-to-bake format where suitable",
+        "ar": "شكل مجمّد جاهز للخَبز حيثما يناسب"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_maamoul",
+    "product_id": "prod_maamoul",
+    "positioning_localized": {
+      "en": "Traditional date- and nut-filled maa'moul, manufactured for seasonal and year-round retail and premium gifting.",
+      "ar": "معمول تقليدي محشوّ بالتمر والمكسرات، يُصنَّع للتجزئة الموسمية وعلى مدار العام ولهدايا راقية."
+    },
+    "overview_localized": [
+      {
+        "en": "Maa'moul is a traditional filled-pastry category with strong seasonal and gifting demand. As a manufacturing category, the focus is consistent filling ratio, shape, and finish.",
+        "ar": "المعمول فئة معجنات محشوّة تقليدية ذات طلب موسمي وطلب هدايا قوي. وكفئة تصنيع، ينصبّ التركيز على ثبات نسبة الحشو والشكل واللمسة النهائية."
+      },
+      {
+        "en": "Al Shehail manufactures date- and nut-filled maa'moul for retail and premium gifting, with fillings, sizes, and pack formats tailored to the brand and season.",
+        "ar": "يصنّع الشحيل المعمول المحشوّ بالتمر والمكسرات للتجزئة والهدايا الراقية، بحشوات وأحجام وأشكال عبوات مصمَّمة حسب العلامة والموسم."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Seasonal gifting",
+        "ar": "هدايا المواسم"
+      },
+      {
+        "en": "Premium retail packs",
+        "ar": "عبوات تجزئة راقية"
+      },
+      {
+        "en": "Supermarkets / hypermarkets",
+        "ar": "أسواق / هايبرماركت"
+      },
+      {
+        "en": "Hospitality",
+        "ar": "الضيافة"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Standard recipe",
+        "ar": "وصفة قياسية"
+      },
+      {
+        "en": "Date / pistachio / walnut fillings",
+        "ar": "حشوات التمر / الفستق / الجوز"
+      },
+      {
+        "en": "Reduced sugar where suitable",
+        "ar": "سكر مخفّض حيثما يناسب"
+      },
+      {
+        "en": "No added sugar where technically suitable",
+        "ar": "بدون سكر مضاف حيثما يناسب تقنيًا"
+      },
+      {
+        "en": "Size / format customization",
+        "ar": "تخصيص الحجم / الشكل"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_tamriya",
+    "product_id": "prod_tamriya",
+    "positioning_localized": {
+      "en": "Date-based sweets and snacks with a health-aware, clean-ingredient direction where suitable.",
+      "ar": "حلويات وتسالي قائمة على التمر بتوجه صحي ومكوّنات نظيفة حيثما يناسب."
+    },
+    "overview_localized": [
+      {
+        "en": "Tamriya is a date-based sweet and snack category well suited to health-aware positioning. As a manufacturing category, the focus is wholesome ingredients and consistent format.",
+        "ar": "التمرية فئة حلويات وتسالي قائمة على التمر تناسب التموضع الصحي. وكفئة تصنيع، ينصبّ التركيز على المكوّنات المغذّية وثبات الشكل."
+      },
+      {
+        "en": "We manufacture date-based snacks for retail packs and clean-label product lines, with coatings, inclusions, and pack formats developed to the brand brief.",
+        "ar": "نصنّع تسالي قائمة على التمر لعبوات التجزئة وخطوط منتجات نظيفة المكوّنات، بطبقات وإضافات وأشكال عبوات تُطوَّر حسب طلب العلامة."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Health-aware snacking",
+        "ar": "تسالي صحية"
+      },
+      {
+        "en": "Clean-label product lines",
+        "ar": "خطوط منتجات نظيفة المكوّنات"
+      },
+      {
+        "en": "Retail packs",
+        "ar": "عبوات تجزئة"
+      },
+      {
+        "en": "On-the-go formats",
+        "ar": "أشكال للتناول السريع"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Standard recipe",
+        "ar": "وصفة قياسية"
+      },
+      {
+        "en": "Clean label where technically suitable",
+        "ar": "مكوّنات نظيفة حيثما يناسب تقنيًا"
+      },
+      {
+        "en": "No added sugar where technically suitable",
+        "ar": "بدون سكر مضاف حيثما يناسب تقنيًا"
+      },
+      {
+        "en": "Reduced sugar where suitable",
+        "ar": "سكر مخفّض حيثما يناسب"
+      },
+      {
+        "en": "Coatings & inclusions (flavor customization)",
+        "ar": "طبقات وإضافات (تخصيص النكهة)"
+      },
+      {
+        "en": "Pack format customization",
+        "ar": "تخصيص شكل العبوة"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  },
+  {
+    "id": "detail_cookies",
+    "product_id": "prod_cookies",
+    "positioning_localized": {
+      "en": "Cookies designed for bakery and retail-ready sweet ranges, with recipe and nutrition details to be confirmed by verified specification sheets.",
+      "ar": "كوكيز مصمَّمة لتشكيلات حلويات المخابز والجاهزة للتجزئة، مع تفاصيل الوصفة والقيم الغذائية التي تُؤكَّد عبر أوراق مواصفات موثّقة."
+    },
+    "overview_localized": [
+      {
+        "en": "Cookies are a sweet bakery category developed for retail-ready and bakery sweet ranges. As a manufacturing category, the focus is consistent format and finish across the run.",
+        "ar": "الكوكيز فئة حلويات مخبوزة مطوَّرة لتشكيلات الحلويات الجاهزة للتجزئة وحلويات المخابز. وكفئة تصنيع، ينصبّ التركيز على ثبات الشكل واللمسة النهائية عبر الإنتاج."
+      },
+      {
+        "en": "Recipe direction and nutrition values are developed to the brand brief and confirmed against verified specification sheets before any nutrition claim is made.",
+        "ar": "يُطوَّر توجيه الوصفة والقيم الغذائية حسب طلب العلامة، وتُؤكَّد عبر أوراق مواصفات موثّقة قبل تقديم أي ادعاء غذائي."
+      }
+    ],
+    "detail_use_cases_localized": [
+      {
+        "en": "Retail sweet ranges",
+        "ar": "تشكيلات حلويات التجزئة"
+      },
+      {
+        "en": "Bakery counters",
+        "ar": "أركان المخابز"
+      },
+      {
+        "en": "Supermarkets / hypermarkets",
+        "ar": "أسواق / هايبرماركت"
+      },
+      {
+        "en": "Private label brands",
+        "ar": "علامات خاصة"
+      }
+    ],
+    "recipe_options_localized": [
+      {
+        "en": "Recipe direction developed to brief",
+        "ar": "توجيه الوصفة يُطوَّر حسب الطلب"
+      },
+      {
+        "en": "Nutrition profile confirmed via verified specification sheet",
+        "ar": "تُؤكَّد القيم الغذائية عبر ورقة مواصفات موثّقة"
+      },
+      {
+        "en": "Pack format customization",
+        "ar": "تخصيص شكل العبوة"
+      }
+    ],
+    "disclaimer_localized": null,
+    "is_active": true
+  }
+]

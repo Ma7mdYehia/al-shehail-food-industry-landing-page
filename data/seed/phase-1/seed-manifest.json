@@ -1,0 +1,52 @@
+{
+  "generated_at": "manual/static seed export",
+  "source_branch": "db/static-seed-export-phase-1b",
+  "source_modules": [
+    "lib/products/catalog.ts",
+    "lib/products/details.ts",
+    "lib/products/shared.ts",
+    "lib/products/types.ts",
+    "lib/services.ts",
+    "lib/content.ts",
+    "lib/partnerProjects.ts",
+    "lib/assets.ts"
+  ],
+  "output_files": [
+    "product_categories.json",
+    "products.json",
+    "product_details.json",
+    "product_options.json",
+    "services.json",
+    "service_sections.json",
+    "partners.json",
+    "partner_projects.json",
+    "partner_project_products.json",
+    "media_assets.json",
+    "shared_content.json",
+    "seed-manifest.json"
+  ],
+  "record_counts": {
+    "product_categories": 4,
+    "products": 17,
+    "product_details": 17,
+    "product_options": 178,
+    "services": 3,
+    "service_sections": 20,
+    "partners": 3,
+    "partner_projects": 3,
+    "partner_project_products": 20,
+    "media_assets": 44,
+    "shared_content": 1
+  },
+  "warnings": [
+    "media_assets.alt_localized.ar is null for every row: lib/assets.ts's altTexts map is English-only today. Arabic alt text must be authored (not machine-translated blindly) before this field is used for anything user-facing.",
+    "media_assets.status for null-path entries is derived from a maintained LEGACY_ASSET_KEYS list in scripts/export-phase-1-seed.mjs mirroring the `// LEGACY` comments in lib/assets.ts, not parsed from the comments automatically. Keep the two in sync manually.",
+    "product_details.disclaimer_localized is null for every product — the shared recipe disclaimer lives once in shared_content.json (recipe_disclaimer_localized) instead of being duplicated per row.",
+    "\"Al Taj\" (lib/assets.ts partners.alTaj) is a reserved/legacy asset key with no corresponding entry in lib/content.ts's manufacturingPartners — not seeded as a partner row.",
+    "partner_projects.title_localized is derived (partnerName + categoryLabel) at export time — no literal title field exists in lib/partnerProjects.ts source data.",
+    "partner_project_products.product_id is set only where a partner-project product's slug exactly matches a main catalog product slug (e.g. \"burger-buns\", \"maamoul\", \"tamriya\", \"toast\", \"mini-croissant\", \"pate\"); all other partner-project products (e.g. \"healthy-flatbread\", \"samoon\") are project-specific and have no catalog match, so product_id is null there by design, not by omission.",
+    "partner_project_products.json intentionally includes only the 5 fields this task specified (id, partner_project_id, product_id, product_name_localized, sort_order). Richer per-project-product fields already exist in lib/partnerProjects.ts (category, shortDescription, keyNotes, nutritionHighlights, image, status, including NEEDS_VERIFICATION placeholders) and are available for a future, richer migration — see docs/database-seed-map.md."
+  ],
+  "static_export_note": "This site builds with output: \"export\" (next.config.mjs) — there is no server at request time. These seed files are a build-time artifact only; nothing in the running site reads them, and generating them does not change the static export in any way.",
+  "no_database_connection_note": "No database connection, driver, ORM, or CMS dependency was added by this export. These are plain JSON files on disk, produced by a standalone Node.js script that is never imported by app/, components/, or lib/."
+}

@@ -1,0 +1,76 @@
+{
+  "recipe_disclaimer_localized": {
+    "en": "All recipe directions can be developed depending on the product brief and are subject to recipe testing, shelf-life requirements, and regulatory approval. Options are offered where technically suitable for the product and process.",
+    "ar": "يمكن تطوير جميع توجيهات الوصفات بحسب طلب المنتج، وتخضع لاختبار الوصفة ومتطلبات مدة الصلاحية والموافقة التنظيمية. وتُقدَّم الخيارات حيثما تكون مناسبة تقنيًا للمنتج والعملية."
+  },
+  "private_label_points_localized": [
+    {
+      "en": "Brand-specific recipe development",
+      "ar": "تطوير وصفة خاصة بالعلامة"
+    },
+    {
+      "en": "Packaging-ready product",
+      "ar": "منتج جاهز للتغليف"
+    },
+    {
+      "en": "Labeling & compliance support",
+      "ar": "دعم البطاقات والامتثال"
+    },
+    {
+      "en": "Retail positioning guidance",
+      "ar": "إرشاد للتموضع في التجزئة"
+    },
+    {
+      "en": "Scaling from sample to production",
+      "ar": "التوسّع من العينة إلى الإنتاج"
+    },
+    {
+      "en": "Category-specific customization",
+      "ar": "تخصيص حسب الفئة"
+    }
+  ],
+  "packaging_options_localized": [
+    {
+      "en": "Retail packs",
+      "ar": "عبوات تجزئة"
+    },
+    {
+      "en": "Foodservice packs",
+      "ar": "عبوات خدمات طعام"
+    },
+    {
+      "en": "Multi-packs",
+      "ar": "عبوات متعددة"
+    },
+    {
+      "en": "Individually packed options where suitable",
+      "ar": "خيارات معبأة فرديًا حيثما يناسب"
+    },
+    {
+      "en": "Custom packaging support",
+      "ar": "دعم تغليف مخصّص"
+    }
+  ],
+  "quality_points_localized": [
+    {
+      "en": "Careful ingredient handling",
+      "ar": "مناولة دقيقة للمكوّنات"
+    },
+    {
+      "en": "Batch control & traceability",
+      "ar": "ضبط الدفعات وإمكانية التتبّع"
+    },
+    {
+      "en": "Hygiene-controlled process",
+      "ar": "عملية محكومة النظافة"
+    },
+    {
+      "en": "In-process quality inspection",
+      "ar": "فحص جودة أثناء العملية"
+    },
+    {
+      "en": "Certified production environment (ISO & HACCP-aligned)",
+      "ar": "بيئة إنتاج معتمدة (متوافقة مع ISO وHACCP)"
+    }
+  ]
+}

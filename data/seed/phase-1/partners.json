@@ -1,0 +1,26 @@
+[
+  {
+    "id": "partner_al_tahan",
+    "slug": "al-tahan",
+    "name": "Al Tahan",
+    "asset_id": "media_partner_al_tahan",
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "partner_halsa_bake",
+    "slug": "halsa-bake",
+    "name": "HÄLSA Bake",
+    "asset_id": "media_partner_halsa_bake",
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "partner_ektifa",
+    "slug": "ektifa",
+    "name": "EKTIFA",
+    "asset_id": "media_partner_ektifa",
+    "sort_order": 2,
+    "is_active": true
+  }
+]

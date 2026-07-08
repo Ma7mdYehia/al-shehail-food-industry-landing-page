@@ -1,0 +1,574 @@
+[
+  {
+    "id": "media_brand_logo_mark",
+    "key": "logoMark",
+    "path": "/assets/brand/al-shehail-icon.svg",
+    "alt_localized": {
+      "en": "Al Shehail Food Industries mark",
+      "ar": null
+    },
+    "type": "brand",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_brand_logo_horizontal",
+    "key": "logoHorizontal",
+    "path": null,
+    "alt_localized": {
+      "en": "Al Shehail Food Industries",
+      "ar": null
+    },
+    "type": "brand",
+    "status": "pending",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_partner_halsa_bake",
+    "key": "halsaBake",
+    "path": "/assets/partners/halsa-bake.png",
+    "alt_localized": {
+      "en": "HÄLSA Bake",
+      "ar": null
+    },
+    "type": "partners",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_partner_ektifa",
+    "key": "ektifa",
+    "path": "/assets/partners/ektifa.png",
+    "alt_localized": {
+      "en": "EKTIFA",
+      "ar": null
+    },
+    "type": "partners",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_partner_al_tahan",
+    "key": "alTahan",
+    "path": "/assets/partners/al-tahan.png",
+    "alt_localized": {
+      "en": "Al Tahan",
+      "ar": null
+    },
+    "type": "partners",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_partner_al_taj",
+    "key": "alTaj",
+    "path": null,
+    "alt_localized": {
+      "en": "Al Taj",
+      "ar": null
+    },
+    "type": "partners",
+    "status": "legacy",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_arabic_bread",
+    "key": "arabicBread",
+    "path": "/assets/products/arabic-bread.webp",
+    "alt_localized": {
+      "en": "Arabic bread",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_high_protein_bread_wrap",
+    "key": "highProteinBreadWrap",
+    "path": "/assets/products/high-protein-bread-wrap.webp",
+    "alt_localized": {
+      "en": "High-protein bread wrap",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_high_fiber_bread_wrap",
+    "key": "highFiberBreadWrap",
+    "path": "/assets/products/high-fiber-bread-wrap.webp",
+    "alt_localized": {
+      "en": "High-fiber bread wrap",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_chia_bread_wrap",
+    "key": "chiaBreadWrap",
+    "path": "/assets/products/chia-bread-wrap.webp",
+    "alt_localized": {
+      "en": "Chia bread wrap",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_oats_bread_wrap",
+    "key": "oatsBreadWrap",
+    "path": "/assets/products/oats-bread-wrap.webp",
+    "alt_localized": {
+      "en": "Oats bread wrap",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_barley_bread_wrap",
+    "key": "barleyBreadWrap",
+    "path": "/assets/products/barley-bread-wrap.webp",
+    "alt_localized": {
+      "en": "Barley bread wrap",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_black_seed_bread_wrap",
+    "key": "blackSeedBreadWrap",
+    "path": "/assets/products/black-seed-bread-wrap.webp",
+    "alt_localized": {
+      "en": "Black seed bread wrap",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_whole_grains_bread_wrap",
+    "key": "wholeGrainsBreadWrap",
+    "path": "/assets/products/whole-grains-bread-wrap.webp",
+    "alt_localized": {
+      "en": "Whole grains bread wrap",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_toast",
+    "key": "toast",
+    "path": "/assets/products/toast.webp",
+    "alt_localized": {
+      "en": "Toast loaf",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_burger_buns",
+    "key": "burgerBuns",
+    "path": "/assets/products/burger-buns.webp",
+    "alt_localized": {
+      "en": "Burger buns",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_bread_rolls",
+    "key": "breadRolls",
+    "path": "/assets/products/bread-rolls.webp",
+    "alt_localized": {
+      "en": "Bread rolls",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_croissant",
+    "key": "croissant",
+    "path": "/assets/products/croissant.webp",
+    "alt_localized": {
+      "en": "Croissant",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_mini_croissant",
+    "key": "miniCroissant",
+    "path": "/assets/products/mini-croissant.webp",
+    "alt_localized": {
+      "en": "Mini croissant",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_pate",
+    "key": "pate",
+    "path": "/assets/products/pate.webp",
+    "alt_localized": {
+      "en": "Pâte / puff pastry",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_maamoul",
+    "key": "maamoul",
+    "path": "/assets/products/maamoul.webp",
+    "alt_localized": {
+      "en": "Maa'moul",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_tamriya",
+    "key": "tamriya",
+    "path": "/assets/products/tamriya.webp",
+    "alt_localized": {
+      "en": "Tamriya",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_cookies",
+    "key": "cookies",
+    "path": "/assets/products/cookies.webp",
+    "alt_localized": {
+      "en": "Cookies",
+      "ar": null
+    },
+    "type": "products",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_product_bread_wraps",
+    "key": "breadWraps",
+    "path": null,
+    "alt_localized": {
+      "en": "Bread wraps",
+      "ar": null
+    },
+    "type": "products",
+    "status": "legacy",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_factory_exterior",
+    "key": "exterior",
+    "path": null,
+    "alt_localized": {
+      "en": "Al Shehail factory exterior",
+      "ar": null
+    },
+    "type": "factory",
+    "status": "pending",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_factory_production_line",
+    "key": "productionLine",
+    "path": null,
+    "alt_localized": {
+      "en": "Bakery production line",
+      "ar": null
+    },
+    "type": "factory",
+    "status": "pending",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_factory_packaging_line",
+    "key": "packagingLine",
+    "path": null,
+    "alt_localized": {
+      "en": "Private label packaging line",
+      "ar": null
+    },
+    "type": "factory",
+    "status": "pending",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_factory_quality_control",
+    "key": "qualityControl",
+    "path": null,
+    "alt_localized": {
+      "en": "Quality control",
+      "ar": null
+    },
+    "type": "factory",
+    "status": "pending",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_factory_warehousing",
+    "key": "warehousing",
+    "path": null,
+    "alt_localized": {
+      "en": "Warehousing and dispatch",
+      "ar": null
+    },
+    "type": "factory",
+    "status": "pending",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_certification_iso",
+    "key": "iso",
+    "path": null,
+    "alt_localized": {
+      "en": "ISO Certified",
+      "ar": null
+    },
+    "type": "certifications",
+    "status": "pending",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_certification_haccp",
+    "key": "haccp",
+    "path": null,
+    "alt_localized": {
+      "en": "HACCP Certified",
+      "ar": null
+    },
+    "type": "certifications",
+    "status": "pending",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_certification_organic",
+    "key": "organic",
+    "path": null,
+    "alt_localized": {
+      "en": "Organic Certified",
+      "ar": null
+    },
+    "type": "certifications",
+    "status": "pending",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_certification_carrefour_approved",
+    "key": "carrefourApproved",
+    "path": null,
+    "alt_localized": {
+      "en": "Carrefour Approved",
+      "ar": null
+    },
+    "type": "certifications",
+    "status": "pending",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_retail_carrefour",
+    "key": "carrefour",
+    "path": "/assets/retail/carrefour.png",
+    "alt_localized": {
+      "en": "Carrefour",
+      "ar": null
+    },
+    "type": "retail",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_retail_union_coop",
+    "key": "unionCoop",
+    "path": "/assets/retail/union-coop.png",
+    "alt_localized": {
+      "en": "Union Coop",
+      "ar": null
+    },
+    "type": "retail",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_retail_abu_dhabi_coop",
+    "key": "abuDhabiCoop",
+    "path": "/assets/retail/abu-dhabi-coop.png",
+    "alt_localized": {
+      "en": "Abu Dhabi Coop",
+      "ar": null
+    },
+    "type": "retail",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_retail_sharjah_coop",
+    "key": "sharjahCoop",
+    "path": "/assets/retail/sharjah-coop.png",
+    "alt_localized": {
+      "en": "Sharjah Coop",
+      "ar": null
+    },
+    "type": "retail",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_retail_al_maya_group",
+    "key": "alMayaGroup",
+    "path": "/assets/retail/al-maya-group.png",
+    "alt_localized": {
+      "en": "Al Maya Group",
+      "ar": null
+    },
+    "type": "retail",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_retail_lulu_hypermarket",
+    "key": "luluHypermarket",
+    "path": "/assets/retail/lulu-hypermarket.png",
+    "alt_localized": {
+      "en": "Lulu Hypermarket",
+      "ar": null
+    },
+    "type": "retail",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_retail_nesto_hypermarket",
+    "key": "nestoHypermarket",
+    "path": "/assets/retail/nesto-hypermarket.png",
+    "alt_localized": {
+      "en": "Nesto Hypermarket",
+      "ar": null
+    },
+    "type": "retail",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_retail_grandiose",
+    "key": "grandiose",
+    "path": "/assets/retail/grandiose.png",
+    "alt_localized": {
+      "en": "Grandiose Supermarket",
+      "ar": null
+    },
+    "type": "retail",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_retail_spinneys",
+    "key": "spinneys",
+    "path": "/assets/retail/spinneys.png",
+    "alt_localized": {
+      "en": "Spinneys",
+      "ar": null
+    },
+    "type": "retail",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_retail_waitrose_uae",
+    "key": "waitroseUae",
+    "path": "/assets/retail/waitrose-uae.png",
+    "alt_localized": {
+      "en": "Waitrose UAE",
+      "ar": null
+    },
+    "type": "retail",
+    "status": "active",
+    "width": null,
+    "height": null
+  },
+  {
+    "id": "media_og_default",
+    "key": "default",
+    "path": null,
+    "alt_localized": {
+      "en": "Al Shehail Food Industries — UAE Bakery Manufacturing & Private Label Partner",
+      "ar": null
+    },
+    "type": "og",
+    "status": "pending",
+    "width": null,
+    "height": null
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "cat_flatbread_wraps",
+    "slug": "flatbread-wraps",
+    "name_localized": {
+      "en": "Flatbread & Wraps",
+      "ar": "الخبز المسطّح واللفائف"
+    },
+    "description_localized": {
+      "en": "Arabic-style flatbread and functional bread wraps — produced for everyday retail, foodservice, and healthy bakery ranges.",
+      "ar": "خبز مسطّح على الطريقة العربية ولفائف خبز وظيفية — تُنتَج للتجزئة اليومية وخدمات الطعام وتشكيلات المخبوزات الصحية."
+    },
+    "sort_order": 0,
+    "is_active": true
+  },
+  {
+    "id": "cat_soft_bread",
+    "slug": "soft-bread",
+    "name_localized": {
+      "en": "Soft Bread",
+      "ar": "الخبز الطري"
+    },
+    "description_localized": {
+      "en": "Soft, sliceable breads, buns, and rolls engineered for shelf life, slicing, and reliable sandwich, burger, and table builds.",
+      "ar": "خبز وأرغفة طرية قابلة للتقطيع، مصمَّمة لمدة صلاحية جيدة وتقطيع متقن وسندويتشات وبرجر وتقديم موثوق على المائدة."
+    },
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "cat_pastry",
+    "slug": "pastry",
+    "name_localized": {
+      "en": "Pastry",
+      "ar": "المعجنات"
+    },
+    "description_localized": {
+      "en": "Laminated and layered French-style bakery — croissants, mini croissants, and puff pastry for premium bakery and cafe shelves.",
+      "ar": "مخبوزات مورّقة وطبقية على الطراز الفرنسي — كرواسان وكرواسان ميني ومعجنات ورقية لرفوف المخابز والمقاهي الراقية."
+    },
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "cat_sweets",
+    "slug": "sweets",
+    "name_localized": {
+      "en": "Sweets",
+      "ar": "الحلويات"
+    },
+    "description_localized": {
+      "en": "Traditional date-based sweets and cookies — maa'moul, tamriya, and cookies — for seasonal gifting, retail confectionery, and snacking.",
+      "ar": "حلويات تقليدية بالتمر وكوكيز — معمول وتمرية وكوكيز — لهدايا المواسم وحلويات التجزئة والتسالي."
+    },
+    "sort_order": 3,
+    "is_active": true
+  }
+]
