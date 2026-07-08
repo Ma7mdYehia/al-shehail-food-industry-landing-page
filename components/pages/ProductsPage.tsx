@@ -215,7 +215,7 @@ export default function ProductsPage({ locale }: { locale: Locale }) {
                     <span className="eyebrow">
                       <span className="h-px w-6 bg-champagne" />
                       {category.name[locale]}
-                      <span className="ml-1 text-stone/70">· {items.length}</span>
+                      <span className="ms-1 text-stone/70">· {items.length}</span>
                     </span>
                     <h2 className="heading-serif mt-4 text-3xl sm:text-4xl">
                       {category.name[locale]}
