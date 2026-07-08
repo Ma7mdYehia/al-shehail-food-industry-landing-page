@@ -66,6 +66,11 @@ const SERVICE: Record<
   },
 };
 
+const SLIDER_LABELS: Record<Locale, { prev: string; next: string; tablist: string }> = {
+  en: { prev: "Previous slide", next: "Next slide", tablist: "Hero slides" },
+  ar: { prev: "الشريحة السابقة", next: "الشريحة التالية", tablist: "شرائح الصفحة الرئيسية" },
+};
+
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
@@ -157,6 +162,7 @@ export default function HeroSlider({ locale }: { locale: Locale }) {
   const service = SERVICE[slide.service];
 
   const go = (i: number) => setActive(((i % count) + count) % count);
+  const t = SLIDER_LABELS[locale];
 
   useEffect(() => {
     if (paused || reducedMotion) return;
@@ -178,7 +184,7 @@ export default function HeroSlider({ locale }: { locale: Locale }) {
       <div className="container-x relative">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
           {/* Copy */}
-          <div className="max-w-xl">
+          <div className="max-w-xl rtl:text-right">
             <span className="eyebrow">
               <span className="h-px w-6 bg-champagne" />
               {service.label[locale]}
@@ -186,7 +192,7 @@ export default function HeroSlider({ locale }: { locale: Locale }) {
 
             <h1
               key={`t-${active}`}
-              className="heading-serif mt-6 max-w-xl animate-fade-up text-4xl leading-[1.12] sm:text-[2.4rem] lg:text-[2.85rem] lg:leading-[1.1]"
+              className="heading-serif mt-6 max-w-xl animate-fade-up text-4xl leading-[1.12] sm:text-[2.4rem] lg:text-[2.85rem] lg:leading-[1.1] rtl:text-[2rem] rtl:leading-[1.3] rtl:sm:text-[2.15rem] rtl:lg:text-[2.5rem] rtl:lg:leading-[1.25]"
             >
               {slide.title[locale]}
             </h1>
@@ -214,7 +220,7 @@ export default function HeroSlider({ locale }: { locale: Locale }) {
 
             {/* Slider controls */}
             <div className="mt-10 flex items-center gap-4">
-              <div className="flex items-center gap-2" role="tablist" aria-label="Hero slides">
+              <div className="flex items-center gap-2" role="tablist" aria-label={t.tablist}>
                 {homepageHeroSlides.map((s, i) => {
                   const isActive = i === active;
                   return (
@@ -238,20 +244,22 @@ export default function HeroSlider({ locale }: { locale: Locale }) {
                 <button
                   type="button"
                   onClick={() => go(active - 1)}
-                  aria-label="Previous slide"
+                  aria-label={t.prev}
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-sand bg-warmwhite text-charcoal transition-colors hover:border-champagne hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
                 >
-                  <span className="rotate-180">
+                  <span className="rotate-180 rtl:rotate-0">
                     <ArrowIcon />
                   </span>
                 </button>
                 <button
                   type="button"
                   onClick={() => go(active + 1)}
-                  aria-label="Next slide"
+                  aria-label={t.next}
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-sand bg-warmwhite text-charcoal transition-colors hover:border-champagne hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
                 >
-                  <ArrowIcon />
+                  <span className="rtl:rotate-180">
+                    <ArrowIcon />
+                  </span>
                 </button>
               </div>
             </div>
