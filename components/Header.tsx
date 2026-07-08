@@ -25,6 +25,25 @@ function Chevron() {
   );
 }
 
+function GlobeIcon() {
+  return (
+    <svg
+      className="h-3.5 w-3.5 flex-none"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3c2.4 2.7 3.8 6.2 3.8 9s-1.4 6.3-3.8 9c-2.4-2.7-3.8-6.2-3.8-9s1.4-6.3 3.8-9z" />
+    </svg>
+  );
+}
+
 export default function Header({ locale }: { locale: Locale }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -47,8 +66,10 @@ export default function Header({ locale }: { locale: Locale }) {
       href={switchHref}
       onClick={onClick}
       aria-label={t.langSwitch.aria}
-      className="inline-flex items-center rounded-full border border-sand bg-warmwhite px-3 py-1.5 text-xs font-semibold text-charcoal transition-colors hover:border-champagne hover:text-gold"
+      title={t.langSwitch.aria}
+      className="inline-flex h-9 flex-none items-center gap-1 rounded-full border border-sand/80 bg-warmwhite px-2.5 text-xs font-semibold text-charcoal/70 transition-colors hover:border-champagne hover:text-gold"
     >
+      <GlobeIcon />
       {t.langSwitch.label}
     </a>
   );
@@ -121,13 +142,13 @@ export default function Header({ locale }: { locale: Locale }) {
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <LangSwitch />
           <a href={contactHref} className="btn-primary">
             {t.header.startProject}
           </a>
+          <LangSwitch />
         </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex items-center gap-2.5 lg:hidden">
           <LangSwitch />
           <button
             type="button"
