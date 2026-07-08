@@ -52,7 +52,7 @@ export default function ProcessJourney({ locale, id }: Props) {
               {/* Left card (desktop) */}
               <div
                 className={`hidden lg:block ${
-                  leftSide ? "lg:pr-12 lg:text-right" : "lg:order-3 lg:pl-12"
+                  leftSide ? "lg:pr-16 lg:text-right" : "lg:order-3 lg:pl-16"
                 }`}
               >
                 {leftSide && (
@@ -76,7 +76,7 @@ export default function ProcessJourney({ locale, id }: Props) {
               </div>
 
               {/* Node marker on the line */}
-              <div className="relative z-10 flex-none lg:order-2 lg:px-0">
+              <div className="relative z-10 flex-none lg:order-2 lg:px-6">
                 <span className="group flex h-14 w-14 items-center justify-center rounded-2xl border border-sand bg-warmwhite shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60 hover:shadow-glow">
                   <span className="absolute -left-px -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-gold-gradient font-serif text-[11px] font-bold text-white shadow-card lg:-left-2 lg:-top-2">
                     {step.number}

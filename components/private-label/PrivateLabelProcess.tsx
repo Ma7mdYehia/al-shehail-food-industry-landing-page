@@ -70,7 +70,7 @@ export default function PrivateLabelProcess({ locale }: { locale: Locale }) {
       />
       <ol className="space-y-4">
         {steps.map((s, i) => (
-          <li key={s.title.en} className="relative flex gap-4 sm:gap-5">
+          <li key={s.title.en} className="relative flex gap-5 sm:gap-6">
             <span className="relative z-10 flex h-10 w-10 flex-none items-center justify-center rounded-full border border-champagne/50 bg-warmwhite font-serif text-sm font-bold text-gold shadow-card sm:h-12 sm:w-12">
               {String(i + 1).padStart(2, "0")}
             </span>
