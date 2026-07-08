@@ -23,7 +23,7 @@ export default function SectionHeading({
         <span className="h-px w-6 bg-champagne" />
         {eyebrow}
       </span>
-      <h2 className="heading-serif mt-4 text-3xl sm:text-4xl lg:text-[2.75rem]">
+      <h2 className="heading-serif mt-4 text-3xl leading-tight sm:text-4xl lg:text-[2.75rem] rtl:text-[1.75rem] rtl:leading-[1.3] rtl:sm:text-[2.15rem] rtl:lg:text-[2.4rem]">
         {title}
       </h2>
       {description && (

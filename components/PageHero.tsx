@@ -20,7 +20,7 @@ export default function PageHero({ eyebrow, title, subtitle, children }: Props) 
             <span className="h-px w-6 bg-champagne" />
             {eyebrow}
           </span>
-          <h1 className="heading-serif mt-6 text-4xl leading-[1.1] sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
+          <h1 className="heading-serif mt-6 text-4xl leading-[1.1] sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08] rtl:text-[2rem] rtl:leading-[1.3] rtl:sm:text-[2.6rem] rtl:lg:text-[2.85rem] rtl:lg:leading-[1.22]">
             {title}
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-stone">{subtitle}</p>
