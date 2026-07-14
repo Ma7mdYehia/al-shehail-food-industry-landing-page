@@ -1,27 +1,27 @@
+import Image from "next/image";
 import SectionHeading from "../SectionHeading";
 import TeaserLink from "../TeaserLink";
 import { whyUsPoints } from "@/lib/content";
 import { ui } from "@/lib/dictionary";
 import { localeHref, type Locale } from "@/lib/i18n";
+import { generatedAssets } from "@/lib/generatedAssets";
 
 export default function AboutTeaser({ locale }: { locale: Locale }) {
   const t = ui[locale].home.about;
 
   return (
     <section className="section relative overflow-hidden">
-      {/* Subtle warm background video — muted, looping, no controls. Warm light
+      {/* Subtle warm background image. Warm light
           overlays keep it gentle and the copy fully readable. */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="h-full w-full object-cover opacity-45"
-        >
-          <source src="/assets/videos/about-al-shehail-bg.mp4" type="video/mp4" />
-        </video>
+        <Image
+          src={generatedAssets.sectionBackgrounds.about}
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover opacity-45"
+          aria-hidden
+        />
         {/* Stronger cream wash on the left for the copy, lighter on the right. */}
         <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/85 to-cream/50 rtl:bg-gradient-to-l" />
         <div className="absolute inset-0 bg-gradient-to-t from-cream/70 via-transparent to-warmwhite/40" />

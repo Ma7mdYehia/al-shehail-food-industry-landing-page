@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { localeHref, type Locale } from "@/lib/i18n";
+import { generatedAssets } from "@/lib/generatedAssets";
 
 // Page-specific hero for /private-label. Two-column on desktop, stacked mobile.
 const heroFlow: { en: string; ar: string }[] = [
@@ -43,7 +45,17 @@ export default function PrivateLabelHero({ locale }: { locale: Locale }) {
   return (
     <section className="relative overflow-hidden pt-32 pb-14 sm:pt-36 lg:pt-44 lg:pb-20">
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-warmwhite via-cream to-beige/40" />
+        <Image
+          src={generatedAssets.pageHeaders.privateLabel}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+          aria-hidden
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-warmwhite/95 via-cream/88 to-cream/50 rtl:bg-gradient-to-l" />
+        <div className="absolute inset-0 bg-gradient-to-b from-warmwhite/35 via-transparent to-beige/45" />
         <div className="absolute -top-24 right-0 h-96 w-96 rounded-full bg-champagne/10 blur-3xl" />
         <div className="absolute top-40 -left-24 h-96 w-96 rounded-full bg-sand/30 blur-3xl" />
       </div>

@@ -127,14 +127,14 @@ export const assets: AssetManifest = {
 
   products: {
     // ACTIVE — all 17 current products have a real photo
-    arabicBread: "/assets/products/arabic-bread.webp",
-    highProteinBreadWrap: "/assets/products/high-protein-bread-wrap.webp",
-    highFiberBreadWrap: "/assets/products/high-fiber-bread-wrap.webp",
-    chiaBreadWrap: "/assets/products/chia-bread-wrap.webp",
+    arabicBread: "/assets/generated/product-arabic-bread.webp",
+    highProteinBreadWrap: "/assets/generated/product-high-protein-bread-wrap.webp",
+    highFiberBreadWrap: "/assets/generated/product-high-fiber-bread-wrap.webp",
+    chiaBreadWrap: "/assets/generated/product-chia-bread-wrap.webp",
     oatsBreadWrap: "/assets/products/oats-bread-wrap.webp",
-    barleyBreadWrap: "/assets/products/barley-bread-wrap.webp",
+    barleyBreadWrap: "/assets/generated/product-barley-bread-wrap.webp",
     blackSeedBreadWrap: "/assets/products/black-seed-bread-wrap.webp",
-    wholeGrainsBreadWrap: "/assets/products/whole-grains-bread-wrap.webp",
+    wholeGrainsBreadWrap: "/assets/generated/product-whole-grains-bread-wrap.webp",
     toast: "/assets/products/toast.webp",
     burgerBuns: "/assets/products/burger-buns.webp",
     breadRolls: "/assets/products/bread-rolls.webp",

@@ -105,6 +105,7 @@ function ArrowIcon() {
  *  premium service-themed fallback panel when the asset isn't supplied yet. */
 function HeroMedia({ slide, locale }: { slide: EcosystemHeroSlide; locale: Locale }) {
   const { label, Icon } = SERVICE[slide.service];
+  const stillImage = slide.type === "video" ? slide.poster : slide.media;
 
   return (
     <div className="glass-media relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-warmwhite">
@@ -120,9 +121,9 @@ function HeroMedia({ slide, locale }: { slide: EcosystemHeroSlide; locale: Local
         >
           <source src={slide.media} type="video/mp4" />
         </video>
-      ) : slide.media ? (
+      ) : stillImage ? (
         <Image
-          src={slide.media}
+          src={stillImage}
           alt={slide.title[locale]}
           fill
           sizes="(max-width: 1024px) 100vw, 40vw"

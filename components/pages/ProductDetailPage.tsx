@@ -22,6 +22,7 @@ import {
   qualityPoints,
 } from "@/lib/products/details";
 import { localeHref, type Locale } from "@/lib/i18n";
+import { generatedProductHeaders } from "@/lib/generatedAssets";
 
 const L = {
   en: {
@@ -144,6 +145,7 @@ export default function ProductDetailPage({
   const related = getRelatedProducts(product.slug, 3);
   const assetKey = productAssetKeyBySlug[product.slug];
   const photoPath = assetKey ? assets.products[assetKey] : null;
+  const headerImage = generatedProductHeaders[product.slug];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -166,7 +168,19 @@ export default function ProductDetailPage({
         {/* 1. Product Hero */}
         <section className="relative overflow-hidden pt-32 pb-16 sm:pt-36 lg:pt-44 lg:pb-20">
           <div className="pointer-events-none absolute inset-0 -z-10">
-            <div className="absolute inset-0 bg-gradient-to-b from-warmwhite via-cream to-beige/40" />
+            {headerImage && (
+              <Image
+                src={headerImage}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-center"
+                aria-hidden
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-r from-warmwhite/95 via-cream/88 to-cream/50 rtl:bg-gradient-to-l" />
+            <div className="absolute inset-0 bg-gradient-to-b from-warmwhite/35 via-transparent to-beige/45" />
             <div className="absolute -top-24 right-0 h-96 w-96 rounded-full bg-champagne/10 blur-3xl" />
           </div>
           <div className="container-x">

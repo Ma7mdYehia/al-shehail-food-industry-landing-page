@@ -6,6 +6,7 @@ import CtaBand from "@/components/CtaBand";
 import SectionHeading from "@/components/SectionHeading";
 import { company } from "@/lib/content";
 import { localeHref, type Locale } from "@/lib/i18n";
+import { generatedAssets } from "@/lib/generatedAssets";
 import {
   DevelopIcon,
   PackagingIcon,
@@ -152,6 +153,7 @@ export default function AboutPage({ locale }: { locale: Locale }) {
           eyebrow={t.heroEyebrow}
           title={t.heroTitle}
           subtitle={t.heroSubtitle}
+          backgroundImage={generatedAssets.pageHeaders.about}
         >
           <Link href={localeHref("/private-label", locale)} className="btn-primary">
             {t.explorePl}

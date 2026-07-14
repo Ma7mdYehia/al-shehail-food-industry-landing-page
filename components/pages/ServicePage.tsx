@@ -16,6 +16,7 @@ import {
 } from "@/components/Icons";
 import { services, type ServiceSlug, type ServiceIconKey } from "@/lib/services";
 import { localeHref, type Locale } from "@/lib/i18n";
+import { generatedAssets } from "@/lib/generatedAssets";
 
 const iconMap: Record<
   ServiceIconKey,
@@ -57,6 +58,7 @@ export default function ServicePage({
           eyebrow={s.heroEyebrow[locale]}
           title={s.heroTitle[locale]}
           subtitle={s.heroSubtitle[locale]}
+          backgroundImage={generatedAssets.pageHeaders.services[slug]}
         >
           <a href={localeHref(s.heroPrimary.href, locale)} className="btn-primary">
             {s.heroPrimary.label[locale]}

@@ -8,6 +8,7 @@
 // access, sales, or marketing results. Text fields are bilingual (Localized).
 
 import type { Localized } from "@/lib/i18n";
+import { generatedAssets } from "@/lib/generatedAssets";
 
 // ── A. Homepage journey reference (not rendered) ─────────────────────────────
 
@@ -93,6 +94,8 @@ export type EcosystemHeroSlide = {
   secondaryCta?: { label: Localized; href: string };
   /** Media path under /public, or null until the ecosystem hero asset exists. */
   media: string | null;
+  /** Still image used when a video slide has no video asset. */
+  poster?: string;
 };
 
 export const homepageHeroSlides: EcosystemHeroSlide[] = [
@@ -117,6 +120,7 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
       href: "/services/distribution",
     },
     media: null,
+    poster: generatedAssets.homepageHero.open,
   },
   {
     key: "manufacturing",
@@ -134,7 +138,7 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
       label: { en: "Explore Manufacturing", ar: "استكشف التصنيع" },
       href: "/private-label",
     },
-    media: null,
+    media: generatedAssets.homepageHero.manufacturing,
   },
   {
     key: "brand-design",
@@ -152,7 +156,7 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
       label: { en: "Explore Brand Design", ar: "استكشف تصميم العلامة" },
       href: "/services/brand-design",
     },
-    media: null,
+    media: generatedAssets.homepageHero.brandDesign,
   },
   {
     key: "distribution",
@@ -170,7 +174,7 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
       label: { en: "Explore Distribution", ar: "استكشف التوزيع" },
       href: "/services/distribution",
     },
-    media: null,
+    media: generatedAssets.homepageHero.distribution,
   },
   {
     key: "digital-marketing",
@@ -188,7 +192,7 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
       label: { en: "Explore Marketing", ar: "استكشف التسويق" },
       href: "/services/digital-marketing",
     },
-    media: null,
+    media: generatedAssets.homepageHero.digitalMarketing,
   },
   {
     key: "ecosystem-close",
@@ -207,6 +211,7 @@ export const homepageHeroSlides: EcosystemHeroSlide[] = [
       href: "/contact",
     },
     media: null,
+    poster: generatedAssets.homepageHero.close,
   },
 ];
 

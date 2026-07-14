@@ -1,7 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
-import BackgroundVideo from "./BackgroundVideo";
 import { ui } from "@/lib/dictionary";
 import { localeHref, type Locale } from "@/lib/i18n";
+import { generatedAssets } from "@/lib/generatedAssets";
 
 export default function FinalCTA({ locale }: { locale: Locale }) {
   const t = ui[locale].home.finalCta;
@@ -10,10 +11,14 @@ export default function FinalCTA({ locale }: { locale: Locale }) {
     <section id="contact" className="section">
       <div className="container-x">
         <div className="relative overflow-hidden rounded-3xl px-6 py-16 text-center sm:px-12 lg:py-20">
-          {/* Decorative background video + warm ambient, seen softly through glass */}
-          <BackgroundVideo
-            src="/assets/videos/from-idea-to-shelf-bg.mp4"
-            className="opacity-55"
+          {/* Decorative background image + warm ambient, seen softly through glass */}
+          <Image
+            src={generatedAssets.sectionBackgrounds.finalCta}
+            alt=""
+            fill
+            sizes="(max-width: 1536px) 100vw, 1536px"
+            className="object-cover opacity-55"
+            aria-hidden
           />
           <div className="pointer-events-none absolute inset-0" aria-hidden>
             <div className="oven-glow absolute inset-x-0 top-0 h-1/2" />
