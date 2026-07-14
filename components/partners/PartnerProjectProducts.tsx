@@ -1,13 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useId, useState } from "react";
 import {
   NEEDS_VERIFICATION,
   type PartnerProjectProduct,
   type PartnerProductStatus,
 } from "@/lib/partnerProjects";
-import type { Locale } from "@/lib/i18n";
+import { getProductAsset } from "@/lib/assets";
+import { localeHref, type Locale } from "@/lib/i18n";
+import { getCatalogSlugForPartnerProduct } from "@/lib/products/partnerLinks";
 
 // Local UI strings for this component's chrome.
 const L = {
@@ -16,6 +19,7 @@ const L = {
     photoPending: "Product photography pending",
     hide: "Hide details",
     preview: "Preview details",
+    viewProduct: "View product page",
     closePreview: "Close product preview",
     keyNotes: "Key product notes",
     nutrition: "Nutrition highlights",
@@ -26,6 +30,7 @@ const L = {
     photoPending: "تصوير المنتج قيد الإعداد",
     hide: "إخفاء التفاصيل",
     preview: "معاينة التفاصيل",
+    viewProduct: "عرض صفحة المنتج",
     closePreview: "إغلاق معاينة المنتج",
     keyNotes: "ملاحظات المنتج الرئيسية",
     nutrition: "أبرز القيم الغذائية",
@@ -109,6 +114,13 @@ export default function PartnerProjectProducts({
   const baseId = useId();
   const previewId = `${baseId}-preview`;
   const selected = products.find((p) => p.slug === selectedSlug) ?? null;
+  const selectedCatalogSlug = selected
+    ? getCatalogSlugForPartnerProduct(selected.slug)
+    : null;
+  const selectedImage = selected
+    ? selected.image ??
+      (selectedCatalogSlug ? getProductAsset(selectedCatalogSlug) : null)
+    : null;
   const s = L[locale];
 
   return (
@@ -117,6 +129,9 @@ export default function PartnerProjectProducts({
         {products.map((product) => {
           const isSelected = product.slug === selectedSlug;
           const name = product.name[locale];
+          const catalogSlug = getCatalogSlugForPartnerProduct(product.slug);
+          const photoPath =
+            product.image ?? (catalogSlug ? getProductAsset(catalogSlug) : null);
           const chips = product.keyNotes
             .filter((n) => !n.en.includes(NEEDS_VERIFICATION.en))
             .slice(0, 2);
@@ -136,9 +151,9 @@ export default function PartnerProjectProducts({
                 }`}
               >
                 <div className="relative flex aspect-[3/2] items-center justify-center border-b border-sand bg-beige bg-dotted-gold">
-                  {product.image ? (
+                  {photoPath ? (
                     <Image
-                      src={product.image}
+                      src={photoPath}
                       alt={name}
                       fill
                       sizes="(max-width: 640px) 100vw, 280px"
@@ -200,7 +215,7 @@ export default function PartnerProjectProducts({
         })}
       </ul>
 
-      {/* Inline lightweight preview — no routing, no nested dialog */}
+      {/* Inline lightweight preview with a route into the linked catalog item. */}
       {selected && (
         <div
           id={previewId}
@@ -209,9 +224,9 @@ export default function PartnerProjectProducts({
         >
           <div className="grid gap-0 sm:grid-cols-[15rem_1fr]">
             <div className="relative flex aspect-[3/2] items-center justify-center border-b border-sand bg-beige bg-dotted-gold sm:aspect-auto sm:border-b-0 sm:border-r">
-              {selected.image ? (
+              {selectedImage ? (
                 <Image
-                  src={selected.image}
+                  src={selectedImage}
                   alt={selected.name[locale]}
                   fill
                   sizes="(max-width: 640px) 100vw, 240px"
@@ -297,6 +312,29 @@ export default function PartnerProjectProducts({
                     </li>
                   ))}
                 </ul>
+              )}
+
+              {selectedCatalogSlug && (
+                <Link
+                  href={localeHref(`/products/${selectedCatalogSlug}`, locale)}
+                  className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold transition-colors hover:text-ink"
+                >
+                  {s.viewProduct}
+                  <svg
+                    className="rtl:-scale-x-100"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </Link>
               )}
             </div>
           </div>

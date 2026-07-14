@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AssetHint from "@/components/AssetHint";
 import ProductIcon from "@/components/ProductIcon";
+import ProductCard from "@/components/ProductCard";
 import { WhatsAppIcon } from "@/components/Icons";
 import {
   assets,
@@ -327,45 +328,12 @@ export default function ProductDetailPage({
               <SectionTitle eyebrow={t.relatedEyebrow} title={t.relatedTitle} />
               <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {related.map((rel) => (
-                  <Link
+                  <ProductCard
                     key={rel.slug}
-                    href={localeHref(`/products/${rel.slug}`, locale)}
-                    className="group flex flex-col overflow-hidden rounded-2xl border border-sand bg-cream transition-all duration-300 hover:-translate-y-1 hover:border-champagne hover:shadow-soft"
-                  >
-                    <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br from-beige via-cream to-sand">
-                      <span className="absolute left-4 top-4 rounded-full border border-sand bg-warmwhite/80 px-3 py-1 text-[11px] font-semibold text-gold backdrop-blur rtl:left-auto rtl:right-4">
-                        {rel.category[locale]}
-                      </span>
-                      <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-warmwhite/80 text-gold shadow-card backdrop-blur">
-                        <ProductIcon type={rel.iconType} width={30} height={30} />
-                      </span>
-                    </div>
-                    <div className="flex flex-1 flex-col p-6">
-                      <h3 className="font-serif text-lg font-semibold text-ink">
-                        {rel.name[locale]}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-stone">
-                        {rel.shortDescription[locale]}
-                      </p>
-                      <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold">
-                        {t.viewProduct}
-                        <svg
-                          className="transition-transform duration-300 group-hover:translate-x-0.5 rtl:-scale-x-100"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden
-                        >
-                          <path d="M5 12h14M13 6l6 6-6 6" />
-                        </svg>
-                      </span>
-                    </div>
-                  </Link>
+                    product={rel}
+                    locale={locale}
+                    showUseCases={false}
+                  />
                 ))}
               </div>
             </div>
