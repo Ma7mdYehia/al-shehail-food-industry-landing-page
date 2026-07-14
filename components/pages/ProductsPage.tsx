@@ -8,6 +8,8 @@ import ProductFamilyStickyNav from "@/components/products/ProductFamilyStickyNav
 import { products, productsByCategory } from "@/lib/products/catalog";
 import { localeHref, type Locale, type Localized } from "@/lib/i18n";
 import { generatedAssets } from "@/lib/generatedAssets";
+import BackgroundVideo from "@/components/BackgroundVideo";
+import { ctaMedia } from "@/lib/ctaMedia";
 
 const familyIcon: Record<string, ProductIconType> = {
   "flatbread-wraps": "flatbread",
@@ -264,6 +266,15 @@ export default function ProductsPage({ locale }: { locale: Locale }) {
         <section className="section">
           <div className="container-x">
             <div className="relative overflow-hidden rounded-3xl border border-champagne/40 bg-gradient-to-br from-warmwhite via-cream to-beige px-6 py-16 text-center shadow-soft sm:px-12 lg:py-20">
+              <BackgroundVideo
+                src={ctaMedia.quality.video}
+                poster={ctaMedia.quality.poster}
+                className="opacity-55"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-br from-warmwhite/80 via-cream/65 to-beige/55"
+                aria-hidden
+              />
               <div className="pointer-events-none absolute inset-0">
                 <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
                 <div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />

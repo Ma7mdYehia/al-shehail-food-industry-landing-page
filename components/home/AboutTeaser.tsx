@@ -5,6 +5,19 @@ import { whyUsPoints } from "@/lib/content";
 import { ui } from "@/lib/dictionary";
 import { localeHref, type Locale } from "@/lib/i18n";
 import { generatedAssets } from "@/lib/generatedAssets";
+import {
+  ProductionIcon,
+  ShieldCheckIcon,
+  RetailIcon,
+  PackagingIcon,
+} from "@/components/Icons";
+
+const aboutCardIcons = [
+  ProductionIcon,
+  ShieldCheckIcon,
+  RetailIcon,
+  PackagingIcon,
+];
 
 export default function AboutTeaser({ locale }: { locale: Locale }) {
   const t = ui[locale].home.about;
@@ -47,23 +60,25 @@ export default function AboutTeaser({ locale }: { locale: Locale }) {
 
           <div className="glass-panel p-6 sm:p-8">
             <ul className="grid gap-4 sm:grid-cols-2">
-              {whyUsPoints.map((point) => (
-                <li
-                  key={point.title.en}
-                  className="glass-card flex flex-col gap-2 p-5"
-                >
-                  <span
-                    className="h-8 w-8 flex-none rounded-xl bg-gold-gradient shadow-card"
-                    aria-hidden
-                  />
-                  <h3 className="font-serif text-base font-semibold leading-tight text-ink">
-                    {point.title[locale]}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-stone">
-                    {point.description[locale]}
-                  </p>
-                </li>
-              ))}
+              {whyUsPoints.map((point, index) => {
+                const Icon = aboutCardIcons[index];
+                return (
+                  <li
+                    key={point.title.en}
+                    className="glass-card flex flex-col gap-2 p-5"
+                  >
+                    <span className="flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-gold-gradient text-white shadow-card">
+                      <Icon width={17} height={17} />
+                    </span>
+                    <h3 className="font-serif text-base font-semibold leading-tight text-ink">
+                      {point.title[locale]}
+                    </h3>
+                    <p className="text-sm leading-relaxed text-stone">
+                      {point.description[locale]}
+                    </p>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

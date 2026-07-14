@@ -9,6 +9,7 @@ import PartnerProjectGrid from "@/components/partners/PartnerProjectGrid";
 import { retailPresence } from "@/lib/content";
 import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
 import { localeHref, type Locale } from "@/lib/i18n";
+import { ctaMedia } from "@/lib/ctaMedia";
 
 function monogram(name: string) {
   const words = name.split(/\s+/).filter(Boolean);
@@ -172,6 +173,8 @@ export default function PartnersPage({ locale }: { locale: Locale }) {
           title={t.ctaTitle}
           text={t.ctaText}
           primary={{ label: t.contactUs, href: localeHref("/contact", locale) }}
+          videoSrc={ctaMedia.ideaToShelf.video}
+          videoPoster={ctaMedia.ideaToShelf.poster}
         />
       </main>
       <Footer locale={locale} />

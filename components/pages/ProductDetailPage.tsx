@@ -23,6 +23,8 @@ import {
 } from "@/lib/products/details";
 import { localeHref, type Locale } from "@/lib/i18n";
 import { generatedProductHeaders } from "@/lib/generatedAssets";
+import BackgroundVideo from "@/components/BackgroundVideo";
+import { ctaMedia } from "@/lib/ctaMedia";
 
 const L = {
   en: {
@@ -146,6 +148,10 @@ export default function ProductDetailPage({
   const assetKey = productAssetKeyBySlug[product.slug];
   const photoPath = assetKey ? assets.products[assetKey] : null;
   const headerImage = generatedProductHeaders[product.slug];
+  const ctaVideo =
+    product.categorySlug === "soft-bread" || product.categorySlug === "sweets"
+      ? ctaMedia.quality
+      : ctaMedia.ideaToShelf;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -370,6 +376,15 @@ export default function ProductDetailPage({
         <section className="section">
           <div className="container-x">
             <div className="relative overflow-hidden rounded-3xl border border-champagne/40 bg-gradient-to-br from-warmwhite via-cream to-beige px-6 py-16 text-center shadow-soft sm:px-12 lg:py-20">
+              <BackgroundVideo
+                src={ctaVideo.video}
+                poster={ctaVideo.poster}
+                className="opacity-55"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-br from-warmwhite/80 via-cream/65 to-beige/55"
+                aria-hidden
+              />
               <div className="pointer-events-none absolute inset-0">
                 <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
                 <div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />

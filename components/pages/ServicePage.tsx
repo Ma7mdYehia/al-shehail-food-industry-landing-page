@@ -17,6 +17,7 @@ import {
 import { services, type ServiceSlug, type ServiceIconKey } from "@/lib/services";
 import { localeHref, type Locale } from "@/lib/i18n";
 import { generatedAssets } from "@/lib/generatedAssets";
+import { ctaMedia } from "@/lib/ctaMedia";
 
 const iconMap: Record<
   ServiceIconKey,
@@ -48,6 +49,7 @@ export default function ServicePage({
   locale: Locale;
 }) {
   const s = services[slug];
+  const ctaVideo = slug === "brand-design" ? ctaMedia.ideaToShelf : ctaMedia.quality;
 
   return (
     <>
@@ -226,6 +228,8 @@ export default function ServicePage({
           text={s.ctaText[locale]}
           primary={{ label: s.ctaPrimary.label[locale], href: localeHref(s.ctaPrimary.href, locale) }}
           secondary={{ label: s.ctaSecondary.label[locale], href: localeHref(s.ctaSecondary.href, locale) }}
+          videoSrc={ctaVideo.video}
+          videoPoster={ctaVideo.poster}
         />
       </main>
       <Footer locale={locale} />

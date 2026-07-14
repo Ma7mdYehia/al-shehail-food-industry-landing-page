@@ -19,6 +19,7 @@ import {
 import { certifications } from "@/lib/content";
 import { assets, hasAsset, getAssetAlt } from "@/lib/assets";
 import { localeHref, type Locale } from "@/lib/i18n";
+import { ctaMedia } from "@/lib/ctaMedia";
 
 const capabilityIcons = [
   DevelopIcon,
@@ -645,10 +646,11 @@ export default function PrivateLabelPage({ locale }: { locale: Locale }) {
           <div className="container-x">
             <div className="relative overflow-hidden rounded-3xl border border-champagne/40 bg-gradient-to-br from-warmwhite via-cream to-beige px-6 py-16 text-center shadow-soft sm:px-12 lg:py-20">
               <BackgroundVideo
-                src="/assets/videos/from-idea-to-shelf-bg.mp4"
-                className="hidden opacity-35 sm:block"
+                src={ctaMedia.ideaToShelf.video}
+                poster={ctaMedia.ideaToShelf.poster}
+                className="opacity-55"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-warmwhite/95 via-cream/85 to-beige/75" aria-hidden />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-warmwhite/80 via-cream/65 to-beige/55" aria-hidden />
 
               <div className="relative mx-auto max-w-2xl">
                 <span className="eyebrow">

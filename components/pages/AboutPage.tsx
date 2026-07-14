@@ -7,6 +7,7 @@ import SectionHeading from "@/components/SectionHeading";
 import { company } from "@/lib/content";
 import { localeHref, type Locale } from "@/lib/i18n";
 import { generatedAssets } from "@/lib/generatedAssets";
+import { ctaMedia } from "@/lib/ctaMedia";
 import {
   DevelopIcon,
   PackagingIcon,
@@ -267,6 +268,8 @@ export default function AboutPage({ locale }: { locale: Locale }) {
           text={t.ctaText}
           primary={{ label: t.explorePl, href: localeHref("/private-label", locale) }}
           secondary={{ label: t.contactUs, href: localeHref("/contact", locale) }}
+          videoSrc={ctaMedia.quality.video}
+          videoPoster={ctaMedia.quality.poster}
         />
       </main>
       <Footer locale={locale} />

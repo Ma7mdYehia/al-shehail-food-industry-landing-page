@@ -3,10 +3,11 @@
 // Caller controls opacity / responsive visibility via className.
 type Props = {
   src: string;
+  poster?: string;
   className?: string;
 };
 
-export default function BackgroundVideo({ src, className = "" }: Props) {
+export default function BackgroundVideo({ src, poster, className = "" }: Props) {
   return (
     <video
       autoPlay
@@ -14,6 +15,7 @@ export default function BackgroundVideo({ src, className = "" }: Props) {
       loop
       playsInline
       preload="metadata"
+      poster={poster}
       aria-hidden
       tabIndex={-1}
       className={`pointer-events-none absolute inset-0 h-full w-full object-cover ${className}`}
