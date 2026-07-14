@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import {
   homepageHeroSlides,
   type EcosystemHeroService,
-  type EcosystemHeroSlide,
 } from "@/lib/homepageEcosystem";
 import {
   ProductionIcon,
@@ -101,58 +100,6 @@ function ArrowIcon() {
   );
 }
 
-/** Right-side media frame: renders the slide video/image when present, or a
- *  premium service-themed fallback panel when the asset isn't supplied yet. */
-function HeroMedia({ slide, locale }: { slide: EcosystemHeroSlide; locale: Locale }) {
-  const { label, Icon } = SERVICE[slide.service];
-  const stillImage = slide.type === "video" ? slide.poster : slide.media;
-
-  return (
-    <div className="glass-media relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-warmwhite">
-      {slide.type === "video" && slide.media ? (
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden
-          className="absolute inset-0 h-full w-full object-cover"
-        >
-          <source src={slide.media} type="video/mp4" />
-        </video>
-      ) : stillImage ? (
-        <Image
-          src={stillImage}
-          alt={slide.title[locale]}
-          fill
-          sizes="(max-width: 1024px) 100vw, 40vw"
-          priority
-          className="object-cover"
-        />
-      ) : (
-        // Premium fallback — no broken media, just a warm service panel.
-        <>
-          <div className="absolute inset-0 bg-gradient-to-br from-cream via-warmwhite to-beige/70" />
-          <div className="oven-glow pointer-events-none absolute inset-0" aria-hidden />
-          <div className="bg-dotted-gold pointer-events-none absolute inset-0 opacity-30" aria-hidden />
-          <div className="relative flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
-            <span className="glass-chip flex h-14 w-14 items-center justify-center rounded-2xl text-gold shadow-card">
-              <Icon width={26} height={26} />
-            </span>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gold">
-              {label[locale]}
-            </span>
-            <span className="max-w-xs font-serif text-base font-semibold leading-tight text-ink">
-              {slide.title[locale]}
-            </span>
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
 export default function HeroSlider({ locale }: { locale: Locale }) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -161,6 +108,7 @@ export default function HeroSlider({ locale }: { locale: Locale }) {
   const count = homepageHeroSlides.length;
   const slide = homepageHeroSlides[active];
   const service = SERVICE[slide.service];
+  const backgroundImage = slide.poster ?? slide.media;
 
   const go = (i: number) => setActive(((i % count) + count) % count);
   const t = SLIDER_LABELS[locale];
@@ -182,7 +130,23 @@ export default function HeroSlider({ locale }: { locale: Locale }) {
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      <div className="container-x relative">
+      {backgroundImage && (
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <Image
+            key={`hero-bg-${slide.key}`}
+            src={backgroundImage}
+            alt=""
+            fill
+            priority={active === 0}
+            sizes="100vw"
+            className="object-cover object-center rtl:-scale-x-100"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-warmwhite/90 via-cream/55 to-transparent rtl:bg-gradient-to-l" />
+          <div className="absolute inset-0 bg-gradient-to-b from-warmwhite/25 via-transparent to-cream/60" />
+        </div>
+      )}
+
+      <div className="container-x relative z-10">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
           {/* Copy */}
           <div className="max-w-xl rtl:text-right">
@@ -266,12 +230,6 @@ export default function HeroSlider({ locale }: { locale: Locale }) {
             </div>
           </div>
 
-          {/* Media frame */}
-          <div className="order-first lg:order-none lg:justify-self-end lg:max-w-md">
-            <div key={`m-${active}`} className="animate-fade-up [animation-delay:100ms]">
-              <HeroMedia slide={slide} locale={locale} />
-            </div>
-          </div>
         </div>
       </div>
     </div>
