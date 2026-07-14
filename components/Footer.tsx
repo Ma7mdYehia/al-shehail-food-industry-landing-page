@@ -8,7 +8,7 @@ export default function Footer({ locale }: { locale: Locale }) {
   const t = ui[locale];
 
   return (
-    <footer className="border-t border-sand bg-warmwhite">
+    <footer className="bg-warm-ambient border-t border-white/60">
       <div className="container-x py-16">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
@@ -36,7 +36,7 @@ export default function Footer({ locale }: { locale: Locale }) {
               {trustBadges.map((badge) => (
                 <span
                   key={badge.en}
-                  className="rounded-full border border-sand bg-cream px-3 py-1 text-[11px] font-semibold text-charcoal"
+                  className="glass-chip rounded-full px-3 py-1 text-[11px] font-semibold text-charcoal"
                 >
                   {badge[locale]}
                 </span>

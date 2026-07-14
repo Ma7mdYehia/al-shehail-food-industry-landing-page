@@ -107,7 +107,7 @@ function HeroMedia({ slide, locale }: { slide: EcosystemHeroSlide; locale: Local
   const { label, Icon } = SERVICE[slide.service];
 
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-sand bg-warmwhite shadow-soft">
+    <div className="glass-media relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-warmwhite">
       {slide.type === "video" && slide.media ? (
         <video
           autoPlay
@@ -136,7 +136,7 @@ function HeroMedia({ slide, locale }: { slide: EcosystemHeroSlide; locale: Local
           <div className="oven-glow pointer-events-none absolute inset-0" aria-hidden />
           <div className="bg-dotted-gold pointer-events-none absolute inset-0 opacity-30" aria-hidden />
           <div className="relative flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-champagne/40 bg-warmwhite text-gold shadow-card">
+            <span className="glass-chip flex h-14 w-14 items-center justify-center rounded-2xl text-gold shadow-card">
               <Icon width={26} height={26} />
             </span>
             <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gold">
@@ -245,7 +245,7 @@ export default function HeroSlider({ locale }: { locale: Locale }) {
                   type="button"
                   onClick={() => go(active - 1)}
                   aria-label={t.prev}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-sand bg-warmwhite text-charcoal transition-colors hover:border-champagne hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
+                  className="glass-chip flex h-9 w-9 items-center justify-center rounded-full text-charcoal transition-colors hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
                 >
                   <span className="rotate-180 rtl:rotate-0">
                     <ArrowIcon />
@@ -255,7 +255,7 @@ export default function HeroSlider({ locale }: { locale: Locale }) {
                   type="button"
                   onClick={() => go(active + 1)}
                   aria-label={t.next}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-sand bg-warmwhite text-charcoal transition-colors hover:border-champagne hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
+                  className="glass-chip flex h-9 w-9 items-center justify-center rounded-full text-charcoal transition-colors hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
                 >
                   <span className="rtl:rotate-180">
                     <ArrowIcon />

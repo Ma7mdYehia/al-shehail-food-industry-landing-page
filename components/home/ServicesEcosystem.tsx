@@ -37,8 +37,14 @@ export default function ServicesEcosystem({ locale }: { locale: Locale }) {
   const t = ui[locale].home.services;
 
   return (
-    <section className="section border-y border-sand/60 bg-warmwhite">
-      <div className="container-x">
+    <section className="section relative overflow-hidden border-y border-sand/60 bg-cream">
+      {/* Warm ambient wash so the glass cards have depth to refract */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute -right-20 top-0 h-80 w-80 rounded-full bg-champagne/12 blur-3xl" />
+        <div className="absolute -left-24 bottom-0 h-80 w-80 rounded-full bg-sand/30 blur-3xl" />
+        <div className="bg-dotted-gold absolute inset-0 opacity-25" />
+      </div>
+      <div className="container-x relative">
         <SectionHeading
           eyebrow={t.eyebrow}
           title={t.title}
@@ -52,7 +58,7 @@ export default function ServicesEcosystem({ locale }: { locale: Locale }) {
               <Link
                 key={s.href}
                 href={localeHref(s.href, locale)}
-                className="card-lift group flex flex-col rounded-2xl border border-sand bg-cream p-6 transition-colors hover:border-champagne/60 hover:shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+                className="glass-card group flex flex-col p-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
               >
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-beige text-gold transition-colors group-hover:bg-gold-gradient group-hover:text-white">
                   <Icon width={20} height={20} />

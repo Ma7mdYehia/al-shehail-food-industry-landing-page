@@ -7,8 +7,11 @@ export default function Partners({ locale }: { locale: Locale }) {
   const t = ui[locale].home.partners;
 
   return (
-    <section className="border-y border-sand/60 bg-warmwhite py-14 sm:py-16">
-      <div className="container-x">
+    <section className="relative overflow-hidden border-y border-sand/60 bg-cream py-14 sm:py-16">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="oven-glow absolute inset-x-0 top-0 h-1/2 opacity-60" />
+      </div>
+      <div className="container-x relative">
         <div className="flex flex-col items-center text-center">
           <span className="eyebrow">
             <span className="h-px w-6 bg-champagne" />

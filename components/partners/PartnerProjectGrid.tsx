@@ -70,7 +70,7 @@ export default function PartnerProjectGrid({
               <button
                 key={name}
                 {...commonProps}
-                className="group flex items-center gap-3.5 rounded-2xl border border-sand bg-cream px-5 py-5 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne hover:bg-warmwhite hover:shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-warmwhite rtl:text-right"
+                className="glass-card group flex items-center gap-3.5 px-5 py-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-warmwhite rtl:text-right"
               >
                 {hasAsset(logoPath) ? (
                   <Image

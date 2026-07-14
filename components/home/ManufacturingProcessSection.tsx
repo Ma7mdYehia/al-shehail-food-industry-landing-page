@@ -17,9 +17,13 @@ export default function ManufacturingProcessSection({
   return (
     <section
       id="manufacturing-process"
-      className="section scroll-mt-24 border-t border-sand/60 bg-warmwhite"
+      className="section relative overflow-hidden scroll-mt-24 border-t border-sand/60 bg-cream"
     >
-      <div className="container-x">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-champagne/10 blur-3xl" />
+        <div className="bg-grain absolute inset-0 opacity-30" />
+      </div>
+      <div className="container-x relative">
         <SectionHeading
           eyebrow={t.eyebrow}
           title={title[locale]}
@@ -29,7 +33,7 @@ export default function ManufacturingProcessSection({
         <ProcessJourney locale={locale} />
 
         {/* Careful-claims note */}
-        <p className="mx-auto mt-8 max-w-3xl rounded-2xl border border-sand bg-cream px-5 py-4 text-center text-xs leading-relaxed text-stone">
+        <p className="glass-chip mx-auto mt-8 max-w-3xl rounded-2xl px-5 py-4 text-center text-xs leading-relaxed text-stone">
           {note[locale]}
         </p>
 

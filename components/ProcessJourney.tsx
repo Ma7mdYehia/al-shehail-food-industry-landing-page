@@ -77,7 +77,7 @@ export default function ProcessJourney({ locale, id }: Props) {
 
               {/* Node marker on the line */}
               <div className="relative z-10 flex-none lg:order-2 lg:px-6">
-                <span className="group flex h-14 w-14 items-center justify-center rounded-2xl border border-sand bg-warmwhite shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60 hover:shadow-glow">
+                <span className="glass-chip group flex h-14 w-14 items-center justify-center rounded-2xl shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-glow">
                   <span className="absolute -left-px -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-gold-gradient font-serif text-[11px] font-bold text-white shadow-card lg:-left-2 lg:-top-2">
                     {step.number}
                   </span>
@@ -122,7 +122,7 @@ function StepCard({
 }) {
   return (
     <div
-      className={`group rounded-2xl border border-sand bg-warmwhite p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-champagne/60 hover:shadow-glow focus-within:-translate-y-1 focus-within:border-champagne/60 focus-within:shadow-glow ${
+      className={`glass-card group p-5 focus-within:-translate-y-1 ${
         align === "right" ? "lg:ml-auto" : ""
       } max-w-md`}
     >

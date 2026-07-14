@@ -31,8 +31,12 @@ export default function Products({ locale }: { locale: Locale }) {
   ).slice(0, HOME_MAX);
 
   return (
-    <section id="products" className="section relative overflow-hidden bg-warmwhite">
-      <div className="bg-grain pointer-events-none absolute inset-0 opacity-50" aria-hidden />
+    <section id="products" className="section relative overflow-hidden bg-cream">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="bg-grain absolute inset-0 opacity-40" />
+        <div className="absolute -right-24 top-24 h-80 w-80 rounded-full bg-champagne/10 blur-3xl" />
+        <div className="absolute -left-24 bottom-24 h-80 w-80 rounded-full bg-sand/25 blur-3xl" />
+      </div>
       <div className="container-x relative">
         <SectionHeading
           eyebrow={t.eyebrow}
@@ -50,10 +54,10 @@ export default function Products({ locale }: { locale: Locale }) {
                 type="button"
                 onClick={() => setActive(filter.slug)}
                 aria-pressed={isActive}
-                className={`rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-300 ${
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 ${
                   isActive
-                    ? "border-champagne bg-gold-gradient text-white shadow-card"
-                    : "border-sand bg-cream text-charcoal hover:border-champagne hover:bg-beige"
+                    ? "border border-champagne bg-gold-gradient text-white shadow-card"
+                    : "glass-chip text-charcoal hover:text-gold"
                 }`}
               >
                 {filter.label}

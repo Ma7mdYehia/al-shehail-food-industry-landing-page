@@ -9,22 +9,20 @@ export default function FinalCTA({ locale }: { locale: Locale }) {
   return (
     <section id="contact" className="section">
       <div className="container-x">
-        <div className="relative overflow-hidden rounded-3xl border border-champagne/40 bg-gradient-to-br from-warmwhite via-cream to-beige px-6 py-16 text-center shadow-soft sm:px-12 lg:py-20">
-          {/* Subtle decorative background video + warm wash for readability */}
+        <div className="relative overflow-hidden rounded-3xl px-6 py-16 text-center sm:px-12 lg:py-20">
+          {/* Decorative background video + warm ambient, seen softly through glass */}
           <BackgroundVideo
             src="/assets/videos/from-idea-to-shelf-bg.mp4"
-            className="opacity-40"
+            className="opacity-55"
           />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-br from-warmwhite/80 via-cream/65 to-beige/80"
-            aria-hidden
-          />
-          <div className="pointer-events-none absolute inset-0">
+          <div className="pointer-events-none absolute inset-0" aria-hidden>
             <div className="oven-glow absolute inset-x-0 top-0 h-1/2" />
-            <div className="bg-dotted-gold absolute inset-0 opacity-25" />
-            <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-champagne/20 blur-3xl" />
+            <div className="bg-dotted-gold absolute inset-0 opacity-20" />
+            <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-champagne/25 blur-3xl" />
             <div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-sand/40 blur-3xl" />
           </div>
+          {/* Glass conversion surface floating over the ambient background */}
+          <div className="glass-cta pointer-events-none absolute inset-0 rounded-3xl" aria-hidden />
 
           <div className="relative mx-auto max-w-2xl">
             <span className="eyebrow">

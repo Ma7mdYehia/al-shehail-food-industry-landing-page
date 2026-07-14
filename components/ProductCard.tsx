@@ -57,7 +57,7 @@ export default function ProductCard({
   return (
     <Link
       href={localeHref(`/products/${product.slug}`, locale)}
-      className="card-lift group flex flex-col overflow-hidden rounded-2xl border border-sand bg-cream transition-colors hover:border-champagne/60 hover:shadow-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+      className="glass-card group flex flex-col overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
     >
       {/* Media */}
       <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br from-beige via-cream to-sand">
@@ -86,7 +86,7 @@ export default function ProductCard({
         )}
 
         {/* Category badge */}
-        <span className="absolute left-4 top-4 rounded-full border border-sand bg-warmwhite/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold backdrop-blur rtl:left-auto rtl:right-4">
+        <span className="glass-chip absolute left-4 top-4 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold rtl:left-auto rtl:right-4">
           {product.category[locale]}
         </span>
       </div>

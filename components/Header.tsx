@@ -67,7 +67,7 @@ export default function Header({ locale }: { locale: Locale }) {
       onClick={onClick}
       aria-label={t.langSwitch.aria}
       title={t.langSwitch.aria}
-      className="inline-flex h-9 flex-none items-center gap-1 rounded-full border border-sand/80 bg-warmwhite px-2.5 text-xs font-semibold text-charcoal/70 transition-colors hover:border-champagne hover:text-gold"
+      className="glass-chip inline-flex h-9 flex-none items-center gap-1 rounded-full px-2.5 text-xs font-semibold text-charcoal/70 transition-colors hover:text-gold"
     >
       <GlobeIcon />
       {t.langSwitch.label}
@@ -75,14 +75,14 @@ export default function Header({ locale }: { locale: Locale }) {
   );
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-sand/70 bg-warmwhite/90 backdrop-blur-md shadow-card"
-          : "border-b border-transparent bg-transparent"
-      }`}
-    >
-      <div className="container-x flex h-20 items-center justify-between py-4">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4">
+      <div
+        className={`mx-auto flex h-16 w-full max-w-7xl items-center justify-between rounded-full px-4 transition-all duration-300 sm:h-[4.25rem] sm:px-6 ${
+          scrolled
+            ? "glass-nav"
+            : "border border-transparent bg-transparent"
+        }`}
+      >
         <a href={homeHref} className="flex items-center gap-3" aria-label={company.name}>
           <Image
             src="/assets/brand/al-shehail-icon.svg"
@@ -116,12 +116,12 @@ export default function Header({ locale }: { locale: Locale }) {
                 </button>
                 {/* Premium flyout — opens on hover and keyboard focus */}
                 <div className="invisible absolute left-0 top-full z-50 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 rtl:left-auto rtl:right-0">
-                  <div className="w-64 rounded-2xl border border-sand bg-warmwhite p-2 shadow-soft">
+                  <div className="glass-dropdown w-64 rounded-2xl p-2">
                     {item.children.map((child) => (
                       <a
                         key={child.href}
                         href={localeHref(child.href, locale)}
-                        className="block rounded-xl px-3 py-2.5 text-sm font-medium text-charcoal transition-colors hover:bg-beige hover:text-gold"
+                        className="block rounded-xl px-3 py-2.5 text-sm font-medium text-charcoal transition-colors hover:bg-white/60 hover:text-gold"
                       >
                         {child.label[locale]}
                       </a>
@@ -152,7 +152,7 @@ export default function Header({ locale }: { locale: Locale }) {
           <LangSwitch />
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-sand bg-warmwhite text-charcoal"
+            className="glass-chip inline-flex h-10 w-10 items-center justify-center rounded-xl text-charcoal"
             aria-label={t.header.toggleMenu}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
@@ -177,8 +177,8 @@ export default function Header({ locale }: { locale: Locale }) {
       </div>
 
       {open && (
-        <div className="border-t border-sand/70 bg-warmwhite lg:hidden">
-          <nav className="container-x flex flex-col gap-1 py-4" aria-label={t.header.mobileAria}>
+        <div className="glass-dropdown mx-auto mt-2 w-full max-w-7xl rounded-3xl lg:hidden">
+          <nav className="flex flex-col gap-1 p-4" aria-label={t.header.mobileAria}>
             {primaryNav.map((item) =>
               item.children ? (
                 <div key={item.label.en} className="py-1">
@@ -189,7 +189,7 @@ export default function Header({ locale }: { locale: Locale }) {
                     <a
                       key={child.href}
                       href={localeHref(child.href, locale)}
-                      className="block rounded-lg py-2.5 pl-6 pr-3 text-sm font-medium text-charcoal hover:bg-beige rtl:pl-3 rtl:pr-6"
+                      className="block rounded-lg py-2.5 pl-6 pr-3 text-sm font-medium text-charcoal hover:bg-white/60 rtl:pl-3 rtl:pr-6"
                       onClick={() => setOpen(false)}
                     >
                       {child.label[locale]}
@@ -200,7 +200,7 @@ export default function Header({ locale }: { locale: Locale }) {
                 <a
                   key={item.href}
                   href={localeHref(item.href!, locale)}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-charcoal hover:bg-beige"
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-charcoal hover:bg-white/60"
                   onClick={() => setOpen(false)}
                 >
                   {item.label[locale]}

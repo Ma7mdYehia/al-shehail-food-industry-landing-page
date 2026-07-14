@@ -56,6 +56,116 @@
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 rounded-full border border-sand bg-warmwhite px-7 py-3.5 text-sm font-semibold text-charcoal transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne hover:bg-beige focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
   }
+
+  /* ------------------------------------------------------------------ */
+  /* Warm premium Glassmorphism system                                  */
+  /* Reusable translucent surfaces — warm white glass, thin champagne   */
+  /* borders, soft warm shadows, subtle inner highlight. All values are */
+  /* centralized here (no scattered opacities). A @supports fallback at  */
+  /* the end of this file raises opacity where backdrop-filter is        */
+  /* unavailable so text stays readable.                                 */
+  /* ------------------------------------------------------------------ */
+
+  /* Base surface every glass variant builds on. */
+  .glass {
+    background-color: rgba(255, 253, 249, 0.68);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 12px 40px -14px rgba(42, 39, 36, 0.18),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.55);
+  }
+
+  /* Large editorial panel (About info block, bento tiles). */
+  .glass-panel {
+    @apply glass rounded-3xl;
+  }
+
+  /* Interactive card (products, services, partners). Slightly more opaque
+     so body copy stays crisp; lifts on hover. */
+  .glass-card {
+    background-color: rgba(255, 253, 249, 0.72);
+    -webkit-backdrop-filter: blur(16px) saturate(135%);
+    backdrop-filter: blur(16px) saturate(135%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 10px 34px -16px rgba(42, 39, 36, 0.16),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+    @apply rounded-2xl transition-all duration-300;
+  }
+  .glass-card:hover {
+    background-color: rgba(255, 253, 249, 0.82);
+    border-color: rgba(198, 166, 100, 0.5);
+    box-shadow:
+      0 22px 54px -22px rgba(42, 39, 36, 0.28),
+      0 0 0 1px rgba(198, 166, 100, 0.18),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+    transform: translateY(-4px);
+  }
+
+  /* Floating navigation bar. Stronger blur, high legibility. */
+  .glass-nav {
+    background-color: rgba(255, 253, 249, 0.72);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    backdrop-filter: blur(22px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 10px 40px -16px rgba(42, 39, 36, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.55);
+  }
+
+  /* Dropdown / mobile sheet — needs the most opacity for menu legibility. */
+  .glass-dropdown {
+    background-color: rgba(255, 253, 249, 0.9);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow:
+      0 24px 60px -20px rgba(42, 39, 36, 0.28),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  }
+
+  /* Small utility pill (badges, chips, trust strip items). */
+  .glass-chip {
+    background-color: rgba(255, 253, 249, 0.6);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  }
+
+  /* Thin translucent frame that sits over photography (hero media, product
+     media). Low opacity so the image reads; only the border + highlight
+     give it the glass edge. */
+  .glass-media {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      0 24px 60px -22px rgba(42, 39, 36, 0.32),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.45),
+      inset 0 0 0 1px rgba(198, 166, 100, 0.12);
+  }
+
+  /* Large conversion panel (final CTA). */
+  .glass-cta {
+    background-color: rgba(255, 253, 249, 0.74);
+    -webkit-backdrop-filter: blur(20px) saturate(145%);
+    backdrop-filter: blur(20px) saturate(145%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 30px 70px -24px rgba(42, 39, 36, 0.3),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.55);
+  }
+
+  /* Warm readability wash placed over photography beneath glass text. */
+  .glass-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(28, 26, 23, 0.42) 0%,
+      rgba(28, 26, 23, 0.12) 42%,
+      rgba(28, 26, 23, 0) 72%
+    );
+  }
 }
 
 @layer utilities {
@@ -91,6 +201,18 @@
   /* Warm oven glow layer (use on a positioned ::before-style element). */
   .oven-glow {
     background-image: theme("backgroundImage.oven-glow");
+  }
+
+  /* Warm layered ambient page background — cream gradient base with soft
+     champagne and wheat glows. Use on a full-bleed -z-10 layer behind glass
+     sections so the translucent panels have warmth to refract. */
+  .bg-warm-ambient {
+    background-color: #fbf8f2;
+    background-image:
+      radial-gradient(60% 55% at 78% 8%, rgba(198, 166, 100, 0.16), transparent 60%),
+      radial-gradient(50% 50% at 10% 30%, rgba(232, 222, 203, 0.5), transparent 65%),
+      radial-gradient(70% 60% at 50% 108%, rgba(198, 166, 100, 0.1), transparent 60%),
+      linear-gradient(180deg, #fefcf8 0%, #fbf8f2 45%, #f2ebdd 100%);
   }
 
   /* Champagne border glow — a refined ring used on premium panels. */
@@ -198,4 +320,32 @@
    source order. */
 html[dir="rtl"] * {
   letter-spacing: normal;
+}
+
+/* -------------------------------------------------------------------- */
+/* Glassmorphism fallback: when backdrop-filter is unsupported, raise    */
+/* every glass surface's opacity so translucent panels stay legible      */
+/* (no see-through text). Unlayered so it reliably overrides the layered  */
+/* component utilities above.                                            */
+/* -------------------------------------------------------------------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-panel {
+    background-color: rgba(254, 252, 248, 0.96);
+  }
+  .glass-card {
+    background-color: rgba(254, 252, 248, 0.97);
+  }
+  .glass-nav {
+    background-color: rgba(254, 252, 248, 0.97);
+  }
+  .glass-dropdown {
+    background-color: rgba(254, 252, 248, 0.99);
+  }
+  .glass-chip {
+    background-color: rgba(254, 252, 248, 0.94);
+  }
+  .glass-cta {
+    background-color: rgba(254, 252, 248, 0.97);
+  }
 }
