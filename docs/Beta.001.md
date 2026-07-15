@@ -1,5 +1,12 @@
 # Beta.001 — Status Note
 
+> **⚠️ LEGACY / SUPERSEDED (Production Patch 01).** This note describes the
+> original **static-export** milestone. As of Production Patch 01 the project
+> runs on the **Next.js/Vercel runtime** — `output: "export"`, the `/out`
+> deployment, and the `build:static` script were removed. See
+> [`production-runtime-foundation-p01.md`](./production-runtime-foundation-p01.md).
+> Retained as a historical snapshot only.
+
 Snapshot of the Al Shehail Food Industries website at the Beta.001 milestone:
 the first static-export build prepared for static server deployment.
 

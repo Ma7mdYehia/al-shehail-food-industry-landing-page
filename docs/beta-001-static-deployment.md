@@ -1,5 +1,14 @@
 # Beta.001 — Static Deployment Guide
 
+> **⚠️ LEGACY / SUPERSEDED (Production Patch 01).** This static `/out` export
+> method is **no longer the production deployment path.** As of Production
+> Patch 01, the project runs on the **Next.js/Vercel runtime** — `next build`
+> no longer emits a deployable `/out` folder (`output: "export"` and the
+> `build:static` script were removed). See
+> [`production-runtime-foundation-p01.md`](./production-runtime-foundation-p01.md)
+> for the current architecture. This document is retained only as historical
+> reference for the original static-hosting approach.
+
 This guide explains how to build the Al Shehail Food Industries site as a fully
 static website and deploy it to any standard static web server (Apache, Nginx,
 shared hosting, S3, etc.). No Node.js runtime is required on the server — the
