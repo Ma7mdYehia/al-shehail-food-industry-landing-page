@@ -29,6 +29,14 @@ yarn-error.log*
 # vercel
 .vercel
 
+# supabase — never commit local stack temp files, linked-project credentials,
+# database passwords, or access tokens. supabase/config.toml and
+# supabase/migrations/ ARE committed; everything else under .supabase/ is not.
+.supabase/
+supabase/.branches
+supabase/.temp
+supabase/.env
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

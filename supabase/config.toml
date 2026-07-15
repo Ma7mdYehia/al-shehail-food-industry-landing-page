@@ -1,0 +1,48 @@
+# Supabase local configuration for the Al Shehail Food Industries website.
+#
+# This file configures the OPTIONAL local Supabase stack (Docker) used to test
+# the Phase 1 migration, seed importer, and verifier. It does NOT link to or
+# create any remote/cloud project. No secrets live here.
+#
+# Local stack (requires Docker):
+#   supabase start          # boot local Postgres/PostgREST/etc.
+#   supabase migration up    # apply migrations under supabase/migrations
+#   supabase stop           # tear the local stack down
+
+project_id = "al-shehail-food-industries"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.pooler]
+enabled = false
+
+[studio]
+enabled = true
+port = 54323
+
+# Local-only inbucket for capturing test emails; unrelated to production email.
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+
+# Auth is left at defaults for the local stack only. Patch 02 does NOT create
+# auth users, roles, or invitations — the dashboard auth model is a later patch.
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+
+[analytics]
+enabled = false

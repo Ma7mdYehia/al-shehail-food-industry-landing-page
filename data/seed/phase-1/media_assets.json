@@ -80,7 +80,7 @@
   {
     "id": "media_product_arabic_bread",
     "key": "arabicBread",
-    "path": "/assets/products/arabic-bread.webp",
+    "path": "/assets/generated/product-arabic-bread.webp",
     "alt_localized": {
       "en": "Arabic bread",
       "ar": null
@@ -93,7 +93,7 @@
   {
     "id": "media_product_high_protein_bread_wrap",
     "key": "highProteinBreadWrap",
-    "path": "/assets/products/high-protein-bread-wrap.webp",
+    "path": "/assets/generated/product-high-protein-bread-wrap.webp",
     "alt_localized": {
       "en": "High-protein bread wrap",
       "ar": null
@@ -106,7 +106,7 @@
   {
     "id": "media_product_high_fiber_bread_wrap",
     "key": "highFiberBreadWrap",
-    "path": "/assets/products/high-fiber-bread-wrap.webp",
+    "path": "/assets/generated/product-high-fiber-bread-wrap.webp",
     "alt_localized": {
       "en": "High-fiber bread wrap",
       "ar": null
@@ -119,7 +119,7 @@
   {
     "id": "media_product_chia_bread_wrap",
     "key": "chiaBreadWrap",
-    "path": "/assets/products/chia-bread-wrap.webp",
+    "path": "/assets/generated/product-chia-bread-wrap.webp",
     "alt_localized": {
       "en": "Chia bread wrap",
       "ar": null
@@ -145,7 +145,7 @@
   {
     "id": "media_product_barley_bread_wrap",
     "key": "barleyBreadWrap",
-    "path": "/assets/products/barley-bread-wrap.webp",
+    "path": "/assets/generated/product-barley-bread-wrap.webp",
     "alt_localized": {
       "en": "Barley bread wrap",
       "ar": null
@@ -171,7 +171,7 @@
   {
     "id": "media_product_whole_grains_bread_wrap",
     "key": "wholeGrainsBreadWrap",
-    "path": "/assets/products/whole-grains-bread-wrap.webp",
+    "path": "/assets/generated/product-whole-grains-bread-wrap.webp",
     "alt_localized": {
       "en": "Whole grains bread wrap",
       "ar": null

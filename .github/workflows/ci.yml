@@ -34,6 +34,9 @@ jobs:
       - name: Validate Phase 1 seed data
         run: npm run seed:validate
 
+      - name: Validate database schema structure
+        run: npm run db:schema:validate
+
       - name: Lint
         run: npm run lint
 
