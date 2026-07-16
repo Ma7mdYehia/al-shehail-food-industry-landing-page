@@ -13,7 +13,9 @@
     "db:schema:validate": "node scripts/validate-schema-structure.mjs",
     "db:seed:dry-run": "node scripts/import-phase-1-to-supabase.mjs",
     "db:seed:apply": "node scripts/import-phase-1-to-supabase.mjs --apply",
-    "db:verify": "node scripts/verify-phase-1-supabase.mjs"
+    "db:seed:overwrite": "node scripts/import-phase-1-to-supabase.mjs --apply --overwrite-existing",
+    "db:verify": "node scripts/verify-phase-1-supabase.mjs",
+    "db:test:safety": "node scripts/test-seed-safety.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",

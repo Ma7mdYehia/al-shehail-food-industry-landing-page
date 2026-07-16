@@ -139,6 +139,7 @@ check(
 
 // ---- 7. importer is dry-run by default & has no hard-coded secrets ---------
 const importerPath = join(HERE, "import-phase-1-to-supabase.mjs");
+const verifierPath = join(HERE, "verify-phase-1-supabase.mjs");
 check(existsSync(importerPath), "importer script exists", "importer script missing");
 if (existsSync(importerPath)) {
   const importer = readFileSync(importerPath, "utf8");
@@ -183,6 +184,101 @@ check(
   "db:seed:dry-run performs no write (no --apply)",
   "db:seed:dry-run must not include --apply"
 );
+
+// ---- 9. production-safety guards (executable behavior, not just comments) --
+// 9a. The default apply preserves conflicts (bootstrap-safe): the importer must
+// use resolveUpsertOptions and must NOT hard-code ignoreDuplicates:false as the
+// default write path.
+if (existsSync(importerPath)) {
+  const importer = readFileSync(importerPath, "utf8");
+  check(
+    /resolveUpsertOptions\s*\(/.test(importer),
+    "importer resolves upsert options via bootstrap-safe helper",
+    "importer must derive upsert options from resolveUpsertOptions (preserve-by-default)"
+  );
+  // overwrite must be opt-in via an explicit flag
+  check(
+    /--overwrite-existing/.test(importer),
+    "importer overwrite mode requires explicit --overwrite-existing flag",
+    "importer must gate overwrite behind --overwrite-existing"
+  );
+  // strict exact-count checking must be opt-in, not the default
+  check(
+    /--strict-seed-counts/.test(importer),
+    "importer strict exact-count check is opt-in (--strict-seed-counts)",
+    "importer must not require remote count === seed count by default"
+  );
+  // no destructive delete-synchronization of remote rows
+  check(
+    !/\.delete\(/.test(importer),
+    "importer performs no delete synchronization",
+    "importer must never delete remote rows"
+  );
+}
+
+// 9b. resolveUpsertOptions default really preserves (ignoreDuplicates:true).
+const sharedPath = join(HERE, "phase-1-shared.mjs");
+check(existsSync(sharedPath), "shared seed module exists", "scripts/phase-1-shared.mjs missing");
+if (existsSync(sharedPath)) {
+  try {
+    const { resolveUpsertOptions, evaluateCounts } = await import("./phase-1-shared.mjs");
+    const dflt = resolveUpsertOptions({});
+    check(
+      dflt.ignoreDuplicates === true,
+      "default apply preserves existing rows (ignoreDuplicates=true)",
+      "default resolveUpsertOptions must set ignoreDuplicates=true"
+    );
+    const overwrite = resolveUpsertOptions({ overwriteExisting: true });
+    check(
+      overwrite.ignoreDuplicates === false,
+      "overwrite mode replaces rows only when explicitly requested",
+      "resolveUpsertOptions({overwriteExisting:true}) must set ignoreDuplicates=false"
+    );
+    // default count rule allows extra dashboard rows (>= baseline)
+    const c = evaluateCounts({ remoteCount: 100, seedBaseline: 44 });
+    check(c.ok === true, "extra remote rows do not fail normal verification", "evaluateCounts default must allow remoteCount > baseline");
+    const strict = evaluateCounts({ remoteCount: 100, seedBaseline: 44, strict: true });
+    check(strict.ok === false, "strict count mode requires exact baseline", "evaluateCounts strict must require equality");
+  } catch (err) {
+    check(false, "", `could not import shared helpers: ${err.message}`);
+  }
+}
+
+// 9c. The default verifier is read-only: no .update()/.delete() outside the
+// gated write-probe, no ungated writes, and db:verify carries no write flag.
+if (existsSync(verifierPath)) {
+  const verifier = readFileSync(verifierPath, "utf8");
+  check(
+    !/\.update\(/.test(verifier),
+    "verifier contains no .update() calls",
+    "verifier must not update any row"
+  );
+  const insertCalls = (verifier.match(/\.insert\(/g) || []).length;
+  const deleteCalls = (verifier.match(/\.delete\(/g) || []).length;
+  const gated = /ALLOW_WRITE_PROBES/.test(verifier) && /--allow-write-probes/.test(verifier);
+  check(
+    insertCalls <= 1 && deleteCalls <= 1 && gated,
+    "any verifier write is gated behind --allow-write-probes (form_enquiries only)",
+    "verifier writes must be single, gated, and synthetic"
+  );
+  check(
+    /CI\s*===\s*"true"|process\.env\.CI/.test(verifier),
+    "verifier refuses write probes in CI",
+    "verifier must not run write probes under CI"
+  );
+  check(
+    !/--allow-write-probes/.test(pkg.scripts["db:verify"] || ""),
+    "db:verify is read-only (no --allow-write-probes)",
+    "db:verify must not enable write probes"
+  );
+  // verifier must not target a real product with a write
+  check(
+    !/prod_[a-z_]*[\s\S]{0,40}\.(update|delete)\(/.test(verifier) &&
+      !/\.(update|delete)\([\s\S]{0,120}prod_/.test(verifier),
+    "verifier never writes to a real seeded product",
+    "verifier must not update/delete a product row"
+  );
+}
 
 // Heuristic secret scan: long base64-ish blobs or JWT-shaped strings assigned
 // to a literal. Placeholders/env reads are fine.

@@ -280,3 +280,55 @@ export function hostOnly(url) {
     return "(invalid URL)";
   }
 }
+
+// ---------------------------------------------------------------------------
+// Bootstrap-safe apply/verify logic (pure, DB-free, unit-testable)
+// ---------------------------------------------------------------------------
+// The Phase 1 seed is BOOTSTRAP data, not the permanent authority once the
+// dashboard is in use. These helpers encode the safe semantics so both the
+// importer and its tests share one source of truth.
+
+// Resolve the Supabase upsert options for an apply run. The DEFAULT is
+// conflict-preserving: insert genuinely missing rows, never overwrite an
+// existing row, never delete. Overwrite is opt-in only.
+export function resolveUpsertOptions({ overwriteExisting = false } = {}) {
+  return {
+    onConflict: "id",
+    // ignoreDuplicates: true  => ON CONFLICT DO NOTHING (preserve existing rows)
+    // ignoreDuplicates: false => ON CONFLICT DO UPDATE  (overwrite existing rows)
+    ignoreDuplicates: !overwriteExisting,
+  };
+}
+
+// Evaluate a remote row count against the seed baseline. By default a remote
+// table may contain MORE rows than the seed (dashboard-created content), so the
+// rule is "at least the baseline". Strict mode requires exact equality and is
+// only meaningful for a fresh bootstrap.
+export function evaluateCounts({ remoteCount, seedBaseline, strict = false }) {
+  const extras = remoteCount - seedBaseline;
+  const ok = strict ? remoteCount === seedBaseline : remoteCount >= seedBaseline;
+  return { ok, extras, remoteCount, seedBaseline, strict };
+}
+
+// Which deterministic seed ids are missing from the remote id set.
+export function findMissingSeedIds({ seedIds, remoteIds }) {
+  const remote = new Set(remoteIds);
+  return seedIds.filter((id) => !remote.has(id));
+}
+
+// Pure model of a Supabase upsert against an in-memory remote table, matching
+// Postgres ON CONFLICT semantics for the two modes. Used by tests to prove
+// preserve-by-default, overwrite-on-flag, insert-missing, and idempotency
+// WITHOUT any database. Returns the resulting rows keyed by id (order-stable).
+export function simulateApply({ remoteRows = [], seedRows = [], overwriteExisting = false } = {}) {
+  const byId = new Map(remoteRows.map((r) => [r.id, { ...r }]));
+  for (const row of seedRows) {
+    if (byId.has(row.id)) {
+      if (overwriteExisting) byId.set(row.id, { ...row }); // DO UPDATE
+      // else: DO NOTHING — preserve the existing (possibly dashboard-edited) row
+    } else {
+      byId.set(row.id, { ...row }); // INSERT missing
+    }
+  }
+  return [...byId.values()];
+}

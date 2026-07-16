@@ -128,38 +128,72 @@ partners → partner_projects → partner_project_products → shared_content.
   the target **host only** (no credentials), the dependency order, expected row
   counts, and warnings, then confirms **no database connection was opened and no
   write occurred.**
-- **Apply (`npm run db:seed:apply`, adds `--apply`)** — additionally requires
-  `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`, connects with the
-  server-only service role (used **only** inside this trusted script), and
-  upserts each table on its deterministic id, then re-checks counts.
+- **Apply (`npm run db:seed:apply`, adds `--apply`)** — the **bootstrap-safe**
+  default. Additionally requires `NEXT_PUBLIC_SUPABASE_URL` and
+  `SUPABASE_SERVICE_ROLE_KEY`, connects with the server-only service role (used
+  **only** inside this trusted script), and upserts each table on its
+  deterministic id with **`ON CONFLICT DO NOTHING`** (`ignoreDuplicates: true`)
+  — it **inserts only genuinely missing seed ids, preserves every existing row
+  (including dashboard edits and dashboard-created rows), and never deletes.**
+- **Overwrite (`npm run db:seed:overwrite`, adds `--apply --overwrite-existing`)**
+  — opt-in only. Replaces seed-owned rows with **`ON CONFLICT DO UPDATE`**. This
+  **can clobber dashboard edits** to deterministic seeded ids and must be used
+  deliberately; it prints a warning before running.
+- **Strict counts (`--strict-seed-counts`)** — optional. Requires each table's
+  remote count to **equal** the seed baseline (only meaningful for a fresh
+  bootstrap). By default the importer does **not** require exact counts.
 
 The importer **never prints** the service-role key, database password, access
 token, or Authorization header.
 
-### Idempotency
+### Bootstrap semantics & idempotency
 
-Every table upserts on its deterministic `id`, so a second identical import
-creates no duplicates, preserves row counts and ids, and (verified locally)
-leaves counts unchanged. The importer **never deletes** remote rows absent from
-the seed — Patch 02 is not authorized to perform destructive synchronization,
-and mismatched counts fail loudly instead.
+The Phase 1 seed is **bootstrap baseline data, not the permanent authority** once
+the dashboard is in use. Remote tables are expected to **grow beyond the seed
+counts** (new products, partners, services, media, and — after the contact form
+launches — `form_enquiries`). Accordingly:
+
+- Safe default apply is idempotent and additive: a re-run inserts only missing
+  seed ids, creates **zero duplicates**, preserves dashboard edits and
+  dashboard-created rows, and leaves counts unchanged (confirmed on a real local
+  Postgres cluster: `ON CONFLICT DO NOTHING` preserves an edited row;
+  `ON CONFLICT DO UPDATE` replaces it only under `--overwrite-existing`).
+- The importer **never deletes** remote rows — Patch 02 performs no destructive
+  synchronization.
+- Post-write verification checks that **every deterministic seed id is present**,
+  no seed id is duplicated, and each table's count is **at least** the seed
+  baseline; extra dashboard rows are **reported, never a failure** (unless
+  `--strict-seed-counts` is set).
 
 ## 7. Verifier
 
-`scripts/verify-phase-1-supabase.mjs` — **read-only**, two layers:
+`scripts/verify-phase-1-supabase.mjs` — the default (`npm run db:verify`) is
+**genuinely read-only**: it issues SELECT/count queries only and never calls
+`insert`/`update`/`delete`. It never targets a content table with a write and
+never touches a real seeded product. Two default layers:
 
 - **Static (always, no network):** deterministic ids, unique slugs/keys, `en`/
   `ar` presence, known-null Arabic media alt values remain explicit nulls,
   `NEEDS_VERIFICATION` snapshot.
-- **Live (only when Supabase env vars are set):** row counts (service role),
-  deterministic ids present, foreign keys resolve, anon can read active content,
-  anon **cannot** read/insert `form_enquiries`, anon **cannot** write content,
-  anon sees only active content.
+- **Live, read-only (only when Supabase env vars are set):** every seed id is
+  present; each table's count is **at least** the seed baseline (extra dashboard
+  rows reported, never a failure — so verification does **not** break once the
+  dashboard adds rows); foreign keys resolve; anon can read active content; anon
+  sees only active content; and anon **cannot read** `form_enquiries` (a SELECT
+  that is expected to be denied — no write). `form_enquiries` is **not**
+  count-checked, so additional enquiries never fail verification.
 
-The only write-path probe (an anon insert into `form_enquiries`) is **expected
-to be rejected** by RLS/grants so nothing persists; if it unexpectedly succeeds,
-the row is deleted immediately with the service role and the check fails. No
-real personal data is used.
+Write protection (anon cannot INSERT/UPDATE/DELETE content) is proven by static
+structure inspection, the local disposable PostgreSQL test, and RLS/grants
+review — **not** by writing to the live database in the normal verifier.
+
+**Optional, opt-in write probe (never part of `db:verify`, never in CI):**
+`node scripts/verify-phase-1-supabase.mjs --allow-write-probes` (requires
+`SUPABASE_SERVICE_ROLE_KEY`) runs a single **synthetic** insert against
+`form_enquiries` **only**, using an `example.invalid` address, to confirm anon
+inserts are rejected. It refuses to run under `CI`, cleans up in a `finally`
+block, and **fails loudly if cleanup cannot be confirmed**. It never writes to
+products or any content table, and never updates or deletes anything.
 
 ## 8. Row Level Security matrix
 
@@ -217,10 +251,16 @@ No Auth users are created and no roles/permissions are assigned in Patch 02.
 ## 10. Commands
 
 ```bash
-npm run db:schema:validate   # dependency-free structural guard (CI-safe)
+npm run db:schema:validate   # dependency-free structural + safety guard (CI-safe)
+npm run db:test:safety       # dependency-free bootstrap-safety unit tests (CI-safe)
 npm run db:seed:dry-run      # validate + plan, NO writes (default)
-npm run db:seed:apply        # real import (requires Supabase env, uses --apply)
-npm run db:verify            # read-only verification (static + live if configured)
+npm run db:seed:apply        # SAFE import — inserts missing seed ids, preserves
+                             #   existing rows, never deletes (requires Supabase env)
+npm run db:seed:overwrite    # OPT-IN overwrite of seed-owned rows (may replace
+                             #   dashboard edits) — use deliberately
+npm run db:verify            # READ-ONLY verification (static + live if configured)
+# Optional, local-only, opt-in synthetic write probe (never in CI, form_enquiries only):
+#   node scripts/verify-phase-1-supabase.mjs --allow-write-probes
 ```
 
 ## 11. Local Supabase / database test
@@ -239,6 +279,10 @@ migration and seed were validated against a **real, ephemeral local PostgreSQL
 - foreign keys reject dangling references;
 - the `updated_at` trigger advances on UPDATE;
 - **idempotency:** re-running the full upsert load leaves row counts unchanged;
+- **bootstrap safety (DB-level):** `ON CONFLICT DO NOTHING` (the safe default
+  apply) preserves an edited row; `ON CONFLICT DO UPDATE` (opt-in overwrite)
+  replaces it; a missing id is inserted and the count grows — matching the
+  `db:test:safety` unit results;
 - **RLS:** `anon` reads only active content, cannot see an inactive product or
   the child rows of an inactive parent, and is denied all access to
   `form_enquiries` and all writes to content tables.
@@ -246,8 +290,10 @@ migration and seed were validated against a **real, ephemeral local PostgreSQL
 The JS importer/verifier talk to Supabase over PostgREST (an HTTP API that the
 Supabase stack provides), so their end-to-end HTTP paths were exercised only in
 dry-run/static mode here; their data semantics were validated via the equivalent
-SQL load against the local cluster. A full `supabase start` run should be
-repeated in an environment with Docker before the first remote apply.
+SQL load against the local cluster, and the bootstrap-safe apply/verify logic is
+covered by `npm run db:test:safety` (dependency-free unit tests) and the static
+guards in `db:schema:validate`. A full `supabase start` run should be repeated in
+an environment with Docker before the first remote apply.
 
 ### Future remote-linking steps (a later, explicitly-authorized action)
 

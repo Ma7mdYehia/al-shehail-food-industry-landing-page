@@ -1,26 +1,32 @@
 #!/usr/bin/env node
 // =============================================================================
-// Phase 1 database verifier — READ-ONLY
+// Phase 1 database verifier
 // =============================================================================
-// Verifies the imported Phase 1 database. It never mutates content. Two layers:
+// The DEFAULT verifier (`npm run db:verify`) is genuinely READ-ONLY: it issues
+// SELECT/count queries only and never calls insert/update/delete. It never
+// targets content tables with a write and never touches a real seeded product.
+// Write protection is proven elsewhere (static structure inspection, the local
+// disposable PostgreSQL/Supabase test, and RLS/grants review) — see
+// docs/production-database-foundation-p02.md.
 //
-//   1. Static seed checks (always run, no network, no credentials): deterministic
-//      ids, unique slugs/keys, en/ar presence, known-null Arabic media alt values,
-//      and NEEDS_VERIFICATION placeholder preservation.
+// Two default layers:
+//   1. Static seed checks (always, no network): deterministic ids, unique
+//      slugs/keys, en/ar presence, known-null Arabic media alt, NEEDS_VERIFICATION.
+//   2. Live READ-ONLY checks (when Supabase env vars are set): every seed id is
+//      present, remote count is AT LEAST the seed baseline (extra dashboard rows
+//      are reported, never a failure), foreign keys resolve, anon can read
+//      active content, anon sees only active content, and anon CANNOT read
+//      form_enquiries (a SELECT that is expected to be denied — no write).
 //
-//   2. Live database checks (run only when Supabase env vars are configured):
-//      row counts, deterministic ids present, foreign keys resolve, anon can read
-//      active public content, anon cannot read/insert form_enquiries, anon cannot
-//      write content. The service role is used ONLY for checks anon legitimately
-//      cannot perform (exact counts, inactive-content comparison).
-//
-// The one write-path probe (attempting an anon insert into form_enquiries) is
-// EXPECTED to be rejected by RLS, so nothing is persisted. If it unexpectedly
-// succeeds, the row is deleted immediately with the service role and the check
-// fails. No real personal data is ever used.
+// OPTIONAL, opt-in only — NOT part of `db:verify` and NEVER run in CI:
+//   `--allow-write-probes` (requires SUPABASE_SERVICE_ROLE_KEY) runs a single
+//   synthetic write probe against form_enquiries ONLY, using an example.invalid
+//   address, cleaned up in a finally block; it fails loudly if cleanup cannot be
+//   confirmed. It never writes to products or any content table.
 //
 // Usage:
-//   node scripts/verify-phase-1-supabase.mjs
+//   node scripts/verify-phase-1-supabase.mjs                     # read-only
+//   node scripts/verify-phase-1-supabase.mjs --allow-write-probes  # local only
 // =============================================================================
 
 import { readFileSync, readdirSync } from "node:fs";
@@ -33,7 +39,12 @@ import {
   loadSeedRows,
   isLocalized,
   hostOnly,
+  evaluateCounts,
+  findMissingSeedIds,
 } from "./phase-1-shared.mjs";
+
+const ALLOW_WRITE_PROBES = process.argv.includes("--allow-write-probes");
+const IN_CI = process.env.CI === "true" || process.env.CI === "1";
 
 const results = [];
 function record(name, status, detail = "") {
@@ -43,7 +54,7 @@ function record(name, status, detail = "") {
 }
 
 // ---------------------------------------------------------------------------
-// Layer 1 — static seed checks
+// Layer 1 — static seed checks (read-only, no network)
 // ---------------------------------------------------------------------------
 function staticChecks() {
   console.log("\nStatic seed checks (no network):");
@@ -57,22 +68,14 @@ function staticChecks() {
     return { plan: null };
   }
 
-  // Known-null Arabic media alt values remain explicit nulls.
   const media = loadSeedRows("media_assets");
-  const nonNullAr = media.filter(
-    (m) => m.alt_localized && m.alt_localized.ar !== null
+  const nonNullAr = media.filter((m) => m.alt_localized && m.alt_localized.ar !== null);
+  record(
+    "media_assets Arabic alt text remains explicit null (not invented)",
+    nonNullAr.length === 0 ? "pass" : "fail",
+    nonNullAr.length === 0 ? `${media.length} rows, all ar=null` : `${nonNullAr.length} rows have non-null ar`
   );
-  if (nonNullAr.length === 0) {
-    record("media_assets Arabic alt text remains explicit null (not invented)", "pass", `${media.length} rows, all ar=null`);
-  } else {
-    record(
-      "media_assets Arabic alt text remains explicit null",
-      "fail",
-      `${nonNullAr.length} rows have non-null ar — Arabic alt must be authored deliberately, not injected`
-    );
-  }
 
-  // en/ar keys exist where required (spot re-assert across all localized cols).
   let localizedIssues = 0;
   for (const table of IMPORT_ORDER) {
     const def = TABLE_DEFS[table];
@@ -88,27 +91,19 @@ function staticChecks() {
     localizedIssues === 0 ? "" : `${localizedIssues} violations`
   );
 
-  // NEEDS_VERIFICATION placeholders must not be silently changed. Snapshot how
-  // many exist in the seed so a live check can confirm they survive import.
   let needsVerification = 0;
   for (const file of readdirSync(SEED_DIR)) {
-    // Scan content seed files only; seed-manifest.json mentions the token in
-    // prose (documenting that placeholders live in lib/partnerProjects.ts).
     if (!file.endsWith(".json") || file === "seed-manifest.json") continue;
     const text = readFileSync(join(SEED_DIR, file), "utf8");
     needsVerification += (text.match(/NEEDS_VERIFICATION/g) || []).length;
   }
-  record(
-    "NEEDS_VERIFICATION placeholders preserved in seed",
-    "pass",
-    `${needsVerification} occurrence(s) in seed`
-  );
+  record("NEEDS_VERIFICATION placeholders preserved in seed", "pass", `${needsVerification} occurrence(s) in seed`);
 
-  return { plan, needsVerification };
+  return { plan };
 }
 
 // ---------------------------------------------------------------------------
-// Layer 2 — live database checks
+// Layer 2 — live READ-ONLY database checks
 // ---------------------------------------------------------------------------
 async function liveChecks(plan) {
   const publicUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -116,13 +111,13 @@ async function liveChecks(plan) {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
   if (!publicUrl || !anonKey) {
-    console.log("\nLive database checks: SKIPPED (set NEXT_PUBLIC_SUPABASE_URL and");
-    console.log("NEXT_PUBLIC_SUPABASE_ANON_KEY to run public-read verification;");
-    console.log("SUPABASE_SERVICE_ROLE_KEY additionally enables count/inactive checks).");
+    console.log("\nLive checks: SKIPPED (set NEXT_PUBLIC_SUPABASE_URL and");
+    console.log("NEXT_PUBLIC_SUPABASE_ANON_KEY to run read-only public verification;");
+    console.log("SUPABASE_SERVICE_ROLE_KEY additionally enables count/seed-presence checks).");
     return;
   }
 
-  console.log(`\nLive database checks against ${hostOnly(publicUrl)}:`);
+  console.log(`\nLive READ-ONLY checks against ${hostOnly(publicUrl)}:`);
   const { createClient } = await import("@supabase/supabase-js");
   const anon = createClient(publicUrl, anonKey, {
     auth: { persistSession: false, autoRefreshToken: false },
@@ -133,21 +128,28 @@ async function liveChecks(plan) {
       })
     : null;
 
-  // Row counts (service role — exact).
+  // Seed presence + count-at-least-baseline (service role: exact, read-only).
   if (admin) {
     for (const table of IMPORT_ORDER) {
-      const { count, error } = await admin
-        .from(table)
-        .select("id", { count: "exact", head: true });
+      const seedIds = plan.rowsByTable[table].map((r) => r.id);
+      const { data, count, error } = await admin.from(table).select("id", { count: "exact" });
       if (error) {
-        record(`count ${table}`, "fail", error.message);
-      } else {
-        const expected = plan.expectedCounts[table];
-        record(`count ${table}`, count === expected ? "pass" : "fail", `${count} (expected ${expected})`);
+        record(`seed presence ${table}`, "fail", error.message);
+        continue;
       }
+      const remoteIds = (data ?? []).map((r) => r.id);
+      const missing = findMissingSeedIds({ seedIds, remoteIds });
+      const { ok, extras } = evaluateCounts({ remoteCount: count, seedBaseline: seedIds.length });
+      const rowOk = missing.length === 0 && ok;
+      record(
+        `seed present & count ≥ baseline: ${table}`,
+        rowOk ? "pass" : "fail",
+        `${count} rows${extras > 0 ? ` (+${extras} dashboard rows, informational)` : ""}` +
+          (missing.length ? `; MISSING ${missing.length}` : "")
+      );
     }
   } else {
-    record("row counts", "skip", "needs SUPABASE_SERVICE_ROLE_KEY");
+    record("seed presence & counts", "skip", "needs SUPABASE_SERVICE_ROLE_KEY");
   }
 
   // Anon can read active public content.
@@ -160,7 +162,7 @@ async function liveChecks(plan) {
     );
   }
 
-  // Deterministic ids present (anon read of a known id).
+  // A known deterministic id is present (anon read).
   {
     const { data, error } = await anon
       .from("products")
@@ -174,9 +176,7 @@ async function liveChecks(plan) {
     );
   }
 
-  // Foreign keys resolve — sample each child->parent relationship via anon join
-  // is awkward; instead confirm no orphan by comparing distinct child FK values
-  // to parent ids (service role for completeness).
+  // Foreign keys resolve (service role, read-only orphan scan).
   if (admin) {
     let orphanTotal = 0;
     for (const table of IMPORT_ORDER) {
@@ -191,8 +191,7 @@ async function liveChecks(plan) {
           .in("id", childValues);
         if (pErr) continue;
         const present = new Set(parents.map((r) => r.id));
-        const orphans = childValues.filter((v) => !present.has(v));
-        orphanTotal += orphans.length;
+        orphanTotal += childValues.filter((v) => !present.has(v)).length;
       }
     }
     record("all foreign keys resolve", orphanTotal === 0 ? "pass" : "fail", `${orphanTotal} orphan(s)`);
@@ -200,8 +199,7 @@ async function liveChecks(plan) {
     record("foreign keys resolve", "skip", "needs SUPABASE_SERVICE_ROLE_KEY");
   }
 
-  // Inactive content is not exposed to anon (all seed rows are active, so anon
-  // count should equal active count; requires service role for the comparison).
+  // Anon sees only active content (read-only comparison).
   if (admin) {
     const { count: anonCount } = await anon
       .from("products")
@@ -217,77 +215,78 @@ async function liveChecks(plan) {
     );
   }
 
-  // form_enquiries cannot be read by anon.
+  // form_enquiries cannot be READ by anon (a SELECT expected to be denied).
   {
     const { data, error } = await anon.from("form_enquiries").select("id").limit(1);
     const blocked = !!error || (Array.isArray(data) && data.length === 0);
     record(
-      "anon cannot read form_enquiries",
+      "anon cannot read form_enquiries (SELECT denied)",
       blocked ? "pass" : "fail",
       error ? "blocked by RLS/grant" : `returned ${data?.length ?? 0} row(s)`
     );
   }
 
-  // form_enquiries cannot be inserted by anon (expected to be rejected).
-  {
-    const marker = `verify-test-${Date.now()}@example.invalid`;
+  // ---- OPTIONAL, opt-in synthetic write probe (form_enquiries only) --------
+  if (ALLOW_WRITE_PROBES) {
+    if (IN_CI) {
+      record("write probes", "skip", "refused: never run in CI");
+    } else if (!admin) {
+      record("write probes", "skip", "need SUPABASE_SERVICE_ROLE_KEY for safe cleanup");
+    } else {
+      await formEnquiriesWriteProbe(anon, admin);
+    }
+  }
+}
+
+// Synthetic, self-cleaning probe: confirms anon CANNOT insert into
+// form_enquiries. Operates ONLY on form_enquiries with an example.invalid
+// address; if anon insert were (mis)allowed, the row is removed in a finally
+// block and the check fails. Never writes to products or any content table.
+async function formEnquiriesWriteProbe(anon, admin) {
+  console.log("\n⚠  Optional write probe (--allow-write-probes): synthetic insert into");
+  console.log("   form_enquiries ONLY, expected to be rejected; self-cleaning.");
+  const marker = `verify-probe-${Date.now()}@example.invalid`;
+  let insertedIds = [];
+  try {
     const { data, error } = await anon
       .from("form_enquiries")
       .insert({
-        full_name: "VERIFY TEST (should be rejected)",
+        full_name: "SYNTHETIC VERIFY PROBE",
         email: marker,
         locale: "en",
-        source_path: "/verify-test",
+        source_path: "/verify-probe",
       })
       .select("id");
     if (error) {
       record("anon cannot INSERT into form_enquiries", "pass", "rejected by RLS/grant");
-    } else {
-      // Unexpected success — clean up immediately with the service role.
-      let cleaned = "no service role to clean up";
-      if (admin && Array.isArray(data)) {
-        const ids = data.map((r) => r.id);
-        const { error: delErr } = await admin.from("form_enquiries").delete().in("id", ids);
-        cleaned = delErr ? `CLEANUP FAILED: ${delErr.message}` : "test row deleted";
-      }
-      record("anon cannot INSERT into form_enquiries", "fail", `anon insert SUCCEEDED (${cleaned})`);
+      return;
     }
-  }
-
-  // anon cannot UPDATE content (expected 0 rows affected / rejected).
-  {
-    const { data, error } = await anon
-      .from("products")
-      .update({ sort_order: 999 })
-      .eq("id", "prod_arabic_bread")
-      .select("id");
-    const blocked = !!error || (Array.isArray(data) && data.length === 0);
-    record(
-      "anon cannot UPDATE content (products)",
-      blocked ? "pass" : "fail",
-      error ? "rejected by RLS/grant" : `${data?.length ?? 0} row(s) updated`
-    );
-  }
-
-  // anon cannot DELETE content (expected 0 rows affected / rejected).
-  {
-    const { data, error } = await anon
-      .from("products")
-      .delete()
-      .eq("id", "prod_arabic_bread")
-      .select("id");
-    const blocked = !!error || (Array.isArray(data) && data.length === 0);
-    record(
-      "anon cannot DELETE content (products)",
-      blocked ? "pass" : "fail",
-      error ? "rejected by RLS/grant" : `${data?.length ?? 0} row(s) deleted`
-    );
+    insertedIds = (data ?? []).map((r) => r.id);
+    record("anon cannot INSERT into form_enquiries", "fail", "anon insert unexpectedly SUCCEEDED");
+  } finally {
+    if (insertedIds.length) {
+      const { error: delErr, count } = await admin
+        .from("form_enquiries")
+        .delete({ count: "exact" })
+        .in("id", insertedIds);
+      // Confirm cleanup; fail loudly if it cannot be confirmed.
+      const { data: still } = await admin
+        .from("form_enquiries")
+        .select("id")
+        .in("id", insertedIds);
+      const cleaned = !delErr && (!still || still.length === 0);
+      record(
+        "synthetic probe row cleaned up",
+        cleaned ? "pass" : "fail",
+        cleaned ? `removed ${count ?? insertedIds.length} row(s)` : "CLEANUP UNCONFIRMED"
+      );
+    }
   }
 }
 
 async function main() {
   console.log("=".repeat(70));
-  console.log("Phase 1 Supabase verifier (read-only)");
+  console.log(`Phase 1 Supabase verifier ${ALLOW_WRITE_PROBES ? "(+ optional write probe)" : "(read-only)"}`);
   console.log("=".repeat(70));
 
   const { plan } = staticChecks();
