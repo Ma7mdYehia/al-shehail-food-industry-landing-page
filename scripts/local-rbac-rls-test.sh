@@ -133,6 +133,9 @@ echo ""
 echo "=== D. inactive member has no access ==="
 [ "$(selcount "$INACTIVE" authenticated "select count(*) from public.products where id='p_inactive';")" = "0" ] && ok "inactive member cannot see inactive content" || no "inactive member inactive hidden"
 haserr "$INACTIVE" authenticated "insert into public.products(id,category_id,slug,name_localized,short_description_localized,card_description_localized,icon_type) values('x3','c_active','x3','{\"en\":\"a\",\"ar\":\"b\"}','{\"en\":\"a\",\"ar\":\"b\"}','{\"en\":\"a\",\"ar\":\"b\"}','loaf');" && ok "inactive member cannot INSERT" || no "inactive insert blocked"
+# F2: inactive member cannot even read their own membership row (self-read requires is_active)
+[ "$(selcount "$INACTIVE" authenticated "select count(*) from public.dashboard_members;")" = "0" ] && ok "inactive member reads ZERO membership rows (self-read is_active)" || no "inactive self-read is_active"
+[ "$(probe "$INACTIVE" authenticated "select coalesce(public.current_dashboard_role(),'NULL');" | tail -2 | head -1)" = "NULL" ] && ok "inactive member current_dashboard_role() is NULL" || no "inactive role NULL"
 
 echo ""
 echo "=== E. editor: read-all, INSERT, UPDATE allowed; DELETE denied ==="
@@ -186,6 +189,21 @@ probe "$EDITOR" authenticated "update public.form_enquiries set status='contacte
 probe "$EDITOR" authenticated "update public.form_enquiries set email='hacked@evil.com' where id='e1';" 2>&1 | grep -qiE "permission denied for column|ERROR" && ok "member CANNOT change original email (column-level grant)" || no "original email immutable"
 probe "$EDITOR" authenticated "update public.form_enquiries set full_name='x' where id='e1';" 2>&1 | grep -qiE "permission denied for column|ERROR" && ok "member CANNOT change original full_name" || no "original full_name immutable"
 haserr "$EDITOR" authenticated "delete from public.form_enquiries where id='e1';" && ok "member cannot DELETE enquiries" || no "enquiry delete blocked"
+
+echo ""
+echo "=== J2. enquiry audit stamping (F3): server-stamped, unforgeable ==="
+EDITOR_MEMBER_ID=$(Qq -c "select id from public.dashboard_members where user_id='$EDITOR';")
+# Direct spoof of handled_by / handled_at must be rejected by the column grant.
+probe "$EDITOR" authenticated "update public.form_enquiries set handled_by='$EDITOR_MEMBER_ID' where id='e1';" 2>&1 | grep -qiE "permission denied for column|ERROR" && ok "direct handled_by spoof rejected (column grant)" || no "handled_by spoof rejected"
+probe "$EDITOR" authenticated "update public.form_enquiries set handled_at='2020-01-01' where id='e1';" 2>&1 | grep -qiE "permission denied for column|ERROR" && ok "direct handled_at spoof rejected (column grant)" || no "handled_at spoof rejected"
+# A valid workflow update auto-stamps the REAL member id + a server timestamp.
+STAMP=$(probe "$EDITOR" authenticated "update public.form_enquiries set status='qualified' where id='e1'; select handled_by::text||'|'||(handled_at is not null)::text||'|'||(handled_at > now() - interval '1 minute')::text from public.form_enquiries where id='e1';" | grep -E "^[0-9a-f-]{36}\|" | head -1)
+[ "$STAMP" = "$EDITOR_MEMBER_ID|true|true" ] && ok "valid member update auto-stamps real member + server now()" || no "audit auto-stamp (got: $STAMP, expected $EDITOR_MEMBER_ID|true|true)"
+# Inactive member cannot trigger stamping (RLS blocks the update entirely).
+INA_STAMP=$(probe "$INACTIVE" authenticated "update public.form_enquiries set status='contacted' where id='e1';")
+echo "$INA_STAMP" | grep -qE "UPDATE 0|denied|ERROR" && ok "inactive member cannot trigger audit stamping (0 rows)" || no "inactive no stamp (got: $(echo "$INA_STAMP"|tail -1))"
+# handled_by/handled_at remain NULL on the persisted row (all probes rolled back).
+[ "$(Qq -c "select coalesce(handled_by::text,'NULL')||'/'||coalesce(handled_at::text,'NULL') from public.form_enquiries where id='e1';")" = "NULL/NULL" ] && ok "no audit stamp persisted from rolled-back probes" || no "audit not persisted"
 
 echo ""
 echo "=== K. definer functions: search_path fixed & non-recursive ==="

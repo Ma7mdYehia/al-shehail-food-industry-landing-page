@@ -191,6 +191,45 @@ alter table public.form_enquiries
   add column handled_at timestamptz,
   add column handled_by uuid references public.dashboard_members (id) on delete set null;
 
+-- Audit fields are set together or not at all — never one without the other.
+alter table public.form_enquiries
+  add constraint form_enquiries_handled_pair_check
+  check ((handled_by is null) = (handled_at is null));
+
+-- Server-side audit stamping: when an ACTIVE dashboard member performs a
+-- workflow update, the database records who/when from auth.uid() + now(),
+-- overriding any client-supplied value. This makes handled_by/handled_at
+-- unforgeable (they are also excluded from the authenticated column grant
+-- below). Service-role/backend maintenance (no active member for auth.uid())
+-- leaves the audit fields untouched, so trusted backends may set them
+-- explicitly without the client-identity path.
+create or replace function public.stamp_enquiry_handler()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  acting_member uuid;
+begin
+  select dm.id into acting_member
+  from public.dashboard_members dm
+  where dm.user_id = auth.uid() and dm.is_active
+  limit 1;
+
+  if acting_member is not null then
+    new.handled_by := acting_member;
+    new.handled_at := now();
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists stamp_enquiry_handler on public.form_enquiries;
+create trigger stamp_enquiry_handler
+  before update on public.form_enquiries
+  for each row execute function public.stamp_enquiry_handler();
+
 -- =============================================================================
 -- 5. RLS + least-privilege grants for the 11 public content tables
 -- =============================================================================
@@ -236,7 +275,11 @@ $$;
 -- authenticated may update only these five columns, so an attempt to change
 -- full_name/email/message/etc. is rejected by PostgreSQL before RLS even runs.
 grant select on public.form_enquiries to authenticated;
-grant update (status, internal_notes, assigned_to, handled_at, handled_by)
+-- Column-scoped UPDATE grant: dashboard clients may set ONLY genuine workflow
+-- inputs. handled_by/handled_at are intentionally EXCLUDED — they are stamped by
+-- the database (stamp_enquiry_handler) from auth.uid(), so they cannot be forged.
+-- The original submission columns are likewise excluded and remain immutable.
+grant update (status, internal_notes, assigned_to)
   on public.form_enquiries to authenticated;
 
 create policy form_enquiries_dashboard_read on public.form_enquiries
@@ -259,10 +302,12 @@ alter table public.dashboard_members enable row level security;
 revoke all on public.dashboard_members from anon, authenticated;
 grant select, insert, update, delete on public.dashboard_members to authenticated;
 
--- A member may read their own row (needed by getCurrentDashboardMember()).
+-- A member may read their own row ONLY while active (needed by
+-- getCurrentDashboardMember()). An inactive member sees zero rows and therefore
+-- has zero dashboard capability.
 create policy dashboard_members_self_read on public.dashboard_members
   for select to authenticated
-  using (user_id = auth.uid());
+  using (user_id = auth.uid() and is_active);
 
 -- An active owner may read every membership row.
 create policy dashboard_members_owner_read on public.dashboard_members

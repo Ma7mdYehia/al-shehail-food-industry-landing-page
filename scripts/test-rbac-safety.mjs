@@ -69,7 +69,13 @@ assert("no self-promotion: non-owners have no membership write policy", !/dashbo
 assert("final-owner trigger protects last owner", /create trigger protect_final_owner/i.test(sql) && /final active dashboard owner/i.test(sql));
 assert("inactive members resolve to no role (is_active filter in role helper)", /current_dashboard_role[\s\S]*?is_active/i.test(sql));
 assert("helpers are SECURITY DEFINER with fixed search_path", /is_dashboard_member[\s\S]*?security definer[\s\S]*?set search_path\s*=\s*''/i.test(sql));
-assert("form_enquiries workflow-only UPDATE grant (original data immutable)", /grant update \(status,\s*internal_notes,\s*assigned_to,\s*handled_at,\s*handled_by\)\s*on (public\.)?form_enquiries to authenticated/i.test(sql));
+// F3: workflow-only grant EXCLUDES the audit fields (handled_by/handled_at)
+assert("form_enquiries UPDATE grant is workflow-only (status, internal_notes, assigned_to)", /grant update \(status,\s*internal_notes,\s*assigned_to\)\s*on (public\.)?form_enquiries to authenticated/i.test(sql));
+assert("audit fields (handled_by/handled_at) are NOT in the authenticated grant", !/grant update \([^)]*handled_(by|at)[^)]*\)\s*on (public\.)?form_enquiries to authenticated/i.test(sql));
+assert("audit fields are DB-stamped from auth.uid() (stamp_enquiry_handler trigger)", /create trigger stamp_enquiry_handler\s+before update on (public\.)?form_enquiries/i.test(sql) && /function (public\.)?stamp_enquiry_handler[\s\S]*?security definer[\s\S]*?set search_path\s*=\s*''[\s\S]*?new\.handled_by\s*:=/i.test(sql));
+assert("handled_by/handled_at consistency constraint (both null or both set)", /check \(\(handled_by is null\) = \(handled_at is null\)\)/i.test(sql));
+// F2: inactive members cannot even read their own membership row
+assert("self-read policy requires is_active (inactive members read nothing)", /dashboard_members_self_read[\s\S]*?using \(user_id = auth\.uid\(\) and is_active\)/i.test(sql));
 assert("form_enquiries has no anon access", !/create policy[^;]*form_enquiries[\s\S]*?to[^;]*\banon\b/i.test(sql) && !/grant[^;]*form_enquiries[^;]*\banon\b/i.test(sql));
 assert("anon has no INSERT/UPDATE/DELETE policy anywhere (P02 public reads preserved)", !/for\s+(insert|update|delete)\s+to[^;]*\banon\b/i.test(sql));
 assert("public active-content SELECT policies preserved (P02)", /products_public_read[\s\S]*?using \(is_active\)/i.test(sql));
@@ -79,12 +85,22 @@ assert("public active-content SELECT policies preserved (P02)", /products_public
 // ---------------------------------------------------------------------------
 console.log("\nMembership bootstrap safety:");
 const boot = readFileSync(join(HERE, "bootstrap-dashboard-members.mjs"), "utf8");
+const resolver = readFileSync(join(HERE, "dashboard-auth-resolver.mjs"), "utf8");
 assert("bootstrap default is dry-run (read-only)", /DRY RUN/i.test(boot) && /const APPLY = process\.argv\.includes\("--apply"\)/.test(boot));
-assert("--apply requires the service-role key", /SUPABASE_SERVICE_ROLE_KEY is required for --apply/.test(boot));
+assert("--apply requires BOTH Supabase env vars (via resolveLiveEnv)", /resolveLiveEnv\(\)/.test(boot) && /NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY/.test(resolver));
 assert("--apply refused in CI", /Refusing --apply in CI/.test(boot));
-assert("bootstrap never creates or invites auth users", !/createUser|inviteUserByEmail|admin\.invite/i.test(boot));
-assert("bootstrap fails closed on missing/ambiguous auth user", /missing/.test(boot) && /ambiguous/i.test(boot));
+assert("bootstrap never creates or invites auth users", !/createUser|inviteUserByEmail|admin\.invite/i.test(boot) && !/createUser|inviteUserByEmail/i.test(resolver));
+assert("resolver fails closed on missing/ambiguous/unconfirmed auth user", /no Supabase Auth user found/.test(resolver) && /ambiguous/i.test(resolver) && /not email-confirmed/i.test(resolver));
 assert("bootstrap does not delete other members", !/\.delete\(/.test(boot));
+// F4: atomic bulk upsert (no per-user write loop) + read-back verification
+assert("bootstrap uses a SINGLE bulk upsert (no per-user write loop)", /\.upsert\(rows,\s*\{\s*onConflict:\s*"user_id"\s*\}\)/.test(boot) && !/for \(const m of resolved\)[\s\S]*?\.upsert\(/.test(boot));
+assert("bootstrap performs a read-back verification of all mappings", /Read-back|read back|\.select\("user_id, email, display_name, role, is_active"\)/i.test(boot));
+// F1: shared resolver used by BOTH bootstrap and verifier
+const verifierSrc = readFileSync(join(HERE, "verify-dashboard-members.mjs"), "utf8");
+assert("bootstrap and verifier share the exact-email Auth resolver", /resolveAuthUsers/.test(boot) && /resolveAuthUsers/.test(verifierSrc));
+assert("verifier checks membership.user_id === resolved Auth id", /row\.user_id === authUserId/.test(verifierSrc));
+assert("verifier records genuine skips offline (not skipped-with-0)", /record\("resolve Auth users \(live\)", "skip"\)/.test(verifierSrc));
+assert("verifier treats a partial URL/service-role config as an error", /resolveLiveEnv/.test(verifierSrc) && /Partial Supabase configuration/.test(resolver));
 
 // ---------------------------------------------------------------------------
 // 5. Config integrity (three confirmed members, normalized, one owner).
@@ -103,28 +119,10 @@ for (const [email, role] of Object.entries(expected)) {
   assert(`${email} → ${role}`, m && m.role === role, m ? `role=${m.role}` : "missing");
 }
 
-// ---------------------------------------------------------------------------
-// 6. No service-role leakage into client bundles (if a build exists).
-// ---------------------------------------------------------------------------
-console.log("\nClient-bundle safety:");
-const staticDir = join(ROOT, ".next", "static");
-if (existsSync(staticDir)) {
-  let leaks = 0;
-  const walk = (dir) => {
-    for (const e of readdirSync(dir, { withFileTypes: true })) {
-      const p = join(dir, e.name);
-      if (e.isDirectory()) walk(p);
-      else if (/\.js$/.test(e.name)) {
-        const t = readFileSync(p, "utf8");
-        if (/SUPABASE_SERVICE_ROLE_KEY|service_role/i.test(t)) leaks++;
-      }
-    }
-  };
-  walk(staticDir);
-  assert("no service-role identifier in client bundle (.next/static)", leaks === 0, `${leaks} file(s)`);
-} else {
-  assert("client bundle scan", true, "skipped (.next/static not built)");
-}
+// NOTE: the client-bundle secret scan is intentionally NOT here — it lives in
+// scripts/scan-client-bundle.mjs and runs AFTER `next build` (npm run
+// scan:client-bundle) so it inspects the real bundle. These RBAC tests are the
+// pre-build structural checks and must not depend on a build artifact.
 
 console.log("-".repeat(60));
 if (failures) {

@@ -24,6 +24,7 @@ import {
   normalizeEmail,
   validateConfig,
 } from "./dashboard-members.config.mjs";
+import { resolveAuthUsers, resolveLiveEnv } from "./dashboard-auth-resolver.mjs";
 import { hostOnly } from "./phase-1-shared.mjs";
 
 const APPLY = process.argv.includes("--apply");
@@ -35,28 +36,6 @@ function log(...a) {
 function fail(msg) {
   console.error(`\n✖ ${msg}`);
   process.exit(1);
-}
-
-// Resolve exactly one existing auth user by normalized email, paging through the
-// admin user list. Fails closed on missing/duplicate. Returns the user id.
-async function resolveAuthUserId(admin, email) {
-  const target = normalizeEmail(email);
-  const matches = [];
-  let page = 1;
-  const perPage = 200;
-  // hard cap the paging to avoid an unbounded loop
-  for (; page <= 100; page += 1) {
-    const { data, error } = await admin.auth.admin.listUsers({ page, perPage });
-    if (error) throw new Error(`listUsers failed: ${error.message}`);
-    const users = data?.users ?? [];
-    for (const u of users) {
-      if (normalizeEmail(u.email) === target) matches.push(u.id);
-    }
-    if (users.length < perPage) break;
-  }
-  if (matches.length === 0) return { status: "missing" };
-  if (matches.length > 1) return { status: "ambiguous", count: matches.length };
-  return { status: "ok", userId: matches[0] };
 }
 
 async function main() {
@@ -87,52 +66,76 @@ async function main() {
 
   if (IN_CI) fail("Refusing --apply in CI. Run membership bootstrap from a trusted operator shell.");
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-  if (!url) fail("NEXT_PUBLIC_SUPABASE_URL is required for --apply.");
-  if (!serviceRoleKey) fail("SUPABASE_SERVICE_ROLE_KEY is required for --apply.");
+  // Require BOTH env vars; a partial config is a hard error (never a silent skip).
+  let env;
+  try {
+    env = resolveLiveEnv();
+  } catch (err) {
+    fail(err.message);
+  }
+  if (env.mode !== "live") fail("--apply requires NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.");
 
-  log("\nTarget Supabase host:", hostOnly(url), "(no credentials shown)");
+  log("\nTarget Supabase host:", hostOnly(env.url), "(no credentials shown)");
 
   const { createClient } = await import("@supabase/supabase-js");
-  const admin = createClient(url, serviceRoleKey, {
+  const admin = createClient(env.url, env.serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
-  // Resolve ALL emails first; fail closed before any write.
-  log("\nResolving existing Auth users by exact normalized email…");
-  const resolved = [];
-  for (const m of DASHBOARD_MEMBERS) {
+  // Resolve and validate EVERY Auth user before writing anything (fail closed on
+  // missing/ambiguous/unconfirmed/conflicting). No partial writes on failure.
+  log("\nResolving existing Auth users by exact normalized email (confirmed only)…");
+  let resolvedMap;
+  try {
+    resolvedMap = await resolveAuthUsers(admin, DASHBOARD_MEMBERS.map((m) => m.email));
+  } catch (err) {
+    fail(err.message);
+  }
+  for (const m of DASHBOARD_MEMBERS) log(`  ✓ ${normalizeEmail(m.email)} → auth user resolved`);
+
+  const rows = DASHBOARD_MEMBERS.map((m) => {
     const email = normalizeEmail(m.email);
-    const r = await resolveAuthUserId(admin, email);
-    if (r.status === "missing") {
-      fail(`Auth user not found for ${email}. Create/invite the user in Supabase Auth first — this script never creates users.`);
-    }
-    if (r.status === "ambiguous") {
-      fail(`Ambiguous: ${r.count} Auth users match ${email}. Resolve the duplicate before bootstrapping.`);
-    }
-    resolved.push({ ...m, email, userId: r.userId });
-    log(`  ✓ ${email} → auth user resolved`);
+    return {
+      user_id: resolvedMap.get(email).userId,
+      email,
+      display_name: m.displayName,
+      role: m.role,
+      is_active: true,
+    };
+  });
+
+  // ATOMIC write: submit all memberships in ONE bulk upsert request. A conflict/
+  // uniqueness failure applies NONE of them (a single INSERT ... ON CONFLICT
+  // statement is all-or-nothing). Never deletes additional members.
+  log("\nApplying all memberships in a single bulk upsert (atomic)…");
+  const { error: upErr } = await admin
+    .from("dashboard_members")
+    .upsert(rows, { onConflict: "user_id" });
+  if (upErr) fail(`Bulk membership upsert failed (no rows applied): ${upErr.message}`);
+
+  // Read-back verification of every expected mapping.
+  log("Reading back to verify mappings…");
+  const userIds = rows.map((r) => r.user_id);
+  const { data: back, error: backErr } = await admin
+    .from("dashboard_members")
+    .select("user_id, email, display_name, role, is_active")
+    .in("user_id", userIds);
+  if (backErr) fail(`Read-back failed: ${backErr.message}`);
+  const byId = new Map((back ?? []).map((r) => [r.user_id, r]));
+  for (const r of rows) {
+    const got = byId.get(r.user_id);
+    const ok =
+      got &&
+      normalizeEmail(got.email) === r.email &&
+      got.display_name === r.display_name &&
+      got.role === r.role &&
+      got.is_active === true;
+    if (!ok) fail(`Read-back mismatch for ${r.email} (expected role=${r.role}, active=true).`);
+    log(`  ✓ ${r.email} (${r.role}) verified`);
   }
 
-  // Upsert memberships (idempotent on user_id). Never delete other members.
-  log("\nUpserting memberships (idempotent; existing extra members are left intact)…");
-  for (const m of resolved) {
-    const { error } = await admin.from("dashboard_members").upsert(
-      {
-        user_id: m.userId,
-        email: m.email,
-        display_name: m.displayName,
-        role: m.role,
-        is_active: true,
-      },
-      { onConflict: "user_id" }
-    );
-    if (error) fail(`Upsert membership for ${m.email} failed: ${error.message}`);
-    log(`  ✓ ${m.email} (${m.role})`);
-  }
-
-  log("\n✓ Bootstrap complete. Re-running is idempotent and removes no members.");
+  log("\n✓ Bootstrap complete (atomic bulk upsert + read-back). Re-running is");
+  log("  idempotent and removes no members.");
 }
 
 main().catch((err) => fail(err?.stack || String(err)));

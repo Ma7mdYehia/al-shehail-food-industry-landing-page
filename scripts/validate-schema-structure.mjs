@@ -337,13 +337,26 @@ check(/for delete to authenticated using \(public\.is_dashboard_content_admin\(\
 // content DELETE is owner/admin only (editors excluded)
 check(/for delete to authenticated\s+using\s*\(public\.is_dashboard_content_admin\(\)\)/i.test(sql), "content DELETE restricted to owner/admin (is_dashboard_content_admin)", "content DELETE must use is_dashboard_content_admin()");
 
-// form_enquiries: workflow columns + column-level UPDATE grant (protects original data)
+// form_enquiries: workflow columns present
 for (const col of ["internal_notes", "assigned_to", "handled_at", "handled_by"]) {
   check(new RegExp(`add column ${col}\\b`, "i").test(sql), `form_enquiries adds workflow column ${col}`, `missing form_enquiries.${col}`);
 }
-check(/grant update \(status,\s*internal_notes,\s*assigned_to,\s*handled_at,\s*handled_by\)\s*on (public\.)?form_enquiries to authenticated/i.test(sql),
-  "form_enquiries UPDATE grant is column-scoped to workflow fields", "form_enquiries update grant must be column-scoped (protects original submission data)");
+// The authenticated UPDATE grant is workflow-ONLY and EXCLUDES audit fields, so
+// handled_by/handled_at cannot be forged by a dashboard client.
+check(/grant update \(status,\s*internal_notes,\s*assigned_to\)\s*on (public\.)?form_enquiries to authenticated/i.test(sql),
+  "form_enquiries UPDATE grant is workflow-only (excludes audit fields)", "form_enquiries update grant must be scoped to status/internal_notes/assigned_to");
+check(!/grant update \([^)]*handled_(by|at)[^)]*\)\s*on (public\.)?form_enquiries to authenticated/i.test(sql),
+  "handled_by/handled_at excluded from the authenticated grant", "audit fields must not be directly updatable by dashboard clients");
+check(/create trigger stamp_enquiry_handler\s+before update on (public\.)?form_enquiries/i.test(sql) &&
+  /function (public\.)?stamp_enquiry_handler[\s\S]*?security definer[\s\S]*?set search_path\s*=\s*''[\s\S]*?new\.handled_by\s*:=[\s\S]*?new\.handled_at\s*:=\s*now\(\)/i.test(sql),
+  "audit fields stamped by the DB from auth.uid() (stamp_enquiry_handler)", "must stamp handled_by/handled_at from auth.uid() in a definer trigger");
+check(/check \(\(handled_by is null\) = \(handled_at is null\)\)/i.test(sql),
+  "handled_by/handled_at consistency constraint present", "must constrain handled_by/handled_at to both-null-or-both-set");
 check(!/for delete to authenticated[^;]*form_enquiries/i.test(sql) && !/create policy form_enquiries_dashboard_delete/i.test(sql), "no DELETE policy for form_enquiries", "form_enquiries must have no delete policy in P03");
+
+// F2: inactive members cannot read their own membership row
+check(/dashboard_members_self_read[\s\S]*?using \(user_id = auth\.uid\(\) and is_active\)/i.test(sql),
+  "self-read membership policy requires is_active", "self-read policy must require user_id = auth.uid() AND is_active");
 
 // membership writes are owner-only (privilege-escalation guard)
 for (const action of ["insert", "update", "delete"]) {
@@ -357,9 +370,17 @@ if (existsSync(bootstrapPath)) {
   const boot = readFileSync(bootstrapPath, "utf8");
   check(/--apply/.test(boot) && /DRY RUN/i.test(boot), "bootstrap defaults to dry-run (read-only)", "bootstrap must default to dry-run");
   check(/Refusing --apply in CI/i.test(boot) && /process\.env\.CI/.test(boot), "bootstrap refuses --apply in CI", "bootstrap must refuse apply in CI");
-  check(/process\.env\.SUPABASE_SERVICE_ROLE_KEY/.test(boot), "bootstrap reads service role from env only", "bootstrap must read service role from env");
-  check(!/auth\.admin\.createUser|inviteUserByEmail|admin\.invite/i.test(boot), "bootstrap never creates or invites auth users", "bootstrap must not create/invite users");
-  check(!containsHardCodedSecret(boot), "bootstrap has no hard-coded secret", "bootstrap contains a hard-coded secret");
+  // Service role is read via the shared resolver's resolveLiveEnv().
+  const resolverPath = join(HERE, "dashboard-auth-resolver.mjs");
+  const resolverSrc = existsSync(resolverPath) ? readFileSync(resolverPath, "utf8") : "";
+  check(/resolveLiveEnv\(\)/.test(boot) && /process\.env\.SUPABASE_SERVICE_ROLE_KEY/.test(resolverSrc), "bootstrap reads service role from env (via shared resolver)", "bootstrap must read service role from env");
+  check(!/auth\.admin\.createUser|inviteUserByEmail|admin\.invite/i.test(boot) && !/createUser|inviteUserByEmail/i.test(resolverSrc), "bootstrap never creates or invites auth users", "bootstrap must not create/invite users");
+  check(/\.upsert\(rows,/.test(boot) && !/for \(const m of resolved\)[\s\S]*?\.upsert\(/.test(boot), "bootstrap writes memberships in one atomic bulk upsert", "bootstrap must not use a per-user write loop");
+  check(!containsHardCodedSecret(boot) && !containsHardCodedSecret(resolverSrc), "bootstrap/resolver have no hard-coded secret", "bootstrap contains a hard-coded secret");
+  // verifier resolves Auth identity (not just membership rows)
+  const verifierMembersPath = join(HERE, "verify-dashboard-members.mjs");
+  const vsrc = existsSync(verifierMembersPath) ? readFileSync(verifierMembersPath, "utf8") : "";
+  check(/resolveAuthUsers/.test(vsrc) && /row\.user_id === authUserId/.test(vsrc), "membership verifier checks user_id against resolved Auth id", "verifier must verify Auth identity, not only membership rows");
 }
 // config carries the three confirmed members, no secrets
 const configPath = join(HERE, "dashboard-members.config.mjs");
