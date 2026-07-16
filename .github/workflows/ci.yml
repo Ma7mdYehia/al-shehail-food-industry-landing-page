@@ -40,6 +40,12 @@ jobs:
       - name: Seed apply/verify safety tests
         run: npm run db:test:safety
 
+      - name: Dashboard RBAC/auth safety tests
+        run: npm run db:test:rbac
+
+      - name: Membership bootstrap is read-only by default
+        run: npm run db:members:bootstrap
+
       - name: Lint
         run: npm run lint
 

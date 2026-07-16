@@ -15,7 +15,11 @@
     "db:seed:apply": "node scripts/import-phase-1-to-supabase.mjs --apply",
     "db:seed:overwrite": "node scripts/import-phase-1-to-supabase.mjs --apply --overwrite-existing",
     "db:verify": "node scripts/verify-phase-1-supabase.mjs",
-    "db:test:safety": "node scripts/test-seed-safety.mjs"
+    "db:test:safety": "node scripts/test-seed-safety.mjs",
+    "db:test:rbac": "node scripts/test-rbac-safety.mjs",
+    "db:members:bootstrap": "node scripts/bootstrap-dashboard-members.mjs",
+    "db:members:bootstrap:apply": "node scripts/bootstrap-dashboard-members.mjs --apply",
+    "db:members:verify": "node scripts/verify-dashboard-members.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",
