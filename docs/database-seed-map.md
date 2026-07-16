@@ -1,5 +1,13 @@
 # Database seed map — Phase 1
 
+> **⚠️ Partially superseded (Production Patch 02).** A seed **importer** now
+> exists (`scripts/import-phase-1-to-supabase.mjs`) and loads the validated JSON
+> under `data/seed/phase-1/` into Supabase — so the note below that "no seed
+> script exists yet" is obsolete. Table ids are **`TEXT`** (deterministic seed
+> ids), not UUIDs. See
+> [`production-database-foundation-p02.md`](./production-database-foundation-p02.md).
+> The mapping reasoning below is retained as historical context.
+
 Maps each current source-of-truth file to the future database tables it
 would seed, per the schema in `docs/database-schema-phase-1.md`. This is a
 planning document — no seed script exists yet, and nothing here is wired

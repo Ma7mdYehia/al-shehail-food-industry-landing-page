@@ -9,7 +9,13 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "seed:export": "node scripts/export-phase-1-seed.mjs",
-    "seed:validate": "node scripts/validate-phase-1-seed.mjs"
+    "seed:validate": "node scripts/validate-phase-1-seed.mjs",
+    "db:schema:validate": "node scripts/validate-schema-structure.mjs",
+    "db:seed:dry-run": "node scripts/import-phase-1-to-supabase.mjs",
+    "db:seed:apply": "node scripts/import-phase-1-to-supabase.mjs --apply",
+    "db:seed:overwrite": "node scripts/import-phase-1-to-supabase.mjs --apply --overwrite-existing",
+    "db:verify": "node scripts/verify-phase-1-supabase.mjs",
+    "db:test:safety": "node scripts/test-seed-safety.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",
@@ -26,6 +32,7 @@
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.35",
     "postcss": "8.4.39",
+    "supabase": "^2.109.1",
     "tailwindcss": "3.4.6",
     "typescript": "5.5.3"
   }

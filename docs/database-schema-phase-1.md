@@ -1,5 +1,14 @@
 # Database schema — Phase 1
 
+> **⚠️ Partially superseded (Production Patch 02).** The implemented schema now
+> lives in `supabase/migrations/` and is documented in
+> [`production-database-foundation-p02.md`](./production-database-foundation-p02.md).
+> Two statements below are now factually obsolete: (1) seed-backed content tables
+> use **`TEXT` primary keys** (preserving the deterministic seed ids), **not**
+> the `UUID` primary keys proposed here — see the P02 doc's "Primary-key
+> decision"; and (2) the schema is no longer only a plan. The original design
+> reasoning is retained as historical context.
+
 This document is a **planning artifact only**. It designs the Phase 1
 database schema and seed architecture for Al Shehail Food Industries' content
 (products, services, partners). Nothing in this document is connected to the
