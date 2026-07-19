@@ -13,7 +13,7 @@ This patch incorporates the review-requested changes:
 2. **Inactive members read nothing** — the self-read policy requires `is_active`.
 3. **Enquiry audit fields are unforgeable** — `handled_by`/`handled_at` are removed from the authenticated grant and stamped server-side from `auth.uid()` + `now()`, with a both-or-neither constraint.
 4. **Bootstrap is atomic** — a single bulk upsert + read-back verification (no per-user write loop).
-5. **Client-bundle scan runs post-build** as its own command; a missing `.next/static` is a CI failure.
+5. **Client-bundle scan runs post-build** as its own command; a missing `.next/static` is a CI failure. The scan is **role-aware** — a Supabase `anon` token is allowed (public `NEXT_PUBLIC_SUPABASE_ANON_KEY`), while `service_role`/user-session/`sb_secret_` are rejected — with dependency-free synthetic unit tests.
 6. **Runtime aligned to Node 22** (engines, `.nvmrc`, CI, Vercel note).
 
 ## 1. Branches
@@ -221,6 +221,17 @@ auth.uid() AND is_active`) or all rows if owner; INSERT/UPDATE/DELETE owner-only
   config checks (pre-build, no bundle dependency). **CI.**
 - **`npm run scan:client-bundle`** — dedicated **post-build** client-bundle secret
   scan; a missing `.next/static` is a **failure**, not a skip. **CI (after build).**
+  It is **role-aware**, not a blanket JWT rejector: JWT payloads are decoded
+  locally (never printed) and a Supabase token with role exactly `anon` is
+  **allowed** (so the legitimate `NEXT_PUBLIC_SUPABASE_ANON_KEY` legacy JWT does
+  not trip it), while `service_role`, `authenticated`/user-session, and malformed
+  candidates are **rejected**. Modern keys: `sb_publishable_…` allowed,
+  `sb_secret_…` rejected; server identifiers (`SUPABASE_SERVICE_ROLE_KEY`, …)
+  rejected. Findings never contain the matched value.
+- **`npm run test:scan-bundle`** — dependency-free scanner unit tests over
+  **synthetic** tokens (anon allowed; service_role/authenticated/`sb_secret_`/
+  forbidden-identifier rejected; missing `.next/static` fails; findings never leak
+  the value). **CI (pre-build).**
 - **`npm run db:test:safety`** — the P02 seed-safety tests remain green. **CI.**
 - **`scripts/local-rbac-rls-test.sh`** — LOCAL-ONLY behavioral RLS test.
 

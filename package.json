@@ -21,6 +21,7 @@
     "db:test:safety": "node scripts/test-seed-safety.mjs",
     "db:test:rbac": "node scripts/test-rbac-safety.mjs",
     "scan:client-bundle": "node scripts/scan-client-bundle.mjs",
+    "test:scan-bundle": "node scripts/test-scan-client-bundle.mjs",
     "db:members:bootstrap": "node scripts/bootstrap-dashboard-members.mjs",
     "db:members:bootstrap:apply": "node scripts/bootstrap-dashboard-members.mjs --apply",
     "db:members:verify": "node scripts/verify-dashboard-members.mjs"

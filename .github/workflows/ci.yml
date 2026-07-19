@@ -44,6 +44,9 @@ jobs:
       - name: Dashboard RBAC/auth safety tests
         run: npm run db:test:rbac
 
+      - name: Client-bundle scanner unit tests (synthetic)
+        run: npm run test:scan-bundle
+
       - name: Membership bootstrap is read-only by default
         run: npm run db:members:bootstrap
 
