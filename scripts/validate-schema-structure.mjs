@@ -75,17 +75,25 @@ for (const t of ALL_TABLES) {
   );
 }
 
-// ---- 3. form_enquiries has NO policy (public or otherwise) -----------------
+// ---- 3. form_enquiries: anon remains fully locked out ---------------------
+// (P03 adds authenticated dashboard access, but anon must still have no policy
+// and no grant. We assert nothing targets `anon` on form_enquiries.)
 check(
-  !/create policy[^;]*\bon\s+(public\.)?form_enquiries\b/i.test(sql),
-  "form_enquiries has no RLS policy (deny-all for anon/authenticated)",
-  "form_enquiries must NOT have any RLS policy in Patch 02"
+  !/create policy[^;]*\bon\s+(public\.)?form_enquiries\b[\s\S]*?\bto\b[^;]*\banon\b/i.test(sql),
+  "form_enquiries has no anon RLS policy",
+  "form_enquiries must not expose any policy to anon"
 );
-// and it must not be granted to anon/authenticated
 check(
-  !/grant[^;]*\bon[^;]*form_enquiries[^;]*to[^;]*\b(anon|authenticated)\b/i.test(sql),
-  "form_enquiries not granted to anon/authenticated",
-  "form_enquiries must not be granted to anon/authenticated"
+  !/grant[^;]*\bon[^;]*form_enquiries[^;]*to[^;]*\banon\b/i.test(sql),
+  "form_enquiries not granted to anon",
+  "form_enquiries must not be granted to anon"
+);
+// anon must never gain write on content tables either (no policy 'to anon' for
+// insert/update/delete anywhere).
+check(
+  !/for\s+(insert|update|delete)\s+to[^;]*\banon\b/i.test(sql),
+  "no anon INSERT/UPDATE/DELETE policy exists",
+  "anon must have no write policy on any table"
 );
 
 // ---- 4. required indexes ---------------------------------------------------
@@ -279,6 +287,126 @@ if (existsSync(verifierPath)) {
     "verifier must not update/delete a product row"
   );
 }
+
+// ---- 10. Production Patch 03 — Auth/RBAC structural guards -----------------
+// dashboard_members membership table + RLS
+check(/create table (public\.)?dashboard_members\b/i.test(sql), "dashboard_members table created", "missing dashboard_members table");
+check(/alter table\s+(public\.)?dashboard_members\s+enable row level security/i.test(sql), "RLS enabled on dashboard_members", "dashboard_members RLS not enabled");
+check(/references auth\.users\s*\(id\)/i.test(sql), "dashboard_members.user_id references auth.users(id)", "membership must reference auth.users(id)");
+check(/role in \('owner',\s*'admin',\s*'editor'\)/i.test(sql), "dashboard_members role constrained to owner/admin/editor", "missing role CHECK");
+check(/email = lower\(email\)/i.test(sql), "dashboard_members email stored lowercase (CHECK)", "missing lowercase email CHECK");
+
+// SECURITY DEFINER helpers with a fixed search_path (each must be qualified)
+for (const fn of ["current_dashboard_role", "is_dashboard_member", "is_dashboard_content_admin", "is_dashboard_owner", "protect_final_owner"]) {
+  const defRe = new RegExp(`function (public\\.)?${fn}\\b[\\s\\S]*?security definer[\\s\\S]*?set search_path\\s*=\\s*''`, "i");
+  check(defRe.test(sql), `${fn} is SECURITY DEFINER with fixed empty search_path`, `${fn} must be SECURITY DEFINER with set search_path = ''`);
+}
+// least-privilege EXECUTE: revoked from public, granted to authenticated
+check(/revoke all on function[\s\S]*?current_dashboard_role[\s\S]*?from public/i.test(sql), "helper EXECUTE revoked from public", "must revoke EXECUTE on helpers from public");
+check(/grant execute on function[\s\S]*?to authenticated/i.test(sql), "helper EXECUTE granted to authenticated", "must grant EXECUTE on helpers to authenticated");
+
+// Final-owner protection trigger
+check(/create trigger protect_final_owner\s+before update or delete on (public\.)?dashboard_members/i.test(sql), "final-owner protection trigger installed (BEFORE UPDATE OR DELETE)", "missing protect_final_owner trigger");
+check(/final active dashboard owner/i.test(sql), "final-owner guard raises a clear exception", "missing final-owner exception message");
+check(/for update\s*\n?\s*\)\s*locked_owners/i.test(sql) || /for update[\s\S]{0,40}\)\s*locked_owners/i.test(sql), "final-owner guard locks other owner rows (row lock, not aggregate+FOR UPDATE)", "final-owner guard must lock rows in a subquery");
+
+// Per-action policies (no broad ALL); UPDATEs carry WITH CHECK. The 11 content
+// tables get their dashboard policies from a DO loop over content_tables, so we
+// assert the loop covers every table and that each of the 4 action templates is
+// present with the correct predicate (policy names are generated via %I).
+check(!/for all to (anon|authenticated)/i.test(sql), "no broad 'FOR ALL' policy is used", "must use per-action policies, not FOR ALL");
+for (const t of CONTENT_TABLES) {
+  check(new RegExp(`content_tables text\\[\\][\\s\\S]*?'${t}'`, "i").test(sql), `content_tables loop covers ${t}`, `dashboard policy loop must include ${t}`);
+}
+check(/for select to authenticated using \(public\.is_dashboard_member\(\)\)/i.test(sql), "content dashboard SELECT template (read-all for members)", "missing content dashboard SELECT template");
+check(/for insert to authenticated with check \(public\.is_dashboard_member\(\)\)/i.test(sql), "content dashboard INSERT template", "missing content dashboard INSERT template");
+check(/for update to authenticated using \(public\.is_dashboard_member\(\)\) with check \(public\.is_dashboard_member\(\)\)/i.test(sql), "content dashboard UPDATE template (USING + WITH CHECK)", "missing content dashboard UPDATE template");
+check(/for delete to authenticated using \(public\.is_dashboard_content_admin\(\)\)/i.test(sql), "content dashboard DELETE template (owner/admin only)", "missing content dashboard DELETE template");
+// every UPDATE policy statement has BOTH using and with check. Split on ';'
+// (these policy statements contain no inner semicolons) and inspect each.
+{
+  const updateStmts = sql
+    .split(";")
+    .map((s) => s.trim())
+    .filter((s) => /for update to authenticated/i.test(s));
+  const allHaveBoth = updateStmts.length >= 3 && updateStmts.every(
+    (s) => /\busing\s*\(/i.test(s) && /\bwith check\s*\(/i.test(s)
+  );
+  check(allHaveBoth, "every UPDATE policy has both USING and WITH CHECK", "every UPDATE policy must have USING and WITH CHECK");
+}
+// content DELETE is owner/admin only (editors excluded)
+check(/for delete to authenticated\s+using\s*\(public\.is_dashboard_content_admin\(\)\)/i.test(sql), "content DELETE restricted to owner/admin (is_dashboard_content_admin)", "content DELETE must use is_dashboard_content_admin()");
+
+// form_enquiries: workflow columns present
+for (const col of ["internal_notes", "assigned_to", "handled_at", "handled_by"]) {
+  check(new RegExp(`add column ${col}\\b`, "i").test(sql), `form_enquiries adds workflow column ${col}`, `missing form_enquiries.${col}`);
+}
+// The authenticated UPDATE grant is workflow-ONLY and EXCLUDES audit fields, so
+// handled_by/handled_at cannot be forged by a dashboard client.
+check(/grant update \(status,\s*internal_notes,\s*assigned_to\)\s*on (public\.)?form_enquiries to authenticated/i.test(sql),
+  "form_enquiries UPDATE grant is workflow-only (excludes audit fields)", "form_enquiries update grant must be scoped to status/internal_notes/assigned_to");
+check(!/grant update \([^)]*handled_(by|at)[^)]*\)\s*on (public\.)?form_enquiries to authenticated/i.test(sql),
+  "handled_by/handled_at excluded from the authenticated grant", "audit fields must not be directly updatable by dashboard clients");
+check(/create trigger stamp_enquiry_handler\s+before update on (public\.)?form_enquiries/i.test(sql) &&
+  /function (public\.)?stamp_enquiry_handler[\s\S]*?security definer[\s\S]*?set search_path\s*=\s*''[\s\S]*?new\.handled_by\s*:=[\s\S]*?new\.handled_at\s*:=\s*now\(\)/i.test(sql),
+  "audit fields stamped by the DB from auth.uid() (stamp_enquiry_handler)", "must stamp handled_by/handled_at from auth.uid() in a definer trigger");
+check(/check \(\(handled_by is null\) = \(handled_at is null\)\)/i.test(sql),
+  "handled_by/handled_at consistency constraint present", "must constrain handled_by/handled_at to both-null-or-both-set");
+check(!/for delete to authenticated[^;]*form_enquiries/i.test(sql) && !/create policy form_enquiries_dashboard_delete/i.test(sql), "no DELETE policy for form_enquiries", "form_enquiries must have no delete policy in P03");
+
+// F2: inactive members cannot read their own membership row
+check(/dashboard_members_self_read[\s\S]*?using \(user_id = auth\.uid\(\) and is_active\)/i.test(sql),
+  "self-read membership policy requires is_active", "self-read policy must require user_id = auth.uid() AND is_active");
+
+// membership writes are owner-only (privilege-escalation guard)
+for (const action of ["insert", "update", "delete"]) {
+  check(new RegExp(`create policy dashboard_members_owner_${action}\\b`, "i").test(sql), `dashboard_members ${action} is owner-only`, `dashboard_members ${action} must be owner-only`);
+}
+
+// ---- 11. P03 scripts: bootstrap dry-run default, apply gating, no secrets ---
+const bootstrapPath = join(HERE, "bootstrap-dashboard-members.mjs");
+check(existsSync(bootstrapPath), "membership bootstrap script exists", "missing bootstrap-dashboard-members.mjs");
+if (existsSync(bootstrapPath)) {
+  const boot = readFileSync(bootstrapPath, "utf8");
+  check(/--apply/.test(boot) && /DRY RUN/i.test(boot), "bootstrap defaults to dry-run (read-only)", "bootstrap must default to dry-run");
+  check(/Refusing --apply in CI/i.test(boot) && /process\.env\.CI/.test(boot), "bootstrap refuses --apply in CI", "bootstrap must refuse apply in CI");
+  // Service role is read via the shared resolver's resolveLiveEnv().
+  const resolverPath = join(HERE, "dashboard-auth-resolver.mjs");
+  const resolverSrc = existsSync(resolverPath) ? readFileSync(resolverPath, "utf8") : "";
+  check(/resolveLiveEnv\(\)/.test(boot) && /process\.env\.SUPABASE_SERVICE_ROLE_KEY/.test(resolverSrc), "bootstrap reads service role from env (via shared resolver)", "bootstrap must read service role from env");
+  check(!/auth\.admin\.createUser|inviteUserByEmail|admin\.invite/i.test(boot) && !/createUser|inviteUserByEmail/i.test(resolverSrc), "bootstrap never creates or invites auth users", "bootstrap must not create/invite users");
+  check(/\.upsert\(rows,/.test(boot) && !/for \(const m of resolved\)[\s\S]*?\.upsert\(/.test(boot), "bootstrap writes memberships in one atomic bulk upsert", "bootstrap must not use a per-user write loop");
+  check(!containsHardCodedSecret(boot) && !containsHardCodedSecret(resolverSrc), "bootstrap/resolver have no hard-coded secret", "bootstrap contains a hard-coded secret");
+  // verifier resolves Auth identity (not just membership rows)
+  const verifierMembersPath = join(HERE, "verify-dashboard-members.mjs");
+  const vsrc = existsSync(verifierMembersPath) ? readFileSync(verifierMembersPath, "utf8") : "";
+  check(/resolveAuthUsers/.test(vsrc) && /row\.user_id === authUserId/.test(vsrc), "membership verifier checks user_id against resolved Auth id", "verifier must verify Auth identity, not only membership rows");
+}
+// config carries the three confirmed members, no secrets
+const configPath = join(HERE, "dashboard-members.config.mjs");
+if (existsSync(configPath)) {
+  const cfg = readFileSync(configPath, "utf8");
+  for (const email of ["marketing@halsabake.com", "gm@elshohail.com", "osama@halsabake.com"]) {
+    check(cfg.includes(email), `config includes ${email}`, `config missing ${email}`);
+  }
+  check(!containsHardCodedSecret(cfg), "members config has no hard-coded secret", "config contains a secret");
+}
+
+// ---- 12. TS auth utilities are server-only (no service role in client) -----
+const authDashPath = join(ROOT, "lib", "auth", "dashboard.ts");
+check(existsSync(authDashPath), "lib/auth/dashboard.ts exists", "missing lib/auth/dashboard.ts");
+if (existsSync(authDashPath)) {
+  const authSrc = readFileSync(authDashPath, "utf8");
+  check(/typeof window !== "undefined"/.test(authSrc), "dashboard auth module has a server-only guard", "auth module must guard against client import");
+  check(!/SERVICE_ROLE/i.test(authSrc), "dashboard auth module never references the service-role key", "auth module must not use the service-role key");
+  check(/getCurrentDashboardMember/.test(authSrc) && /requireDashboardRole/.test(authSrc), "auth module exports getCurrentDashboardMember + requireDashboardRole", "auth utilities missing");
+}
+
+// package scripts for P03
+check(!!(pkg.scripts && pkg.scripts["db:members:bootstrap"] && pkg.scripts["db:members:verify"] && pkg.scripts["db:test:rbac"]),
+  "P03 db:members:* and db:test:rbac scripts registered", "missing P03 package scripts");
+check(!!(pkg.scripts && /--apply/.test(pkg.scripts["db:members:bootstrap:apply"] || "") && !/--apply/.test(pkg.scripts["db:members:bootstrap"] || "")),
+  "db:members:bootstrap is dry-run; :apply carries --apply", "membership bootstrap script gating incorrect");
 
 // Heuristic secret scan: long base64-ish blobs or JWT-shaped strings assigned
 // to a literal. Placeholders/env reads are fine.

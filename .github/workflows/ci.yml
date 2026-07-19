@@ -25,7 +25,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Node 22 to match the installed @supabase SDK engines (>=22).
+          node-version-file: ".nvmrc"
           cache: "npm"
 
       - name: Install dependencies
@@ -40,6 +41,15 @@ jobs:
       - name: Seed apply/verify safety tests
         run: npm run db:test:safety
 
+      - name: Dashboard RBAC/auth safety tests
+        run: npm run db:test:rbac
+
+      - name: Client-bundle scanner unit tests (synthetic)
+        run: npm run test:scan-bundle
+
+      - name: Membership bootstrap is read-only by default
+        run: npm run db:members:bootstrap
+
       - name: Lint
         run: npm run lint
 
@@ -48,3 +58,8 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      # Runs AFTER build so it scans the real client bundle. A missing
+      # .next/static directory is a FAILURE, not a skipped pass.
+      - name: Client bundle secret scan (post-build)
+        run: npm run scan:client-bundle
