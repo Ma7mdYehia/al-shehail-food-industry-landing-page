@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { updatePasswordAction } from "@/lib/auth/dashboard-actions";
 import { MIN_PASSWORD_LENGTH } from "@/lib/auth/password";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { hasSupabasePublicConfig } from "@/lib/env/public";
+import { getDashboardAuthFlowSecret, hasDashboardAuthFlowSecret } from "@/lib/env/server";
 import { DASHBOARD_LOGIN_PATH } from "@/lib/auth/redirect";
+import { FLOW_GATE_COOKIE, verifyGateToken } from "@/lib/auth/flow-gate";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Set a new password", robots: { index: false, follow: false } };
@@ -20,8 +23,10 @@ export default async function UpdatePasswordPage({
 }: {
   searchParams: { error?: string };
 }) {
-  // This route is unavailable without an authenticated recovery/invite session.
-  if (!hasSupabasePublicConfig()) {
+  // This route is unavailable without BOTH an authenticated session AND a valid
+  // recovery/invite gate bound to that user. A normal password session (no gate)
+  // is redirected to login — it can never reach the password-set form.
+  if (!hasSupabasePublicConfig() || !hasDashboardAuthFlowSecret()) {
     return (
       <section className="dash-glass dash-auth-card">
         <h1>Set a new password</h1>
@@ -38,7 +43,15 @@ export default async function UpdatePasswordPage({
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) redirect(DASHBOARD_LOGIN_PATH);
-  } catch {
+
+    const gate = cookies().get(FLOW_GATE_COOKIE)?.value;
+    const verdict = verifyGateToken(getDashboardAuthFlowSecret(), gate, { userId: user.id });
+    if (!verdict.ok) redirect(DASHBOARD_LOGIN_PATH);
+  } catch (err) {
+    // Re-throw Next's redirect control-flow; otherwise fail closed to login.
+    if (err && typeof err === "object" && "digest" in err && String((err as { digest?: string }).digest).startsWith("NEXT_REDIRECT")) {
+      throw err;
+    }
     redirect(DASHBOARD_LOGIN_PATH);
   }
 

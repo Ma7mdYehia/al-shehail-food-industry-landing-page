@@ -23,6 +23,7 @@
     "scan:client-bundle": "node scripts/scan-client-bundle.mjs",
     "test:scan-bundle": "node scripts/test-scan-client-bundle.mjs",
     "test:auth-shell": "node scripts/test-dashboard-auth-safety.mjs",
+    "test:auth-flow": "node scripts/test-auth-flow-gate.mjs",
     "db:members:bootstrap": "node scripts/bootstrap-dashboard-members.mjs",
     "db:members:bootstrap:apply": "node scripts/bootstrap-dashboard-members.mjs --apply",
     "db:members:verify": "node scripts/verify-dashboard-members.mjs"

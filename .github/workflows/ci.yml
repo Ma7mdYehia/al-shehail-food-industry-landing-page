@@ -50,6 +50,9 @@ jobs:
       - name: Dashboard auth/shell safety tests (P04)
         run: npm run test:auth-shell
 
+      - name: Dashboard recovery/invite gate tests (P04)
+        run: npm run test:auth-flow
+
       - name: Membership bootstrap is read-only by default
         run: npm run db:members:bootstrap
 

@@ -69,17 +69,35 @@ export function safeDashboardReturnPath(
   // Keep only the pathname (drop query and fragment).
   const pathname = decoded.split("?")[0].split("#")[0];
 
+  // Reject dot-segment traversal, literal or still-encoded. The single decode
+  // above turns `%2e%2e` into `..`; a leftover `%2e` (e.g. double-encoded
+  // `%252e`) is rejected here too. Both forms could otherwise be normalized by a
+  // URL parser to escape the /dashboard subtree.
+  if (/%2e/i.test(pathname)) return fallback;
+  if (pathname.split("/").some((seg) => seg === "." || seg === "..")) return fallback;
+
+  // Canonicalize with the URL parser and require the result to be UNCHANGED and
+  // still under /dashboard (so any normalization that would move it out is
+  // rejected rather than silently accepted).
+  let canonical: string;
+  try {
+    canonical = new URL(pathname, "https://internal.invalid").pathname;
+  } catch {
+    return fallback;
+  }
+  if (canonical !== pathname) return fallback;
+
   // Confirm it targets the dashboard subtree exactly.
-  if (pathname !== DASHBOARD_HOME && !pathname.startsWith("/dashboard/")) {
+  if (canonical !== DASHBOARD_HOME && !canonical.startsWith("/dashboard/")) {
     return fallback;
   }
 
   // Reject auth-route loops.
   for (const prefix of LOOPING_PREFIXES) {
-    if (pathname === prefix || pathname.startsWith(prefix + "/")) return fallback;
+    if (canonical === prefix || canonical.startsWith(prefix + "/")) return fallback;
   }
 
-  return pathname;
+  return canonical;
 }
 
 /**

@@ -67,6 +67,13 @@ assert("callback loop rejected", S("/dashboard/auth/callback") === "/dashboard")
 assert("update-password loop rejected", S("/dashboard/update-password") === "/dashboard");
 assert("forbidden loop rejected", S("/dashboard/forbidden") === "/dashboard");
 assert("query/hash stripped", S("/dashboard/products?x=1#y") === "/dashboard/products");
+// Dot-segment traversal (literal + encoded) must be rejected.
+assert("/dashboard/../ rejected", S("/dashboard/../") === "/dashboard");
+assert("/dashboard/%2e%2e/ rejected", S("/dashboard/%2e%2e/") === "/dashboard");
+assert("/dashboard/products/../../ rejected", S("/dashboard/products/../../") === "/dashboard");
+assert("double-encoded /dashboard/%252e%252e/ rejected", S("/dashboard/%252e%252e/") === "/dashboard");
+assert("single dot segment /dashboard/./x rejected", S("/dashboard/./x") === "/dashboard");
+assert("mixed traversal /dashboard/a/../../evil rejected", S("/dashboard/a/../../evil") === "/dashboard");
 assert("non-string rejected", S(undefined) === "/dashboard" && S(123) === "/dashboard");
 assert("loginPathWithReturn keeps safe return", redirect.loginPathWithReturn("/dashboard/products") === "/dashboard/login?returnTo=%2Fdashboard%2Fproducts");
 assert("loginPathWithReturn drops external", redirect.loginPathWithReturn("https://evil.example") === "/dashboard/login");
@@ -126,6 +133,20 @@ assert("login page has no signup link", !/sign[-\s]?up/i.test(readFileSync(join(
 console.log("\nNo service-role in dashboard runtime:");
 assert("no SERVICE_ROLE / getSupabaseServiceRoleKey in dashboard runtime", !/SERVICE_ROLE|getSupabaseServiceRoleKey/i.test(runtimeSrc));
 assert("dashboard shell uses only the request Supabase client", /createSupabaseServerClient/.test(runtimeSrc) && !/service_role/i.test(runtimeSrc));
+
+// ---------------------------------------------------------------------------
+// 5b. Authenticated-shell mobile-navigation accessibility (DashboardShell).
+// ---------------------------------------------------------------------------
+console.log("\nAuthenticated shell accessibility:");
+const shell = readFileSync(join(ROOT, "components/dashboard/DashboardShell.tsx"), "utf8");
+assert("nav has a stable id and toggle uses aria-controls", /id=\{NAV_ID\}/.test(shell) && /aria-controls=\{NAV_ID\}/.test(shell) && /const NAV_ID = "dashboard-nav"/.test(shell));
+assert("toggle exposes aria-expanded", /aria-expanded=\{open\}/.test(shell));
+assert("closed mobile drawer is inert (non-focusable)", /drawerInert = isMobile && !open/.test(shell) && /inertProp\(drawerInert\)/.test(shell) && /inert: true/.test(shell));
+assert("open mobile drawer makes background inert (focus containment)", /backgroundInert = isMobile && open/.test(shell) && /inertProp\(backgroundInert\)/.test(shell));
+assert("Escape closes the drawer", /e\.key === "Escape"/.test(shell));
+assert("focus returns to the toggle on close", /toggleRef\.current\?\.focus\(\)/.test(shell));
+assert("mobile detection via matchMedia (desktop sidebar never inert)", /matchMedia\(MOBILE_QUERY\)/.test(shell));
+assert("desktop sidebar is never disabled/inert (inert gated on isMobile)", /isMobile && !open/.test(shell) && /isMobile && open/.test(shell));
 
 // ---------------------------------------------------------------------------
 // 6. Middleware is dashboard-scoped and uses getUser (not getSession).

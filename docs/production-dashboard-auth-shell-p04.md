@@ -11,6 +11,24 @@ enquiry management, and team management are secure "Coming next" placeholders.
 No remote Supabase/Auth/Production changes, no public signup, no public-website
 change.
 
+## 0. Codex review fixes (applied)
+
+1. **Recovery/invite authorization is now enforced** by a short-lived, HMAC-signed,
+   user-bound **gate** (HttpOnly cookie), not by a query parameter. Recovery PKCE
+   requires a matching `state` cookie; invite/recovery via email uses
+   `verifyOtp({ token_hash, type })`. A normal password session can no longer
+   reach the password-set flow. After a successful update the gate is consumed
+   and **all sessions are invalidated** (fresh login required). New server-only
+   secret `DASHBOARD_AUTH_FLOW_SECRET`.
+2. **Mobile navigation accessibility**: the closed mobile drawer is genuinely
+   `inert` (out of tab order + a11y tree); the toggle has `aria-controls` +
+   `aria-expanded`; Escape closes and returns focus to the toggle; the open
+   drawer makes the background `inert` (focus containment). The desktop sidebar
+   is never disabled/inert.
+3. **`returnTo` dot-segment traversal** (`/dashboard/../`, `/dashboard/%2e%2e/`,
+   `/dashboard/products/../../`, double-encoded variants) is now canonicalized
+   and rejected.
+
 ## 1. Branches
 
 - **Source branch (PR base):** `ui/homepage-glassmorphism-higgsfield-assets`
@@ -47,14 +65,24 @@ separate from the public `(en)/`/`ar/` route groups.
   account exists…" response regardless of existence. The recovery link's
   `redirectTo` is built from the **canonical site URL** →
   `<site>/dashboard/auth/callback?type=recovery`.
-- **Auth callback** — `GET /dashboard/auth/callback` exchanges the PKCE `code`
-  **server-side** (`exchangeCodeForSession`), validates the `next` path, and
-  redirects. `recovery`/`invite` types land on `/dashboard/update-password`.
-  Tokens are never placed in URLs, logs, page content, or client storage;
-  invalid/expired links produce a generic `?error=auth` redirect to login.
-- **Update password** — requires an authenticated (recovery/invite) session
-  (enforced by the page and middleware). Server-side validation: **min 12 chars**
-  + confirmation match; passwords are never logged. Success → `/dashboard`.
+- **Auth callback** — `GET /dashboard/auth/callback`. Exactly one of `code`
+  (recovery PKCE) or `token_hash` (invite/recovery email OTP) must be present
+  (both/neither → generic error). **PKCE recovery** requires a **matching `state`
+  cookie** (constant-time compare) set by the reset action, then
+  `exchangeCodeForSession`. **Email OTP** allowlists `type` to `invite`/`recovery`
+  and calls `verifyOtp({ token_hash, type })`. On success it mints the signed
+  **gate** (bound to the exact Auth user id + purpose + expiry + nonce) as an
+  HttpOnly cookie and redirects to `/dashboard/update-password`. Tokens
+  (`code`/`token_hash`) are never logged, rendered, or placed in the outgoing
+  redirect; invalid/expired/mismatched inputs → generic `?error=auth` to login.
+- **Update password** — requires an authenticated session **AND** a valid,
+  server-verified gate bound to that same user; the page and the action both
+  verify it (HMAC signature, expiry, purpose, user id). **A normal password
+  session, or a `type=recovery` query alone, is rejected.** Server-side
+  validation: **min 12 chars** + confirmation; passwords never logged. On success
+  the gate is consumed and **all sessions are invalidated** (`signOut({ scope:
+  "global" })`) → redirect to login (fresh login required). Fails closed with a
+  generic message if `DASHBOARD_AUTH_FLOW_SECRET` is not configured.
 - **Sign-out** — `signOutAction` invalidates the Supabase session and returns to
   `/dashboard/login`.
 
@@ -164,19 +192,41 @@ Set in **Supabase Auth → URL Configuration** for later authorized setup:
     origin your team uses; document/rotate carefully. **Not configured remotely
     by this patch.**
 
+**Supabase email templates** (Auth → Email Templates) for later setup — the
+callback supports both PKCE (`code`) and email-OTP (`token_hash`) links:
+
+- **Recovery** ("Reset Password") — the reset action already appends
+  `?type=recovery&state=<nonce>`; keep the template's default `{{ .ConfirmationURL }}`
+  (Supabase adds `code` for PKCE) **or**, for the token-hash flow, point it at
+  `{{ .SiteURL }}/dashboard/auth/callback?token_hash={{ .TokenHash }}&type=recovery`.
+- **Invite** ("Invite user") — Supabase admin invites do **not** use PKCE; set the
+  template to `{{ .SiteURL }}/dashboard/auth/callback?token_hash={{ .TokenHash }}&type=invite`.
+
+These templates are **documented, not applied remotely** by this patch.
+
 **Vercel environment variables** (runtime; not required for build): `NEXT_PUBLIC_SUPABASE_URL`,
-`NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`, and the server-only
-`SUPABASE_SERVICE_ROLE_KEY` (used only by the P03 operator bootstrap, never in
-runtime dashboard code). **Vercel project must run Node.js 22** (P03).
+`NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`; the server-only
+`SUPABASE_SERVICE_ROLE_KEY` (P03 operator bootstrap only, never in runtime
+dashboard code); and the new server-only **`DASHBOARD_AUTH_FLOW_SECRET`** (HMAC
+secret for the recovery/invite gate — generate with `openssl rand -base64 48`;
+never a `NEXT_PUBLIC_` variable). **Vercel project must run Node.js 22** (P03).
 
 ## 12. Testing & limitations
 
 - `npm run test:auth-shell` — dependency-free; executes the **real** pure TS logic
-  (via the project's `typescript` compiler) for return-path validation, password
-  policy, and role-aware nav; plus static guards (no `signUp()`/signup route, no
-  service-role in dashboard runtime, dashboard-only middleware matcher using
-  `getUser`, server-side membership/owner enforcement, generic errors, no tokens
-  in callback redirects). **CI.**
+  (via the project's `typescript` compiler) for return-path validation (incl.
+  dot-segment traversal), password policy, and role-aware nav; plus static guards
+  (no `signUp()`/signup route, no service-role in dashboard runtime, dashboard-only
+  middleware matcher using `getUser`, server-side membership/owner enforcement,
+  generic errors, no tokens in callback redirects, and **mobile-nav accessibility**:
+  inert-when-closed, `aria-controls`/`aria-expanded`, Escape, focus return,
+  background focus containment). **CI.**
+- `npm run test:auth-flow` — executes the **real** HMAC gate crypto and asserts:
+  ordinary session rejected, `type=recovery` query alone rejected, forged/expired/
+  wrong-user/tampered/malformed gates rejected, valid recovery/invite accepted,
+  no-gate (replay after consumption) rejected; plus callback guards (state match,
+  `verifyOtp` with allowlisted types, ambiguous/missing rejection, no tokens in
+  redirect) and that the flow secret is server-only. **CI.**
 - Playwright smoke: `/dashboard/login` renders at 375/768/1440 with no console/
   hydration errors and zero horizontal overflow and `noindex`; unauthenticated
   `/dashboard`, `/dashboard/products`, `/dashboard/team` redirect to login; public
@@ -185,12 +235,17 @@ runtime dashboard code). **Vercel project must run Node.js 22** (P03).
 - Existing P02 seed-safety, P03 RBAC, and scanner tests remain green; post-build
   client-bundle scan finds no server secret.
 
-**Remote-testing limitation:** no live Supabase credentials are available here, so
-real login/invite/recovery against Supabase Auth was **not** exercised. Only the
-pure redirect/session helpers, missing-config fail-closed behavior, and redirect
-wiring were tested. Real email/password sign-in, the recovery email, invite
-onboarding, and the PKCE exchange remain **untested until an authorized remote
-setup** configures Supabase Auth URLs and env.
+**Remote-testing limitation:** no live Supabase credentials/email templates are
+available here, so real login/invite/recovery against Supabase Auth was **not**
+exercised — this is **not** a claim of live success. Tested here: the pure
+redirect/gate/password/nav logic (real code), the callback/update-password
+enforcement (static), and missing-config fail-closed behavior. Real
+email/password sign-in, the recovery email, invite onboarding, `verifyOtp`, and
+the PKCE `exchangeCodeForSession` remain **untested until an authorized remote
+setup** configures the Supabase Auth URLs, email templates, and env
+(`DASHBOARD_AUTH_FLOW_SECRET` included). The **mobile-nav accessibility** behavior
+is verified via component-source assertions (the authenticated shell can't render
+without a session); a full rendered a11y pass should follow that remote setup.
 
 ## 13. Deferred to Patch 05
 

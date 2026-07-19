@@ -15,9 +15,12 @@ const ERRORS: Record<string, string> = {
 export default function LoginPage({
   searchParams,
 }: {
-  searchParams: { error?: string; returnTo?: string };
+  searchParams: { error?: string; returnTo?: string; notice?: string };
 }) {
   const message = searchParams.error ? ERRORS[searchParams.error] ?? ERRORS.invalid : null;
+  const notice = searchParams.notice === "updated"
+    ? "Your password was updated. Please sign in with your new password."
+    : null;
   const returnTo = safeDashboardReturnPath(searchParams.returnTo, DASHBOARD_HOME);
 
   return (
@@ -25,6 +28,11 @@ export default function LoginPage({
       <h1>Al Shehail Dashboard</h1>
       <p className="dash-auth-sub">Sign in with your dashboard account.</p>
 
+      {notice ? (
+        <div className="dash-alert dash-alert-ok" role="status">
+          {notice}
+        </div>
+      ) : null}
       {message ? (
         <div className="dash-alert dash-alert-error" role="alert">
           {message}

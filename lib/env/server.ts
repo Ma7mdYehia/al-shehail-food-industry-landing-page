@@ -53,6 +53,20 @@ export function getResendApiKey(): string {
   return required(process.env.RESEND_API_KEY, "RESEND_API_KEY");
 }
 
+/**
+ * Dedicated server-only secret used to HMAC-sign the short-lived dashboard
+ * password-recovery/invite authorization gate (lib/auth/flow-gate.ts). Never a
+ * NEXT_PUBLIC_ variable. Lazily validated so builds stay green without it.
+ */
+export function getDashboardAuthFlowSecret(): string {
+  return required(process.env.DASHBOARD_AUTH_FLOW_SECRET, "DASHBOARD_AUTH_FLOW_SECRET");
+}
+
+/** True when the flow-gate secret is configured (no throw). */
+export function hasDashboardAuthFlowSecret(): boolean {
+  return Boolean(process.env.DASHBOARD_AUTH_FLOW_SECRET && process.env.DASHBOARD_AUTH_FLOW_SECRET.trim());
+}
+
 /** Cloudflare Turnstile secret key (server-only). */
 export function getTurnstileSecretKey(): string {
   return required(process.env.TURNSTILE_SECRET_KEY, "TURNSTILE_SECRET_KEY");
