@@ -22,6 +22,7 @@
     "db:test:rbac": "node scripts/test-rbac-safety.mjs",
     "scan:client-bundle": "node scripts/scan-client-bundle.mjs",
     "test:scan-bundle": "node scripts/test-scan-client-bundle.mjs",
+    "test:auth-shell": "node scripts/test-dashboard-auth-safety.mjs",
     "db:members:bootstrap": "node scripts/bootstrap-dashboard-members.mjs",
     "db:members:bootstrap:apply": "node scripts/bootstrap-dashboard-members.mjs --apply",
     "db:members:verify": "node scripts/verify-dashboard-members.mjs"

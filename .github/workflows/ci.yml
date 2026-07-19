@@ -47,6 +47,9 @@ jobs:
       - name: Client-bundle scanner unit tests (synthetic)
         run: npm run test:scan-bundle
 
+      - name: Dashboard auth/shell safety tests (P04)
+        run: npm run test:auth-shell
+
       - name: Membership bootstrap is read-only by default
         run: npm run db:members:bootstrap
 
