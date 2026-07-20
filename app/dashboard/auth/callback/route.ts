@@ -18,6 +18,7 @@ import {
   hashNonce,
   type FlowPurpose,
 } from "@/lib/auth/flow-gate";
+import { buildCallbackErrorCookies } from "@/lib/auth/callback-cookies";
 
 // Recovery/invite callback. Verifies the flow SERVER-SIDE, then mints a signed,
 // short-lived, user-bound authorization gate (HttpOnly cookie) and redirects to
@@ -42,25 +43,31 @@ export async function GET(request: NextRequest) {
   const type = params.get("type");
   const state = params.get("state");
 
-  // Every Supabase cookie mutation (session set on success, deletions on
-  // signOut) is captured here so it can be replayed onto WHICHEVER response we
-  // finally return — including the generic error redirect. Without this, a
-  // fresh error response would drop the sign-out cookie deletions and leave a
-  // stale, half-authenticated Supabase session behind.
+  // Every Supabase cookie mutation the SSR client makes during this request is
+  // captured here. On SUCCESS these are replayed so the legitimate session cookie
+  // is preserved. On FAILURE they are NOT replayed — see genericError below.
   const cookieWrites: { name: string; value: string; options: Record<string, unknown> }[] = [];
 
-  // Build a generic login error that ALSO carries every accumulated Supabase
-  // cookie deletion and explicitly clears the flow gate + one-time recovery
-  // state. A failed callback must never preserve a stale gate or recovery state.
+  // Build a generic login error that FAILS CLOSED on cookies. A callback may have
+  // authenticated (exchangeCodeForSession/verifyOtp writes a session cookie) and
+  // then failed later (e.g. nonce registration). The returned error response must
+  // never carry a non-empty Supabase session cookie, and its security must not
+  // depend on signOut succeeding. buildCallbackErrorCookies turns every relevant
+  // Supabase auth cookie — recorded during this request OR already present on the
+  // request (including chunked `.0/.1` and the PKCE verifier) — into an explicit
+  // deletion, and always clears the flow gate + one-time recovery state. Unrelated
+  // application cookies are left untouched.
   const genericError = () => {
     const errorResponse = NextResponse.redirect(
       new URL(`${DASHBOARD_LOGIN_PATH}?error=auth`, origin)
     );
-    for (const { name, value, options } of cookieWrites) {
+    const deletions = buildCallbackErrorCookies({
+      recordedWrites: cookieWrites,
+      requestCookieNames: request.cookies.getAll().map((c) => c.name),
+    });
+    for (const { name, value, options } of deletions) {
       errorResponse.cookies.set(name, value, options);
     }
-    errorResponse.cookies.set(FLOW_GATE_COOKIE, "", { ...flowCookieOptions(0), maxAge: 0 });
-    errorResponse.cookies.set(RECOVERY_STATE_COOKIE, "", { ...flowCookieOptions(0), maxAge: 0 });
     return errorResponse;
   };
 
@@ -134,18 +141,19 @@ export async function GET(request: NextRequest) {
     registered = false;
   }
   if (!registered) {
-    // Fail closed: drop the just-created session. signOut writes its cookie
-    // deletions through the adapter above (into cookieWrites), and genericError
-    // replays them onto the returned error response so no stale Supabase session
-    // — or flow gate / recovery state — survives. Inspect the returned {error}
-    // (never expose it) so a failed local sign-out is not silently ignored.
+    // Fail closed. Best-effort revoke the just-created session server-side, and
+    // inspect the returned {error} (never expose it) so a failed local sign-out
+    // is not silently ignored. Crucially, the returned response's security does
+    // NOT depend on this succeeding: genericError independently deletes every
+    // Supabase auth cookie (see buildCallbackErrorCookies), so no session cookie
+    // survives even if signOut errors or writes no deletion.
     try {
       const { error: signOutError } = await supabase.auth.signOut({ scope: "local" });
       if (signOutError) {
         await supabase.auth.signOut({ scope: "global" }).catch(() => undefined);
       }
     } catch {
-      /* best effort — the error redirect still clears the flow cookies */
+      /* best effort — the error response deletes the session cookies regardless */
     }
     return genericError();
   }

@@ -88,6 +88,12 @@ jobs:
       - name: Dashboard recovery/invite gate tests (P04)
         run: npm run test:auth-flow
 
+      # Real NextResponse header test of the fail-closed callback cookie helper
+      # (Supabase auth/session cookies — incl. chunked + PKCE verifier — become
+      # deletions; unrelated cookies untouched; no non-empty session survives).
+      - name: P04 callback fail-closed cookie helper test
+        run: npm run test:callback-cookie-helper
+
       - name: Membership bootstrap is read-only by default
         run: npm run db:members:bootstrap
 

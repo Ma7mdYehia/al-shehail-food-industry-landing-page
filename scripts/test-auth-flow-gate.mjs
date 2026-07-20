@@ -92,12 +92,15 @@ assert("OTP type allowlisted to invite/recovery only", /ALLOWED_OTP_TYPES[^=]*=\
 assert("registers a durable single-use nonce (hash) BEFORE minting the gate", /register_dashboard_flow_nonce/.test(cb) && /hashNonce\(nonce\)/.test(cb) && cb.indexOf("register_dashboard_flow_nonce") < cb.indexOf("FLOW_GATE_COOKIE,\n    createGateToken"));
 assert("fails closed (local sign-out, generic error) if registration fails", /if \(!registered\)/.test(cb) && /signOut\(\{ scope: "local" \}\)/.test(cb) && /return genericError\(\)/.test(cb));
 assert("inspects the local sign-out {error} on registration failure", /const \{ error: signOutError \} = await supabase\.auth\.signOut\(\{ scope: "local" \}\)/.test(cb) && /if \(signOutError\)/.test(cb));
-// Cookie preservation: Supabase cookie mutations (incl. sign-out deletions) are
-// captured and REPLAYED onto whichever response is returned — including the
-// generic error — and the error response also clears the gate + recovery state.
-assert("captures Supabase cookie writes for replay onto any response", /cookieWrites\.push\(/.test(cb) && /setAll\(cookiesToSet\)/.test(cb));
-assert("generic error replays captured Supabase cookie mutations", /for \(const \{ name, value, options \} of cookieWrites\)[\s\S]*?errorResponse\.cookies\.set\(name, value, options\)/.test(cb));
-assert("generic error clears the flow gate + one-time recovery state", /errorResponse\.cookies\.set\(FLOW_GATE_COOKIE, ""[\s\S]*?errorResponse\.cookies\.set\(RECOVERY_STATE_COOKIE, ""/.test(cb));
+// Fail-closed cookies: the error response deletes Supabase auth cookies from BOTH
+// the recorded writes AND the incoming request (independent of signOut), and never
+// replays a non-empty session. Behavior is proven by the real-header tests
+// (scripts/test-callback-error-cookies.mjs + scripts/test-callback-cookies.mjs);
+// here we assert only the wiring.
+assert("success path still records Supabase writes for the success response", /cookieWrites\.push\(/.test(cb) && /setAll\(cookiesToSet\)/.test(cb));
+assert("generic error builds fail-closed deletions from writes + request cookies", /buildCallbackErrorCookies\(\{[\s\S]*?recordedWrites: cookieWrites,[\s\S]*?requestCookieNames: request\.cookies\.getAll\(\)\.map\(\(c\) => c\.name\)/.test(cb));
+assert("generic error does NOT replay recorded cookie mutations", !/for \(const \{ name, value, options \} of cookieWrites\)/.test(cb));
+assert("error-cookie construction lives in a directly-testable helper", /from "@\/lib\/auth\/callback-cookies"/.test(cb));
 assert("mints user-bound gate cookie embedding the nonce on success", /createGateToken\(getDashboardAuthFlowSecret\(\),\s*\{\s*userId: user\.id,\s*purpose,\s*nonce\s*\}\)/.test(cb));
 assert("redirects to update-password (no tokens/next in URL)", /NextResponse\.redirect\(new URL\(DASHBOARD_UPDATE_PASSWORD_PATH/.test(cb) && !/token_hash=|access_token|refresh_token|\?next=/.test(cb));
 assert("clears one-time recovery state", /RECOVERY_STATE_COOKIE, ""/.test(cb));

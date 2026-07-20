@@ -26,6 +26,7 @@
     "test:scan-bundle": "node scripts/test-scan-client-bundle.mjs",
     "test:auth-shell": "node scripts/test-dashboard-auth-safety.mjs",
     "test:auth-flow": "node scripts/test-auth-flow-gate.mjs",
+    "test:callback-cookie-helper": "node scripts/test-callback-error-cookies.mjs",
     "test:callback-cookies": "node scripts/test-callback-cookies.mjs",
     "db:members:bootstrap": "node scripts/bootstrap-dashboard-members.mjs",
     "db:members:bootstrap:apply": "node scripts/bootstrap-dashboard-members.mjs --apply",

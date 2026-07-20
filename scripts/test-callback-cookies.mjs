@@ -85,13 +85,25 @@ try {
   // Ambiguous params (both code + token_hash) → generic error. Send stale flow
   // cookies so we can prove the returned response deletes them.
   // Trailing slash: the app sets trailingSlash: true, so hit the canonical URL
-  // directly to avoid a 308 normalization redirect before the handler runs.
+  // directly to avoid a 308 normalization redirect before the handler runs. Send
+  // a full set of STALE Supabase auth cookies on the request (base session,
+  // chunked `.0/.1`, PKCE verifier) — each with a NON-EMPTY value — plus the flow
+  // cookies and an unrelated application cookie, to prove the real error response
+  // deletes the Supabase session (even though it was never re-written this request)
+  // and leaves the unrelated cookie untouched.
+  const SB = "sb-abcdef1234-auth-token";
+  const requestCookie = [
+    `${SB}=eyJhbGciOiJIUzI1NiJ9.STALE-SESSION.sig`,
+    `${SB}.0=chunk-zero-nonempty`,
+    `${SB}.1=chunk-one-nonempty`,
+    `${SB}-code-verifier=pkce-verifier-nonempty`,
+    "ds_flow_gate=STALEGATEVALUE",
+    "ds_recovery_state=STALESTATEVALUE",
+    "myapp_prefs=keep-me",
+  ].join("; ");
   const res = await fetch(
     `http://127.0.0.1:${PORT}/dashboard/auth/callback/?code=stale-code&token_hash=stale-hash&type=recovery`,
-    {
-      redirect: "manual",
-      headers: { Cookie: "ds_flow_gate=STALEGATEVALUE; ds_recovery_state=STALESTATEVALUE" },
-    }
+    { redirect: "manual", headers: { Cookie: requestCookie } }
   );
 
   assert("callback failure is a redirect", res.status === 307 || res.status === 302, `status=${res.status}`);
@@ -101,30 +113,37 @@ try {
   // getSetCookie() returns the raw Set-Cookie header LIST (Node 18.14+/undici).
   const setCookies = typeof res.headers.getSetCookie === "function" ? res.headers.getSetCookie() : [];
   const joined = setCookies.join("\n");
+  const entryFor = (name) => setCookies.find((c) => c.startsWith(`${name}=`));
 
   // A deletion cookie is `name=; ...; Max-Age=0` (empty value, immediate expiry).
-  const isDeletion = (name) =>
-    setCookies.some(
-      (c) => c.startsWith(`${name}=`) && /(^|;\s*)(max-age=0|expires=)/i.test(c)
-    );
+  const isDeletion = (name) => {
+    const c = entryFor(name);
+    return !!c && /^[^=]+=;/.test(c) && /(^|;\s*)(max-age=0|expires=)/i.test(c);
+  };
 
+  assert("ds_flow_gate deleted (Max-Age=0)", isDeletion("ds_flow_gate"), joined);
+  assert("ds_recovery_state deleted (Max-Age=0)", isDeletion("ds_recovery_state"), joined);
   assert(
-    "returned response sets a ds_flow_gate deletion cookie (Max-Age=0)",
-    isDeletion("ds_flow_gate"),
-    joined
-  );
-  assert(
-    "returned response sets a ds_recovery_state deletion cookie (Max-Age=0)",
-    isDeletion("ds_recovery_state"),
-    joined
-  );
-  assert(
-    "deletion cookies are scoped to /dashboard",
+    "flow deletions are scoped to /dashboard",
     setCookies
       .filter((c) => c.startsWith("ds_flow_gate=") || c.startsWith("ds_recovery_state="))
       .every((c) => /path=\/dashboard/i.test(c)),
     joined
   );
+  // Supabase session cookies present on the request are deleted on the response.
+  assert("request-present Supabase session cookie deleted", isDeletion(SB), entryFor(SB));
+  assert("chunked Supabase auth cookies (.0/.1) deleted", isDeletion(`${SB}.0`) && isDeletion(`${SB}.1`), joined);
+  assert("PKCE code-verifier cookie deleted", isDeletion(`${SB}-code-verifier`), entryFor(`${SB}-code-verifier`));
+  // No returned Set-Cookie carries a non-empty Supabase auth session value.
+  const nonEmptySbAuth = setCookies.filter((c) => {
+    const name = c.slice(0, c.indexOf("="));
+    const semi = c.indexOf(";");
+    const value = c.slice(c.indexOf("=") + 1, semi === -1 ? undefined : semi);
+    return /^sb-.*auth-token/.test(name) && value.length > 0;
+  });
+  assert("NO non-empty Supabase session survives the error response", nonEmptySbAuth.length === 0, nonEmptySbAuth.join(" | "));
+  // Unrelated application cookie is not touched.
+  assert("unrelated application cookie is NOT deleted", !entryFor("myapp_prefs"), joined);
 } finally {
   stop();
 }

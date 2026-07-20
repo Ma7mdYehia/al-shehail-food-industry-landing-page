@@ -322,8 +322,26 @@ never a `NEXT_PUBLIC_` variable). **Vercel project must run Node.js 22** (P03).
 - `npm run test:callback-cookies` (`scripts/test-callback-cookies.mjs`) — **runs in
   CI after the build**; boots the **actual built app** (`next start`) and inspects
   the **real returned `Set-Cookie` headers** (not a regex over source) to prove the
-  generic callback failure response deletes **both** `ds_flow_gate` and
-  `ds_recovery_state` (`Max-Age=0`, scoped to `/dashboard`).
+  generic callback failure response deletes `ds_flow_gate`, `ds_recovery_state`,
+  and every Supabase auth cookie present on the request — the base session, the
+  chunked `.0/.1`, and the PKCE `…-code-verifier` — while leaving an unrelated
+  application cookie untouched and emitting **no non-empty Supabase session**.
+- `npm run test:callback-cookie-helper` (`scripts/test-callback-error-cookies.mjs`)
+  — **runs in CI**; executes the real `buildCallbackErrorCookies` logic and applies
+  it to a **real `NextResponse`**, asserting on `headers.getSetCookie()` that a
+  **recorded non-empty Supabase session write** (as if `exchangeCodeForSession`/
+  `verifyOtp` had just set one) is emitted as a **deletion**, chunked/PKCE cookies
+  are deleted, the flow cookies are cleared, and unrelated cookies are untouched.
+
+**Fail-closed callback cookies.** `lib/auth/callback-cookies.ts` is a small,
+directly-testable, framework-agnostic helper. On **every** callback error the
+response deletes each relevant Supabase auth cookie (identified by name from both
+the recorded SSR writes **and** the incoming request, covering chunks and the PKCE
+verifier) and clears the flow gate + recovery state — **independently of whether
+`signOut` succeeds**. The error path never replays a non-empty Supabase session
+cookie; the **success** path is unchanged and still preserves the legitimate
+session write. `signOut` is still attempted and its `{ error }` inspected (local→
+global fallback), but the returned response's security no longer depends on it.
 - Playwright smoke: `/dashboard/login` renders at 375/768/1440 with no console/
   hydration errors and zero horizontal overflow and `noindex`; unauthenticated
   `/dashboard`, `/dashboard/products`, `/dashboard/team` redirect to login; public
