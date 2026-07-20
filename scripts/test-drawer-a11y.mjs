@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 // =============================================================================
-// LOCAL-ONLY real-browser DOM test for the dashboard mobile drawer.
+// Real-browser DOM test for the dashboard mobile drawer.
 // =============================================================================
 // Drives lib/auth/drawer-controller.ts (the same code the React shell uses) in a
 // REAL Chromium page via Playwright, asserting genuine focus/inert/keyboard
-// behavior — not regex/static assertions. Requires Playwright (globally
-// installed here at /opt/node22/lib/node_modules); NOT part of CI. Run with:
-//   NODE_PATH=/opt/node22/lib/node_modules node scripts/test-drawer-a11y.mjs
+// behavior — not regex/static assertions. Playwright is a normal devDependency
+// and CI installs the browser via `npx playwright install --with-deps chromium`,
+// so this runs unchanged in GitHub Actions or on any dev machine:
+//   node scripts/test-drawer-a11y.mjs      (or: npm run test:drawer-a11y)
 // =============================================================================
 
 import { readFileSync, writeFileSync, mkdtempSync } from "node:fs";
@@ -14,18 +15,8 @@ import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createServer } from "node:http";
-import { createRequire } from "node:module";
 import ts from "typescript";
-
-// Playwright is installed globally in this environment (not a project dep, so it
-// stays out of CI). createRequire honors NODE_PATH; fall back to the known path.
-const require = createRequire(import.meta.url);
-let chromium;
-try {
-  ({ chromium } = require("playwright"));
-} catch {
-  ({ chromium } = require("/opt/node22/lib/node_modules/playwright"));
-}
+import { chromium } from "playwright";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");

@@ -65,8 +65,10 @@ assert("empty/undefined gate rejected (no-gate session)", gate.verifyGateToken(S
 assert("malformed gate rejected", gate.verifyGateToken(SECRET, "not-a-token", { userId: USER }).ok === false);
 assert("hashNonce is a stable SHA-256 hex, not the raw nonce", gate.hashNonce(NONCE) === gate.hashNonce(NONCE) && /^[0-9a-f]{64}$/.test(gate.hashNonce(NONCE)) && gate.hashNonce(NONCE) !== NONCE);
 // NOTE: durable single-use (first-consume-wins, replay/concurrency, expiry,
-// cross-user) is proven against a REAL Postgres in scripts/local-auth-nonce-test.sh
-// — the previous cookie-absent "replay" assertion was removed as misleading.
+// cross-user, register-boundary) is proven against a REAL Postgres in
+// scripts/test-auth-nonce.mjs (npm run db:test:auth-nonce), which also runs in CI
+// against a postgres:16 service container — the previous cookie-absent "replay"
+// assertion was removed as misleading.
 assert("constant-time compare works", gate.constantTimeEqual("abc", "abc") === true && gate.constantTimeEqual("abc", "abd") === false && gate.constantTimeEqual("abc", "ab") === false);
 
 // ---- flow-secret strength validation --------------------------------------
@@ -89,6 +91,13 @@ assert("invite/recovery token_hash uses verifyOtp", /verifyOtp\(\{[\s\S]*token_h
 assert("OTP type allowlisted to invite/recovery only", /ALLOWED_OTP_TYPES[^=]*=\s*\["invite",\s*"recovery"\]/.test(cb) && /ALLOWED_OTP_TYPES\.includes/.test(cb));
 assert("registers a durable single-use nonce (hash) BEFORE minting the gate", /register_dashboard_flow_nonce/.test(cb) && /hashNonce\(nonce\)/.test(cb) && cb.indexOf("register_dashboard_flow_nonce") < cb.indexOf("FLOW_GATE_COOKIE,\n    createGateToken"));
 assert("fails closed (local sign-out, generic error) if registration fails", /if \(!registered\)/.test(cb) && /signOut\(\{ scope: "local" \}\)/.test(cb) && /return genericError\(\)/.test(cb));
+assert("inspects the local sign-out {error} on registration failure", /const \{ error: signOutError \} = await supabase\.auth\.signOut\(\{ scope: "local" \}\)/.test(cb) && /if \(signOutError\)/.test(cb));
+// Cookie preservation: Supabase cookie mutations (incl. sign-out deletions) are
+// captured and REPLAYED onto whichever response is returned — including the
+// generic error — and the error response also clears the gate + recovery state.
+assert("captures Supabase cookie writes for replay onto any response", /cookieWrites\.push\(/.test(cb) && /setAll\(cookiesToSet\)/.test(cb));
+assert("generic error replays captured Supabase cookie mutations", /for \(const \{ name, value, options \} of cookieWrites\)[\s\S]*?errorResponse\.cookies\.set\(name, value, options\)/.test(cb));
+assert("generic error clears the flow gate + one-time recovery state", /errorResponse\.cookies\.set\(FLOW_GATE_COOKIE, ""[\s\S]*?errorResponse\.cookies\.set\(RECOVERY_STATE_COOKIE, ""/.test(cb));
 assert("mints user-bound gate cookie embedding the nonce on success", /createGateToken\(getDashboardAuthFlowSecret\(\),\s*\{\s*userId: user\.id,\s*purpose,\s*nonce\s*\}\)/.test(cb));
 assert("redirects to update-password (no tokens/next in URL)", /NextResponse\.redirect\(new URL\(DASHBOARD_UPDATE_PASSWORD_PATH/.test(cb) && !/token_hash=|access_token|refresh_token|\?next=/.test(cb));
 assert("clears one-time recovery state", /RECOVERY_STATE_COOKIE, ""/.test(cb));
@@ -111,6 +120,7 @@ assert("partial-success notice when revocation incomplete", /signOutError \? "up
 assert("action requires fresh login after update", /DASHBOARD_LOGIN_PATH\}\?notice=/.test(action));
 assert("action fails closed without flow secret", /!hasDashboardAuthFlowSecret\(\)/.test(action) && /error=unconfigured/.test(action));
 assert("recovery request stores state cookie + includes state in redirect", /cookies\(\)\.set\(RECOVERY_STATE_COOKIE/.test(action) && /callback\$\{[\s\S]*?\}\?type=recovery&state=/.test(action) === false && /type=recovery&state=\$\{encodeURIComponent\(state\)\}/.test(action));
+assert("reset action fails closed (unconfigured) if state cookie cannot be written", /cookies\(\)\.set\(RECOVERY_STATE_COOKIE[\s\S]*?\} catch \{\s*redirect\(`\$\{DASHBOARD_FORGOT_PASSWORD_PATH\}\?state=unconfigured`\)/.test(action));
 
 // ---- secret is server-only -------------------------------------------------
 console.log("\nSecret hygiene:");

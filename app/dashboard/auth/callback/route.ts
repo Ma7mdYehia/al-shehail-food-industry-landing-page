@@ -42,8 +42,27 @@ export async function GET(request: NextRequest) {
   const type = params.get("type");
   const state = params.get("state");
 
-  const genericError = () =>
-    NextResponse.redirect(new URL(`${DASHBOARD_LOGIN_PATH}?error=auth`, origin));
+  // Every Supabase cookie mutation (session set on success, deletions on
+  // signOut) is captured here so it can be replayed onto WHICHEVER response we
+  // finally return — including the generic error redirect. Without this, a
+  // fresh error response would drop the sign-out cookie deletions and leave a
+  // stale, half-authenticated Supabase session behind.
+  const cookieWrites: { name: string; value: string; options: Record<string, unknown> }[] = [];
+
+  // Build a generic login error that ALSO carries every accumulated Supabase
+  // cookie deletion and explicitly clears the flow gate + one-time recovery
+  // state. A failed callback must never preserve a stale gate or recovery state.
+  const genericError = () => {
+    const errorResponse = NextResponse.redirect(
+      new URL(`${DASHBOARD_LOGIN_PATH}?error=auth`, origin)
+    );
+    for (const { name, value, options } of cookieWrites) {
+      errorResponse.cookies.set(name, value, options);
+    }
+    errorResponse.cookies.set(FLOW_GATE_COOKIE, "", { ...flowCookieOptions(0), maxAge: 0 });
+    errorResponse.cookies.set(RECOVERY_STATE_COOKIE, "", { ...flowCookieOptions(0), maxAge: 0 });
+    return errorResponse;
+  };
 
   if (!hasSupabasePublicConfig() || !hasDashboardAuthFlowSecret()) return genericError();
 
@@ -63,9 +82,12 @@ export async function GET(request: NextRequest) {
         return request.cookies.getAll();
       },
       setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, options)
-        );
+        cookiesToSet.forEach(({ name, value, options }) => {
+          // Record the mutation so it survives onto the error response too, and
+          // apply it to the success response.
+          cookieWrites.push({ name, value, options: options as Record<string, unknown> });
+          response.cookies.set(name, value, options);
+        });
       },
     },
   });
@@ -112,10 +134,18 @@ export async function GET(request: NextRequest) {
     registered = false;
   }
   if (!registered) {
+    // Fail closed: drop the just-created session. signOut writes its cookie
+    // deletions through the adapter above (into cookieWrites), and genericError
+    // replays them onto the returned error response so no stale Supabase session
+    // — or flow gate / recovery state — survives. Inspect the returned {error}
+    // (never expose it) so a failed local sign-out is not silently ignored.
     try {
-      await supabase.auth.signOut({ scope: "local" });
+      const { error: signOutError } = await supabase.auth.signOut({ scope: "local" });
+      if (signOutError) {
+        await supabase.auth.signOut({ scope: "global" }).catch(() => undefined);
+      }
     } catch {
-      /* best effort */
+      /* best effort — the error redirect still clears the flow cookies */
     }
     return genericError();
   }

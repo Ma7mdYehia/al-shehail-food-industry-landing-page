@@ -60,21 +60,28 @@ set search_path = ''
 as $$
 declare
   uid uuid := auth.uid();
+  inserted boolean;
 begin
   if uid is null then return false; end if;
   if p_purpose not in ('recovery', 'invite') then return false; end if;
   if p_nonce_hash !~ '^[0-9a-f]{64}$' then return false; end if;
-  if p_expires_at <= now() then return false; end if;
+  -- Bound the expiry to the gate TTL (15 min) plus a small clock-skew allowance.
+  -- Reject already-expired values AND values reaching beyond the intended window,
+  -- so a caller cannot mint a long-lived nonce.
+  if p_expires_at <= now() or p_expires_at > now() + interval '16 minutes' then
+    return false;
+  end if;
 
+  -- Insert-only success: true is returned ONLY when a brand-new row is written.
+  -- A conflict (hash already exists — whether still pending OR already consumed)
+  -- inserts nothing, leaves `inserted` NULL, and yields false. This guarantees an
+  -- already-consumed nonce hash can never be treated as freshly registered.
   insert into public.dashboard_auth_flow_nonces (nonce_hash, user_id, purpose, expires_at)
   values (p_nonce_hash, uid, p_purpose, p_expires_at)
-  on conflict (nonce_hash) do nothing;
+  on conflict (nonce_hash) do nothing
+  returning true into inserted;
 
-  -- true only if THIS user now owns the (unconsumed) nonce
-  return exists (
-    select 1 from public.dashboard_auth_flow_nonces
-    where nonce_hash = p_nonce_hash and user_id = uid
-  );
+  return coalesce(inserted, false);
 end;
 $$;
 

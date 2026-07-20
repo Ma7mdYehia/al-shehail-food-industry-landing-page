@@ -376,6 +376,13 @@ check(/revoke all on function[\s\S]*?register_dashboard_flow_nonce[\s\S]*?from p
 check(/grant execute on function[\s\S]*?dashboard_flow_nonce[\s\S]*?to authenticated/i.test(sql), "nonce RPC EXECUTE granted to authenticated only", "must grant nonce RPC EXECUTE to authenticated");
 // atomic consume: single UPDATE guarded by consumed_at IS NULL
 check(/update (public\.)?dashboard_auth_flow_nonces[\s\S]*?consumed_at is null[\s\S]*?returning true/i.test(sql), "consume is a single atomic UPDATE guarded by consumed_at IS NULL", "consume must atomically update where consumed_at is null");
+// register hardening: bounded expiry (reject past AND beyond the TTL + skew window)
+check(/p_expires_at\s*<=\s*now\(\)\s*or\s*p_expires_at\s*>\s*now\(\)\s*\+\s*interval '1[0-9] minutes'/i.test(sql),
+  "register bounds expiry to now()..now()+~TTL (rejects far-future nonces)", "register must reject expiries beyond the gate TTL + small skew");
+// register is insert-only: true ONLY when a NEW row is inserted (conflict → false)
+check(/insert into (public\.)?dashboard_auth_flow_nonces[\s\S]*?on conflict \(nonce_hash\) do nothing[\s\S]*?returning true into (inserted|[a-z_]+)[\s\S]*?return coalesce\(\1?[a-z_]*,\s*false\)/i.test(sql) ||
+  /on conflict \(nonce_hash\) do nothing\s*\n?\s*returning true into inserted;[\s\S]*?return coalesce\(inserted,\s*false\)/i.test(sql),
+  "register returns true only when a new row is inserted (ON CONFLICT DO NOTHING RETURNING)", "register must use INSERT ... ON CONFLICT DO NOTHING RETURNING and return false on conflict");
 
 // ---- 11. P03 scripts: bootstrap dry-run default, apply gating, no secrets ---
 const bootstrapPath = join(HERE, "bootstrap-dashboard-members.mjs");

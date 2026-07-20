@@ -11,6 +11,42 @@ enquiry management, and team management are secure "Coming next" placeholders.
 No remote Supabase/Auth/Production changes, no public signup, no public-website
 change.
 
+## 0c. Codex review fixes — round 3 (applied)
+
+1. **Reproducible CI for the two “real” tests.** The nonce PostgreSQL test and the
+   Chromium drawer test are now portable and **run in GitHub Actions** — no
+   hardcoded `runuser`, `/usr/lib/postgresql/16`, or `/opt/node22` paths, and the
+   old local-only shell script was removed:
+   - `npm run db:test:auth-nonce` connects via `DATABASE_URL`; CI provides a
+     `postgres:16` **service container**. Step name: **“P04 nonce PostgreSQL
+     integration test.”**
+   - `npm run test:drawer-a11y` imports `playwright` (now a normal devDependency,
+     `package-lock.json` updated); CI installs the browser with
+     `npx playwright install --with-deps chromium`. Step name: **“P04 mobile
+     drawer Chromium accessibility test.”**
+   The genuine 30-way concurrency test and the real Chromium focus/inert test are
+   kept intact.
+2. **Hardened `register_dashboard_flow_nonce`** (new P04 migration only; P02/P03
+   untouched): expiry is **bounded** to `now() < expires_at <= now() + 16 min`
+   (rejects already-expired *and* far-future values); registration uses
+   `INSERT … ON CONFLICT (nonce_hash) DO NOTHING RETURNING true` and returns
+   **true only when a brand-new row is inserted** — a conflict (including an
+   already-consumed hash) returns **false**, so a consumed nonce can never be
+   treated as freshly registered. `auth.uid()` ownership, empty `search_path`,
+   SECURITY DEFINER, RLS-no-policies, hash-only storage, and authenticated-only
+   EXECUTE are preserved. Proven by the CI PostgreSQL test.
+3. **Callback cookie preservation + reset-action fail-closed.** The callback now
+   captures every Supabase cookie mutation and **replays them onto whichever
+   response is returned** — including the generic error redirect — so a failed
+   registration’s **local sign-out deletions are not dropped**; the error response
+   also clears `ds_flow_gate` and `ds_recovery_state`, and the local sign-out
+   `{ error }` is inspected (global fallback) rather than ignored. A dedicated CI
+   test (`npm run test:callback-cookies`) boots the **built app** and asserts the
+   **actual returned `Set-Cookie` headers** delete both flow cookies (not a regex
+   over source). `requestPasswordResetAction` now **fails closed** (generic
+   `state=unconfigured`, no email sent) if the recovery-state cookie cannot be
+   written — preserving account-enumeration protection.
+
 ## 0b. Codex review fixes — round 2 (applied)
 
 1. **Genuinely single-use gate.** A durable nonce (SHA-256 **hash only**, bound to
@@ -260,20 +296,34 @@ never a `NEXT_PUBLIC_` variable). **Vercel project must run Node.js 22** (P03).
   the raw nonce), secret missing/short/placeholder rejected & strong accepted;
   plus callback/action guards (nonce **registered before** the gate, **consumed
   before** update, `updateUser`/`signOut` results inspected, state match,
-  `verifyOtp` allowlist, ambiguous/missing rejection, no tokens in redirect) and
+  `verifyOtp` allowlist, ambiguous/missing rejection, no tokens in redirect,
+  **generic error replays Supabase cookie deletions + clears the gate/state**, and
+  the reset action **fails closed** if the state cookie cannot be written) and
   that the flow secret is server-only. **CI.**
-- `scripts/local-auth-nonce-test.sh` — **LOCAL-ONLY**, real ephemeral PostgreSQL 16:
-  applies P02+P03+P04 and proves durable single-use — first consume succeeds,
-  second fails, **exactly one of 30 concurrent consumes wins**, expired fails,
-  cross-user fails, wrong hash/purpose fails, **only a 64-hex hash is stored**
-  (no raw nonce/token), RLS denies anon/authenticated direct table access, and the
-  RPCs are SECURITY DEFINER with a fixed `search_path`. (14/14 passing.)
-- `scripts/test-drawer-a11y.mjs` — **LOCAL-ONLY**, real Chromium via Playwright:
-  drives the actual drawer controller — open from toggle, close from the in-drawer
+- `npm run db:test:auth-nonce` (`scripts/test-auth-nonce.mjs`) — **runs in CI**
+  against a `postgres:16` **service container** (portable: connects via
+  `DATABASE_URL`, no hardcoded paths/`runuser`). Applies P02+P03+P04 and proves
+  durable single-use — valid 15-min register accepted, **duplicate register
+  rejected (insert-only `true`)**, **far-future expiry rejected** (bounded to
+  `now()..now()+16 min`), past expiry rejected, first consume succeeds, second
+  fails, **consumed hash cannot be re-registered**, **exactly one of 30 concurrent
+  consumes wins**, expired fails, cross-user fails, wrong hash/purpose fails,
+  **only a 64-hex hash is stored** (no raw nonce/token), RLS denies
+  anon/authenticated direct table access, and the RPCs are SECURITY DEFINER with a
+  fixed `search_path`. The GitHub Actions step is **“P04 nonce PostgreSQL
+  integration test.”**
+- `npm run test:drawer-a11y` (`scripts/test-drawer-a11y.mjs`) — **runs in CI**;
+  Playwright is a normal devDependency and CI installs the browser via
+  `npx playwright install --with-deps chromium`. Drives the actual drawer
+  controller in **real Chromium** — open from toggle, close from the in-drawer
   button, close with Escape, focus restoration to the toggle, inert on the closed
-  drawer / open-drawer background, and desktop-never-inert. (17/17 passing.)
-  *(Both local-only scripts require Postgres 16 / global Playwright and are not run
-  in CI; the CI structural + real-logic tests above cover the same guarantees.)*
+  drawer / open-drawer background, and desktop-never-inert. (17/17 passing.) The
+  GitHub Actions step is **“P04 mobile drawer Chromium accessibility test.”**
+- `npm run test:callback-cookies` (`scripts/test-callback-cookies.mjs`) — **runs in
+  CI after the build**; boots the **actual built app** (`next start`) and inspects
+  the **real returned `Set-Cookie` headers** (not a regex over source) to prove the
+  generic callback failure response deletes **both** `ds_flow_gate` and
+  `ds_recovery_state` (`Max-Age=0`, scoped to `/dashboard`).
 - Playwright smoke: `/dashboard/login` renders at 375/768/1440 with no console/
   hydration errors and zero horizontal overflow and `noindex`; unauthenticated
   `/dashboard`, `/dashboard/products`, `/dashboard/team` redirect to login; public

@@ -77,11 +77,14 @@ export async function requestPasswordResetAction(formData: FormData): Promise<vo
   // Bind the recovery PKCE flow to a high-entropy state stored in a short-lived
   // HttpOnly cookie; the callback requires a matching state before accepting the
   // recovery code. This prevents an attacker-supplied code from minting a gate.
+  // If the state cookie cannot be written, FAIL CLOSED: sending a recovery email
+  // whose callback can never satisfy the state check would only produce an
+  // unusable link. Return the same generic response (no account enumeration).
   const state = randomToken(32);
   try {
     cookies().set(RECOVERY_STATE_COOKIE, state, flowCookieOptions(STATE_TTL_SECONDS));
   } catch {
-    // Cookie store unavailable — proceed; callback will simply reject.
+    redirect(`${DASHBOARD_FORGOT_PASSWORD_PATH}?state=unconfigured`);
   }
 
   // Fire-and-forget: the outcome (including "user not found") is never surfaced.
