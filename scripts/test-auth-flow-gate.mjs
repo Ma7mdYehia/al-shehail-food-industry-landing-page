@@ -42,30 +42,40 @@ const OTHER_USER = "22222222-2222-2222-2222-222222222222";
 
 // ---- gate crypto (real) ----------------------------------------------------
 console.log("Signed gate:");
-const recoveryToken = gate.createGateToken(SECRET, { userId: USER, purpose: "recovery" });
-const inviteToken = gate.createGateToken(SECRET, { userId: USER, purpose: "invite" });
+const NONCE = gate.randomToken(32);
+const recoveryToken = gate.createGateToken(SECRET, { userId: USER, purpose: "recovery", nonce: NONCE });
+const inviteToken = gate.createGateToken(SECRET, { userId: USER, purpose: "invite", nonce: gate.randomToken(32) });
 
 assert("valid recovery gate accepted", gate.verifyGateToken(SECRET, recoveryToken, { userId: USER }).ok === true);
 assert("valid recovery gate reports purpose recovery", gate.verifyGateToken(SECRET, recoveryToken, { userId: USER }).purpose === "recovery");
+assert("verified gate exposes the embedded nonce", gate.verifyGateToken(SECRET, recoveryToken, { userId: USER }).nonce === NONCE);
 assert("valid invite gate accepted", gate.verifyGateToken(SECRET, inviteToken, { userId: USER }).ok === true && gate.verifyGateToken(SECRET, inviteToken, { userId: USER }).purpose === "invite");
 assert("forged gate (wrong secret) rejected", gate.verifyGateToken(OTHER, recoveryToken, { userId: USER }).ok === false);
 assert("gate for another user rejected", gate.verifyGateToken(SECRET, recoveryToken, { userId: OTHER_USER }).ok === false);
-const expired = gate.createGateToken(SECRET, { userId: USER, purpose: "recovery", ttlSeconds: -10 });
+const expired = gate.createGateToken(SECRET, { userId: USER, purpose: "recovery", nonce: gate.randomToken(16), ttlSeconds: -10 });
 assert("expired gate rejected", gate.verifyGateToken(SECRET, expired, { userId: USER }).ok === false && gate.verifyGateToken(SECRET, expired, { userId: USER }).reason === "expired");
 const tampered = recoveryToken.slice(0, -2) + (recoveryToken.endsWith("aa") ? "bb" : "aa");
 assert("tampered signature rejected", gate.verifyGateToken(SECRET, tampered, { userId: USER }).ok === false);
 const forgedPurpose = (() => {
-  // craft a token with an invalid purpose but valid-looking structure → still rejected (bad signature or purpose)
   const body = Buffer.from(JSON.stringify({ uid: USER, p: "admin", exp: 9999999999, n: "x" })).toString("base64url");
   return `${body}.deadbeef`;
 })();
 assert("unknown purpose / bad signature rejected", gate.verifyGateToken(SECRET, forgedPurpose, { userId: USER }).ok === false);
 assert("empty/undefined gate rejected (no-gate session)", gate.verifyGateToken(SECRET, undefined, { userId: USER }).ok === false && gate.verifyGateToken(SECRET, "", { userId: USER }).ok === false);
 assert("malformed gate rejected", gate.verifyGateToken(SECRET, "not-a-token", { userId: USER }).ok === false);
-// Replay after consumption: the action clears the cookie + globally signs out,
-// so a replayed request presents no gate → rejected (verified above) — and the
-// action enforcement is asserted statically below.
+assert("hashNonce is a stable SHA-256 hex, not the raw nonce", gate.hashNonce(NONCE) === gate.hashNonce(NONCE) && /^[0-9a-f]{64}$/.test(gate.hashNonce(NONCE)) && gate.hashNonce(NONCE) !== NONCE);
+// NOTE: durable single-use (first-consume-wins, replay/concurrency, expiry,
+// cross-user) is proven against a REAL Postgres in scripts/local-auth-nonce-test.sh
+// — the previous cookie-absent "replay" assertion was removed as misleading.
 assert("constant-time compare works", gate.constantTimeEqual("abc", "abc") === true && gate.constantTimeEqual("abc", "abd") === false && gate.constantTimeEqual("abc", "ab") === false);
+
+// ---- flow-secret strength validation --------------------------------------
+console.log("\nFlow-secret validation:");
+assert("missing secret rejected", gate.isValidFlowSecret(undefined) === false && gate.isValidFlowSecret("") === false);
+assert("short (<32) secret rejected", gate.isValidFlowSecret("a".repeat(31)) === false);
+assert("placeholder/example secret rejected", gate.isValidFlowSecret("change-me-please-change-me-please-01") === false && gate.isValidFlowSecret("your-secret-your-secret-your-secret") === false);
+assert("single-repeated-char secret rejected", gate.isValidFlowSecret("a".repeat(48)) === false);
+assert("strong 48-byte base64 secret accepted", gate.isValidFlowSecret(gate.randomToken(48)) === true);
 assert("cookies are HttpOnly + SameSite=Lax + /dashboard", (() => { const o = gate.flowCookieOptions(60); return o.httpOnly === true && o.sameSite === "lax" && o.path === "/dashboard" && o.maxAge === 60; })());
 assert("random tokens are high-entropy and unique", gate.randomToken(32) !== gate.randomToken(32) && gate.randomToken(32).length >= 40);
 
@@ -77,7 +87,9 @@ assert("recovery code requires matching state (constant-time)", /constantTimeEqu
 assert("code without state rejected", /!state \|\| !stateCookie/.test(cb));
 assert("invite/recovery token_hash uses verifyOtp", /verifyOtp\(\{[\s\S]*token_hash[\s\S]*type[\s\S]*\}\)/.test(cb));
 assert("OTP type allowlisted to invite/recovery only", /ALLOWED_OTP_TYPES[^=]*=\s*\["invite",\s*"recovery"\]/.test(cb) && /ALLOWED_OTP_TYPES\.includes/.test(cb));
-assert("mints user-bound gate cookie on success", /createGateToken\(getDashboardAuthFlowSecret\(\),\s*\{\s*userId: user\.id,\s*purpose\s*\}\)/.test(cb));
+assert("registers a durable single-use nonce (hash) BEFORE minting the gate", /register_dashboard_flow_nonce/.test(cb) && /hashNonce\(nonce\)/.test(cb) && cb.indexOf("register_dashboard_flow_nonce") < cb.indexOf("FLOW_GATE_COOKIE,\n    createGateToken"));
+assert("fails closed (local sign-out, generic error) if registration fails", /if \(!registered\)/.test(cb) && /signOut\(\{ scope: "local" \}\)/.test(cb) && /return genericError\(\)/.test(cb));
+assert("mints user-bound gate cookie embedding the nonce on success", /createGateToken\(getDashboardAuthFlowSecret\(\),\s*\{\s*userId: user\.id,\s*purpose,\s*nonce\s*\}\)/.test(cb));
 assert("redirects to update-password (no tokens/next in URL)", /NextResponse\.redirect\(new URL\(DASHBOARD_UPDATE_PASSWORD_PATH/.test(cb) && !/token_hash=|access_token|refresh_token|\?next=/.test(cb));
 assert("clears one-time recovery state", /RECOVERY_STATE_COOKIE, ""/.test(cb));
 assert("never logs code/token_hash", !/console\.[a-z]+\([^)]*(code|token_hash|tokenHash)/i.test(cb));
@@ -90,8 +102,13 @@ assert("page verifies gate bound to getUser id", /verifyGateToken\(getDashboardA
 assert("page rejects (→ login) when gate invalid", /if \(!verdict\.ok\) redirect\(DASHBOARD_LOGIN_PATH\)/.test(page));
 assert("action verifies gate bound to user (normal session alone rejected)", /verifyGateToken\(getDashboardAuthFlowSecret\(\), gate, \{ userId: user\.id \}\)/.test(action));
 assert("action rejects invalid gate → login", /if \(!verdict\.ok\)\s*\{\s*clearFlowCookies\(\);\s*redirect\(DASHBOARD_LOGIN_PATH\)/.test(action));
-assert("action consumes gate + global sign-out after success", /clearFlowCookies\(\);[\s\S]*signOut\(\{ scope: "global" \}\)/.test(action));
-assert("action requires fresh login after update", /DASHBOARD_LOGIN_PATH\}\?notice=updated/.test(action));
+assert("action atomically consumes the durable nonce before update", /consume_dashboard_flow_nonce/.test(action) && /hashNonce\(verdict\.nonce\)/.test(action) && action.indexOf("consume_dashboard_flow_nonce") < action.indexOf("updateUser({ password })"));
+assert("action rejects an already-consumed/expired/cross-user nonce", /if \(!consumed\)\s*\{\s*clearFlowCookies\(\);\s*redirect\(DASHBOARD_LOGIN_PATH\)/.test(action));
+assert("action inspects updateUser result explicitly (not empty catch)", /const \{ error: updateError \} = await supabase\.auth\.updateUser\(\{ password \}\)/.test(action) && /if \(updateError\)/.test(action));
+assert("update failure after consumption → login (new flow required; no re-register)", /if \(updateError\)\s*\{\s*clearFlowCookies\(\);\s*redirect\(`\$\{DASHBOARD_LOGIN_PATH\}\?error=auth`\)/.test(action) && !/register_dashboard_flow_nonce/.test(action));
+assert("action inspects signOut result + local fallback (safeSignOut)", /safeSignOut\(supabase, "global"\)/.test(action) && /signOut\(\{ scope: "local" \}\)/.test(action));
+assert("partial-success notice when revocation incomplete", /signOutError \? "updated-partial" : "updated"/.test(action));
+assert("action requires fresh login after update", /DASHBOARD_LOGIN_PATH\}\?notice=/.test(action));
 assert("action fails closed without flow secret", /!hasDashboardAuthFlowSecret\(\)/.test(action) && /error=unconfigured/.test(action));
 assert("recovery request stores state cookie + includes state in redirect", /cookies\(\)\.set\(RECOVERY_STATE_COOKIE/.test(action) && /callback\$\{[\s\S]*?\}\?type=recovery&state=/.test(action) === false && /type=recovery&state=\$\{encodeURIComponent\(state\)\}/.test(action));
 

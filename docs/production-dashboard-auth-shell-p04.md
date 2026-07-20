@@ -11,6 +11,28 @@ enquiry management, and team management are secure "Coming next" placeholders.
 No remote Supabase/Auth/Production changes, no public signup, no public-website
 change.
 
+## 0b. Codex review fixes — round 2 (applied)
+
+1. **Genuinely single-use gate.** A durable nonce (SHA-256 **hash only**, bound to
+   auth user id + purpose + expiry + consumed state) is stored via a forward-only
+   P04 migration and consumed **atomically** through SECURITY DEFINER RPCs
+   (`register_dashboard_flow_nonce` / `consume_dashboard_flow_nonce`; fixed empty
+   `search_path`, EXECUTE to `authenticated` only, no service-role key). The
+   callback registers the nonce **before** minting the gate (fail-closed with a
+   local sign-out if registration fails); the update action **consumes it before**
+   changing the password. Concurrent reuse yields **exactly one** success (proven
+   against real Postgres). No anon access; RLS on, no policies (RPC-only).
+2. **Explicit `updateUser()`/`signOut()` result handling** (no empty catch): on
+   `updateUser` error → generic failure, start a new flow (nonce not restored);
+   `signOut({scope:"global"})` result is inspected with a **local sign-out
+   fallback** and a generic **partial-success** notice.
+3. **Strong-secret validation** shared by `has…`/`get…` (≥ 32 chars, rejects
+   blank/short/placeholder/example/repeated); `requestPasswordResetAction` now
+   requires it (no email sent otherwise; response stays generic).
+4. **Real browser drawer a11y test** (`scripts/test-drawer-a11y.mjs`, Chromium):
+   open/close/Escape, focus restoration, inert, desktop — driving the same
+   controller the shell uses, with an accessible in-drawer close button.
+
 ## 0. Codex review fixes (applied)
 
 1. **Recovery/invite authorization is now enforced** by a short-lived, HMAC-signed,
@@ -76,13 +98,23 @@ separate from the public `(en)/`/`ar/` route groups.
   (`code`/`token_hash`) are never logged, rendered, or placed in the outgoing
   redirect; invalid/expired/mismatched inputs → generic `?error=auth` to login.
 - **Update password** — requires an authenticated session **AND** a valid,
-  server-verified gate bound to that same user; the page and the action both
-  verify it (HMAC signature, expiry, purpose, user id). **A normal password
-  session, or a `type=recovery` query alone, is rejected.** Server-side
-  validation: **min 12 chars** + confirmation; passwords never logged. On success
-  the gate is consumed and **all sessions are invalidated** (`signOut({ scope:
-  "global" })`) → redirect to login (fresh login required). Fails closed with a
-  generic message if `DASHBOARD_AUTH_FLOW_SECRET` is not configured.
+  server-verified gate bound to that same user. The **page** verifies the HMAC
+  signature/expiry/purpose/user only (no consumption). The **action**: verifies
+  the gate → validates the password input (before consuming, so a typo doesn't
+  burn the gate) → **atomically consumes the durable single-use nonce** (an
+  already-consumed/expired/missing/cross-user nonce is rejected) → **only then**
+  calls `updateUser({ password })` and inspects the returned `{ error }`. **A
+  normal password session, or a `type=recovery` query alone, is rejected.**
+  Min 12 chars + confirmation; passwords never logged. On success the flow
+  cookies are cleared and `signOut({ scope: "global" })` is attempted (with a
+  **local sign-out fallback** if it errors) → redirect to login (`notice=updated`
+  or `updated-partial`). **Note:** global sign-out revokes **refresh** sessions;
+  existing **access tokens may remain valid until their configured JWT expiry** —
+  we do NOT claim immediate token invalidation. The **consumed durable nonce
+  prevents the recovery gate from being replayed even during that JWT window.**
+  If `updateUser` fails after consumption, a **new recovery flow** is required
+  (the nonce is not restored). Fails closed generically if
+  `DASHBOARD_AUTH_FLOW_SECRET` is missing or too weak.
 - **Sign-out** — `signOutAction` invalidates the Supabase session and returns to
   `/dashboard/login`.
 
@@ -221,12 +253,27 @@ never a `NEXT_PUBLIC_` variable). **Vercel project must run Node.js 22** (P03).
   generic errors, no tokens in callback redirects, and **mobile-nav accessibility**:
   inert-when-closed, `aria-controls`/`aria-expanded`, Escape, focus return,
   background focus containment). **CI.**
-- `npm run test:auth-flow` — executes the **real** HMAC gate crypto and asserts:
-  ordinary session rejected, `type=recovery` query alone rejected, forged/expired/
-  wrong-user/tampered/malformed gates rejected, valid recovery/invite accepted,
-  no-gate (replay after consumption) rejected; plus callback guards (state match,
-  `verifyOtp` with allowlisted types, ambiguous/missing rejection, no tokens in
-  redirect) and that the flow secret is server-only. **CI.**
+- `npm run test:auth-flow` — executes the **real** HMAC gate crypto + secret
+  strength validation and asserts: ordinary session rejected, `type=recovery`
+  query alone rejected, forged/expired/wrong-user/tampered/malformed gates
+  rejected, valid recovery/invite accepted, `hashNonce` is a stable SHA-256 (not
+  the raw nonce), secret missing/short/placeholder rejected & strong accepted;
+  plus callback/action guards (nonce **registered before** the gate, **consumed
+  before** update, `updateUser`/`signOut` results inspected, state match,
+  `verifyOtp` allowlist, ambiguous/missing rejection, no tokens in redirect) and
+  that the flow secret is server-only. **CI.**
+- `scripts/local-auth-nonce-test.sh` — **LOCAL-ONLY**, real ephemeral PostgreSQL 16:
+  applies P02+P03+P04 and proves durable single-use — first consume succeeds,
+  second fails, **exactly one of 30 concurrent consumes wins**, expired fails,
+  cross-user fails, wrong hash/purpose fails, **only a 64-hex hash is stored**
+  (no raw nonce/token), RLS denies anon/authenticated direct table access, and the
+  RPCs are SECURITY DEFINER with a fixed `search_path`. (14/14 passing.)
+- `scripts/test-drawer-a11y.mjs` — **LOCAL-ONLY**, real Chromium via Playwright:
+  drives the actual drawer controller — open from toggle, close from the in-drawer
+  button, close with Escape, focus restoration to the toggle, inert on the closed
+  drawer / open-drawer background, and desktop-never-inert. (17/17 passing.)
+  *(Both local-only scripts require Postgres 16 / global Playwright and are not run
+  in CI; the CI structural + real-logic tests above cover the same guarantees.)*
 - Playwright smoke: `/dashboard/login` renders at 375/768/1440 with no console/
   hydration errors and zero horizontal overflow and `noindex`; unauthenticated
   `/dashboard`, `/dashboard/products`, `/dashboard/team` redirect to login; public

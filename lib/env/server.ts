@@ -12,6 +12,8 @@
 // corresponding service is actually used, so the Patch 01 build succeeds even
 // though Supabase, Resend, and Turnstile are not configured yet.
 
+import { isValidFlowSecret } from "@/lib/auth/flow-gate";
+
 if (typeof window !== "undefined") {
   throw new Error(
     "lib/env/server.ts was imported into client code. It reads server-only " +
@@ -57,14 +59,23 @@ export function getResendApiKey(): string {
  * Dedicated server-only secret used to HMAC-sign the short-lived dashboard
  * password-recovery/invite authorization gate (lib/auth/flow-gate.ts). Never a
  * NEXT_PUBLIC_ variable. Lazily validated so builds stay green without it.
+ * Both accessors below use the SAME strength rules (>= 32 chars, no obvious
+ * placeholders); the value is never logged or exposed.
  */
 export function getDashboardAuthFlowSecret(): string {
-  return required(process.env.DASHBOARD_AUTH_FLOW_SECRET, "DASHBOARD_AUTH_FLOW_SECRET");
+  const value = process.env.DASHBOARD_AUTH_FLOW_SECRET;
+  if (!isValidFlowSecret(value)) {
+    throw new Error(
+      "DASHBOARD_AUTH_FLOW_SECRET is missing or too weak. Provide at least 32 " +
+        "characters of entropy (generate with `openssl rand -base64 48`)."
+    );
+  }
+  return value as string;
 }
 
-/** True when the flow-gate secret is configured (no throw). */
+/** True when a STRONG flow-gate secret is configured (no throw). */
 export function hasDashboardAuthFlowSecret(): boolean {
-  return Boolean(process.env.DASHBOARD_AUTH_FLOW_SECRET && process.env.DASHBOARD_AUTH_FLOW_SECRET.trim());
+  return isValidFlowSecret(process.env.DASHBOARD_AUTH_FLOW_SECRET);
 }
 
 /** Cloudflare Turnstile secret key (server-only). */

@@ -11,7 +11,7 @@
 // Pure crypto (node:crypto) so it is unit-testable with a synthetic secret,
 // with no environment or network dependency.
 
-import { createHmac, timingSafeEqual, randomBytes } from "node:crypto";
+import { createHash, createHmac, timingSafeEqual, randomBytes } from "node:crypto";
 
 export const FLOW_GATE_COOKIE = "ds_flow_gate";
 export const RECOVERY_STATE_COOKIE = "ds_recovery_state";
@@ -36,6 +36,37 @@ export function randomToken(bytes = 32): string {
   return randomBytes(bytes).toString("base64url");
 }
 
+// Reject blank, short, or obvious placeholder/example secrets. A real secret
+// must carry at least 32 characters of entropy (48 random bytes recommended).
+const WEAK_SECRET_MARKERS = [
+  "example",
+  "changeme",
+  "change-me",
+  "change_me",
+  "placeholder",
+  "your-secret",
+  "your_secret",
+  "yoursecret",
+  "secret-here",
+  "replace-me",
+  "replace_me",
+  "todo",
+  "openssl rand",
+];
+
+/** True when the value is a strong-enough flow secret. Same rules are used by
+ * both hasDashboardAuthFlowSecret() and getDashboardAuthFlowSecret(). */
+export function isValidFlowSecret(value: unknown): boolean {
+  if (typeof value !== "string") return false;
+  const s = value.trim();
+  if (s.length < 32) return false;
+  const lower = s.toLowerCase();
+  if (WEAK_SECRET_MARKERS.some((m) => lower.includes(m))) return false;
+  // Reject a single repeated character (e.g. "aaaa…").
+  if (/^(.)\1+$/.test(s)) return false;
+  return true;
+}
+
 /** Constant-time string equality (false on length mismatch). */
 export function constantTimeEqual(a: unknown, b: unknown): boolean {
   if (typeof a !== "string" || typeof b !== "string") return false;
@@ -45,24 +76,31 @@ export function constantTimeEqual(a: unknown, b: unknown): boolean {
   return timingSafeEqual(ba, bb);
 }
 
-/** Create a signed gate token for a specific user + purpose. */
+/** SHA-256 hex digest of a nonce. Only the DIGEST is ever persisted server-side;
+ * the raw nonce lives only inside the HMAC-signed gate cookie. */
+export function hashNonce(nonce: string): string {
+  return createHash("sha256").update(nonce).digest("hex");
+}
+
+/** Create a signed gate token for a specific user + purpose, embedding an
+ * explicit single-use `nonce` (whose hash is registered in the database). */
 export function createGateToken(
   secret: string,
-  opts: { userId: string; purpose: FlowPurpose; ttlSeconds?: number; now?: number }
+  opts: { userId: string; purpose: FlowPurpose; nonce: string; ttlSeconds?: number; now?: number }
 ): string {
   const nowMs = opts.now ?? Date.now();
   const payload: GatePayload = {
     uid: opts.userId,
     p: opts.purpose,
     exp: Math.floor(nowMs / 1000) + (opts.ttlSeconds ?? GATE_TTL_SECONDS),
-    n: randomToken(16),
+    n: opts.nonce,
   };
   const body = b64url(JSON.stringify(payload));
   return `${body}.${sign(secret, body)}`;
 }
 
 export type GateVerification =
-  | { ok: true; purpose: FlowPurpose }
+  | { ok: true; purpose: FlowPurpose; nonce: string }
   | { ok: false; reason: "malformed" | "bad-signature" | "expired" | "user-mismatch" | "bad-purpose" };
 
 /** Verify a gate token: signature (timing-safe), expiry, purpose, and that it is
@@ -95,12 +133,13 @@ export function verifyGateToken(
     return { ok: false, reason: "malformed" };
   }
   if (!FLOW_PURPOSES.includes(payload.p)) return { ok: false, reason: "bad-purpose" };
+  if (typeof payload.n !== "string" || payload.n.length === 0) return { ok: false, reason: "malformed" };
   const nowMs = opts.now ?? Date.now();
   if (typeof payload.exp !== "number" || payload.exp * 1000 <= nowMs) {
     return { ok: false, reason: "expired" };
   }
   if (payload.uid !== opts.userId) return { ok: false, reason: "user-mismatch" };
-  return { ok: true, purpose: payload.p };
+  return { ok: true, purpose: payload.p, nonce: payload.n };
 }
 
 /** Cookie options for the gate/state cookies. HttpOnly always; Secure in

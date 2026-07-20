@@ -18,9 +18,12 @@ export default function LoginPage({
   searchParams: { error?: string; returnTo?: string; notice?: string };
 }) {
   const message = searchParams.error ? ERRORS[searchParams.error] ?? ERRORS.invalid : null;
-  const notice = searchParams.notice === "updated"
-    ? "Your password was updated. Please sign in with your new password."
-    : null;
+  const notice =
+    searchParams.notice === "updated"
+      ? "Your password was updated. Please sign in with your new password."
+      : searchParams.notice === "updated-partial"
+        ? "Your password was updated. Please sign in again. If you were signed in on other devices, sign out there too."
+        : null;
   const returnTo = safeDashboardReturnPath(searchParams.returnTo, DASHBOARD_HOME);
 
   return (

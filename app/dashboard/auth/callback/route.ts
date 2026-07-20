@@ -14,6 +14,8 @@ import {
   flowCookieOptions,
   createGateToken,
   constantTimeEqual,
+  randomToken,
+  hashNonce,
   type FlowPurpose,
 } from "@/lib/auth/flow-gate";
 
@@ -93,10 +95,35 @@ export async function GET(request: NextRequest) {
   } = await supabase.auth.getUser();
   if (!user) return genericError();
 
-  // Mint the user-bound gate and clear the one-time recovery state.
+  // Register a DURABLE single-use nonce (hash only) bound to this user BEFORE
+  // issuing the gate cookie. If registration fails, fail closed: sign out the
+  // just-created session locally and return a generic error (no gate minted).
+  const nonce = randomToken(32);
+  const expiresAt = new Date(Date.now() + GATE_TTL_SECONDS * 1000);
+  let registered = false;
+  try {
+    const { data, error } = await supabase.rpc("register_dashboard_flow_nonce", {
+      p_nonce_hash: hashNonce(nonce),
+      p_purpose: purpose,
+      p_expires_at: expiresAt.toISOString(),
+    });
+    registered = !error && data === true;
+  } catch {
+    registered = false;
+  }
+  if (!registered) {
+    try {
+      await supabase.auth.signOut({ scope: "local" });
+    } catch {
+      /* best effort */
+    }
+    return genericError();
+  }
+
+  // Mint the user-bound gate (embedding the nonce) and clear the one-time state.
   response.cookies.set(
     FLOW_GATE_COOKIE,
-    createGateToken(getDashboardAuthFlowSecret(), { userId: user.id, purpose }),
+    createGateToken(getDashboardAuthFlowSecret(), { userId: user.id, purpose, nonce }),
     flowCookieOptions(GATE_TTL_SECONDS)
   );
   response.cookies.set(RECOVERY_STATE_COOKIE, "", { ...flowCookieOptions(0), maxAge: 0 });

@@ -363,6 +363,20 @@ for (const action of ["insert", "update", "delete"]) {
   check(new RegExp(`create policy dashboard_members_owner_${action}\\b`, "i").test(sql), `dashboard_members ${action} is owner-only`, `dashboard_members ${action} must be owner-only`);
 }
 
+// ---- 10b. Production Patch 04 — durable single-use nonce -------------------
+check(/create table (public\.)?dashboard_auth_flow_nonces\b/i.test(sql), "dashboard_auth_flow_nonces table created", "missing dashboard_auth_flow_nonces table");
+check(/alter table\s+(public\.)?dashboard_auth_flow_nonces\s+enable row level security/i.test(sql), "RLS enabled on the nonce table", "nonce table RLS not enabled");
+check(!/create policy[^;]*\bon\s+(public\.)?dashboard_auth_flow_nonces\b/i.test(sql), "nonce table has NO policy (RPC-only access; no anon/authenticated direct access)", "nonce table must have no RLS policy");
+check(/nonce_hash\s+text\s+primary key/i.test(sql) && /nonce_hash ~ '\^\[0-9a-f\]\{64\}\$'/i.test(sql), "nonce stored as a 64-hex SHA-256 digest (no raw nonce/token column)", "nonce must be stored only as a hex hash");
+check(/purpose in \('recovery',\s*'invite'\)/i.test(sql), "nonce purpose constrained to recovery/invite", "nonce purpose CHECK missing");
+for (const fn of ["register_dashboard_flow_nonce", "consume_dashboard_flow_nonce"]) {
+  check(new RegExp(`function (public\\.)?${fn}\\b[\\s\\S]*?security definer[\\s\\S]*?set search_path\\s*=\\s*''`, "i").test(sql), `${fn} is SECURITY DEFINER with fixed empty search_path`, `${fn} must be SECURITY DEFINER with set search_path = ''`);
+}
+check(/revoke all on function[\s\S]*?register_dashboard_flow_nonce[\s\S]*?from public/i.test(sql), "nonce RPC EXECUTE revoked from public", "must revoke nonce RPC EXECUTE from public");
+check(/grant execute on function[\s\S]*?dashboard_flow_nonce[\s\S]*?to authenticated/i.test(sql), "nonce RPC EXECUTE granted to authenticated only", "must grant nonce RPC EXECUTE to authenticated");
+// atomic consume: single UPDATE guarded by consumed_at IS NULL
+check(/update (public\.)?dashboard_auth_flow_nonces[\s\S]*?consumed_at is null[\s\S]*?returning true/i.test(sql), "consume is a single atomic UPDATE guarded by consumed_at IS NULL", "consume must atomically update where consumed_at is null");
+
 // ---- 11. P03 scripts: bootstrap dry-run default, apply gating, no secrets ---
 const bootstrapPath = join(HERE, "bootstrap-dashboard-members.mjs");
 check(existsSync(bootstrapPath), "membership bootstrap script exists", "missing bootstrap-dashboard-members.mjs");

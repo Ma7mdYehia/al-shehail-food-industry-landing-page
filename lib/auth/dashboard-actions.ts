@@ -27,6 +27,7 @@ import {
   flowCookieOptions,
   randomToken,
   verifyGateToken,
+  hashNonce,
 } from "@/lib/auth/flow-gate";
 
 function loginUrl(returnTo: unknown, error?: string): string {
@@ -66,7 +67,10 @@ export async function signInAction(formData: FormData): Promise<void> {
 export async function requestPasswordResetAction(formData: FormData): Promise<void> {
   const email = String(formData.get("email") ?? "").trim();
 
-  if (!hasSupabasePublicConfig()) {
+  // Require BOTH valid Supabase config AND a strong flow secret before sending —
+  // otherwise the recovery link could never be honored. Response stays generic
+  // (no account enumeration).
+  if (!hasSupabasePublicConfig() || !hasDashboardAuthFlowSecret()) {
     redirect(`${DASHBOARD_FORGOT_PASSWORD_PATH}?state=unconfigured`);
   }
 
@@ -121,7 +125,7 @@ export async function updatePasswordAction(formData: FormData): Promise<void> {
   if (!user) redirect(DASHBOARD_LOGIN_PATH);
 
   // The recovery/invite gate must be present, valid, unexpired, and bound to
-  // THIS user. This is what stops an ordinary authenticated session (or a
+  // THIS user. This stops an ordinary authenticated session (or a
   // `type=recovery` query parameter) from reaching the password-set flow.
   const gate = cookies().get(FLOW_GATE_COOKIE)?.value;
   const verdict = verifyGateToken(getDashboardAuthFlowSecret(), gate, { userId: user.id });
@@ -130,37 +134,90 @@ export async function updatePasswordAction(formData: FormData): Promise<void> {
     redirect(DASHBOARD_LOGIN_PATH);
   }
 
-  // Server-side validation (do NOT log the password values).
+  // Validate password INPUT before consuming the nonce, so a simple typo does
+  // not burn the one-time gate (no security dependency yet — nothing changed).
   if (!validateNewPassword(password, confirm).ok) {
     redirect(`${DASHBOARD_UPDATE_PASSWORD_PATH}?error=invalid`);
   }
 
-  const { error } = await supabase.auth.updateUser({ password });
-  if (error) redirect(`${DASHBOARD_UPDATE_PASSWORD_PATH}?error=failed`);
-
-  // Consume the gate (replay protection) and invalidate ALL sessions so a fresh
-  // login is required with the new password.
-  clearFlowCookies();
+  // Atomically CONSUME the durable single-use nonce. Concurrent requests with the
+  // same gate result in exactly one successful consume; an already-consumed,
+  // expired, missing, or cross-user nonce returns false → reject generically.
+  let consumed = false;
   try {
-    await supabase.auth.signOut({ scope: "global" });
+    const { data, error } = await supabase.rpc("consume_dashboard_flow_nonce", {
+      p_nonce_hash: hashNonce(verdict.nonce),
+      p_purpose: verdict.purpose,
+    });
+    consumed = !error && data === true;
   } catch {
-    // Best effort — a fresh login is still required.
+    consumed = false;
   }
-  redirect(`${DASHBOARD_LOGIN_PATH}?notice=updated`);
+  if (!consumed) {
+    clearFlowCookies();
+    redirect(DASHBOARD_LOGIN_PATH);
+  }
+
+  // Update the password ONLY after successful consumption. Inspect the returned
+  // error explicitly (Supabase returns { error }, it does not always throw). On
+  // failure the nonce is NOT restored — a new recovery flow must be started.
+  const { error: updateError } = await supabase.auth.updateUser({ password });
+  if (updateError) {
+    clearFlowCookies();
+    redirect(`${DASHBOARD_LOGIN_PATH}?error=auth`);
+  }
+
+  // Password changed. Invalidate refresh sessions globally; fall back to a local
+  // sign-out if the global call returns an error, so the local session/cookies
+  // are cleared regardless. (Global sign-out revokes refresh sessions; existing
+  // access tokens may remain valid until their JWT expiry — the consumed nonce
+  // prevents this gate from being replayed in the meantime.)
+  clearFlowCookies();
+  const { error: signOutError } = await safeSignOut(supabase, "global");
+  const notice = signOutError ? "updated-partial" : "updated";
+  redirect(`${DASHBOARD_LOGIN_PATH}?notice=${notice}`);
 }
 
-/** Sign out and return to the login page. */
+/** Sign out and return to the login page. Explicitly inspects the result and
+ * falls back to a local sign-out so the local session is always cleared. */
 export async function signOutAction(): Promise<void> {
   try {
     if (hasSupabasePublicConfig()) {
       const supabase = createSupabaseServerClient();
-      await supabase.auth.signOut({ scope: "global" });
+      await safeSignOut(supabase, "global");
     }
   } catch {
     // Ignore — always land on login.
   }
   clearFlowCookies();
   redirect(DASHBOARD_LOGIN_PATH);
+}
+
+// Attempt a global sign-out; if it returns an error, fall back to a local
+// sign-out so the current session/cookies are cleared regardless. Returns the
+// remaining error (null when at least the local sign-out succeeded).
+async function safeSignOut(
+  supabase: ReturnType<typeof createSupabaseServerClient>,
+  scope: "global" | "local"
+): Promise<{ error: unknown | null }> {
+  try {
+    const { error } = await supabase.auth.signOut({ scope });
+    if (!error) return { error: null };
+    if (scope === "global") {
+      const { error: localError } = await supabase.auth.signOut({ scope: "local" });
+      // Report the ORIGINAL (global) failure so the caller can show a partial
+      // notice, but the local session is now cleared.
+      return { error: localError ?? error };
+    }
+    return { error };
+  } catch (err) {
+    try {
+      await supabase.auth.signOut({ scope: "local" });
+    } catch {
+      /* best effort */
+    }
+    return { error: err };
+  }
 }
 
 function clearFlowCookies(): void {

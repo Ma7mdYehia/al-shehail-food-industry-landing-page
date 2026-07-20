@@ -139,14 +139,18 @@ assert("dashboard shell uses only the request Supabase client", /createSupabaseS
 // ---------------------------------------------------------------------------
 console.log("\nAuthenticated shell accessibility:");
 const shell = readFileSync(join(ROOT, "components/dashboard/DashboardShell.tsx"), "utf8");
+const ctrl = readFileSync(join(ROOT, "lib/auth/drawer-controller.ts"), "utf8");
 assert("nav has a stable id and toggle uses aria-controls", /id=\{NAV_ID\}/.test(shell) && /aria-controls=\{NAV_ID\}/.test(shell) && /const NAV_ID = "dashboard-nav"/.test(shell));
-assert("toggle exposes aria-expanded", /aria-expanded=\{open\}/.test(shell));
-assert("closed mobile drawer is inert (non-focusable)", /drawerInert = isMobile && !open/.test(shell) && /inertProp\(drawerInert\)/.test(shell) && /inert: true/.test(shell));
-assert("open mobile drawer makes background inert (focus containment)", /backgroundInert = isMobile && open/.test(shell) && /inertProp\(backgroundInert\)/.test(shell));
-assert("Escape closes the drawer", /e\.key === "Escape"/.test(shell));
-assert("focus returns to the toggle on close", /toggleRef\.current\?\.focus\(\)/.test(shell));
-assert("mobile detection via matchMedia (desktop sidebar never inert)", /matchMedia\(MOBILE_QUERY\)/.test(shell));
-assert("desktop sidebar is never disabled/inert (inert gated on isMobile)", /isMobile && !open/.test(shell) && /isMobile && open/.test(shell));
+assert("shell delegates drawer behavior to the tested controller", /createDrawerController/.test(shell));
+assert("accessible close button inside the drawer", /dash-drawer-close/.test(shell) && /aria-label="Close navigation"/.test(shell));
+assert("controller sets aria-expanded on the toggle", /setAttribute\("aria-expanded"/.test(ctrl));
+assert("controller: closed mobile drawer is inert", /setInert\(els\.drawer, isMobile && !open\)/.test(ctrl));
+assert("controller: open drawer makes background inert (focus containment)", /setInert\(bg, isMobile && open\)/.test(ctrl));
+assert("controller: Escape closes the drawer", /e\.key === "Escape"/.test(ctrl));
+assert("controller restores focus to the toggle AFTER inert removed (apply before focus)", /apply\(\);\s*els\.toggle\.focus\(\)/.test(ctrl));
+assert("controller: desktop sidebar never inert (gated on isMobile)", /if \(!next\) open = false/.test(ctrl) && /isMobile && !open/.test(ctrl));
+assert("mobile detection via matchMedia (feeds controller.setMobile)", /matchMedia\(MOBILE_QUERY\)/.test(shell) && /setMobile\(mql\.matches\)/.test(shell));
+// The behavior is covered end-to-end by scripts/test-drawer-a11y.mjs (real Chromium).
 
 // ---------------------------------------------------------------------------
 // 6. Middleware is dashboard-scoped and uses getUser (not getSession).

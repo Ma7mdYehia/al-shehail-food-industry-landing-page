@@ -1,20 +1,22 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import type { DashboardRole } from "@/lib/auth/roles";
 import { navForRole, isActiveNav } from "@/lib/auth/dashboard-nav";
 import { signOutAction } from "@/lib/auth/dashboard-actions";
+import { createDrawerController, type DrawerController } from "@/lib/auth/drawer-controller";
 
 const NAV_ID = "dashboard-nav";
 const MOBILE_QUERY = "(max-width: 860px)";
 
-// Responsive, keyboard-accessible dashboard chrome. Client component only for
-// the mobile-nav toggle and active-route highlighting; all authorization is
-// enforced on the server (protected layout + RLS). It receives only the
-// non-sensitive member fields it renders.
+// Responsive, keyboard-accessible dashboard chrome. The a11y-critical mobile
+// drawer behavior (inert, Escape, focus restoration) lives in a framework-
+// agnostic controller (lib/auth/drawer-controller.ts) that is covered by a real
+// browser test; this component is a thin adapter that wires refs to it. All
+// authorization is enforced on the server (protected layout + RLS).
 export function DashboardShell({
   displayName,
   role,
@@ -25,82 +27,70 @@ export function DashboardShell({
   children: ReactNode;
 }) {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const toggleRef = useRef<HTMLButtonElement>(null);
-  const sidebarRef = useRef<HTMLElement>(null);
   const items = navForRole(role);
 
-  // Track viewport so the sidebar is only made inert/modal on mobile. The
-  // desktop sidebar is always visible and focusable.
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const sidebarRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
+  const scrimRef = useRef<HTMLButtonElement>(null);
+  const controllerRef = useRef<DrawerController | null>(null);
+
   useEffect(() => {
+    if (!toggleRef.current || !closeRef.current || !sidebarRef.current || !headerRef.current || !mainRef.current) {
+      return;
+    }
     const mql = window.matchMedia(MOBILE_QUERY);
-    const update = () => setIsMobile(mql.matches);
-    update();
-    mql.addEventListener("change", update);
-    return () => mql.removeEventListener("change", update);
-  }, []);
+    const controller = createDrawerController(
+      {
+        drawer: sidebarRef.current,
+        toggle: toggleRef.current,
+        closeButton: closeRef.current,
+        background: [headerRef.current, mainRef.current],
+      },
+      { isMobile: mql.matches }
+    );
+    controllerRef.current = controller;
 
-  // Leaving mobile width closes the drawer state.
-  useEffect(() => {
-    if (!isMobile && open) setOpen(false);
-  }, [isMobile, open]);
+    const onMedia = () => controller.setMobile(mql.matches);
+    mql.addEventListener("change", onMedia);
+    const scrim = scrimRef.current;
+    const onScrim = () => controller.close();
+    scrim?.addEventListener("click", onScrim);
 
-  const close = useCallback(() => {
-    setOpen(false);
-    // Return focus to the toggle after closing.
-    toggleRef.current?.focus();
-  }, []);
-
-  // When the mobile drawer opens: focus the first nav link and enable Escape.
-  useEffect(() => {
-    if (!open || !isMobile) return;
-    const first = sidebarRef.current?.querySelector<HTMLElement>("a, button");
-    first?.focus();
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        close();
-      }
+    return () => {
+      mql.removeEventListener("change", onMedia);
+      scrim?.removeEventListener("click", onScrim);
+      controller.destroy();
+      controllerRef.current = null;
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, isMobile, close]);
-
-  // The closed mobile drawer is genuinely inert (removed from tab order and the
-  // a11y tree). When open on mobile, the background (header + main) is inert so
-  // focus can't move behind the drawer — a dialog-style focus containment.
-  const drawerInert = isMobile && !open;
-  const backgroundInert = isMobile && open;
-  // Only spread `inert` when active so the attribute is absent (not `false`)
-  // otherwise. `inert` removes the subtree from tab order and the a11y tree.
-  const inertProp = (v: boolean) => (v ? { inert: true } : {});
+  }, []);
 
   return (
     <div className="dash-shell">
+      {/* Controller owns aria-expanded / inert / data-open on the elements below;
+          they are intentionally NOT declared in JSX so React re-renders (e.g. on
+          route change) cannot clobber the controller's state. */}
       <button
+        ref={scrimRef}
         type="button"
         className="dash-scrim"
-        data-open={open ? "true" : "false"}
         aria-hidden="true"
         tabIndex={-1}
-        onClick={close}
       />
 
-      <aside
-        id={NAV_ID}
-        ref={sidebarRef}
-        className="dash-sidebar"
-        data-open={open ? "true" : "false"}
-        aria-label="Dashboard navigation"
-        aria-hidden={drawerInert ? true : undefined}
-        {...inertProp(drawerInert)}
-      >
-        <div className="dash-brand">
-          <span className="dash-brand-mark" aria-hidden="true">
-            AS
-          </span>
-          Al Shehail
+      <aside id={NAV_ID} ref={sidebarRef} className="dash-sidebar" aria-label="Dashboard navigation">
+        <div className="dash-sidebar-top">
+          <div className="dash-brand">
+            <span className="dash-brand-mark" aria-hidden="true">
+              AS
+            </span>
+            Al Shehail
+          </div>
+          <button ref={closeRef} type="button" className="dash-iconbtn dash-drawer-close" aria-label="Close navigation">
+            ✕
+          </button>
         </div>
         <nav className="dash-nav" aria-label="Dashboard sections">
           {items.map((item) => {
@@ -111,7 +101,7 @@ export function DashboardShell({
                 href={item.href}
                 className="dash-nav-link"
                 aria-current={active ? "page" : undefined}
-                onClick={() => setOpen(false)}
+                onClick={() => controllerRef.current?.close()}
               >
                 <span>{item.label}</span>
                 {!item.implemented ? <span className="dash-soon">Soon</span> : null}
@@ -121,15 +111,13 @@ export function DashboardShell({
         </nav>
       </aside>
 
-      <header className="dash-header" {...inertProp(backgroundInert)}>
+      <header className="dash-header" ref={headerRef}>
         <button
           ref={toggleRef}
           type="button"
           className="dash-iconbtn"
-          aria-label={open ? "Close navigation" : "Open navigation"}
+          aria-label="Open navigation"
           aria-controls={NAV_ID}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
         >
           ☰
         </button>
@@ -144,7 +132,7 @@ export function DashboardShell({
         </div>
       </header>
 
-      <main className="dash-main" id="dashboard-main" {...inertProp(backgroundInert)}>
+      <main className="dash-main" id="dashboard-main" ref={mainRef}>
         {children}
       </main>
     </div>
