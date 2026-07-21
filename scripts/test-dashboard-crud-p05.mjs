@@ -27,10 +27,31 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 const MIGRATIONS = join(ROOT, "supabase", "migrations");
 
-const url = process.env.DATABASE_URL;
+let url = process.env.DATABASE_URL;
 if (!url) {
   console.error("✖ DATABASE_URL is required (a PostgreSQL 16 connection string).");
   process.exit(1);
+}
+
+// Provision a DEDICATED, freshly-created database so this test is isolated from
+// any other suite sharing the same server (e.g. the P04 nonce test, which
+// applies the same P02/P03 migrations to the default DB). Without this, the
+// second suite's plain CREATE TABLE would collide with the first's tables.
+const TEST_DB = "dashboard_crud_p05_test";
+async function provisionFreshDatabase() {
+  const maint = new URL(url);
+  maint.pathname = "/postgres";
+  const target = new URL(url);
+  target.pathname = `/${TEST_DB}`;
+  const boot = new pg.Client({ connectionString: maint.toString() });
+  await boot.connect();
+  try {
+    await boot.query(`drop database if exists ${TEST_DB} with (force)`);
+    await boot.query(`create database ${TEST_DB}`);
+  } finally {
+    await boot.end();
+  }
+  url = target.toString();
 }
 
 let failures = 0;
@@ -66,6 +87,8 @@ const asUser = (sub, text, params) => asRole("authenticated", sub, text, params)
 const asAnon = (text, params) => asRole("anon", null, text, params);
 
 async function main() {
+  await provisionFreshDatabase();
+
   const admin = new pg.Client({ connectionString: url });
   await admin.connect();
 
