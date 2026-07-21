@@ -146,6 +146,14 @@ assert("product actions return only generic messages", /fail\(/.test(prodAct) &&
 assert("product actions revalidate only dashboard paths", /revalidatePath\("\/dashboard/.test(prodAct) && !/revalidatePath\("\/(?!dashboard)/.test(prodAct));
 assert("product editor localized array lists are preserved (not overwritten)", /preserved untouched|are preserved/.test(prodAct));
 
+// ---- media actions ----------------------------------------------------------
+console.log("\nMedia actions (static):");
+const mediaAct = read("lib/dashboard/media-actions.ts");
+assert("media update uses updated_at optimistic concurrency", /\.eq\("updated_at", expectedUpdatedAt\)/.test(mediaAct));
+assert("media delete is owner/admin + seed/FK protected", /authorizeAction\(\["owner", "admin"\]\)/.test(mediaAct) && /SEED_ID_RE\.test\(id\)/.test(mediaAct) && /referenced by content/.test(mediaAct));
+assert("media never fakes an upload (metadata only)", !/upload/i.test(mediaAct) || /no binary upload|metadata only/i.test(mediaAct));
+assert("media actions return only generic messages", /fail\(/.test(mediaAct) && !/error\.message/.test(mediaAct));
+
 // ---- no service-role key anywhere in the dashboard runtime -------------------
 console.log("\nNo service-role key in dashboard runtime:");
 function walk(dir) {

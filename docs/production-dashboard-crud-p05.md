@@ -19,7 +19,8 @@ reads remain a later patch).
 | `/dashboard/enquiries` | any active member | **Live** — search/status/assignee/date filters, bounded pagination, detail view, status/notes/assignment workflow, read-only audit |
 | `/dashboard/team` | **owner only** | **Live** — member list, role + active-state editing via the P05 RPC, current-member highlight, accessible confirmation, non-interactive invite note |
 | `/dashboard/products` | any active member (delete: owner/admin) | **Live** — searchable/filterable list, create/edit, activate/deactivate, localized EN/AR fields, category relationship + category creation, product detail (positioning/disclaimer), options add/reorder/remove, media selection, `updated_at` optimistic concurrency, accessible delete confirmation, unsaved-change warning |
-| `/dashboard/media`, `/services`, `/partners`, `/settings` | any active member | Placeholder (next increment) |
+| `/dashboard/media` | any active member (delete: owner/admin) | **Live** — searchable/type/status-filtered list, create/edit metadata, localized alt text, path/type/status/width/height, safe image preview (https/same-origin only), reference indication, `updated_at` optimistic concurrency, delete refused for seed-backed/referenced assets. No binary upload (metadata only). |
+| `/dashboard/services`, `/partners`, `/settings` | any active member | Placeholder (next increment) |
 
 > This PR is the **first coherent, green increment** of P05 and centres on the
 > security-critical pieces (Team, Enquiries, Overview) plus the shared
