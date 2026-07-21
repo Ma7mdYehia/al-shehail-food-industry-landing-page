@@ -75,9 +75,28 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/app
 
+      # Real PostgreSQL integration test of the P05 content-management model:
+      # role-scoped CRUD, inactive/anon rejection, the owner-only team RPC with
+      # self- and final-owner protection, enquiry audit stamping (unforgeable),
+      # and FK-protected destructive deletes — anon/authenticated roles only.
+      - name: P05 dashboard CRUD PostgreSQL integration test
+        run: npm run db:test:crud
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/app
+
       # Real Chromium DOM test of the mobile drawer controller (focus/inert/Escape).
       - name: P04 mobile drawer Chromium accessibility test
         run: npm run test:drawer-a11y
+
+      # Real Chromium test of the confirmation-dialog accessibility pattern used
+      # by team management (focus containment, Escape, focus return).
+      - name: P05 confirmation dialog Chromium accessibility test
+        run: npm run test:confirm-dialog-a11y
+
+      # P05 application-level tests: real validation logic + server-action
+      # security guards (re-authorization, unforgeable audit, generic errors).
+      - name: P05 dashboard CRUD application tests
+        run: npm run test:dashboard-crud
 
       - name: Client-bundle scanner unit tests (synthetic)
         run: npm run test:scan-bundle

@@ -384,6 +384,22 @@ check(/insert into (public\.)?dashboard_auth_flow_nonces[\s\S]*?on conflict \(no
   /on conflict \(nonce_hash\) do nothing\s*\n?\s*returning true into inserted;[\s\S]*?return coalesce\(inserted,\s*false\)/i.test(sql),
   "register returns true only when a new row is inserted (ON CONFLICT DO NOTHING RETURNING)", "register must use INSERT ... ON CONFLICT DO NOTHING RETURNING and return false on conflict");
 
+// ---- 10c. Production Patch 05 — dashboard CRUD support RPCs ----------------
+for (const fn of ["dashboard_set_member_state", "dashboard_active_member_count", "dashboard_assignable_members"]) {
+  check(new RegExp(`function (public\\.)?${fn}\\b[\\s\\S]*?security definer[\\s\\S]*?set search_path\\s*=\\s*''`, "i").test(sql),
+    `${fn} is SECURITY DEFINER with fixed empty search_path`, `${fn} must be SECURITY DEFINER with set search_path = ''`);
+  check(new RegExp(`grant execute on function[\\s\\S]*?${fn}[\\s\\S]*?to authenticated`, "i").test(sql),
+    `${fn} EXECUTE granted to authenticated`, `${fn} must grant EXECUTE to authenticated`);
+  check(new RegExp(`revoke all on function[\\s\\S]*?${fn}[\\s\\S]*?from public`, "i").test(sql),
+    `${fn} EXECUTE revoked from public (no anon)`, `${fn} must revoke EXECUTE from public`);
+  check(!new RegExp(`grant execute on function[\\s\\S]*?${fn}[\\s\\S]*?to anon`, "i").test(sql),
+    `${fn} is never granted to anon`, `${fn} must not be granted to anon`);
+}
+// team RPC enforces owner + self-protection + final-owner atomically
+check(/current_dashboard_role|dm\.role <> 'owner'|v_caller_role <> 'owner'/i.test(sql), "team RPC requires the caller to be an owner", "team RPC must check owner");
+check(/cannot change your own owner status/i.test(sql), "team RPC blocks self demotion/deactivation", "team RPC must block self owner change");
+check(/final active owner/i.test(sql) && /for update/i.test(sql), "team RPC protects the final active owner with row locking", "team RPC must protect the final owner atomically");
+
 // ---- 11. P03 scripts: bootstrap dry-run default, apply gating, no secrets ---
 const bootstrapPath = join(HERE, "bootstrap-dashboard-members.mjs");
 check(existsSync(bootstrapPath), "membership bootstrap script exists", "missing bootstrap-dashboard-members.mjs");
