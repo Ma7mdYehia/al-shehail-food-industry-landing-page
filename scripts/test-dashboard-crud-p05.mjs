@@ -113,12 +113,12 @@ async function main() {
 
   // --- users + members ---
   const ids = (await admin.query(
-    "select gen_random_uuid() owner1, gen_random_uuid() owner2, gen_random_uuid() admin, gen_random_uuid() editor, gen_random_uuid() inactive"
+    "select gen_random_uuid() owner1, gen_random_uuid() owner2, gen_random_uuid() admin, gen_random_uuid() editor, gen_random_uuid() editor2, gen_random_uuid() inactive"
   )).rows[0];
   const U = ids;
   await admin.query(
-    `insert into auth.users(id,email) values ($1,'o1@x.invalid'),($2,'o2@x.invalid'),($3,'a@x.invalid'),($4,'e@x.invalid'),($5,'i@x.invalid')`,
-    [U.owner1, U.owner2, U.admin, U.editor, U.inactive]
+    `insert into auth.users(id,email) values ($1,'o1@x.invalid'),($2,'o2@x.invalid'),($3,'a@x.invalid'),($4,'e@x.invalid'),($5,'e2@x.invalid'),($6,'i@x.invalid')`,
+    [U.owner1, U.owner2, U.admin, U.editor, U.editor2, U.inactive]
   );
   const mem = {};
   for (const [k, uid, email, role, active] of [
@@ -126,6 +126,7 @@ async function main() {
     ["owner2", U.owner2, "o2@x.invalid", "owner", true],
     ["admin", U.admin, "a@x.invalid", "admin", true],
     ["editor", U.editor, "e@x.invalid", "editor", true],
+    ["editor2", U.editor2, "e2@x.invalid", "editor", true],
     ["inactive", U.inactive, "i@x.invalid", "editor", false],
   ]) {
     const r = await admin.query(
@@ -243,16 +244,40 @@ async function main() {
   const after = (await admin.query("select updated_at from public.products where id='prod_ref'")).rows[0].updated_at;
   expect("updated_at advances on UPDATE", new Date(after).getTime() > new Date(before).getTime());
 
-  console.log("\nH. P05 RPCs are safe (definer + fixed search_path + no anon):");
+  console.log("\nH. Optimistic concurrency (updated_at guard):");
+  // Read the timestamp as TEXT to preserve full microsecond precision (a JS Date
+  // would round to milliseconds and never match), mirroring how the app passes
+  // the exact PostgREST-returned string back as the expected value.
+  const u0 = (await admin.query("select updated_at::text u from public.products where id='prod_ref'")).rows[0].u;
+  const okUpd = await asUser(U.owner1, "update public.products set featured=false where id='prod_ref' and updated_at=$1 returning id", [u0]);
+  expect("update with the expected updated_at succeeds", okUpd.ok && okUpd.rowCount === 1, okUpd.error?.message);
+  const staleUpd = await asUser(U.owner1, "update public.products set featured=true where id='prod_ref' and updated_at=$1 returning id", [u0]);
+  expect("a STALE update (old updated_at) affects 0 rows → rejected", staleUpd.ok && staleUpd.rowCount === 0, String(staleUpd.rowCount));
+
+  console.log("\nI. Product detail + options CRUD (RLS):");
+  // U.editor2 stays an editor for the whole test (U.editor was promoted in C).
+  const detIns = await asUser(U.editor2, "insert into public.product_details(product_id, positioning_localized) values ('prod_ref',$1)", [LOC]);
+  expect("editor can create a 1:1 product detail", detIns.ok, detIns.error?.message);
+  const optIns = await asUser(U.editor2, "insert into public.product_options(product_id,type,label_localized) values ('prod_ref','use_case',$1) returning id", [LOC]);
+  expect("editor can add a product option", optIns.ok && optIns.rowCount === 1, optIns.error?.message);
+  const optId = optIns.rows?.[0]?.id;
+  const optReorder = await asUser(U.editor2, "update public.product_options set sort_order=3 where id=$1 returning id", [optId]);
+  expect("editor can reorder a product option", optReorder.ok && optReorder.rowCount === 1, optReorder.error?.message);
+  const optDelEditor = await asUser(U.editor2, "delete from public.product_options where id=$1", [optId]);
+  expect("editor CANNOT hard-delete an option (0 rows via RLS)", optDelEditor.ok && optDelEditor.rowCount === 0, `ok=${optDelEditor.ok} n=${optDelEditor.rowCount} ${optDelEditor.error?.message ?? ""}`);
+  const optDelOwner = await asUser(U.owner1, "delete from public.product_options where id=$1 returning id", [optId]);
+  expect("owner CAN hard-delete an option", optDelOwner.ok && optDelOwner.rowCount === 1, `ok=${optDelOwner.ok} n=${optDelOwner.rowCount} ${optDelOwner.error?.message ?? ""}`);
+
+  console.log("\nJ. P05 RPCs are safe (definer + fixed search_path + no anon):");
   const defs = (await admin.query("select count(*)::int n from pg_proc where proname in ('dashboard_set_member_state','dashboard_active_member_count','dashboard_assignable_members') and prosecdef and array_to_string(proconfig,',') like '%search_path=%'")).rows[0].n;
   expect("all three P05 RPCs are SECURITY DEFINER + fixed search_path", defs === 3);
   const anonCount = await asAnon("select public.dashboard_active_member_count()");
   expect("anon cannot execute the member-count RPC", !anonCount.ok);
   const memberCount = await asUser(U.admin, "select public.dashboard_active_member_count() as n");
-  // owner1 active, owner2 deactivated, admin active, editor(now admin) active, inactive inactive → 3 active
-  expect("active-member count RPC returns an accurate total to a member", memberCount.ok && memberCount.rows[0].n === 3, String(memberCount.rows[0]?.n));
+  // owner1, admin, editor(->admin), editor2 active; owner2 + inactive not → 4 active
+  expect("active-member count RPC returns an accurate total to a member", memberCount.ok && memberCount.rows[0].n === 4, String(memberCount.rows[0]?.n));
   const assignable = await asUser(U.admin, "select count(*)::int n from public.dashboard_assignable_members()");
-  expect("assignable-members RPC lists active members to a member", assignable.ok && assignable.rows[0].n === 3, String(assignable.rows[0]?.n));
+  expect("assignable-members RPC lists active members to a member", assignable.ok && assignable.rows[0].n === 4, String(assignable.rows[0]?.n));
   const anAssign = await asAnon("select public.dashboard_assignable_members()");
   expect("anon cannot execute the assignable-members RPC", !anAssign.ok);
 

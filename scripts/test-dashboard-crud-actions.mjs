@@ -133,6 +133,19 @@ assert("enquiry action validates status against the enum", /isEnquiryStatus\(sta
 assert("enquiry action bounds notes length", /LIMITS\.long/.test(enqAct));
 assert("enquiry action returns only generic messages", /fail\(/.test(enqAct) && !/error\.message/.test(enqAct));
 
+// ---- product actions: optimistic concurrency + safe delete -----------------
+console.log("\nProduct actions (static):");
+const prodAct = read("lib/dashboard/product-actions.ts");
+assert("product create/update re-authorize", /authorizeAction\(\)/.test(prodAct) && /authorizeAction\(\["owner", "admin"\]\)/.test(prodAct));
+assert("product update uses updated_at optimistic concurrency", /\.eq\("updated_at", expectedUpdatedAt\)/.test(prodAct));
+assert("stale update is rejected generically", /data\.length === 0\) return fail\(STALE\)/.test(prodAct));
+assert("hard delete is owner/admin + canDeleteContent", /deleteProductAction[\s\S]*?authorizeAction\(\["owner", "admin"\]\)[\s\S]*?canDeleteContent/.test(prodAct));
+assert("seed-backed products cannot be hard-deleted", /SEED_ID_RE\.test\(id\)[\s\S]*?Seed-backed products cannot be deleted/.test(prodAct));
+assert("product actions validate icon/option enums", /PRODUCT_ICON_TYPES/.test(prodAct) && /PRODUCT_OPTION_TYPES/.test(prodAct));
+assert("product actions return only generic messages", /fail\(/.test(prodAct) && !/error\.message/.test(prodAct));
+assert("product actions revalidate only dashboard paths", /revalidatePath\("\/dashboard/.test(prodAct) && !/revalidatePath\("\/(?!dashboard)/.test(prodAct));
+assert("product editor localized array lists are preserved (not overwritten)", /preserved untouched|are preserved/.test(prodAct));
+
 // ---- no service-role key anywhere in the dashboard runtime -------------------
 console.log("\nNo service-role key in dashboard runtime:");
 function walk(dir) {

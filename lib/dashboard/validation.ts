@@ -34,7 +34,7 @@ export function reqText(
   raw: unknown,
   field: string,
   errors: FieldErrors,
-  max = LIMITS.short
+  max: number = LIMITS.short
 ): string {
   const s = typeof raw === "string" ? raw.trim() : "";
   if (!s) errors[field] = "This field is required.";
@@ -47,7 +47,7 @@ export function optText(
   raw: unknown,
   field: string,
   errors: FieldErrors,
-  max = LIMITS.medium
+  max: number = LIMITS.medium
 ): string {
   if (raw === undefined || raw === null) return "";
   const s = typeof raw === "string" ? raw.trim() : "";

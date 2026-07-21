@@ -18,7 +18,7 @@ reads remain a later patch).
 | `/dashboard` (Overview) | any active member | **Live** — real DB counts, recent enquiries, recently updated content, quick actions, config/empty/unavailable states |
 | `/dashboard/enquiries` | any active member | **Live** — search/status/assignee/date filters, bounded pagination, detail view, status/notes/assignment workflow, read-only audit |
 | `/dashboard/team` | **owner only** | **Live** — member list, role + active-state editing via the P05 RPC, current-member highlight, accessible confirmation, non-interactive invite note |
-| `/dashboard/products` | any active member | Placeholder (CRUD is the next increment — see "Remaining for P06") |
+| `/dashboard/products` | any active member (delete: owner/admin) | **Live** — searchable/filterable list, create/edit, activate/deactivate, localized EN/AR fields, category relationship + category creation, product detail (positioning/disclaimer), options add/reorder/remove, media selection, `updated_at` optimistic concurrency, accessible delete confirmation, unsaved-change warning |
 | `/dashboard/media`, `/services`, `/partners`, `/settings` | any active member | Placeholder (next increment) |
 
 > This PR is the **first coherent, green increment** of P05 and centres on the
@@ -111,9 +111,15 @@ enquiry status round-trip, owner vs editor page access) require a local
 auth/Supabase fixture harness and are part of the next increment; no production
 bypass, hidden test route, or insecure auth shortcut was added.
 
+## Products CRUD — destructive-action & concurrency rules
+
+- **Optimistic concurrency:** edits carry the loaded `updated_at`; the update runs `… .eq("id", id).eq("updated_at", expected)`. Because the P02 trigger bumps `updated_at` on every write, a concurrent edit makes the guard match 0 rows and the save is rejected with "refresh and try again" (proven at the DB level).
+- **Deactivate vs delete:** the default is deactivation. Physical deletion is **owner/admin only**, **refused for seed-backed ids** (`prod_`/`cat_`/… prefixes), and refused by the database for any FK-referenced row (surfaced as a generic "referenced elsewhere" message). Deletion requires an accessible confirmation dialog.
+- **Localized list preservation:** the product-detail `overview` / `use-case` / `recipe` localized arrays are **preserved untouched** on save (only positioning + disclaimer are edited here), so existing Arabic list content is never silently discarded.
+- **Options:** any active member can add/reorder options; hard-removing an option is owner/admin (matching the P03 content-delete rule).
+
 ## Remaining for the next increment / P06
 
-- Products CRUD (`product_categories`, `products`, `product_details`, `product_options`) with localized fields, media selection, options reordering, `updated_at` optimistic concurrency, and safe deactivate-vs-delete rules.
 - Media metadata, Services + sections, Partners/projects/project-products, and Shared-content editing (same server-action + validation spine).
 - Page-level Playwright flows against a local fixture harness.
 - Supabase-backed **public** reads (ISR) — explicitly out of scope for P05.
