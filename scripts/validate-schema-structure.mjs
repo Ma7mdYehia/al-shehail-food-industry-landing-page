@@ -363,6 +363,27 @@ for (const action of ["insert", "update", "delete"]) {
   check(new RegExp(`create policy dashboard_members_owner_${action}\\b`, "i").test(sql), `dashboard_members ${action} is owner-only`, `dashboard_members ${action} must be owner-only`);
 }
 
+// ---- 10b. Production Patch 04 — durable single-use nonce -------------------
+check(/create table (public\.)?dashboard_auth_flow_nonces\b/i.test(sql), "dashboard_auth_flow_nonces table created", "missing dashboard_auth_flow_nonces table");
+check(/alter table\s+(public\.)?dashboard_auth_flow_nonces\s+enable row level security/i.test(sql), "RLS enabled on the nonce table", "nonce table RLS not enabled");
+check(!/create policy[^;]*\bon\s+(public\.)?dashboard_auth_flow_nonces\b/i.test(sql), "nonce table has NO policy (RPC-only access; no anon/authenticated direct access)", "nonce table must have no RLS policy");
+check(/nonce_hash\s+text\s+primary key/i.test(sql) && /nonce_hash ~ '\^\[0-9a-f\]\{64\}\$'/i.test(sql), "nonce stored as a 64-hex SHA-256 digest (no raw nonce/token column)", "nonce must be stored only as a hex hash");
+check(/purpose in \('recovery',\s*'invite'\)/i.test(sql), "nonce purpose constrained to recovery/invite", "nonce purpose CHECK missing");
+for (const fn of ["register_dashboard_flow_nonce", "consume_dashboard_flow_nonce"]) {
+  check(new RegExp(`function (public\\.)?${fn}\\b[\\s\\S]*?security definer[\\s\\S]*?set search_path\\s*=\\s*''`, "i").test(sql), `${fn} is SECURITY DEFINER with fixed empty search_path`, `${fn} must be SECURITY DEFINER with set search_path = ''`);
+}
+check(/revoke all on function[\s\S]*?register_dashboard_flow_nonce[\s\S]*?from public/i.test(sql), "nonce RPC EXECUTE revoked from public", "must revoke nonce RPC EXECUTE from public");
+check(/grant execute on function[\s\S]*?dashboard_flow_nonce[\s\S]*?to authenticated/i.test(sql), "nonce RPC EXECUTE granted to authenticated only", "must grant nonce RPC EXECUTE to authenticated");
+// atomic consume: single UPDATE guarded by consumed_at IS NULL
+check(/update (public\.)?dashboard_auth_flow_nonces[\s\S]*?consumed_at is null[\s\S]*?returning true/i.test(sql), "consume is a single atomic UPDATE guarded by consumed_at IS NULL", "consume must atomically update where consumed_at is null");
+// register hardening: bounded expiry (reject past AND beyond the TTL + skew window)
+check(/p_expires_at\s*<=\s*now\(\)\s*or\s*p_expires_at\s*>\s*now\(\)\s*\+\s*interval '1[0-9] minutes'/i.test(sql),
+  "register bounds expiry to now()..now()+~TTL (rejects far-future nonces)", "register must reject expiries beyond the gate TTL + small skew");
+// register is insert-only: true ONLY when a NEW row is inserted (conflict → false)
+check(/insert into (public\.)?dashboard_auth_flow_nonces[\s\S]*?on conflict \(nonce_hash\) do nothing[\s\S]*?returning true into (inserted|[a-z_]+)[\s\S]*?return coalesce\(\1?[a-z_]*,\s*false\)/i.test(sql) ||
+  /on conflict \(nonce_hash\) do nothing\s*\n?\s*returning true into inserted;[\s\S]*?return coalesce\(inserted,\s*false\)/i.test(sql),
+  "register returns true only when a new row is inserted (ON CONFLICT DO NOTHING RETURNING)", "register must use INSERT ... ON CONFLICT DO NOTHING RETURNING and return false on conflict");
+
 // ---- 11. P03 scripts: bootstrap dry-run default, apply gating, no secrets ---
 const bootstrapPath = join(HERE, "bootstrap-dashboard-members.mjs");
 check(existsSync(bootstrapPath), "membership bootstrap script exists", "missing bootstrap-dashboard-members.mjs");

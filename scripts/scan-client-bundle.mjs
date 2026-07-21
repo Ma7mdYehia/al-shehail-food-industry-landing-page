@@ -31,6 +31,7 @@ export const FORBIDDEN_IDENTIFIERS = [
   "RESEND_API_KEY",
   "TURNSTILE_SECRET_KEY",
   "ADMIN_ALLOWED_EMAILS",
+  "DASHBOARD_AUTH_FLOW_SECRET",
 ];
 
 const JWT_RE = /\beyJ[A-Za-z0-9_-]{4,}\.[A-Za-z0-9_-]{4,}\.[A-Za-z0-9_-]{2,}/g;

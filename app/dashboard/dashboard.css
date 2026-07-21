@@ -1,0 +1,219 @@
+/* Dashboard-only styles. Loaded solely by the dashboard root layout, so the
+   public website's CSS and rendering are entirely unaffected. Warm glassmorphism
+   related to the approved Al Shehail site: cream background, deep-green accents,
+   subtle gold. Accessible contrast, visible focus, reduced-motion aware. */
+
+:root {
+  --dash-cream: #f7f3ea;
+  --dash-cream-2: #fbf8f1;
+  --dash-surface: rgba(255, 255, 255, 0.72);
+  --dash-surface-solid: #ffffff;
+  --dash-border: rgba(24, 63, 45, 0.14);
+  --dash-green: #14432d;
+  --dash-green-600: #1c5a3c;
+  --dash-green-500: #2a7350;
+  --dash-gold: #b7902f;
+  --dash-gold-soft: #e7d4a3;
+  --dash-text: #1f2a24;
+  --dash-muted: #5a6b62;
+  --dash-danger: #9b2c2c;
+  --dash-radius: 16px;
+  --dash-shadow: 0 10px 30px rgba(20, 67, 45, 0.10);
+}
+
+.dash-body,
+.dash-body *,
+.dash-body *::before,
+.dash-body *::after {
+  box-sizing: border-box;
+}
+
+.dash-body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--dash-text);
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgba(183, 144, 47, 0.10), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(42, 115, 80, 0.10), transparent 55%),
+    linear-gradient(180deg, var(--dash-cream-2), var(--dash-cream));
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dash-glass {
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  box-shadow: var(--dash-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ---- App shell layout ---- */
+.dash-shell {
+  display: grid;
+  grid-template-columns: 264px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "sidebar header" "sidebar main";
+  min-height: 100vh;
+}
+.dash-sidebar {
+  grid-area: sidebar;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border-right: 1px solid var(--dash-border);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+}
+.dash-sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.dash-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--dash-green);
+  font-size: 1.05rem;
+  letter-spacing: 0.2px;
+}
+/* The in-drawer close button is only relevant to the mobile drawer. */
+.dash-drawer-close {
+  display: none;
+}
+.dash-brand-mark {
+  width: 34px; height: 34px; border-radius: 9px;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--dash-green-600), var(--dash-green-500));
+  color: #fff; font-weight: 700;
+}
+.dash-nav { display: flex; flex-direction: column; gap: 4px; }
+.dash-nav-link {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 10px 12px; border-radius: 11px;
+  color: var(--dash-text); text-decoration: none; font-size: 0.94rem;
+  border: 1px solid transparent;
+}
+.dash-nav-link:hover { background: rgba(42, 115, 80, 0.08); }
+.dash-nav-link[aria-current="page"] {
+  background: rgba(20, 67, 45, 0.10);
+  border-color: var(--dash-border);
+  color: var(--dash-green);
+  font-weight: 600;
+}
+.dash-soon {
+  font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--dash-gold); background: rgba(183, 144, 47, 0.12);
+  border: 1px solid var(--dash-gold-soft); padding: 2px 6px; border-radius: 999px;
+}
+
+.dash-header {
+  grid-area: header;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--dash-border);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+}
+.dash-header-user { display: flex; align-items: center; gap: 12px; }
+.dash-user-name { font-weight: 600; }
+.dash-role-badge {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+  padding: 3px 9px; border-radius: 999px;
+  color: var(--dash-green); background: rgba(42, 115, 80, 0.12);
+  border: 1px solid var(--dash-border);
+}
+.dash-main { grid-area: main; padding: 26px 22px; }
+.dash-page-title { margin: 0 0 4px; font-size: 1.5rem; color: var(--dash-green); }
+.dash-page-sub { margin: 0 0 22px; color: var(--dash-muted); }
+
+/* ---- Buttons / controls ---- */
+.dash-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 16px; border-radius: 11px; font-weight: 600; font-size: 0.92rem;
+  border: 1px solid var(--dash-border); background: var(--dash-surface-solid);
+  color: var(--dash-green); cursor: pointer; text-decoration: none;
+}
+.dash-btn:hover { background: rgba(42, 115, 80, 0.06); }
+.dash-btn-primary {
+  background: linear-gradient(135deg, var(--dash-green-600), var(--dash-green-500));
+  color: #fff; border-color: transparent; width: 100%;
+}
+.dash-btn-primary:hover { filter: brightness(1.05); }
+.dash-iconbtn {
+  display: none; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 11px;
+  border: 1px solid var(--dash-border); background: var(--dash-surface-solid);
+  color: var(--dash-green); cursor: pointer; font-size: 1.2rem;
+}
+
+/* ---- Cards / grid ---- */
+.dash-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+.dash-card { padding: 18px; }
+.dash-card-label { color: var(--dash-muted); font-size: 0.85rem; margin: 0 0 6px; }
+.dash-card-value { font-size: 2rem; font-weight: 700; color: var(--dash-green); margin: 0; line-height: 1.1; }
+.dash-card-note { color: var(--dash-muted); font-size: 0.8rem; margin: 8px 0 0; }
+.dash-card-error { color: var(--dash-danger); font-size: 0.85rem; }
+
+.dash-section { margin-top: 26px; }
+.dash-section h2 { font-size: 1.05rem; color: var(--dash-green); margin: 0 0 12px; }
+
+.dash-status-ok { color: var(--dash-green-500); font-weight: 600; }
+.dash-status-off { color: var(--dash-danger); font-weight: 600; }
+
+/* ---- Auth card ---- */
+.dash-auth-wrap { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.dash-auth-card { width: 100%; max-width: 420px; padding: 30px; }
+.dash-auth-card h1 { margin: 0 0 4px; color: var(--dash-green); font-size: 1.4rem; }
+.dash-auth-card p.dash-auth-sub { margin: 0 0 20px; color: var(--dash-muted); font-size: 0.92rem; }
+.dash-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.dash-field label { font-size: 0.85rem; font-weight: 600; color: var(--dash-text); }
+.dash-field input {
+  padding: 11px 12px; border-radius: 11px; border: 1px solid var(--dash-border);
+  background: #fff; color: var(--dash-text); font-size: 0.95rem;
+}
+.dash-help { font-size: 0.8rem; color: var(--dash-muted); }
+.dash-alert {
+  padding: 11px 13px; border-radius: 11px; font-size: 0.88rem; margin-bottom: 16px;
+  border: 1px solid var(--dash-border);
+}
+.dash-alert-error { color: var(--dash-danger); background: rgba(155, 44, 44, 0.07); border-color: rgba(155, 44, 44, 0.2); }
+.dash-alert-ok { color: var(--dash-green-500); background: rgba(42, 115, 80, 0.08); }
+.dash-auth-links { display: flex; justify-content: space-between; margin-top: 16px; font-size: 0.88rem; }
+.dash-auth-links a { color: var(--dash-green-500); }
+
+/* ---- Focus visibility ---- */
+.dash-body :is(a, button, input, summary):focus-visible {
+  outline: 3px solid var(--dash-gold);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ---- Mobile nav ---- */
+.dash-scrim { display: none; }
+@media (max-width: 860px) {
+  .dash-shell { grid-template-columns: 1fr; grid-template-areas: "header" "main"; }
+  .dash-iconbtn { display: inline-flex; }
+  .dash-sidebar {
+    position: fixed; inset: 0 auto 0 0; width: 264px; z-index: 40;
+    transform: translateX(-100%); transition: transform 180ms ease;
+    border-right: 1px solid var(--dash-border);
+  }
+  .dash-sidebar[data-open="true"] { transform: translateX(0); }
+  .dash-shell:has(.dash-sidebar[data-open="true"]) .dash-scrim {
+    display: block; position: fixed; inset: 0; z-index: 30;
+    background: rgba(20, 67, 45, 0.35);
+  }
+  .dash-drawer-close { display: inline-flex; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dash-sidebar { transition: none; }
+  * { scroll-behavior: auto; }
+}

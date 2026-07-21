@@ -18,6 +18,23 @@ jobs:
   build:
     name: Lint, typecheck & build
     runs-on: ubuntu-latest
+
+    # Real PostgreSQL 16 for the durable single-use nonce integration test.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: app
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,6 +49,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Install the Chromium build Playwright expects, for the real-browser
+      # mobile drawer accessibility test below.
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
       - name: Validate Phase 1 seed data
         run: npm run seed:validate
 
@@ -44,8 +66,33 @@ jobs:
       - name: Dashboard RBAC/auth safety tests
         run: npm run db:test:rbac
 
+      # Real PostgreSQL integration test of the single-use nonce register/consume
+      # RPCs — applies the migrations to the postgres:16 service container and
+      # exercises the register-boundary, ownership, expiry, hash-only, RLS, and a
+      # genuine 30-way concurrent-reuse race.
+      - name: P04 nonce PostgreSQL integration test
+        run: npm run db:test:auth-nonce
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/app
+
+      # Real Chromium DOM test of the mobile drawer controller (focus/inert/Escape).
+      - name: P04 mobile drawer Chromium accessibility test
+        run: npm run test:drawer-a11y
+
       - name: Client-bundle scanner unit tests (synthetic)
         run: npm run test:scan-bundle
+
+      - name: Dashboard auth/shell safety tests (P04)
+        run: npm run test:auth-shell
+
+      - name: Dashboard recovery/invite gate tests (P04)
+        run: npm run test:auth-flow
+
+      # Real NextResponse header test of the fail-closed callback cookie helper
+      # (Supabase auth/session cookies — incl. chunked + PKCE verifier — become
+      # deletions; unrelated cookies untouched; no non-empty session survives).
+      - name: P04 callback fail-closed cookie helper test
+        run: npm run test:callback-cookie-helper
 
       - name: Membership bootstrap is read-only by default
         run: npm run db:members:bootstrap
@@ -63,3 +110,8 @@ jobs:
       # .next/static directory is a FAILURE, not a skipped pass.
       - name: Client bundle secret scan (post-build)
         run: npm run scan:client-bundle
+
+      # Runs AFTER build (needs .next): boots the real app and asserts the actual
+      # callback failure response deletes the flow gate + recovery state cookies.
+      - name: Callback returned-response cookie deletions (post-build)
+        run: npm run test:callback-cookies

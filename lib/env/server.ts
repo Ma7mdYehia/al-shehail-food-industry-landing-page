@@ -12,6 +12,8 @@
 // corresponding service is actually used, so the Patch 01 build succeeds even
 // though Supabase, Resend, and Turnstile are not configured yet.
 
+import { isValidFlowSecret } from "@/lib/auth/flow-gate";
+
 if (typeof window !== "undefined") {
   throw new Error(
     "lib/env/server.ts was imported into client code. It reads server-only " +
@@ -51,6 +53,29 @@ export function getSupabaseServiceRoleKey(): string {
 /** Resend API key (server-only). Throws when accessed without being set. */
 export function getResendApiKey(): string {
   return required(process.env.RESEND_API_KEY, "RESEND_API_KEY");
+}
+
+/**
+ * Dedicated server-only secret used to HMAC-sign the short-lived dashboard
+ * password-recovery/invite authorization gate (lib/auth/flow-gate.ts). Never a
+ * NEXT_PUBLIC_ variable. Lazily validated so builds stay green without it.
+ * Both accessors below use the SAME strength rules (>= 32 chars, no obvious
+ * placeholders); the value is never logged or exposed.
+ */
+export function getDashboardAuthFlowSecret(): string {
+  const value = process.env.DASHBOARD_AUTH_FLOW_SECRET;
+  if (!isValidFlowSecret(value)) {
+    throw new Error(
+      "DASHBOARD_AUTH_FLOW_SECRET is missing or too weak. Provide at least 32 " +
+        "characters of entropy (generate with `openssl rand -base64 48`)."
+    );
+  }
+  return value as string;
+}
+
+/** True when a STRONG flow-gate secret is configured (no throw). */
+export function hasDashboardAuthFlowSecret(): boolean {
+  return isValidFlowSecret(process.env.DASHBOARD_AUTH_FLOW_SECRET);
 }
 
 /** Cloudflare Turnstile secret key (server-only). */
