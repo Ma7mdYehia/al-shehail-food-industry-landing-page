@@ -365,6 +365,8 @@
 .dash-tag { border: 1px solid var(--dash-border); border-radius: 999px; padding: 4px 12px; font-size: 0.84rem; background: rgba(42,115,80,0.08); }
 .dash-tag-off { opacity: 0.55; }
 
+.dash-section-editor { padding: 16px; display: grid; gap: 12px; }
+.dash-section-remove { margin-top: 4px; }
 .dash-media-preview { margin: 0; border: 1px solid var(--dash-border); border-radius: var(--dash-radius); padding: 12px; }
 .dash-media-preview img { max-width: 100%; height: auto; border-radius: 10px; display: block; }
 
