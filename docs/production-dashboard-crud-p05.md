@@ -20,13 +20,13 @@ reads remain a later patch).
 | `/dashboard/team` | **owner only** | **Live** — member list, role + active-state editing via the P05 RPC, current-member highlight, accessible confirmation, non-interactive invite note |
 | `/dashboard/products` | any active member (delete: owner/admin) | **Live** — searchable/filterable list, create/edit, activate/deactivate, localized EN/AR fields, category relationship + category creation, product detail (positioning/disclaimer), options add/reorder/remove, media selection, `updated_at` optimistic concurrency, accessible delete confirmation, unsaved-change warning |
 | `/dashboard/media` | any active member (delete: owner/admin) | **Live** — searchable/type/status-filtered list, create/edit metadata, localized alt text, path/type/status/width/height, safe image preview (https/same-origin only), reference indication, `updated_at` optimistic concurrency, delete refused for seed-backed/referenced assets. No binary upload (metadata only). |
-| `/dashboard/services`, `/partners`, `/settings` | any active member | Placeholder (next increment) |
+| `/dashboard/services` | any active member (delete: owner/admin) | **Live** — services list, create/edit localized meta + hero fields, active/sort, per-section inline editor (type, localized title/eyebrow/description, active, sort) + add/remove sections. Structured `cta_json`/`items_json` preserved. |
+| `/dashboard/partners` | any active member (delete: owner/admin) | **Live** — partners list + editor (name/slug/logo/active/sort); projects list + editor (localized title/summary, active/sort); project-product mappings (catalog product select or null, localized name, status, sort). `project_detail_json` + rich mapping fields (category/description/notes/nutrition/image) preserved — NEEDS_VERIFICATION content never rewritten. |
+| `/dashboard/settings` | any active member | **Live** — edits the `shared_content` recipe disclaimer (EN/AR) with optimistic concurrency; the three structured localized point-lists are preserved untouched. |
 
-> This PR is the **first coherent, green increment** of P05 and centres on the
-> security-critical pieces (Team, Enquiries, Overview) plus the shared
-> server-action security spine and the forward-only migration. The remaining
-> content CRUD (products, media, services, partners, shared content) is scoped
-> below and will land as further commits on this same branch for review.
+> **All eight P05 areas are now delivered** on this branch (Overview, Products,
+> Media, Services, Partners, Enquiries, Team, Shared content), on the shared
+> server-action security spine and the forward-only migration.
 
 ## Schema / migration changes
 
@@ -121,6 +121,6 @@ bypass, hidden test route, or insecure auth shortcut was added.
 
 ## Remaining for the next increment / P06
 
-- Media metadata, Services + sections, Partners/projects/project-products, and Shared-content editing (same server-action + validation spine).
-- Page-level Playwright flows against a local fixture harness.
+- Structured-list editing for the shared-content point arrays and service/section `items_json` / project `detail_json` (currently preserved read-only to avoid data loss).
+- Full page-level Playwright flows against a local authenticated Supabase fixture harness (product editor keyboard flow, mobile CRUD layout, live enquiry round-trip, owner-vs-editor page access). This patch covers the confirmation-dialog and mobile-nav accessibility in real Chromium and the whole DB/RBAC model against real PostgreSQL 16.
 - Supabase-backed **public** reads (ISR) — explicitly out of scope for P05.

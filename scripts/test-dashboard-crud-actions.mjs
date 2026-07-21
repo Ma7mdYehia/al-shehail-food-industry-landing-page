@@ -154,6 +154,19 @@ assert("media delete is owner/admin + seed/FK protected", /authorizeAction\(\["o
 assert("media never fakes an upload (metadata only)", !/upload/i.test(mediaAct) || /no binary upload|metadata only/i.test(mediaAct));
 assert("media actions return only generic messages", /fail\(/.test(mediaAct) && !/error\.message/.test(mediaAct));
 
+// ---- services / partners / shared content: preservation + concurrency -------
+console.log("\nServices / Partners / Shared content (static):");
+const svcAct = read("lib/dashboard/service-actions.ts");
+assert("service update uses optimistic concurrency", /\.eq\("updated_at", expectedUpdatedAt\)/.test(svcAct));
+assert("service preserves structured cta_json/items_json", /cta_json intentionally omitted|items_json preserved|preserved\/managed elsewhere/.test(svcAct));
+const partAct = read("lib/dashboard/partner-actions.ts");
+assert("partner/project update uses optimistic concurrency", /\.eq\("updated_at", expectedUpdatedAt\)/.test(partAct));
+assert("project-product preserves rich/NEEDS_VERIFICATION fields", /preserved untouched/.test(partAct));
+assert("project-product preserves null product_id mappings", /null preserved when no catalog product/.test(partAct));
+const sharedAct = read("lib/dashboard/shared-content-actions.ts");
+assert("shared content edits only the disclaimer (arrays preserved)", /recipe_disclaimer_localized/.test(sharedAct) && !/private_label_points|packaging_options|quality_points/.test(sharedAct));
+assert("shared content uses optimistic concurrency + generic errors", /\.eq\("updated_at", expectedUpdatedAt\)/.test(sharedAct) && /changed by someone else/.test(sharedAct));
+
 // ---- no service-role key anywhere in the dashboard runtime -------------------
 console.log("\nNo service-role key in dashboard runtime:");
 function walk(dir) {
