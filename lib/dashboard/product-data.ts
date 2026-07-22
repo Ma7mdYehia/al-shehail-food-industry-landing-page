@@ -28,6 +28,7 @@ export type ProductOptionRow = {
   label: Localized;
   sortOrder: number;
   isActive: boolean;
+  updatedAt: string;
 };
 
 export type ProductDetail = {
@@ -210,7 +211,7 @@ export async function getProduct(id: string): Promise<ProductEditRecord | null> 
         .maybeSingle(),
       supabase
         .from("product_options")
-        .select("id, type, label_localized, sort_order, is_active")
+        .select("id, type, label_localized, sort_order, is_active, updated_at")
         .eq("product_id", id)
         .order("sort_order", { ascending: true }),
     ]);
@@ -248,6 +249,7 @@ export async function getProduct(id: string): Promise<ProductEditRecord | null> 
         label: loc(o.label_localized),
         sortOrder: (o.sort_order as number) ?? 0,
         isActive: o.is_active === true,
+        updatedAt: o.updated_at as string,
       })),
     };
   } catch {

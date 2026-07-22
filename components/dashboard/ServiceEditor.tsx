@@ -10,6 +10,7 @@ import {
   deleteServiceSectionAction,
 } from "@/lib/dashboard/service-actions";
 import { LocalizedField, Field, FormStatus } from "@/components/dashboard/fields";
+import { isDashboardCreatedId } from "@/lib/dashboard/validation";
 import { SERVICE_SECTION_TYPES } from "@/lib/dashboard/service-constants";
 import type { ServiceEditRecord, ServiceSectionRow } from "@/lib/dashboard/service-data";
 
@@ -129,13 +130,15 @@ function SectionRow({ section, canDelete }: { section: ServiceSectionRow; canDel
           <FormStatus status={state.status} message={state.message} />
         </div>
       </form>
-      {canDelete ? (
+      {canDelete && isDashboardCreatedId(section.id) ? (
         <form action={delAction} className="dash-section-remove">
           <input type="hidden" name="sectionId" value={section.id} />
           <button type="submit" className="dash-btn dash-btn-danger">Remove section</button>
           <FormStatus status={delState.status} message={delState.message} />
         </form>
-      ) : null}
+      ) : (
+        <p className="dash-card-note">Seed-backed section — editable but not removable.</p>
+      )}
     </div>
   );
 }

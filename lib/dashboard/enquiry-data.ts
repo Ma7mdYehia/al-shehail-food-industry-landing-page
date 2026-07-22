@@ -19,6 +19,7 @@ export type EnquiryListItem = {
 };
 
 export type EnquiryDetail = EnquiryListItem & {
+  updatedAt: string;
   country: string | null;
   whatsapp: string | null;
   category: string | null;
@@ -133,13 +134,14 @@ export async function getEnquiry(id: string): Promise<EnquiryDetail | null> {
     const { data, error } = await supabase
       .from("form_enquiries")
       .select(
-        "id, full_name, company_name, email, status, assigned_to, handled_at, handled_by, created_at, country, whatsapp, category, product, quantity, target_market, existing_recipe, packaging_support, message, internal_notes, locale, source_path"
+        "id, full_name, company_name, email, status, assigned_to, handled_at, handled_by, created_at, updated_at, country, whatsapp, category, product, quantity, target_market, existing_recipe, packaging_support, message, internal_notes, locale, source_path"
       )
       .eq("id", id)
       .maybeSingle();
     if (error || !data) return null;
     return {
       ...mapListItem(data),
+      updatedAt: data.updated_at as string,
       country: (data.country as string | null) ?? null,
       whatsapp: (data.whatsapp as string | null) ?? null,
       category: (data.category as string | null) ?? null,

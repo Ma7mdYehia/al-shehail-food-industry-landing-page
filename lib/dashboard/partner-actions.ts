@@ -1,12 +1,12 @@
 "use server";
 
-// Partners + partner_projects + partner_project_products server actions.
-// Re-authorize, validate, RLS-protected queries, updated_at optimistic
-// concurrency, generic errors, dashboard-only revalidation. project_detail_json
-// and the rich project-product fields (category / short_description / key_notes /
-// nutrition_highlights / image) are PRESERVED untouched on edit so existing
-// NEEDS_VERIFICATION content is never rewritten or silently removed. Null
-// product_id mappings are preserved when no catalog product is chosen.
+// Partners + partner_projects + partner_project_products server actions — thin
+// wrappers over pure builders. New partners/projects are created INACTIVE.
+// project_detail_json and the rich project-product fields are preserved
+// untouched (NEEDS_VERIFICATION content never rewritten); null product_id
+// mappings are preserved. Re-authorize, reject unknown fields, validate,
+// updated_at optimistic concurrency, check every result, generic errors. Hard
+// delete is owner/admin AND only for dashboard-created (UUID) records.
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -18,21 +18,19 @@ import {
   type ActionState,
 } from "@/lib/dashboard/actions-core";
 import { canDeleteContent } from "@/lib/auth/roles";
+import { isDashboardCreatedId } from "@/lib/dashboard/validation";
 import {
-  localized,
-  reqText,
-  slug as vSlug,
-  boundedInt,
-  oneOf,
-  boolean as vBool,
-  toLocalizedJson,
-  type FieldErrors,
-} from "@/lib/dashboard/validation";
-import { PPP_STATUSES, type PppStatus } from "@/lib/dashboard/partner-constants";
+  buildPartnerCreate,
+  buildPartnerUpdate,
+  buildProjectCreate,
+  buildProjectUpdate,
+  buildProjectProductCreate,
+  buildProjectProductUpdate,
+} from "@/lib/dashboard/inputs";
 
 const PATH = "/dashboard/partners";
-const SEED_ID_RE = /^(prod|cat|detail|media|partner|proj)_/;
 const STALE = "This record was changed by someone else. Please refresh and try again.";
+const SEED_DEL = "Seed-backed records cannot be deleted. Deactivate them instead.";
 
 function revalidate() {
   revalidatePath(PATH);
@@ -45,14 +43,11 @@ export async function createPartnerAction(_prev: ActionState, formData: FormData
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const errors: FieldErrors = {};
-  const slug = vSlug(formData.get("slug"), "slug", errors);
-  const name = reqText(formData.get("name"), "name", errors, 200);
-  const assetId = String(formData.get("assetId") ?? "").trim() || null;
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildPartnerCreate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
   let newId: string;
   try {
-    const { data, error } = await supabase.from("partners").insert({ slug, name, asset_id: assetId }).select("id").single();
+    const { data, error } = await supabase.from("partners").insert(parsed.value).select("id").single();
     if (error || !data) return fail("The partner could not be created. The slug may already be in use.");
     newId = data.id as string;
   } catch {
@@ -66,20 +61,13 @@ export async function updatePartnerAction(_prev: ActionState, formData: FormData
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const id = String(formData.get("id") ?? "");
-  const expectedUpdatedAt = String(formData.get("expectedUpdatedAt") ?? "");
-  if (!id || !expectedUpdatedAt) return fail("Unknown partner.");
-  const errors: FieldErrors = {};
-  const slug = vSlug(formData.get("slug"), "slug", errors);
-  const name = reqText(formData.get("name"), "name", errors, 200);
-  const assetId = String(formData.get("assetId") ?? "").trim() || null;
-  const isActive = vBool(formData.get("isActive"));
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildPartnerUpdate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id, expectedUpdatedAt, set } = parsed.value;
   try {
     const { data, error } = await supabase
       .from("partners")
-      .update({ slug, name, asset_id: assetId, is_active: isActive, sort_order: sortOrder })
+      .update(set)
       .eq("id", id)
       .eq("updated_at", expectedUpdatedAt)
       .select("id");
@@ -98,26 +86,11 @@ export async function createProjectAction(_prev: ActionState, formData: FormData
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const partnerId = String(formData.get("partnerId") ?? "");
-  if (!partnerId) return fail("Unknown partner.");
-  const errors: FieldErrors = {};
-  const slug = vSlug(formData.get("slug"), "slug", errors);
-  const title = localized({ en: formData.get("title_en"), ar: formData.get("title_ar") }, "title", errors, { max: 200 });
-  const summary = localized({ en: formData.get("summary_en"), ar: formData.get("summary_ar") }, "summary", errors, { max: 600 });
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildProjectCreate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
   let newId: string;
   try {
-    const { data, error } = await supabase
-      .from("partner_projects")
-      .insert({
-        partner_id: partnerId,
-        slug,
-        title_localized: toLocalizedJson(title),
-        summary_localized: toLocalizedJson(summary),
-        project_detail_json: {},
-      })
-      .select("id")
-      .single();
+    const { data, error } = await supabase.from("partner_projects").insert(parsed.value.insert).select("id").single();
     if (error || !data) return fail("The project could not be created. The slug may already be in use.");
     newId = data.id as string;
   } catch {
@@ -131,26 +104,13 @@ export async function updateProjectAction(_prev: ActionState, formData: FormData
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const id = String(formData.get("id") ?? "");
-  const expectedUpdatedAt = String(formData.get("expectedUpdatedAt") ?? "");
-  if (!id || !expectedUpdatedAt) return fail("Unknown project.");
-  const errors: FieldErrors = {};
-  const slug = vSlug(formData.get("slug"), "slug", errors);
-  const title = localized({ en: formData.get("title_en"), ar: formData.get("title_ar") }, "title", errors, { max: 200 });
-  const summary = localized({ en: formData.get("summary_en"), ar: formData.get("summary_ar") }, "summary", errors, { max: 600 });
-  const isActive = vBool(formData.get("isActive"));
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildProjectUpdate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id, expectedUpdatedAt, set } = parsed.value;
   try {
     const { data, error } = await supabase
       .from("partner_projects")
-      .update({
-        slug,
-        title_localized: toLocalizedJson(title),
-        summary_localized: toLocalizedJson(summary),
-        is_active: isActive,
-        sort_order: sortOrder,
-      }) // project_detail_json preserved
+      .update(set)
       .eq("id", id)
       .eq("updated_at", expectedUpdatedAt)
       .select("id");
@@ -170,7 +130,7 @@ export async function deleteProjectAction(_prev: ActionState, formData: FormData
   if (!canDeleteContent(member.role)) return fail("You do not have permission to delete projects.");
   const id = String(formData.get("id") ?? "");
   if (!id) return fail("Unknown project.");
-  if (SEED_ID_RE.test(id)) return fail("Seed-backed projects cannot be deleted. Deactivate them instead.");
+  if (!isDashboardCreatedId(id)) return fail(SEED_DEL);
   try {
     const { data, error } = await supabase.from("partner_projects").delete().eq("id", id).select("id");
     if (error || !data || data.length === 0) return fail("The project could not be deleted.");
@@ -187,24 +147,10 @@ export async function addProjectProductAction(_prev: ActionState, formData: Form
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const projectId = String(formData.get("projectId") ?? "");
-  if (!projectId) return fail("Unknown project.");
-  const errors: FieldErrors = {};
-  const status = oneOf<PppStatus>(formData.get("status"), PPP_STATUSES, "status", errors);
-  const productId = String(formData.get("productId") ?? "").trim() || null;
-  // Product name is optional; preserve the schema's null-name meaning when blank.
-  const nameEn = String(formData.get("name_en") ?? "").trim();
-  const name = nameEn ? localized({ en: formData.get("name_en"), ar: formData.get("name_ar") }, "name", errors, { max: 200 }) : null;
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildProjectProductCreate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
   try {
-    const { error } = await supabase.from("partner_project_products").insert({
-      partner_project_id: projectId,
-      product_id: productId,
-      product_name_localized: name ? toLocalizedJson(name) : null,
-      status,
-      sort_order: sortOrder,
-    });
+    const { error } = await supabase.from("partner_project_products").insert(parsed.value.insert);
     if (error) return fail("The mapping could not be added.");
   } catch {
     return fail("The mapping could not be added.");
@@ -217,25 +163,13 @@ export async function updateProjectProductAction(_prev: ActionState, formData: F
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const id = String(formData.get("mappingId") ?? "");
-  const expectedUpdatedAt = String(formData.get("expectedUpdatedAt") ?? "");
-  if (!id || !expectedUpdatedAt) return fail("Unknown mapping.");
-  const errors: FieldErrors = {};
-  const status = oneOf<PppStatus>(formData.get("status"), PPP_STATUSES, "status", errors);
-  const productId = String(formData.get("productId") ?? "").trim() || null;
-  const nameEn = String(formData.get("name_en") ?? "").trim();
-  const name = nameEn ? localized({ en: formData.get("name_en"), ar: formData.get("name_ar") }, "name", errors, { max: 200 }) : null;
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildProjectProductUpdate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id, expectedUpdatedAt, set } = parsed.value;
   try {
     const { data, error } = await supabase
       .from("partner_project_products")
-      .update({
-        product_id: productId, // null preserved when no catalog product is chosen
-        product_name_localized: name ? toLocalizedJson(name) : null,
-        status,
-        sort_order: sortOrder,
-      }) // category/short_description/key_notes/nutrition/image preserved untouched
+      .update(set)
       .eq("id", id)
       .eq("updated_at", expectedUpdatedAt)
       .select("id");
@@ -255,6 +189,7 @@ export async function deleteProjectProductAction(_prev: ActionState, formData: F
   if (!canDeleteContent(member.role)) return fail("You do not have permission to remove mappings.");
   const id = String(formData.get("mappingId") ?? "");
   if (!id) return fail("Unknown mapping.");
+  if (!isDashboardCreatedId(id)) return fail("Seed-backed mappings cannot be removed.");
   try {
     const { data, error } = await supabase.from("partner_project_products").delete().eq("id", id).select("id");
     if (error || !data || data.length === 0) return fail("The mapping could not be removed.");

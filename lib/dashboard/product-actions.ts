@@ -1,11 +1,13 @@
 "use server";
 
-// Products / categories / details / options server actions. Every mutation
-// re-authorizes (getUser()+active membership+role), validates and normalizes
-// input, uses RLS-protected queries, applies updated_at-based optimistic
-// concurrency to reject stale saves, and returns only generic errors. Editors
-// may create/update; only owner/admin may hard-delete (RLS enforces this too).
-// Physical deletion is refused for seed-backed or referenced rows.
+// Products / categories / details / options server actions — thin wrappers over
+// the pure builders in ./inputs (which reject unknown fields, validate, and set
+// the security defaults: new content is INACTIVE). Every mutation re-authorizes
+// (getUser()+active membership+role), uses RLS-protected queries, applies
+// updated_at optimistic concurrency, checks EVERY { data, error }, and returns
+// only generic errors. Hard delete is owner/admin AND only for dashboard-created
+// (UUID) records — seed-backed content is edit/deactivate only. FK references
+// are protected by the database.
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -17,34 +19,25 @@ import {
   type ActionState,
 } from "@/lib/dashboard/actions-core";
 import { canDeleteContent } from "@/lib/auth/roles";
+import { isDashboardCreatedId, rejectUnknownFormData, type FieldErrors } from "@/lib/dashboard/validation";
 import {
-  localized,
-  slug as vSlug,
-  optText,
-  boundedInt,
-  oneOf,
-  boolean as vBool,
-  toLocalizedJson,
-  type FieldErrors,
-} from "@/lib/dashboard/validation";
-import {
-  PRODUCT_ICON_TYPES,
-  PRODUCT_OPTION_TYPES,
-  type ProductIconType,
-  type ProductOptionType,
-} from "@/lib/dashboard/product-constants";
+  buildProductCreate,
+  buildProductUpdate,
+  buildProductDetail,
+  buildOptionCreate,
+  buildOptionUpdate,
+  buildCategoryCreate,
+  buildCategoryUpdate,
+} from "@/lib/dashboard/inputs";
 
 const PATH = "/dashboard/products";
-const SEED_ID_RE = /^(prod|cat|detail|media|partner|proj)_/;
+const STALE = "This record was changed by someone else. Please refresh and try again.";
+const SEED_DEL = "Seed-backed records cannot be deleted. Deactivate them instead.";
 
 function revalidate() {
   revalidatePath(PATH);
   revalidatePath("/dashboard");
 }
-function locFrom(formData: FormData, prefix: string, field: string, errors: FieldErrors, opts?: { max?: number }) {
-  return localized({ en: formData.get(`${prefix}_en`), ar: formData.get(`${prefix}_ar`) }, field, errors, opts);
-}
-const STALE = "This record was changed by someone else. Please refresh and try again.";
 
 // ---- products ---------------------------------------------------------------
 
@@ -52,38 +45,13 @@ export async function createProductAction(_prev: ActionState, formData: FormData
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-
-  const errors: FieldErrors = {};
-  const slug = vSlug(formData.get("slug"), "slug", errors);
-  const categoryId = String(formData.get("categoryId") ?? "").trim();
-  if (!categoryId) errors.categoryId = "Choose a category.";
-  const name = locFrom(formData, "name", "name", errors, { max: 200 });
-  const shortDescription = locFrom(formData, "shortDescription", "shortDescription", errors, { max: 600 });
-  const cardDescription = locFrom(formData, "cardDescription", "cardDescription", errors, { max: 600 });
-  const iconType = oneOf<ProductIconType>(formData.get("iconType"), PRODUCT_ICON_TYPES, "iconType", errors);
-  const imageAssetId = String(formData.get("imageAssetId") ?? "").trim() || null;
-  const featured = vBool(formData.get("featured"));
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildProductCreate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
 
   let newId: string;
   try {
-    const { data, error } = await supabase
-      .from("products")
-      .insert({
-        category_id: categoryId,
-        slug,
-        name_localized: toLocalizedJson(name),
-        short_description_localized: toLocalizedJson(shortDescription),
-        card_description_localized: toLocalizedJson(cardDescription),
-        icon_type: iconType,
-        image_asset_id: imageAssetId,
-        featured,
-      })
-      .select("id")
-      .single();
-    if (error || !data) {
-      return fail("The product could not be created. The slug may already be in use.");
-    }
+    const { data, error } = await supabase.from("products").insert(parsed.value).select("id").single();
+    if (error || !data) return fail("The product could not be created. The slug may already be in use.");
     newId = data.id as string;
   } catch {
     return fail("The product could not be created. Please try again.");
@@ -96,66 +64,19 @@ export async function updateProductAction(_prev: ActionState, formData: FormData
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-
-  const id = String(formData.get("id") ?? "");
-  const expectedUpdatedAt = String(formData.get("expectedUpdatedAt") ?? "");
-  if (!id || !expectedUpdatedAt) return fail("Unknown product.");
-
-  const errors: FieldErrors = {};
-  const slug = vSlug(formData.get("slug"), "slug", errors);
-  const categoryId = String(formData.get("categoryId") ?? "").trim();
-  if (!categoryId) errors.categoryId = "Choose a category.";
-  const name = locFrom(formData, "name", "name", errors, { max: 200 });
-  const shortDescription = locFrom(formData, "shortDescription", "shortDescription", errors, { max: 600 });
-  const cardDescription = locFrom(formData, "cardDescription", "cardDescription", errors, { max: 600 });
-  const iconType = oneOf<ProductIconType>(formData.get("iconType"), PRODUCT_ICON_TYPES, "iconType", errors);
-  const imageAssetId = String(formData.get("imageAssetId") ?? "").trim() || null;
-  const featured = vBool(formData.get("featured"));
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  // product_details (safe fields only; the localized ARRAY columns are preserved
-  // untouched so existing Arabic list content is never silently discarded).
-  const positioning = locFrom(formData, "positioning", "positioning", errors, { max: 4000 });
-  const disclaimerEn = optText(formData.get("disclaimer_en"), "disclaimer.en", errors, 4000);
-  const disclaimerAr = optText(formData.get("disclaimer_ar"), "disclaimer.ar", errors, 4000);
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildProductUpdate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id, expectedUpdatedAt, set } = parsed.value;
 
   try {
     const { data, error } = await supabase
       .from("products")
-      .update({
-        slug,
-        category_id: categoryId,
-        name_localized: toLocalizedJson(name),
-        short_description_localized: toLocalizedJson(shortDescription),
-        card_description_localized: toLocalizedJson(cardDescription),
-        icon_type: iconType,
-        image_asset_id: imageAssetId,
-        featured,
-        sort_order: sortOrder,
-      })
+      .update(set)
       .eq("id", id)
       .eq("updated_at", expectedUpdatedAt) // optimistic concurrency
       .select("id");
     if (error) return fail("The product could not be saved. The slug may already be in use.");
     if (!data || data.length === 0) return fail(STALE);
-
-    // Upsert the 1:1 detail (positioning + optional disclaimer). Arrays untouched.
-    const disclaimer = disclaimerEn ? { en: disclaimerEn, ar: disclaimerAr } : null;
-    const { data: existing } = await supabase
-      .from("product_details")
-      .select("id")
-      .eq("product_id", id)
-      .maybeSingle();
-    if (existing) {
-      await supabase
-        .from("product_details")
-        .update({ positioning_localized: toLocalizedJson(positioning), disclaimer_localized: disclaimer })
-        .eq("product_id", id);
-    } else {
-      await supabase
-        .from("product_details")
-        .insert({ product_id: id, positioning_localized: toLocalizedJson(positioning), disclaimer_localized: disclaimer });
-    }
   } catch {
     return fail("The product could not be saved. Please refresh and try again.");
   }
@@ -163,10 +84,51 @@ export async function updateProductAction(_prev: ActionState, formData: FormData
   return success("Product saved.");
 }
 
+// Independent detail save (positioning + disclaimer only; the localized array
+// columns are preserved untouched). Split from the core save so a partial
+// failure is explicit and can never yield a false "saved". EVERY result checked.
+export async function updateProductDetailAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const authz = await authorizeAction();
+  if (!authz.ok) return authz.state;
+  const { supabase } = authz.authorized;
+  const parsed = buildProductDetail(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { productId, expectedUpdatedAt, set } = parsed.value;
+
+  try {
+    if (expectedUpdatedAt) {
+      // A detail row exists → optimistic update.
+      const { data, error } = await supabase
+        .from("product_details")
+        .update(set)
+        .eq("product_id", productId)
+        .eq("updated_at", expectedUpdatedAt)
+        .select("id");
+      if (error) return fail("The product detail could not be saved. Please retry.");
+      if (!data || data.length === 0) return fail(STALE);
+    } else {
+      // No detail row yet → insert. A concurrent insert (unique product_id) makes
+      // this error, which is surfaced rather than reported as success.
+      const { data, error } = await supabase
+        .from("product_details")
+        .insert({ product_id: productId, ...set })
+        .select("id");
+      if (error || !data || data.length === 0) return fail("The product detail could not be saved. Please refresh and retry.");
+    }
+  } catch {
+    return fail("The product detail could not be saved. Please refresh and retry.");
+  }
+  revalidate();
+  return success("Product detail saved.");
+}
+
 export async function setProductActiveAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
+  const errors: FieldErrors = {};
+  rejectUnknownFormData(formData, ["id", "isActive"], errors);
+  if (errors._form) return fail(errors._form);
   const id = String(formData.get("id") ?? "");
   const isActive = String(formData.get("isActive") ?? "") === "true";
   if (!id) return fail("Unknown product.");
@@ -185,17 +147,11 @@ export async function deleteProductAction(_prev: ActionState, formData: FormData
   if (!authz.ok) return authz.state;
   const { member, supabase } = authz.authorized;
   if (!canDeleteContent(member.role)) return fail("You do not have permission to delete content.");
-
   const id = String(formData.get("id") ?? "");
   if (!id) return fail("Unknown product.");
-  // Never physically delete seed-backed content — deactivate it instead.
-  if (SEED_ID_RE.test(id)) {
-    return fail("Seed-backed products cannot be deleted. Deactivate them instead.");
-  }
+  if (!isDashboardCreatedId(id)) return fail(SEED_DEL);
   try {
     const { data, error } = await supabase.from("products").delete().eq("id", id).select("id");
-    // A foreign-key reference (e.g. a partner-project product) makes the delete
-    // fail at the database — surface a generic, safe message.
     if (error) return fail("This product is referenced elsewhere and cannot be deleted. Deactivate it instead.");
     if (!data || data.length === 0) return fail("The product could not be deleted.");
   } catch {
@@ -211,20 +167,10 @@ export async function addProductOptionAction(_prev: ActionState, formData: FormD
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const productId = String(formData.get("productId") ?? "");
-  if (!productId) return fail("Unknown product.");
-  const errors: FieldErrors = {};
-  const type = oneOf<ProductOptionType>(formData.get("type"), PRODUCT_OPTION_TYPES, "type", errors);
-  const label = locFrom(formData, "label", "label", errors, { max: 200 });
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildOptionCreate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
   try {
-    const { error } = await supabase.from("product_options").insert({
-      product_id: productId,
-      type,
-      label_localized: toLocalizedJson(label),
-      sort_order: sortOrder,
-    });
+    const { error } = await supabase.from("product_options").insert(parsed.value.insert);
     if (error) return fail("The option could not be added.");
   } catch {
     return fail("The option could not be added.");
@@ -233,42 +179,48 @@ export async function addProductOptionAction(_prev: ActionState, formData: FormD
   return success("Option added.");
 }
 
+// Full option editing (type, EN/AR label, sort) with optimistic concurrency.
+export async function updateProductOptionAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const authz = await authorizeAction();
+  if (!authz.ok) return authz.state;
+  const { supabase } = authz.authorized;
+  const parsed = buildOptionUpdate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id, expectedUpdatedAt, set } = parsed.value;
+  try {
+    const { data, error } = await supabase
+      .from("product_options")
+      .update(set)
+      .eq("id", id)
+      .eq("updated_at", expectedUpdatedAt)
+      .select("id");
+    if (error) return fail("The option could not be saved.");
+    if (!data || data.length === 0) return fail(STALE);
+  } catch {
+    return fail("The option could not be saved.");
+  }
+  revalidate();
+  return success("Option saved.");
+}
+
 export async function deleteProductOptionAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
-  // Hard delete is owner/admin only (P03 gives editors no DELETE policy), matching
-  // the content-deletion rule. Editors add/reorder options but do not hard-delete.
+  // Hard delete is owner/admin only (P03 gives editors no DELETE policy) AND only
+  // for dashboard-created (UUID) options — seeded options are edit-only.
   const authz = await authorizeAction(["owner", "admin"]);
   if (!authz.ok) return authz.state;
   const { member, supabase } = authz.authorized;
   if (!canDeleteContent(member.role)) return fail("You do not have permission to remove options.");
   const id = String(formData.get("optionId") ?? "");
   if (!id) return fail("Unknown option.");
+  if (!isDashboardCreatedId(id)) return fail("Seed-backed options cannot be removed. Deactivate them instead.");
   try {
-    // Options are always freshly created rows (no FK dependants) → safe to delete.
     const { data, error } = await supabase.from("product_options").delete().eq("id", id).select("id");
-    if (error) return fail("The option could not be removed.");
-    if (!data || data.length === 0) return fail("The option could not be removed.");
+    if (error || !data || data.length === 0) return fail("The option could not be removed.");
   } catch {
     return fail("The option could not be removed.");
   }
   revalidate();
   return success("Option removed.");
-}
-
-export async function moveProductOptionAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
-  const authz = await authorizeAction();
-  if (!authz.ok) return authz.state;
-  const { supabase } = authz.authorized;
-  const id = String(formData.get("optionId") ?? "");
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (!id) return fail("Unknown option.");
-  try {
-    const { data, error } = await supabase.from("product_options").update({ sort_order: sortOrder }).eq("id", id).select("id");
-    if (error || !data || data.length === 0) return fail("The option could not be reordered.");
-  } catch {
-    return fail("The option could not be reordered.");
-  }
-  revalidate();
-  return success("Order updated.");
 }
 
 // ---- categories -------------------------------------------------------------
@@ -277,19 +229,10 @@ export async function createCategoryAction(_prev: ActionState, formData: FormDat
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const errors: FieldErrors = {};
-  const slug = vSlug(formData.get("slug"), "slug", errors);
-  const name = locFrom(formData, "name", "name", errors, { max: 200 });
-  const description = locFrom(formData, "description", "description", errors, { max: 600 });
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildCategoryCreate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
   try {
-    const { error } = await supabase.from("product_categories").insert({
-      slug,
-      name_localized: toLocalizedJson(name),
-      description_localized: toLocalizedJson(description),
-      sort_order: sortOrder,
-    });
+    const { error } = await supabase.from("product_categories").insert(parsed.value);
     if (error) return fail("The category could not be created. The slug may already be in use.");
   } catch {
     return fail("The category could not be created.");
@@ -302,26 +245,13 @@ export async function updateCategoryAction(_prev: ActionState, formData: FormDat
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const id = String(formData.get("id") ?? "");
-  const expectedUpdatedAt = String(formData.get("expectedUpdatedAt") ?? "");
-  if (!id || !expectedUpdatedAt) return fail("Unknown category.");
-  const errors: FieldErrors = {};
-  const slug = vSlug(formData.get("slug"), "slug", errors);
-  const name = locFrom(formData, "name", "name", errors, { max: 200 });
-  const description = locFrom(formData, "description", "description", errors, { max: 600 });
-  const isActive = vBool(formData.get("isActive"));
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildCategoryUpdate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id, expectedUpdatedAt, set } = parsed.value;
   try {
     const { data, error } = await supabase
       .from("product_categories")
-      .update({
-        slug,
-        name_localized: toLocalizedJson(name),
-        description_localized: toLocalizedJson(description),
-        is_active: isActive,
-        sort_order: sortOrder,
-      })
+      .update(set)
       .eq("id", id)
       .eq("updated_at", expectedUpdatedAt)
       .select("id");

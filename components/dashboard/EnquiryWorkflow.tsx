@@ -27,6 +27,7 @@ export function EnquiryWorkflow({
   return (
     <form action={formAction} className="dash-workflow" aria-label="Update enquiry">
       <input type="hidden" name="id" value={enquiry.id} />
+      <input type="hidden" name="expectedUpdatedAt" value={enquiry.updatedAt} />
 
       <label className="dash-field">
         <span className="dash-field-label">Status</span>

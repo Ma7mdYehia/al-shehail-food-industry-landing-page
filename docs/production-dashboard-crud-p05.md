@@ -112,6 +112,16 @@ enquiry status round-trip, owner vs editor page access) require a local
 auth/Supabase fixture harness and are part of the next increment; no production
 bypass, hidden test route, or insecure auth shortcut was added.
 
+## Correctness & data-safety pass (applied)
+
+- **New content is created inactive; new media is pending.** Every create builder sets `is_active:false` (categories, products, services, sections, partners, projects) / `status:'pending'` (media) explicitly — never relying on a DB default — and a forged status field on media create is rejected. Activation is a later explicit edit. (Proven by executing the builders.)
+- **Reliable delete rule.** Hard deletion is allowed **only** when the record id is a valid dashboard-created UUID (`isDashboardCreatedId`); seeded deterministic ids (e.g. `prod_arabic_bread`, `detail_toast`, `opt_…`) are edit/deactivate-only. This replaces the old prefix regex and is applied consistently to products, media, product options, service sections, partner projects and project-product mappings. Delete controls are hidden for seed-backed children; editors never see a working hard-delete. FK reference protection is retained. (The PG test shows the DB itself permits deleting a seeded option, so the app-side UUID guard is the real protection.)
+- **Product-option editing.** `updateProductOptionAction` edits type + EN/AR label + sort with `updated_at` optimistic concurrency, enum/localized validation, field-level errors and stale-save feedback; seeded options are editable but not removable.
+- **No partial product saves / false success.** The product core and its 1:1 detail are now **independent** saves (`updateProductAction` / `updateProductDetailAction`); each checks every `{ data, error }` and only reports success when its own operation actually affected a row. The detail save never touches the localized array columns.
+- **Enquiry hardening.** The assignee is validated server-side against the active-member set (`dashboard_assignable_members` RPC) — not the browser's options; null stays unassigned; malformed/inactive/nonexistent ids are rejected. The update carries `expectedUpdatedAt` optimistic concurrency, returns the affected id, and treats zero rows as a generic failure (never "updated"). `handled_by`/`handled_at` remain DB-stamped and absent from browser input.
+- **Unknown submitted fields are rejected** by an allowlist in every mutation's builder (framework `$ACTION…` bookkeeping ignored), proven by executing real action parsing.
+- No P02/P03/P04 or P05 **migration** change was required for this pass — all fixes are application-level.
+
 ## Products CRUD — destructive-action & concurrency rules
 
 - **Optimistic concurrency:** edits carry the loaded `updated_at`; the update runs `… .eq("id", id).eq("updated_at", expected)`. Because the P02 trigger bumps `updated_at` on every write, a concurrent edit makes the guard match 0 rows and the save is rejected with "refresh and try again" (proven at the DB level).

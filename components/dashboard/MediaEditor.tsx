@@ -5,6 +5,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { IDLE } from "@/lib/dashboard/action-state";
 import { createMediaAction, updateMediaAction, deleteMediaAction } from "@/lib/dashboard/media-actions";
 import { LocalizedField, Field, FormStatus } from "@/components/dashboard/fields";
+import { isDashboardCreatedId } from "@/lib/dashboard/validation";
 import { MEDIA_TYPES, MEDIA_STATUSES } from "@/lib/dashboard/media-constants";
 import type { MediaEditRecord } from "@/lib/dashboard/media-data";
 
@@ -102,7 +103,7 @@ export function MediaEditor({
       {mode === "edit" && media ? (
         media.referenced ? (
           <p className="dash-card-note">This asset is referenced by content and cannot be deleted. Set it to legacy instead.</p>
-        ) : media.isSeedBacked ? (
+        ) : !isDashboardCreatedId(media.id) ? (
           <p className="dash-card-note">Seed-backed asset — it can be set to legacy but not permanently deleted.</p>
         ) : canDelete ? (
           <DeleteMedia id={media.id} />

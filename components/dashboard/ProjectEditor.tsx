@@ -11,6 +11,7 @@ import {
   deleteProjectProductAction,
 } from "@/lib/dashboard/partner-actions";
 import { LocalizedField, Field, FormStatus } from "@/components/dashboard/fields";
+import { isDashboardCreatedId } from "@/lib/dashboard/validation";
 import { PPP_STATUSES } from "@/lib/dashboard/partner-constants";
 import type { ProjectEditRecord, ProjectProductRow, ProductOption } from "@/lib/dashboard/partner-data";
 
@@ -99,7 +100,7 @@ export function ProjectEditor({
         </form>
       </section>
 
-      {canDelete && !/^(partner|proj)_/.test(project.id) ? (
+      {canDelete && isDashboardCreatedId(project.id) ? (
         <form action={delAction} className="dash-section">
           <input type="hidden" name="id" value={project.id} />
           <button type="submit" className="dash-btn dash-btn-danger">Delete project</button>
@@ -144,7 +145,7 @@ function ProjectProductRowEditor({ row, products, canDelete }: { row: ProjectPro
           <FormStatus status={state.status} message={state.message} />
         </div>
       </form>
-      {canDelete ? (
+      {canDelete && isDashboardCreatedId(row.id) ? (
         <form action={delAction}>
           <input type="hidden" name="mappingId" value={row.id} />
           <button type="submit" className="dash-btn dash-btn-danger">Remove mapping</button>

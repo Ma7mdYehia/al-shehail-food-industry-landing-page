@@ -3,13 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { IDLE } from "@/lib/dashboard/action-state";
+import { isDashboardCreatedId } from "@/lib/dashboard/validation";
 import {
   createProductAction,
   updateProductAction,
+  updateProductDetailAction,
   deleteProductAction,
   addProductOptionAction,
+  updateProductOptionAction,
   deleteProductOptionAction,
-  moveProductOptionAction,
 } from "@/lib/dashboard/product-actions";
 import { LocalizedField, Field, FormStatus } from "@/components/dashboard/fields";
 import { PRODUCT_ICON_TYPES } from "@/lib/dashboard/product-constants";
@@ -50,7 +52,6 @@ export function ProductEditor({
   const [state, formAction] = useFormState(action, IDLE);
   const [dirty, setDirty] = useState(false);
 
-  // Practical unsaved-change warning.
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
       if (dirty) {
@@ -118,39 +119,57 @@ export function ProductEditor({
         <label className="dash-checkline">
           <input type="checkbox" name="featured" value="true" defaultChecked={product?.featured ?? false} /> Featured
         </label>
-
-        <h3 className="dash-editor-heading">Detail</h3>
-        <LocalizedField name="positioning" label="Positioning" value={product?.detail?.positioning} errors={state.errors} textarea />
-        <LocalizedField name="disclaimer" label="Disclaimer" value={product?.detail?.disclaimer} errors={state.errors} textarea required={false} />
-        {product?.detail && (product.detail.overview.length || product.detail.useCases.length || product.detail.recipeOptions.length) ? (
-          <p className="dash-card-note">
-            Overview / use-case / recipe lists are preserved as authored (bilingual) and are not
-            edited here to avoid discarding Arabic content.
-          </p>
+        {mode === "create" ? (
+          <p className="dash-card-note">New products are created inactive — activate them after review.</p>
         ) : null}
 
         <div className="dash-editor-actions">
-          <SaveButton label={mode === "create" ? "Create product" : "Save changes"} />
+          <SaveButton label={mode === "create" ? "Create product" : "Save product"} />
           <FormStatus status={state.status} message={state.message} />
         </div>
       </form>
 
       {mode === "edit" && product ? (
         <>
-          <ProductOptions productId={product.id} options={product.options} />
-          {canDelete && !product.isSeedBacked ? <DeleteProduct id={product.id} /> : null}
-          {product.isSeedBacked ? (
+          <ProductDetailForm product={product} />
+          <ProductOptions productId={product.id} options={product.options} canDelete={canDelete} />
+          {canDelete && isDashboardCreatedId(product.id) ? (
+            <DeleteProduct id={product.id} />
+          ) : (
             <p className="dash-card-note">
-              This is seed-backed content — it can be deactivated but not permanently deleted.
+              This is seed-backed content — it can be edited and deactivated but not permanently deleted.
             </p>
-          ) : null}
+          )}
         </>
       ) : null}
     </div>
   );
 }
 
-function ProductOptions({ productId, options }: { productId: string; options: ProductOptionRow[] }) {
+function ProductDetailForm({ product }: { product: ProductEditRecord }) {
+  const [state, formAction] = useFormState(updateProductDetailAction, IDLE);
+  return (
+    <form action={formAction} className="dash-editor-form dash-glass dash-card">
+      <input type="hidden" name="productId" value={product.id} />
+      <input type="hidden" name="expectedUpdatedAt" value={product.detail?.updatedAt ?? ""} />
+      <h3 className="dash-editor-heading">Detail</h3>
+      <LocalizedField name="positioning" label="Positioning" value={product.detail?.positioning} errors={state.errors} textarea />
+      <LocalizedField name="disclaimer" label="Disclaimer" value={product.detail?.disclaimer} errors={state.errors} textarea required={false} />
+      {product.detail && (product.detail.overview.length || product.detail.useCases.length || product.detail.recipeOptions.length) ? (
+        <p className="dash-card-note">
+          Overview / use-case / recipe lists are preserved as authored (bilingual) and are not
+          edited here to avoid discarding Arabic content.
+        </p>
+      ) : null}
+      <div className="dash-editor-actions">
+        <SaveButton label="Save detail" />
+        <FormStatus status={state.status} message={state.message} />
+      </div>
+    </form>
+  );
+}
+
+function ProductOptions({ productId, options, canDelete }: { productId: string; options: ProductOptionRow[]; canDelete: boolean }) {
   const [addState, addAction] = useFormState(addProductOptionAction, IDLE);
   return (
     <section className="dash-section" aria-label="Product options">
@@ -158,14 +177,15 @@ function ProductOptions({ productId, options }: { productId: string; options: Pr
       {options.length === 0 ? (
         <p className="dash-card-note">No options yet.</p>
       ) : (
-        <ul className="dash-option-list">
+        <div className="dash-team-list">
           {options.map((o) => (
-            <OptionRow key={o.id} option={o} />
+            <OptionRow key={o.id} option={o} canDelete={canDelete} />
           ))}
-        </ul>
+        </div>
       )}
       <form action={addAction} className="dash-option-add">
         <input type="hidden" name="productId" value={productId} />
+        <h4 className="dash-editor-heading">Add option</h4>
         <Field label="Type" error={addState.errors?.type}>
           <select className="dash-select" name="type" defaultValue="use_case">
             {PRODUCT_OPTION_TYPES.map((t) => (
@@ -186,25 +206,43 @@ function ProductOptions({ productId, options }: { productId: string; options: Pr
   );
 }
 
-function OptionRow({ option }: { option: ProductOptionRow }) {
+function OptionRow({ option, canDelete }: { option: ProductOptionRow; canDelete: boolean }) {
+  const [state, formAction] = useFormState(updateProductOptionAction, IDLE);
   const [delState, delAction] = useFormState(deleteProductOptionAction, IDLE);
-  const [moveState, moveAction] = useFormState(moveProductOptionAction, IDLE);
+  const deletable = canDelete && isDashboardCreatedId(option.id);
   return (
-    <li className="dash-glass dash-card dash-option-row">
-      <span className="dash-recent-kind">{PRODUCT_OPTION_TYPE_LABELS[option.type] ?? option.type}</span>
-      <span className="dash-option-label">{option.label.en || "—"}</span>
-      <form action={moveAction} className="dash-option-move">
+    <div className="dash-glass dash-card dash-section-editor">
+      <form action={formAction} className="dash-editor-form">
         <input type="hidden" name="optionId" value={option.id} />
-        <label className="dash-visually-hidden" htmlFor={`sort-${option.id}`}>Sort order</label>
-        <input id={`sort-${option.id}`} className="dash-input dash-input-narrow" name="sortOrder" type="number" min={0} defaultValue={option.sortOrder} />
-        <button type="submit" className="dash-btn">Reorder</button>
+        <input type="hidden" name="expectedUpdatedAt" value={option.updatedAt} />
+        <div className="dash-editor-row">
+          <Field label="Type" error={state.errors?.type}>
+            <select className="dash-select" name="type" defaultValue={option.type}>
+              {PRODUCT_OPTION_TYPES.map((t) => (
+                <option key={t} value={t}>{PRODUCT_OPTION_TYPE_LABELS[t]}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="Sort">
+            <input className="dash-input" name="sortOrder" type="number" min={0} defaultValue={option.sortOrder} />
+          </Field>
+        </div>
+        <LocalizedField name="label" label="Label" value={option.label} errors={state.errors} />
+        <div className="dash-editor-actions">
+          <SaveButton label="Save option" />
+          <FormStatus status={state.status} message={state.message} />
+        </div>
       </form>
-      <form action={delAction}>
-        <input type="hidden" name="optionId" value={option.id} />
-        <button type="submit" className="dash-btn">Remove</button>
-      </form>
-      <FormStatus status={delState.status === "error" ? "error" : moveState.status} message={delState.message || moveState.message} />
-    </li>
+      {deletable ? (
+        <form action={delAction}>
+          <input type="hidden" name="optionId" value={option.id} />
+          <button type="submit" className="dash-btn dash-btn-danger">Remove option</button>
+          <FormStatus status={delState.status} message={delState.message} />
+        </form>
+      ) : (
+        <p className="dash-card-note">Seed-backed option — editable but not removable.</p>
+      )}
+    </div>
   );
 }
 

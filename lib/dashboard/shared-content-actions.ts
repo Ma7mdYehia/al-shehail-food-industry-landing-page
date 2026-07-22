@@ -7,37 +7,22 @@
 // revalidation only.
 
 import { revalidatePath } from "next/cache";
-import {
-  authorizeAction,
-  fail,
-  invalid,
-  success,
-  type ActionState,
-} from "@/lib/dashboard/actions-core";
-import { localized, toLocalizedJson, type FieldErrors } from "@/lib/dashboard/validation";
+import { authorizeAction, fail, invalid, success, type ActionState } from "@/lib/dashboard/actions-core";
+import { buildSharedUpdate } from "@/lib/dashboard/inputs";
 
 export async function updateSharedContentAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
 
-  const id = String(formData.get("id") ?? "default");
-  const expectedUpdatedAt = String(formData.get("expectedUpdatedAt") ?? "");
-  if (!expectedUpdatedAt) return fail("Unknown record.");
-
-  const errors: FieldErrors = {};
-  const disclaimer = localized(
-    { en: formData.get("recipeDisclaimer_en"), ar: formData.get("recipeDisclaimer_ar") },
-    "recipeDisclaimer",
-    errors,
-    { max: 4000 }
-  );
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildSharedUpdate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id, expectedUpdatedAt, set } = parsed.value;
 
   try {
     const { data, error } = await supabase
       .from("shared_content")
-      .update({ recipe_disclaimer_localized: toLocalizedJson(disclaimer) })
+      .update(set)
       .eq("id", id)
       .eq("updated_at", expectedUpdatedAt)
       .select("id");

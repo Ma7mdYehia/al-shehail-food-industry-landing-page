@@ -1,10 +1,10 @@
 "use server";
 
-// Services + service_sections server actions. Re-authorize, validate localized
-// content, RLS-protected queries, updated_at optimistic concurrency, generic
-// errors, dashboard-only revalidation. The structured cta_json / items_json are
-// PRESERVED untouched on edit (defaulted to {} / [] on create) so no structured
-// content is silently rewritten. Hard delete is owner/admin.
+// Services + service_sections server actions — thin wrappers over pure builders.
+// New services/sections are created INACTIVE. Structured cta_json/items_json are
+// preserved untouched. Re-authorize, reject unknown fields, validate, updated_at
+// optimistic concurrency, check every result, generic errors. Hard delete is
+// owner/admin AND only for dashboard-created (UUID) sections.
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -16,34 +16,20 @@ import {
   type ActionState,
 } from "@/lib/dashboard/actions-core";
 import { canDeleteContent } from "@/lib/auth/roles";
+import { isDashboardCreatedId } from "@/lib/dashboard/validation";
 import {
-  localized,
-  slug as vSlug,
-  boundedInt,
-  oneOf,
-  boolean as vBool,
-  toLocalizedJson,
-  type FieldErrors,
-  type Localized,
-} from "@/lib/dashboard/validation";
-import { SERVICE_SECTION_TYPES, type ServiceSectionType } from "@/lib/dashboard/service-constants";
+  buildServiceCreate,
+  buildServiceUpdate,
+  buildSectionCreate,
+  buildSectionUpdate,
+} from "@/lib/dashboard/inputs";
 
 const PATH = "/dashboard/services";
-const SEED_ID_RE = /^(prod|cat|detail|media|partner|proj|svc|service)_/;
 const STALE = "This record was changed by someone else. Please refresh and try again.";
 
 function revalidate() {
   revalidatePath(PATH);
   revalidatePath("/dashboard");
-}
-function locFrom(formData: FormData, prefix: string, field: string, errors: FieldErrors, max = 600): Localized {
-  return localized({ en: formData.get(`${prefix}_en`), ar: formData.get(`${prefix}_ar`) }, field, errors, { max });
-}
-// Optional localized: null when English is blank; otherwise validated.
-function optLocFrom(formData: FormData, prefix: string, field: string, errors: FieldErrors, max = 600): Localized | null {
-  const en = String(formData.get(`${prefix}_en`) ?? "").trim();
-  if (!en) return null;
-  return localized({ en: formData.get(`${prefix}_en`), ar: formData.get(`${prefix}_ar`) }, field, errors, { max });
 }
 
 // ---- services ---------------------------------------------------------------
@@ -52,31 +38,11 @@ export async function createServiceAction(_prev: ActionState, formData: FormData
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-
-  const errors: FieldErrors = {};
-  const slug = vSlug(formData.get("slug"), "slug", errors);
-  const metaTitle = locFrom(formData, "metaTitle", "metaTitle", errors, 200);
-  const metaDescription = locFrom(formData, "metaDescription", "metaDescription", errors, 600);
-  const heroEyebrow = locFrom(formData, "heroEyebrow", "heroEyebrow", errors, 200);
-  const heroTitle = locFrom(formData, "heroTitle", "heroTitle", errors, 200);
-  const heroSubtitle = locFrom(formData, "heroSubtitle", "heroSubtitle", errors, 600);
-  if (Object.keys(errors).length) return invalid(errors);
-
+  const parsed = buildServiceCreate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
   let newId: string;
   try {
-    const { data, error } = await supabase
-      .from("services")
-      .insert({
-        slug,
-        meta_title_localized: toLocalizedJson(metaTitle),
-        meta_description_localized: toLocalizedJson(metaDescription),
-        hero_eyebrow_localized: toLocalizedJson(heroEyebrow),
-        hero_title_localized: toLocalizedJson(heroTitle),
-        hero_subtitle_localized: toLocalizedJson(heroSubtitle),
-        cta_json: {}, // structured CTA is managed elsewhere; valid empty object
-      })
-      .select("id")
-      .single();
+    const { data, error } = await supabase.from("services").insert(parsed.value).select("id").single();
     if (error || !data) return fail("The service could not be created. The slug may already be in use.");
     newId = data.id as string;
   } catch {
@@ -90,35 +56,13 @@ export async function updateServiceAction(_prev: ActionState, formData: FormData
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-
-  const id = String(formData.get("id") ?? "");
-  const expectedUpdatedAt = String(formData.get("expectedUpdatedAt") ?? "");
-  if (!id || !expectedUpdatedAt) return fail("Unknown service.");
-
-  const errors: FieldErrors = {};
-  const slug = vSlug(formData.get("slug"), "slug", errors);
-  const metaTitle = locFrom(formData, "metaTitle", "metaTitle", errors, 200);
-  const metaDescription = locFrom(formData, "metaDescription", "metaDescription", errors, 600);
-  const heroEyebrow = locFrom(formData, "heroEyebrow", "heroEyebrow", errors, 200);
-  const heroTitle = locFrom(formData, "heroTitle", "heroTitle", errors, 200);
-  const heroSubtitle = locFrom(formData, "heroSubtitle", "heroSubtitle", errors, 600);
-  const isActive = vBool(formData.get("isActive"));
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (Object.keys(errors).length) return invalid(errors);
-
+  const parsed = buildServiceUpdate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id, expectedUpdatedAt, set } = parsed.value;
   try {
     const { data, error } = await supabase
       .from("services")
-      .update({
-        slug,
-        meta_title_localized: toLocalizedJson(metaTitle),
-        meta_description_localized: toLocalizedJson(metaDescription),
-        hero_eyebrow_localized: toLocalizedJson(heroEyebrow),
-        hero_title_localized: toLocalizedJson(heroTitle),
-        hero_subtitle_localized: toLocalizedJson(heroSubtitle),
-        is_active: isActive,
-        sort_order: sortOrder,
-      }) // cta_json intentionally omitted → preserved
+      .update(set)
       .eq("id", id)
       .eq("updated_at", expectedUpdatedAt)
       .select("id");
@@ -137,25 +81,10 @@ export async function addServiceSectionAction(_prev: ActionState, formData: Form
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const serviceId = String(formData.get("serviceId") ?? "");
-  if (!serviceId) return fail("Unknown service.");
-  const errors: FieldErrors = {};
-  const sectionType = oneOf<ServiceSectionType>(formData.get("sectionType"), SERVICE_SECTION_TYPES, "sectionType", errors);
-  const title = optLocFrom(formData, "title", "title", errors, 200);
-  const eyebrow = optLocFrom(formData, "eyebrow", "eyebrow", errors, 200);
-  const description = optLocFrom(formData, "description", "description", errors, 4000);
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildSectionCreate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
   try {
-    const { error } = await supabase.from("service_sections").insert({
-      service_id: serviceId,
-      section_type: sectionType,
-      title_localized: title ? toLocalizedJson(title) : null,
-      eyebrow_localized: eyebrow ? toLocalizedJson(eyebrow) : null,
-      description_localized: description ? toLocalizedJson(description) : null,
-      items_json: [], // structured items preserved/managed elsewhere
-      sort_order: sortOrder,
-    });
+    const { error } = await supabase.from("service_sections").insert(parsed.value.insert);
     if (error) return fail("The section could not be added.");
   } catch {
     return fail("The section could not be added.");
@@ -168,28 +97,13 @@ export async function updateServiceSectionAction(_prev: ActionState, formData: F
   const authz = await authorizeAction();
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
-  const id = String(formData.get("sectionId") ?? "");
-  const expectedUpdatedAt = String(formData.get("expectedUpdatedAt") ?? "");
-  if (!id || !expectedUpdatedAt) return fail("Unknown section.");
-  const errors: FieldErrors = {};
-  const sectionType = oneOf<ServiceSectionType>(formData.get("sectionType"), SERVICE_SECTION_TYPES, "sectionType", errors);
-  const title = optLocFrom(formData, "title", "title", errors, 200);
-  const eyebrow = optLocFrom(formData, "eyebrow", "eyebrow", errors, 200);
-  const description = optLocFrom(formData, "description", "description", errors, 4000);
-  const isActive = vBool(formData.get("isActive"));
-  const sortOrder = boundedInt(formData.get("sortOrder"), 0, 100000, 0);
-  if (Object.keys(errors).length) return invalid(errors);
+  const parsed = buildSectionUpdate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id, expectedUpdatedAt, set } = parsed.value;
   try {
     const { data, error } = await supabase
       .from("service_sections")
-      .update({
-        section_type: sectionType,
-        title_localized: title ? toLocalizedJson(title) : null,
-        eyebrow_localized: eyebrow ? toLocalizedJson(eyebrow) : null,
-        description_localized: description ? toLocalizedJson(description) : null,
-        is_active: isActive,
-        sort_order: sortOrder,
-      }) // items_json preserved
+      .update(set)
       .eq("id", id)
       .eq("updated_at", expectedUpdatedAt)
       .select("id");
@@ -209,6 +123,7 @@ export async function deleteServiceSectionAction(_prev: ActionState, formData: F
   if (!canDeleteContent(member.role)) return fail("You do not have permission to remove sections.");
   const id = String(formData.get("sectionId") ?? "");
   if (!id) return fail("Unknown section.");
+  if (!isDashboardCreatedId(id)) return fail("Seed-backed sections cannot be removed. Deactivate them instead.");
   try {
     const { data, error } = await supabase.from("service_sections").delete().eq("id", id).select("id");
     if (error || !data || data.length === 0) return fail("The section could not be removed.");

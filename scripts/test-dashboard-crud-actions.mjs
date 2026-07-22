@@ -36,6 +36,19 @@ async function loadTs(relPath) {
   return import(pathToFileURL(file).href);
 }
 
+// Transpile a lib/dashboard module graph (rewriting @/lib/dashboard/* imports to
+// flat sibling files) so the REAL pure builder logic can be imported + executed.
+function transpileGraph(names) {
+  for (const name of names) {
+    let src = read(`lib/dashboard/${name}.ts`);
+    src = src.replace(/@\/lib\/dashboard\/([a-z-]+)/g, "./$1.mjs");
+    const out = ts.transpileModule(src, {
+      compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
+    }).outputText;
+    writeFileSync(join(tmp, `${name}.mjs`), out);
+  }
+}
+
 console.log("P05 dashboard CRUD application tests\n" + "-".repeat(60));
 
 // ---- real validation logic --------------------------------------------------
@@ -112,60 +125,169 @@ console.log("Validation (real logic):");
   assert("reqText enforces max length", e2.title !== undefined);
 }
 
-// ---- static security guards on the action / data modules --------------------
-console.log("\nServer-action security (static):");
-const teamAct = read("lib/dashboard/team-actions.ts");
-const enqAct = read("lib/dashboard/enquiry-actions.ts");
-const core = read("lib/dashboard/actions-core.ts");
+// ===========================================================================
+// EXECUTABLE builder tests — run the REAL parsing/payload logic the actions use.
+// ===========================================================================
+transpileGraph([
+  "validation", "product-constants", "media-constants", "service-constants",
+  "partner-constants", "enquiry-constants", "inputs",
+]);
+const I = await import(pathToFileURL(join(tmp, "inputs.mjs")).href);
+const UUID = "11111111-2222-4333-8444-555555555555";
+function fd(entries) {
+  const f = new FormData();
+  for (const [k, val] of Object.entries(entries)) f.set(k, val);
+  return f;
+}
+const baseProduct = {
+  slug: "new-prod", categoryId: "cat_x", name_en: "N", name_ar: "ن",
+  shortDescription_en: "s", shortDescription_ar: "س", cardDescription_en: "c", cardDescription_ar: "ك",
+  iconType: "loaf", imageAssetId: "", featured: "",
+};
 
+console.log("\n1. New records are created inactive / pending (executed):");
+{
+  const r = I.buildProductCreate(fd(baseProduct));
+  assert("buildProductCreate → is_active:false", r.ok && r.value.is_active === false);
+}
+{
+  const r = I.buildCategoryCreate(fd({ slug: "c", name_en: "N", name_ar: "ن", description_en: "d", description_ar: "د" }));
+  assert("buildCategoryCreate → is_active:false", r.ok && r.value.is_active === false);
+}
+{
+  const r = I.buildServiceCreate(fd({ slug: "svc", metaTitle_en: "T", metaTitle_ar: "ت", metaDescription_en: "D", metaDescription_ar: "د", heroEyebrow_en: "E", heroEyebrow_ar: "ي", heroTitle_en: "H", heroTitle_ar: "ه", heroSubtitle_en: "S", heroSubtitle_ar: "س" }));
+  assert("buildServiceCreate → is_active:false", r.ok && r.value.is_active === false);
+}
+{
+  const r = I.buildSectionCreate(fd({ serviceId: "svc_1", sectionType: "intro", sortOrder: "0" }));
+  assert("buildSectionCreate → is_active:false", r.ok && r.value.insert.is_active === false);
+}
+{
+  const r = I.buildPartnerCreate(fd({ slug: "p", name: "P", assetId: "" }));
+  assert("buildPartnerCreate → is_active:false", r.ok && r.value.is_active === false);
+}
+{
+  const r = I.buildProjectCreate(fd({ partnerId: "partner_1", slug: "pj", title_en: "T", title_ar: "ت", summary_en: "S", summary_ar: "س" }));
+  assert("buildProjectCreate → is_active:false", r.ok && r.value.insert.is_active === false);
+}
+{
+  const r = I.buildMediaCreate(fd({ key: "k1", path: "/x.png", type: "products", alt_en: "a", alt_ar: "" }));
+  assert("buildMediaCreate → status:'pending'", r.ok && r.value.status === "pending");
+  const forged = I.buildMediaCreate(fd({ key: "k1", type: "products", alt_en: "a", alt_ar: "", status: "active" }));
+  assert("buildMediaCreate rejects a forged status field", !forged.ok && forged.errors._form !== undefined);
+}
+
+console.log("\n2. Reliable dashboard-created (UUID) delete rule (executed):");
+assert("seeded text id is NOT deletable", v.isDashboardCreatedId("detail_toast") === false && v.isDashboardCreatedId("prod_arabic_bread") === false && v.isDashboardCreatedId("opt_seed_1") === false);
+assert("dashboard-created UUID IS deletable", v.isDashboardCreatedId(UUID) === true);
+assert("blank/garbage ids are NOT deletable", v.isDashboardCreatedId("") === false && v.isDashboardCreatedId("not-a-uuid") === false);
+// delete actions use the UUID rule (wiring), not a prefix regex
+const prodAct = read("lib/dashboard/product-actions.ts");
+const mediaAct = read("lib/dashboard/media-actions.ts");
+const svcAct = read("lib/dashboard/service-actions.ts");
+const partAct = read("lib/dashboard/partner-actions.ts");
+for (const [name, src] of [["product", prodAct], ["media", mediaAct], ["service", svcAct], ["partner", partAct]]) {
+  assert(`${name} delete actions gate on isDashboardCreatedId (not a prefix regex)`, /isDashboardCreatedId\(id\)/.test(src) && !/SEED_ID_RE/.test(src));
+}
+
+console.log("\n3. Product-option editing (executed):");
+{
+  const r = I.buildOptionUpdate(fd({ optionId: UUID, expectedUpdatedAt: "2026-01-01T00:00:00Z", type: "variant", label_en: "L", label_ar: "ل", sortOrder: "2" }));
+  assert("valid option edit builds type/label/sort payload", r.ok && r.value.set.type === "variant" && r.value.set.sort_order === 2 && r.value.set.label_localized.en === "L");
+}
+{
+  const r = I.buildOptionUpdate(fd({ optionId: UUID, expectedUpdatedAt: "x", type: "not-a-type", label_en: "L", label_ar: "" }));
+  assert("invalid option enum rejected", !r.ok && r.errors.type !== undefined);
+}
+{
+  const r = I.buildOptionUpdate(fd({ optionId: UUID, expectedUpdatedAt: "x", type: "variant", label_en: "", label_ar: "" }));
+  assert("missing option label English rejected", !r.ok && r.errors["label.en"] !== undefined);
+}
+{
+  const r = I.buildOptionUpdate(fd({ optionId: UUID, type: "variant", label_en: "L", label_ar: "" }));
+  assert("option edit without expectedUpdatedAt rejected (optimistic guard)", !r.ok && r.errors._form !== undefined);
+}
+assert("updateProductOptionAction exists + uses optimistic concurrency", /updateProductOptionAction/.test(prodAct) && /product_options[\s\S]*?\.eq\("updated_at", expectedUpdatedAt\)/.test(prodAct));
+
+console.log("\n4. Product/detail partial-save safety (executed + wiring):");
+{
+  const r = I.buildProductDetail(fd({ productId: "prod_1", expectedUpdatedAt: "", positioning_en: "P", positioning_ar: "ب" }));
+  assert("detail payload holds ONLY positioning + disclaimer (arrays preserved)", r.ok && Object.keys(r.value.set).sort().join(",") === "disclaimer_localized,positioning_localized");
+}
+assert("product core + detail are SEPARATE actions", /updateProductAction/.test(prodAct) && /updateProductDetailAction/.test(prodAct));
+assert("detail action checks the lookup/update/insert error and can fail (no false success)", /updateProductDetailAction[\s\S]*?if \(error\) return fail[\s\S]*?data\.length === 0\) return fail/.test(prodAct));
+assert("core update returns success only after checking data/error", /updateProductAction[\s\S]*?if \(error\) return fail[\s\S]*?data\.length === 0\) return fail\(STALE\)[\s\S]*?return success/.test(prodAct));
+
+console.log("\n5. Enquiry assignment + affected-row handling (executed + wiring):");
+{
+  const r = I.buildEnquiryUpdate(fd({ id: UUID, expectedUpdatedAt: "2026-01-01T00:00:00Z", status: "contacted", internalNotes: "n", assignedTo: UUID }));
+  assert("valid enquiry update parses status/notes/assignee + set keys", r.ok && Object.keys(r.value.set).sort().join(",") === "assigned_to,internal_notes,status" && r.value.assignedTo === UUID);
+}
+{
+  const r = I.buildEnquiryUpdate(fd({ id: UUID, expectedUpdatedAt: "x", status: "contacted", assignedTo: "" }));
+  assert("empty assignee → null (unassigned preserved)", r.ok && r.value.assignedTo === null && r.value.set.assigned_to === null);
+}
+{
+  const r = I.buildEnquiryUpdate(fd({ id: UUID, expectedUpdatedAt: "x", status: "contacted", assignedTo: "not-a-uuid" }));
+  assert("malformed assignee id rejected", !r.ok && r.errors.assignedTo !== undefined);
+}
+{
+  const r = I.buildEnquiryUpdate(fd({ id: UUID, expectedUpdatedAt: "x", status: "bogus", assignedTo: "" }));
+  assert("invalid enquiry status rejected", !r.ok && r.errors.status !== undefined);
+}
+{
+  const r = I.buildEnquiryUpdate(fd({ id: UUID, status: "contacted", assignedTo: "" }));
+  assert("enquiry update without expectedUpdatedAt rejected (optimistic guard)", !r.ok && r.errors._form !== undefined);
+}
+const enqAct = read("lib/dashboard/enquiry-actions.ts");
+assert("enquiry action validates assignee against the ACTIVE-member RPC", /rpc\("dashboard_assignable_members"\)/.test(enqAct) && /not an active team member/.test(enqAct));
+assert("enquiry update selects the affected id + treats zero rows as failure", /\.eq\("updated_at", expectedUpdatedAt\)[\s\S]*?\.select\("id"\)[\s\S]*?data\.length === 0\)\s*\{[\s\S]*?fail\(/.test(enqAct));
+{
+  // Executed proof: the enquiry update payload never contains handled_by/handled_at.
+  const r = I.buildEnquiryUpdate(fd({ id: UUID, expectedUpdatedAt: "x", status: "contacted", assignedTo: "" }));
+  assert("enquiry update payload NEVER contains handled_by/handled_at", r.ok && !("handled_by" in r.value.set) && !("handled_at" in r.value.set));
+}
+
+console.log("\n6. Unknown-field rejection (executed in real action parsing):");
+{
+  const r = I.buildProductCreate(fd({ ...baseProduct, evilField: "x" }));
+  assert("unexpected field rejected by buildProductCreate", !r.ok && r.errors._form !== undefined);
+}
+{
+  const r = I.buildEnquiryUpdate(fd({ id: UUID, expectedUpdatedAt: "x", status: "contacted", assignedTo: "", handled_by: UUID }));
+  assert("forged handled_by field on enquiry update rejected", !r.ok && r.errors._form !== undefined);
+}
+{
+  const r = I.buildMediaUpdate(fd({ id: UUID, expectedUpdatedAt: "x", key: "k", path: "", type: "products", status: "active", alt_en: "a", alt_ar: "", sneaky: "1" }));
+  assert("unexpected media field rejected", !r.ok && r.errors._form !== undefined);
+}
+{
+  const clean = I.buildProductCreate(fd({ ...baseProduct, $ACTION_ID_abc: "ignored" }));
+  assert("framework $ACTION bookkeeping fields are ignored (accepted)", clean.ok === true);
+}
+
+// ---- static security guards (supplementary) ---------------------------------
+console.log("\nServer-action security (static, supplementary):");
+const teamAct = read("lib/dashboard/team-actions.ts");
+const core = read("lib/dashboard/actions-core.ts");
+const sharedAct = read("lib/dashboard/shared-content-actions.ts");
 assert("actions-core resolves the user via getUser()+membership (not getSession)", /getCurrentDashboardMember\(\)/.test(core) && !/\.getSession\(/.test(core));
 assert("actions-core enforces minRoles", /minRoles\.includes\(member\.role\)/.test(core));
-assert("team action re-authorizes as owner", /authorizeAction\(\["owner"\]\)/.test(teamAct));
-assert("team action validates role against the enum (never trusts the browser)", /DASHBOARD_ROLES[\s\S]*\.includes\(role\)/.test(teamAct));
-assert("team action routes changes through the SECURITY DEFINER RPC", /rpc\("dashboard_set_member_state"/.test(teamAct));
-assert("team action returns only generic messages", /fail\(/.test(teamAct) && !/error\.message/.test(teamAct));
-assert("team action revalidates only dashboard paths", /revalidatePath\("\/dashboard/.test(teamAct) && !/revalidatePath\("\/(?!dashboard)/.test(teamAct));
-
-assert("enquiry action re-authorizes (active member)", /authorizeAction\(\)/.test(enqAct));
-assert("enquiry action NEVER writes/reads handled_by/handled_at", !/handled_(by|at)\s*[:=]/.test(enqAct) && !/get\(["'`]handled/.test(enqAct));
-assert("enquiry action updates ONLY workflow columns", /\.update\(\{ status, internal_notes: [^}]*assigned_to[^}]*\}\)/.test(enqAct));
-assert("enquiry action validates status against the enum", /isEnquiryStatus\(status\)/.test(enqAct));
-assert("enquiry action bounds notes length", /LIMITS\.long/.test(enqAct));
-assert("enquiry action returns only generic messages", /fail\(/.test(enqAct) && !/error\.message/.test(enqAct));
-
-// ---- product actions: optimistic concurrency + safe delete -----------------
-console.log("\nProduct actions (static):");
-const prodAct = read("lib/dashboard/product-actions.ts");
-assert("product create/update re-authorize", /authorizeAction\(\)/.test(prodAct) && /authorizeAction\(\["owner", "admin"\]\)/.test(prodAct));
-assert("product update uses updated_at optimistic concurrency", /\.eq\("updated_at", expectedUpdatedAt\)/.test(prodAct));
-assert("stale update is rejected generically", /data\.length === 0\) return fail\(STALE\)/.test(prodAct));
-assert("hard delete is owner/admin + canDeleteContent", /deleteProductAction[\s\S]*?authorizeAction\(\["owner", "admin"\]\)[\s\S]*?canDeleteContent/.test(prodAct));
-assert("seed-backed products cannot be hard-deleted", /SEED_ID_RE\.test\(id\)[\s\S]*?Seed-backed products cannot be deleted/.test(prodAct));
-assert("product actions validate icon/option enums", /PRODUCT_ICON_TYPES/.test(prodAct) && /PRODUCT_OPTION_TYPES/.test(prodAct));
-assert("product actions return only generic messages", /fail\(/.test(prodAct) && !/error\.message/.test(prodAct));
-assert("product actions revalidate only dashboard paths", /revalidatePath\("\/dashboard/.test(prodAct) && !/revalidatePath\("\/(?!dashboard)/.test(prodAct));
-assert("product editor localized array lists are preserved (not overwritten)", /preserved untouched|are preserved/.test(prodAct));
-
-// ---- media actions ----------------------------------------------------------
-console.log("\nMedia actions (static):");
-const mediaAct = read("lib/dashboard/media-actions.ts");
-assert("media update uses updated_at optimistic concurrency", /\.eq\("updated_at", expectedUpdatedAt\)/.test(mediaAct));
-assert("media delete is owner/admin + seed/FK protected", /authorizeAction\(\["owner", "admin"\]\)/.test(mediaAct) && /SEED_ID_RE\.test\(id\)/.test(mediaAct) && /referenced by content/.test(mediaAct));
-assert("media never fakes an upload (metadata only)", !/upload/i.test(mediaAct) || /no binary upload|metadata only/i.test(mediaAct));
-assert("media actions return only generic messages", /fail\(/.test(mediaAct) && !/error\.message/.test(mediaAct));
-
-// ---- services / partners / shared content: preservation + concurrency -------
-console.log("\nServices / Partners / Shared content (static):");
-const svcAct = read("lib/dashboard/service-actions.ts");
-assert("service update uses optimistic concurrency", /\.eq\("updated_at", expectedUpdatedAt\)/.test(svcAct));
-assert("service preserves structured cta_json/items_json", /cta_json intentionally omitted|items_json preserved|preserved\/managed elsewhere/.test(svcAct));
-const partAct = read("lib/dashboard/partner-actions.ts");
-assert("partner/project update uses optimistic concurrency", /\.eq\("updated_at", expectedUpdatedAt\)/.test(partAct));
-assert("project-product preserves rich/NEEDS_VERIFICATION fields", /preserved untouched/.test(partAct));
-assert("project-product preserves null product_id mappings", /null preserved when no catalog product/.test(partAct));
-const sharedAct = read("lib/dashboard/shared-content-actions.ts");
-assert("shared content edits only the disclaimer (arrays preserved)", /recipe_disclaimer_localized/.test(sharedAct) && !/private_label_points|packaging_options|quality_points/.test(sharedAct));
-assert("shared content uses optimistic concurrency + generic errors", /\.eq\("updated_at", expectedUpdatedAt\)/.test(sharedAct) && /changed by someone else/.test(sharedAct));
+assert("team action re-authorizes as owner + uses the RPC", /authorizeAction\(\["owner"\]\)/.test(teamAct) && /rpc\("dashboard_set_member_state"/.test(teamAct));
+assert("product/media hard delete is owner/admin + canDeleteContent", /authorizeAction\(\["owner", "admin"\]\)[\s\S]*?canDeleteContent/.test(prodAct) && /authorizeAction\(\["owner", "admin"\]\)/.test(mediaAct));
+assert("every action returns only generic messages (no raw error.message)", ![prodAct, mediaAct, svcAct, partAct, enqAct, teamAct, sharedAct].some((s) => /error\.message/.test(s)));
+assert("every action revalidates only dashboard paths", ![prodAct, mediaAct, svcAct, partAct, enqAct, teamAct, sharedAct].some((s) => /revalidatePath\("\/(?!dashboard)/.test(s)));
+{
+  // Executed proof: structured JSON columns are never in the update payloads, so
+  // authored cta/items/detail/rich content is preserved untouched.
+  const svc = I.buildServiceUpdate(fd({ id: UUID, expectedUpdatedAt: "x", slug: "s", metaTitle_en: "T", metaTitle_ar: "ت", metaDescription_en: "D", metaDescription_ar: "د", heroEyebrow_en: "E", heroEyebrow_ar: "ي", heroTitle_en: "H", heroTitle_ar: "ه", heroSubtitle_en: "S", heroSubtitle_ar: "س", isActive: "true", sortOrder: "0" }));
+  const proj = I.buildProjectUpdate(fd({ id: UUID, expectedUpdatedAt: "x", slug: "p", title_en: "T", title_ar: "ت", summary_en: "S", summary_ar: "س", isActive: "true", sortOrder: "0" }));
+  const ppp = I.buildProjectProductUpdate(fd({ mappingId: UUID, expectedUpdatedAt: "x", productId: "", name_en: "", name_ar: "", status: "needs-data", sortOrder: "0" }));
+  const keys = (r) => Object.keys(r.value.set);
+  assert("service update omits cta_json", svc.ok && !keys(svc).includes("cta_json"));
+  assert("project update omits project_detail_json", proj.ok && !keys(proj).includes("project_detail_json"));
+  assert("project-product update omits category/short_description/key_notes/nutrition/image", ppp.ok && !keys(ppp).some((k) => /category_localized|short_description_localized|key_notes|nutrition_highlights|image_asset_id/.test(k)));
+}
 
 // ---- no service-role key anywhere in the dashboard runtime -------------------
 console.log("\nNo service-role key in dashboard runtime:");

@@ -24,9 +24,48 @@ export const LIMITS = {
 } as const;
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export function isPlainObject(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);
+}
+
+/**
+ * Whether an id is a DASHBOARD-CREATED record (safe to hard-delete). P02 uses
+ * `gen_random_uuid()::text` for records created after the seed, while seeded
+ * content uses deterministic non-UUID text ids (e.g. `prod_arabic_bread`,
+ * `detail_toast`). Only a valid UUID may be physically deleted; everything else
+ * (seed-backed) may be edited/deactivated but never deleted. This is a reliable
+ * structural rule, not a prefix heuristic.
+ */
+export function isDashboardCreatedId(id: unknown): boolean {
+  return typeof id === "string" && UUID_RE.test(id);
+}
+
+export function isUuid(v: unknown): v is string {
+  return typeof v === "string" && UUID_RE.test(v);
+}
+
+/**
+ * Reject any submitted FormData field not in the allowlist. Legitimate
+ * React/Next server-action bookkeeping fields (prefixed with `$`, e.g.
+ * `$ACTION_...`) are ignored. Any other unexpected key is a generic form error
+ * (guards against mass-assignment / forged fields). Returns true when clean.
+ */
+export function rejectUnknownFormData(
+  formData: FormData,
+  allowed: readonly string[],
+  errors: FieldErrors
+): boolean {
+  const set = new Set(allowed);
+  for (const key of Array.from(formData.keys())) {
+    if (key.startsWith("$")) continue; // framework bookkeeping
+    if (!set.has(key)) {
+      errors._form = "Unexpected field submitted.";
+      return false;
+    }
+  }
+  return true;
 }
 
 /** Trim + collapse a required single-line string within [1, max]. */

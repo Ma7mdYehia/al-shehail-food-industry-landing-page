@@ -1,16 +1,17 @@
 "use server";
 
-// Enquiry workflow server action. Active dashboard members may update ONLY the
-// workflow columns (status, internal_notes, assigned_to). handled_by/handled_at
-// are NEVER accepted from the browser — the P03 database trigger stamps them
-// from auth.uid(). The original submission fields are immutable (column grant).
+// Enquiry workflow server action. Active members may update ONLY the workflow
+// columns (status, internal_notes, assigned_to). handled_by/handled_at are NEVER
+// accepted from the browser — the P03 trigger stamps them. The assignee is
+// validated server-side against the ACTIVE-member set (the assignable-members
+// RPC), not the select options the browser sent. updated_at optimistic
+// concurrency prevents two members from silently overwriting each other, and a
+// zero-row result is a generic failure — never a false "updated".
 
 import { revalidatePath } from "next/cache";
-import { authorizeAction, fail, success, invalid, type ActionState } from "@/lib/dashboard/actions-core";
-import { isEnquiryStatus } from "@/lib/dashboard/enquiry-constants";
-import { LIMITS } from "@/lib/dashboard/validation";
+import { authorizeAction, fail, invalid, success, type ActionState } from "@/lib/dashboard/actions-core";
+import { buildEnquiryUpdate } from "@/lib/dashboard/inputs";
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const ENQUIRIES_PATH = "/dashboard/enquiries";
 
 export async function updateEnquiryAction(
@@ -21,29 +22,38 @@ export async function updateEnquiryAction(
   if (!authz.ok) return authz.state;
   const { supabase } = authz.authorized;
 
-  const id = String(formData.get("id") ?? "");
-  const status = String(formData.get("status") ?? "");
-  const notesRaw = formData.get("internalNotes");
-  const assignedRaw = String(formData.get("assignedTo") ?? "");
+  const parsed = buildEnquiryUpdate(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id, expectedUpdatedAt, assignedTo, set } = parsed.value;
 
-  if (!id) return fail("Unknown enquiry.");
-
-  const errors: Record<string, string> = {};
-  if (!isEnquiryStatus(status)) errors.status = "Choose a valid status.";
-  const notes = typeof notesRaw === "string" ? notesRaw.trim() : "";
-  if (notes.length > LIMITS.long) errors.internalNotes = `Notes must be ${LIMITS.long} characters or fewer.`;
-  const assignedTo = assignedRaw === "" ? null : assignedRaw;
-  if (assignedTo !== null && !UUID_RE.test(assignedTo)) errors.assignedTo = "Invalid assignee.";
-  if (Object.keys(errors).length) return invalid(errors);
+  // Server-side assignee validation: the target must currently be an ACTIVE
+  // dashboard member. We never trust the browser's select options. Null/
+  // unassigned is always allowed.
+  if (assignedTo !== null) {
+    try {
+      const { data, error } = await supabase.rpc("dashboard_assignable_members");
+      const active = Array.isArray(data) ? data.some((m) => (m as { id: string }).id === assignedTo) : false;
+      if (error || !active) {
+        return fail("The selected assignee is not an active team member.");
+      }
+    } catch {
+      return fail("The enquiry could not be updated. Please refresh and try again.");
+    }
+  }
 
   try {
-    // Column-scoped update only. handled_by/handled_at are intentionally absent;
-    // the database stamps them. Any RLS/permission failure → generic error.
-    const { error } = await supabase
+    // Column-scoped update, guarded by updated_at (optimistic concurrency), and
+    // returning the affected id so a zero-row result is treated as a failure.
+    const { data, error } = await supabase
       .from("form_enquiries")
-      .update({ status, internal_notes: notes.length ? notes : null, assigned_to: assignedTo })
-      .eq("id", id);
+      .update(set)
+      .eq("id", id)
+      .eq("updated_at", expectedUpdatedAt)
+      .select("id");
     if (error) return fail("The enquiry could not be updated. Please refresh and try again.");
+    if (!data || data.length === 0) {
+      return fail("This enquiry was changed by someone else. Please refresh and try again.");
+    }
   } catch {
     return fail("The enquiry could not be updated. Please refresh and try again.");
   }

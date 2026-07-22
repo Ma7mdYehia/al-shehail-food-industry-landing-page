@@ -268,6 +268,28 @@ async function main() {
   const optDelOwner = await asUser(U.owner1, "delete from public.product_options where id=$1 returning id", [optId]);
   expect("owner CAN hard-delete an option", optDelOwner.ok && optDelOwner.rowCount === 1, `ok=${optDelOwner.ok} n=${optDelOwner.rowCount} ${optDelOwner.error?.message ?? ""}`);
 
+  console.log("\nI2. product_details optimistic concurrency (partial-save safety basis):");
+  const dU0 = (await admin.query("select updated_at::text u from public.product_details where product_id='prod_ref'")).rows[0].u;
+  const dOk = await asUser(U.owner1, "update public.product_details set positioning_localized=$2 where product_id='prod_ref' and updated_at=$1 returning id", [dU0, LOC]);
+  expect("detail update with the expected updated_at succeeds", dOk.ok && dOk.rowCount === 1, dOk.error?.message);
+  const dStale = await asUser(U.owner1, "update public.product_details set positioning_localized=$2 where product_id='prod_ref' and updated_at=$1 returning id", [dU0, LOC]);
+  expect("a STALE detail update affects 0 rows → rejected", dStale.ok && dStale.rowCount === 0);
+
+  console.log("\nI3. Seed-backed child deletion is permitted at the DB (so the app UUID guard is the real protection):");
+  await admin.query("insert into public.product_options(id,product_id,type,label_localized) values ('opt_seed','prod_ref','use_case',$1)", [LOC]);
+  const seedOptDel = await asUser(U.owner1, "delete from public.product_options where id='opt_seed' returning id");
+  expect("DB permits deleting a SEEDED-id option (app isDashboardCreatedId guard required)", seedOptDel.ok && seedOptDel.rowCount === 1);
+
+  console.log("\nE2. Enquiry optimistic concurrency + zero-row + active-assignee set:");
+  const eU0 = (await admin.query("select updated_at::text u from public.form_enquiries where id='enq1'")).rows[0].u;
+  const eOk = await asUser(U.owner1, "update public.form_enquiries set status='qualified' where id='enq1' and updated_at=$1 returning id", [eU0]);
+  expect("workflow update with the expected updated_at succeeds", eOk.ok && eOk.rowCount === 1, eOk.error?.message);
+  const eStale = await asUser(U.owner1, "update public.form_enquiries set status='closed' where id='enq1' and updated_at=$1 returning id", [eU0]);
+  expect("a STALE workflow update affects 0 rows (no silent overwrite)", eStale.ok && eStale.rowCount === 0);
+  const assignRows = (await asUser(U.owner1, "select id::text as id from public.dashboard_assignable_members()")).rows.map((r) => r.id);
+  expect("assignable-members EXCLUDES the inactive member", !assignRows.includes(String(mem.inactive)), String(mem.inactive));
+  expect("assignable-members INCLUDES an active member", assignRows.includes(String(mem.admin)));
+
   console.log("\nJ. P05 RPCs are safe (definer + fixed search_path + no anon):");
   const defs = (await admin.query("select count(*)::int n from pg_proc where proname in ('dashboard_set_member_state','dashboard_active_member_count','dashboard_assignable_members') and prosecdef and array_to_string(proconfig,',') like '%search_path=%'")).rows[0].n;
   expect("all three P05 RPCs are SECURITY DEFINER + fixed search_path", defs === 3);
