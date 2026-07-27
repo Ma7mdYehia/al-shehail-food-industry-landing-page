@@ -112,6 +112,12 @@ enquiry status round-trip, owner vs editor page access) require a local
 auth/Supabase fixture harness and are part of the next increment; no production
 bypass, hidden test route, or insecure auth shortcut was added.
 
+## Final correctness pass — round 2 (applied)
+
+- **Media create never submits `status`.** The status `<select>` renders only in edit mode; create mode shows a non-editable "new media starts pending" note. `buildMediaCreate` forces `status:'pending'` and rejects a forged status field — proven by an executable test using the exact create-form payload.
+- **Unknown-field rejection now covers every mutation, including deletes and team state.** `buildDeleteInput(idKey)` and `buildMemberState` reject any unexpected field (framework `$ACTION_*` ignored) and are wired into `deleteProduct/​ProductOption/​Media/​ServiceSection/​Project/​ProjectProduct` and `setMemberState`. Executable tests prove unexpected fields rejected + valid accepted.
+- **Save behavior is executed, not just regex-checked.** The product-detail and enquiry save branching lives in pure, injectable executors (`lib/dashboard/executors.ts`); the actions supply Supabase-backed deps and tests supply canned results. `test:dashboard-crud` executes: product-detail update error / zero-row (stale) / insert error / insert empty / successful update / successful insert; and enquiry assignee-RPC error / inactive-not-in-set / update error / zero-row (stale) / successful update / unassigned-skips-RPC. Static guards remain only as supplementary wiring checks.
+
 ## Correctness & data-safety pass (applied)
 
 - **New content is created inactive; new media is pending.** Every create builder sets `is_active:false` (categories, products, services, sections, partners, projects) / `status:'pending'` (media) explicitly — never relying on a DB default — and a forged status field on media create is rejected. Activation is a later explicit edit. (Proven by executing the builders.)

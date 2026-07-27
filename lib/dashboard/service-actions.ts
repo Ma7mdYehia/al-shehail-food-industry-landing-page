@@ -22,6 +22,7 @@ import {
   buildServiceUpdate,
   buildSectionCreate,
   buildSectionUpdate,
+  buildDeleteInput,
 } from "@/lib/dashboard/inputs";
 
 const PATH = "/dashboard/services";
@@ -121,8 +122,9 @@ export async function deleteServiceSectionAction(_prev: ActionState, formData: F
   if (!authz.ok) return authz.state;
   const { member, supabase } = authz.authorized;
   if (!canDeleteContent(member.role)) return fail("You do not have permission to remove sections.");
-  const id = String(formData.get("sectionId") ?? "");
-  if (!id) return fail("Unknown section.");
+  const parsed = buildDeleteInput(formData, "sectionId");
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id } = parsed.value;
   if (!isDashboardCreatedId(id)) return fail("Seed-backed sections cannot be removed. Deactivate them instead.");
   try {
     const { data, error } = await supabase.from("service_sections").delete().eq("id", id).select("id");

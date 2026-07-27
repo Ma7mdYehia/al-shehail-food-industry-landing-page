@@ -130,9 +130,10 @@ console.log("Validation (real logic):");
 // ===========================================================================
 transpileGraph([
   "validation", "product-constants", "media-constants", "service-constants",
-  "partner-constants", "enquiry-constants", "inputs",
+  "partner-constants", "enquiry-constants", "action-state", "inputs", "executors",
 ]);
 const I = await import(pathToFileURL(join(tmp, "inputs.mjs")).href);
+const X = await import(pathToFileURL(join(tmp, "executors.mjs")).href);
 const UUID = "11111111-2222-4333-8444-555555555555";
 function fd(entries) {
   const f = new FormData();
@@ -171,8 +172,10 @@ console.log("\n1. New records are created inactive / pending (executed):");
   assert("buildProjectCreate → is_active:false", r.ok && r.value.insert.is_active === false);
 }
 {
-  const r = I.buildMediaCreate(fd({ key: "k1", path: "/x.png", type: "products", alt_en: "a", alt_ar: "" }));
-  assert("buildMediaCreate → status:'pending'", r.ok && r.value.status === "pending");
+  // The EXACT payload the create form submits (no status field in create mode).
+  const createForm = fd({ key: "product_new", path: "/img/new.png", type: "products", alt_en: "New", alt_ar: "", width: "800", height: "600" });
+  const r = I.buildMediaCreate(createForm);
+  assert("media create-form payload succeeds and yields status:'pending'", r.ok && r.value.status === "pending" && r.value.key === "product_new");
   const forged = I.buildMediaCreate(fd({ key: "k1", type: "products", alt_en: "a", alt_ar: "", status: "active" }));
   assert("buildMediaCreate rejects a forged status field", !forged.ok && forged.errors._form !== undefined);
 }
@@ -215,7 +218,9 @@ console.log("\n4. Product/detail partial-save safety (executed + wiring):");
   assert("detail payload holds ONLY positioning + disclaimer (arrays preserved)", r.ok && Object.keys(r.value.set).sort().join(",") === "disclaimer_localized,positioning_localized");
 }
 assert("product core + detail are SEPARATE actions", /updateProductAction/.test(prodAct) && /updateProductDetailAction/.test(prodAct));
-assert("detail action checks the lookup/update/insert error and can fail (no false success)", /updateProductDetailAction[\s\S]*?if \(error\) return fail[\s\S]*?data\.length === 0\) return fail/.test(prodAct));
+// The detail update/insert × error/stale/empty/success branching is EXECUTED in
+// section 3b via saveProductDetail; here we assert the action wires it in.
+assert("detail action delegates branching to the tested saveProductDetail executor", /saveProductDetail\(/.test(prodAct) && /product_details[\s\S]*?\.update\(s\)[\s\S]*?\.eq\("updated_at", exp\)/.test(prodAct) && /product_details[\s\S]*?\.insert\(/.test(prodAct));
 assert("core update returns success only after checking data/error", /updateProductAction[\s\S]*?if \(error\) return fail[\s\S]*?data\.length === 0\) return fail\(STALE\)[\s\S]*?return success/.test(prodAct));
 
 console.log("\n5. Enquiry assignment + affected-row handling (executed + wiring):");
@@ -240,8 +245,10 @@ console.log("\n5. Enquiry assignment + affected-row handling (executed + wiring)
   assert("enquiry update without expectedUpdatedAt rejected (optimistic guard)", !r.ok && r.errors._form !== undefined);
 }
 const enqAct = read("lib/dashboard/enquiry-actions.ts");
-assert("enquiry action validates assignee against the ACTIVE-member RPC", /rpc\("dashboard_assignable_members"\)/.test(enqAct) && /not an active team member/.test(enqAct));
-assert("enquiry update selects the affected id + treats zero rows as failure", /\.eq\("updated_at", expectedUpdatedAt\)[\s\S]*?\.select\("id"\)[\s\S]*?data\.length === 0\)\s*\{[\s\S]*?fail\(/.test(enqAct));
+// The branching (assignee validity / optimistic / zero-row / success) is EXECUTED
+// in section 3b via saveEnquiry; here we assert the action wires the real RPC +
+// optimistic update into that executor.
+assert("enquiry action wires the active-member RPC + optimistic update into saveEnquiry", /saveEnquiry\(/.test(enqAct) && /rpc\("dashboard_assignable_members"\)/.test(enqAct) && /\.eq\("updated_at", exp\)[\s\S]*?\.select\("id"\)/.test(enqAct));
 {
   // Executed proof: the enquiry update payload never contains handled_by/handled_at.
   const r = I.buildEnquiryUpdate(fd({ id: UUID, expectedUpdatedAt: "x", status: "contacted", assignedTo: "" }));
@@ -264,6 +271,81 @@ console.log("\n6. Unknown-field rejection (executed in real action parsing):");
 {
   const clean = I.buildProductCreate(fd({ ...baseProduct, $ACTION_ID_abc: "ignored" }));
   assert("framework $ACTION bookkeeping fields are ignored (accepted)", clean.ok === true);
+}
+
+console.log("\n2b. Unknown-field rejection on deletes + team state (executed):");
+for (const idKey of ["id", "optionId", "sectionId", "mappingId"]) {
+  const okv = I.buildDeleteInput(fd({ [idKey]: UUID }), idKey);
+  assert(`buildDeleteInput(${idKey}) accepts the id-only payload`, okv.ok && okv.value.id === UUID);
+  const bad = I.buildDeleteInput(fd({ [idKey]: UUID, extra: "x" }), idKey);
+  assert(`buildDeleteInput(${idKey}) rejects an unexpected field`, !bad.ok && bad.errors._form !== undefined);
+  const clean = I.buildDeleteInput(fd({ [idKey]: UUID, $ACTION_ID_z: "ignored" }), idKey);
+  assert(`buildDeleteInput(${idKey}) ignores $ACTION bookkeeping`, clean.ok === true);
+}
+{
+  const okv = I.buildMemberState(fd({ memberId: UUID, role: "admin", isActive: "true" }));
+  assert("buildMemberState accepts a valid member/role/state", okv.ok && okv.value.role === "admin" && okv.value.isActive === true);
+  const badRole = I.buildMemberState(fd({ memberId: UUID, role: "superuser", isActive: "true" }));
+  assert("buildMemberState rejects a role not in the enum", !badRole.ok && badRole.errors.role !== undefined);
+  const badId = I.buildMemberState(fd({ memberId: "not-a-uuid", role: "admin", isActive: "true" }));
+  assert("buildMemberState rejects a non-UUID member id", !badId.ok && badId.errors._form !== undefined);
+  const extra = I.buildMemberState(fd({ memberId: UUID, role: "admin", isActive: "true", forged: "1" }));
+  assert("buildMemberState rejects an unexpected field", !extra.ok && extra.errors._form !== undefined);
+}
+
+console.log("\n3b. Save behavior EXECUTED with injected Supabase mocks:");
+const R = (data, error = null) => async () => ({ data, error }); // canned result (ignores call args)
+const Rn = R;
+// --- product detail ---
+{
+  const s = await X.saveProductDetail({ updateDetail: Rn(null, { m: "boom" }), insertDetail: Rn([{ id: 1 }]) }, { productId: "p", expectedUpdatedAt: "t", set: {} });
+  assert("detail update error → generic failure", s.status === "error");
+}
+{
+  const s = await X.saveProductDetail({ updateDetail: Rn([]), insertDetail: Rn([{ id: 1 }]) }, { productId: "p", expectedUpdatedAt: "t", set: {} });
+  assert("detail update zero-row (stale) → failure", s.status === "error" && /changed by someone else/.test(s.message));
+}
+{
+  const s = await X.saveProductDetail({ updateDetail: Rn([{ id: 1 }]), insertDetail: Rn(null, { m: "boom" }) }, { productId: "p", expectedUpdatedAt: "", set: {} });
+  assert("detail insert error → failure", s.status === "error");
+}
+{
+  const s = await X.saveProductDetail({ updateDetail: Rn([{ id: 1 }]), insertDetail: Rn([]) }, { productId: "p", expectedUpdatedAt: "", set: {} });
+  assert("detail insert empty result → failure (no false success)", s.status === "error");
+}
+{
+  const s = await X.saveProductDetail({ updateDetail: Rn([{ id: 1 }]), insertDetail: Rn([{ id: 2 }]) }, { productId: "p", expectedUpdatedAt: "t", set: {} });
+  assert("detail successful update → success", s.status === "success");
+}
+{
+  const s = await X.saveProductDetail({ updateDetail: Rn([{ id: 1 }]), insertDetail: Rn([{ id: 2 }]) }, { productId: "p", expectedUpdatedAt: "", set: {} });
+  assert("detail successful insert → success", s.status === "success");
+}
+// --- enquiry ---
+{
+  const s = await X.saveEnquiry({ assignableMembers: R(null, { m: "boom" }), updateEnquiry: Rn([{ id: 1 }]) }, { id: "e", expectedUpdatedAt: "t", assignedTo: UUID, set: {} });
+  assert("enquiry assignee RPC error → failure", s.status === "error" && /active team member/.test(s.message));
+}
+{
+  const s = await X.saveEnquiry({ assignableMembers: R([{ id: "someone-else" }]), updateEnquiry: Rn([{ id: 1 }]) }, { id: "e", expectedUpdatedAt: "t", assignedTo: UUID, set: {} });
+  assert("enquiry assignee inactive/not-in-set → failure", s.status === "error" && /active team member/.test(s.message));
+}
+{
+  const s = await X.saveEnquiry({ assignableMembers: R([{ id: UUID }]), updateEnquiry: Rn(null, { m: "boom" }) }, { id: "e", expectedUpdatedAt: "t", assignedTo: UUID, set: {} });
+  assert("enquiry update error → failure", s.status === "error");
+}
+{
+  const s = await X.saveEnquiry({ assignableMembers: R([{ id: UUID }]), updateEnquiry: Rn([]) }, { id: "e", expectedUpdatedAt: "t", assignedTo: UUID, set: {} });
+  assert("enquiry update zero-row (stale) → failure", s.status === "error" && /changed by someone else/.test(s.message));
+}
+{
+  const s = await X.saveEnquiry({ assignableMembers: R([{ id: UUID }]), updateEnquiry: Rn([{ id: 1 }]) }, { id: "e", expectedUpdatedAt: "t", assignedTo: UUID, set: {} });
+  assert("enquiry successful update (active assignee) → success", s.status === "success");
+}
+{
+  let rpcCalled = false;
+  const s = await X.saveEnquiry({ assignableMembers: async () => { rpcCalled = true; return { data: [], error: null }; }, updateEnquiry: Rn([{ id: 1 }]) }, { id: "e", expectedUpdatedAt: "t", assignedTo: null, set: {} });
+  assert("enquiry unassigned (null) skips the RPC and succeeds", s.status === "success" && rpcCalled === false);
 }
 
 // ---- static security guards (supplementary) ---------------------------------

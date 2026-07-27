@@ -8,11 +8,11 @@
 // submitted by the browser is validated against the enum and never trusted.
 
 import { revalidatePath } from "next/cache";
-import { authorizeAction, fail, success, type ActionState } from "@/lib/dashboard/actions-core";
-import { DASHBOARD_ROLES, type DashboardRole } from "@/lib/auth/roles";
+import { authorizeAction, fail, invalid, success, type ActionState } from "@/lib/dashboard/actions-core";
+import { buildMemberState } from "@/lib/dashboard/inputs";
+import type { DashboardRole } from "@/lib/auth/roles";
 
 const TEAM_PATH = "/dashboard/team";
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function setMemberStateAction(
   _prev: ActionState,
@@ -22,12 +22,11 @@ export async function setMemberStateAction(
   if (!authz.ok) return authz.state;
   const { member, supabase } = authz.authorized;
 
-  const memberId = String(formData.get("memberId") ?? "");
-  const role = String(formData.get("role") ?? "");
-  const isActive = String(formData.get("isActive") ?? "") === "true";
-
-  if (!UUID_RE.test(memberId)) return fail("Unknown member.");
-  if (!(DASHBOARD_ROLES as readonly string[]).includes(role)) return fail("Invalid role.");
+  // Rejects unknown fields, a non-UUID member id, and any role not in the enum
+  // (the browser is never trusted for the role).
+  const parsed = buildMemberState(formData);
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { memberId, role, isActive } = parsed.value;
 
   try {
     const { data, error } = await supabase.rpc("dashboard_set_member_state", {

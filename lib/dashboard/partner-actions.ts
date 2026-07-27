@@ -26,6 +26,7 @@ import {
   buildProjectUpdate,
   buildProjectProductCreate,
   buildProjectProductUpdate,
+  buildDeleteInput,
 } from "@/lib/dashboard/inputs";
 
 const PATH = "/dashboard/partners";
@@ -128,8 +129,9 @@ export async function deleteProjectAction(_prev: ActionState, formData: FormData
   if (!authz.ok) return authz.state;
   const { member, supabase } = authz.authorized;
   if (!canDeleteContent(member.role)) return fail("You do not have permission to delete projects.");
-  const id = String(formData.get("id") ?? "");
-  if (!id) return fail("Unknown project.");
+  const parsed = buildDeleteInput(formData, "id");
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id } = parsed.value;
   if (!isDashboardCreatedId(id)) return fail(SEED_DEL);
   try {
     const { data, error } = await supabase.from("partner_projects").delete().eq("id", id).select("id");
@@ -187,8 +189,9 @@ export async function deleteProjectProductAction(_prev: ActionState, formData: F
   if (!authz.ok) return authz.state;
   const { member, supabase } = authz.authorized;
   if (!canDeleteContent(member.role)) return fail("You do not have permission to remove mappings.");
-  const id = String(formData.get("mappingId") ?? "");
-  if (!id) return fail("Unknown mapping.");
+  const parsed = buildDeleteInput(formData, "mappingId");
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id } = parsed.value;
   if (!isDashboardCreatedId(id)) return fail("Seed-backed mappings cannot be removed.");
   try {
     const { data, error } = await supabase.from("partner_project_products").delete().eq("id", id).select("id");

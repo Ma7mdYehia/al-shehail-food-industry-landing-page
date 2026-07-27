@@ -28,7 +28,9 @@ import {
   buildOptionUpdate,
   buildCategoryCreate,
   buildCategoryUpdate,
+  buildDeleteInput,
 } from "@/lib/dashboard/inputs";
+import { saveProductDetail } from "@/lib/dashboard/executors";
 
 const PATH = "/dashboard/products";
 const STALE = "This record was changed by someone else. Please refresh and try again.";
@@ -93,33 +95,32 @@ export async function updateProductDetailAction(_prev: ActionState, formData: Fo
   const { supabase } = authz.authorized;
   const parsed = buildProductDetail(formData);
   if (!parsed.ok) return invalid(parsed.errors);
-  const { productId, expectedUpdatedAt, set } = parsed.value;
 
-  try {
-    if (expectedUpdatedAt) {
-      // A detail row exists → optimistic update.
-      const { data, error } = await supabase
-        .from("product_details")
-        .update(set)
-        .eq("product_id", productId)
-        .eq("updated_at", expectedUpdatedAt)
-        .select("id");
-      if (error) return fail("The product detail could not be saved. Please retry.");
-      if (!data || data.length === 0) return fail(STALE);
-    } else {
-      // No detail row yet → insert. A concurrent insert (unique product_id) makes
-      // this error, which is surfaced rather than reported as success.
-      const { data, error } = await supabase
-        .from("product_details")
-        .insert({ product_id: productId, ...set })
-        .select("id");
-      if (error || !data || data.length === 0) return fail("The product detail could not be saved. Please refresh and retry.");
-    }
-  } catch {
-    return fail("The product detail could not be saved. Please refresh and retry.");
-  }
-  revalidate();
-  return success("Product detail saved.");
+  // The branching (update/insert × error/stale/empty/success) lives in the pure
+  // saveProductDetail executor so it can be tested with injected results.
+  const res = await saveProductDetail(
+    {
+      updateDetail: async (pid, exp, s) => {
+        const { data, error } = await supabase
+          .from("product_details")
+          .update(s)
+          .eq("product_id", pid)
+          .eq("updated_at", exp)
+          .select("id");
+        return { data, error };
+      },
+      insertDetail: async (pid, s) => {
+        const { data, error } = await supabase
+          .from("product_details")
+          .insert({ product_id: pid, ...s })
+          .select("id");
+        return { data, error };
+      },
+    },
+    parsed.value
+  );
+  if (res.status === "success") revalidate();
+  return res;
 }
 
 export async function setProductActiveAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -147,8 +148,9 @@ export async function deleteProductAction(_prev: ActionState, formData: FormData
   if (!authz.ok) return authz.state;
   const { member, supabase } = authz.authorized;
   if (!canDeleteContent(member.role)) return fail("You do not have permission to delete content.");
-  const id = String(formData.get("id") ?? "");
-  if (!id) return fail("Unknown product.");
+  const parsed = buildDeleteInput(formData, "id");
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id } = parsed.value;
   if (!isDashboardCreatedId(id)) return fail(SEED_DEL);
   try {
     const { data, error } = await supabase.from("products").delete().eq("id", id).select("id");
@@ -210,8 +212,9 @@ export async function deleteProductOptionAction(_prev: ActionState, formData: Fo
   if (!authz.ok) return authz.state;
   const { member, supabase } = authz.authorized;
   if (!canDeleteContent(member.role)) return fail("You do not have permission to remove options.");
-  const id = String(formData.get("optionId") ?? "");
-  if (!id) return fail("Unknown option.");
+  const parsed = buildDeleteInput(formData, "optionId");
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id } = parsed.value;
   if (!isDashboardCreatedId(id)) return fail("Seed-backed options cannot be removed. Deactivate them instead.");
   try {
     const { data, error } = await supabase.from("product_options").delete().eq("id", id).select("id");

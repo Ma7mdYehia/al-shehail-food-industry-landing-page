@@ -18,7 +18,7 @@ import {
 } from "@/lib/dashboard/actions-core";
 import { canDeleteContent } from "@/lib/auth/roles";
 import { isDashboardCreatedId } from "@/lib/dashboard/validation";
-import { buildMediaCreate, buildMediaUpdate } from "@/lib/dashboard/inputs";
+import { buildMediaCreate, buildMediaUpdate, buildDeleteInput } from "@/lib/dashboard/inputs";
 
 const PATH = "/dashboard/media";
 const STALE = "This asset was changed by someone else. Please refresh and try again.";
@@ -76,8 +76,9 @@ export async function deleteMediaAction(_prev: ActionState, formData: FormData):
   if (!authz.ok) return authz.state;
   const { member, supabase } = authz.authorized;
   if (!canDeleteContent(member.role)) return fail("You do not have permission to delete media.");
-  const id = String(formData.get("id") ?? "");
-  if (!id) return fail("Unknown asset.");
+  const parsed = buildDeleteInput(formData, "id");
+  if (!parsed.ok) return invalid(parsed.errors);
+  const { id } = parsed.value;
   if (!isDashboardCreatedId(id)) return fail("Seed-backed assets cannot be deleted. Set them to legacy instead.");
   try {
     const { data, error } = await supabase.from("media_assets").delete().eq("id", id).select("id");

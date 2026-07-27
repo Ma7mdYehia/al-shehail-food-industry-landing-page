@@ -562,3 +562,39 @@ export function buildSharedUpdate(fd: FormData): Validated<UpdateInput> {
     set: { recipe_disclaimer_localized: toLocalizedJson(disclaimer) },
   });
 }
+
+// ---- deletes + team state (unknown-field rejection everywhere) --------------
+
+/**
+ * Parse a delete request that carries a single id under `idKey`. Rejects any
+ * other submitted field (framework `$ACTION_*` bookkeeping is ignored by
+ * rejectUnknownFormData). Returns the id or a generic error.
+ */
+export function buildDeleteInput(fd: FormData, idKey: string): Validated<{ id: string }> {
+  const errors: FieldErrors = {};
+  rejectUnknownFormData(fd, [idKey], errors);
+  const id = String(fd.get(idKey) ?? "");
+  if (!id) errors._form = "Unknown record.";
+  return done(errors, { id });
+}
+
+const DASHBOARD_ROLE_VALUES = ["owner", "admin", "editor"] as const;
+export type DashboardRoleValue = (typeof DASHBOARD_ROLE_VALUES)[number];
+
+/** Parse an owner-only team member state change. Rejects unknown fields, a
+ * non-UUID member id, and any role not in the database enum (the browser is
+ * never trusted for the role). */
+export function buildMemberState(fd: FormData): Validated<{
+  memberId: string;
+  role: DashboardRoleValue;
+  isActive: boolean;
+}> {
+  const errors: FieldErrors = {};
+  rejectUnknownFormData(fd, ["memberId", "role", "isActive"], errors);
+  const memberId = String(fd.get("memberId") ?? "");
+  if (!isUuid(memberId)) errors._form = "Unknown member.";
+  const roleRaw = String(fd.get("role") ?? "");
+  if (!(DASHBOARD_ROLE_VALUES as readonly string[]).includes(roleRaw)) errors.role = "Invalid role.";
+  const isActive = String(fd.get("isActive") ?? "") === "true";
+  return done(errors, { memberId, role: roleRaw as DashboardRoleValue, isActive });
+}

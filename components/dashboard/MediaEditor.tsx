@@ -64,13 +64,22 @@ export function MediaEditor({
               ))}
             </select>
           </Field>
-          <Field label="Status" error={state.errors?.status}>
-            <select className="dash-select" name="status" defaultValue={media?.status ?? "pending"}>
-              {MEDIA_STATUSES.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-          </Field>
+          {mode === "edit" ? (
+            <Field label="Status" error={state.errors?.status}>
+              <select className="dash-select" name="status" defaultValue={media?.status ?? "pending"}>
+                {MEDIA_STATUSES.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </Field>
+          ) : (
+            <div className="dash-field">
+              <span className="dash-field-label">Status</span>
+              <p className="dash-card-note" style={{ margin: "6px 0 0" }}>
+                New media starts <strong>pending</strong> — activate it later from the edit screen.
+              </p>
+            </div>
+          )}
         </div>
 
         <LocalizedField name="alt" label="Alt text" value={media?.alt} errors={state.errors} required={false} />
