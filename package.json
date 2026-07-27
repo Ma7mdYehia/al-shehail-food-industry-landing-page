@@ -35,7 +35,8 @@
     "db:members:bootstrap:apply": "node scripts/bootstrap-dashboard-members.mjs --apply",
     "db:members:verify": "node scripts/verify-dashboard-members.mjs",
     "db:auth:invite": "node scripts/invite-dashboard-users.mjs",
-    "db:auth:invite:apply": "node scripts/invite-dashboard-users.mjs --apply"
+    "db:auth:invite:apply": "node scripts/invite-dashboard-users.mjs --apply",
+    "test:invite-tool": "node scripts/test-invite-dashboard-users.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",

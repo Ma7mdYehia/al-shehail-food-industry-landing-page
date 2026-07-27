@@ -9,9 +9,18 @@
 //     Auth's `inviteUserByEmail`, which emails a one-time invitation link; the
 //     operator sets their own password through the dashboard invite/callback
 //     flow. The returned action_link / token is NEVER printed or logged.
+//   * It acts ONLY against the exact committed production target
+//     (scripts/production-target.config.mjs): `--apply` fails closed unless the
+//     expected project ref + hostname are resolved, SUPABASE_PROJECT_REF is set
+//     and matches, and NEXT_PUBLIC_SUPABASE_URL parses to exactly that host with
+//     https / no credentials / no port / path / query / fragment.
+//   * The invitation redirect is PINNED to https://alshehai.ae/dashboard/auth/
+//     callback and never derived from an unchecked value; a non-canonical
+//     NEXT_PUBLIC_SITE_URL fails closed.
 //   * It is IDEMPOTENT: it first lists existing Auth users and only invites the
-//     emails that do NOT already exist. Emails that already exist are reported
-//     as "already exists" and skipped (never re-invited, never duplicated).
+//     emails that do NOT already exist (never duplicates / re-invites), and it
+//     fails closed if user pagination does not terminate (never invites on a
+//     partial list).
 //   * Apply requires `--apply` AND both NEXT_PUBLIC_SUPABASE_URL and
 //     SUPABASE_SERVICE_ROLE_KEY, and is REFUSED in CI. The service-role key is
 //     read from the environment only and is never printed. This is an
@@ -20,14 +29,12 @@
 //   * Honest partial reporting: if some invitations fail, it reports exactly
 //     which succeeded and which failed and exits non-zero.
 //
-// The invitation redirect is pinned to the production Site URL callback so the
-// link can only complete against the real dashboard.
-//
 // Usage:
 //   node scripts/invite-dashboard-users.mjs           # dry run (read-only)
 //   node scripts/invite-dashboard-users.mjs --apply    # requires service role
 // =============================================================================
 
+import { fileURLToPath } from "node:url";
 import {
   DASHBOARD_MEMBERS,
   normalizeEmail,
@@ -35,33 +42,29 @@ import {
 } from "./dashboard-members.config.mjs";
 import { isEmailConfirmed, resolveLiveEnv } from "./dashboard-auth-resolver.mjs";
 import { hostOnly } from "./phase-1-shared.mjs";
+import {
+  PRODUCTION_SITE_ORIGIN,
+  PRODUCTION_CALLBACK_PATH,
+  resolveProductionTarget,
+} from "./production-target.config.mjs";
 
-const APPLY = process.argv.includes("--apply");
-const IN_CI = process.env.CI === "true" || process.env.CI === "1";
+// The canonical, statically-known redirect used for display/dry-run. The
+// --apply path re-derives + validates it via resolveProductionTarget().
+export const CANONICAL_REDIRECT = `${PRODUCTION_SITE_ORIGIN}${PRODUCTION_CALLBACK_PATH}`;
 
-// Production Site URL fallback matches lib/env/public.ts. The invite link can
-// only ever point at the real dashboard callback.
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "").trim() || "https://alshehai.ae";
-const REDIRECT_TO = `${SITE_URL.replace(/\/+$/, "")}/dashboard/auth/callback`;
-
-function log(...a) {
-  console.log(...a);
-}
-function fail(msg) {
-  console.error(`\n✖ ${msg}`);
-  process.exit(1);
-}
-
-// Page through auth.admin.listUsers() and return a Map<normalizedEmail,
-// { count, confirmed }> for the requested emails only. Read-only; never prints
-// keys, tokens, or full user objects. Unlike resolveAuthUsers() this does NOT
-// fail closed on a missing email — invitation needs to learn which are missing.
-async function findExistingByEmail(admin, emails) {
+// Page through a Supabase Auth user lister and return a Map<normalizedEmail,
+// { count, confirmed }> for the requested emails only. `lister` is injected
+// ({ page, perPage }) => { data, error } so this is testable without network.
+// Read-only; never prints keys, tokens, or full user objects. Unlike
+// resolveAuthUsers() this does NOT fail closed on a missing email (invitation
+// needs to learn which are missing) — BUT it DOES fail closed if pagination
+// never terminates (a full final page), so it never invites on a partial list.
+export async function listExistingByEmail(lister, emails, { perPage = 200, maxPages = 500 } = {}) {
   const wanted = new Set(emails.map(normalizeEmail));
   const found = new Map();
-  const perPage = 200;
-  for (let page = 1; page <= 500; page += 1) {
-    const { data, error } = await admin.auth.admin.listUsers({ page, perPage });
+  let terminated = false;
+  for (let page = 1; page <= maxPages; page += 1) {
+    const { data, error } = await lister({ page, perPage });
     if (error) throw new Error(`Supabase auth.admin.listUsers failed: ${error.message}`);
     const users = data?.users ?? [];
     for (const u of users) {
@@ -73,12 +76,64 @@ async function findExistingByEmail(admin, emails) {
         confirmed: prev.confirmed || isEmailConfirmed(u),
       });
     }
-    if (users.length < perPage) break;
+    if (users.length < perPage) {
+      terminated = true;
+      break;
+    }
+  }
+  if (!terminated) {
+    throw new Error(
+      `Auth user pagination did not terminate within ${maxPages} full pages — ` +
+        "refusing to invite on a partial user list (fail-closed)."
+    );
   }
   return found;
 }
 
+// Pure invitation loop with injected `lister` and `invite` so it is exercised in
+// tests without a database or network. `invite(email, redirectTo)` MUST be
+// called with the canonical redirect ONLY. Returns [{ email, status }] and never
+// returns or logs an invitation link/token.
+export async function runInvites({ members, lister, invite, redirectTo }) {
+  const existing = await listExistingByEmail(lister, members.map((m) => m.email));
+  const results = [];
+  for (const m of members) {
+    const email = normalizeEmail(m.email);
+    const hit = existing.get(email);
+    if (hit) {
+      if (hit.count > 1) {
+        results.push({ email, status: "ambiguous (multiple Auth users — resolve manually)" });
+        continue;
+      }
+      results.push({
+        email,
+        status: hit.confirmed ? "already exists (confirmed)" : "already exists (pending confirmation)",
+      });
+      continue;
+    }
+    // The response's action_link / token is NEVER read or printed — only
+    // success/failure is surfaced.
+    const { error } = await invite(email, redirectTo);
+    results.push({
+      email,
+      status: error ? `FAILED: ${error.message}` : "invited (pending — awaiting inbox acceptance)",
+    });
+  }
+  return results;
+}
+
+function log(...a) {
+  console.log(...a);
+}
+function fail(msg) {
+  console.error(`\n✖ ${msg}`);
+  process.exit(1);
+}
+
 async function main() {
+  const APPLY = process.argv.includes("--apply");
+  const IN_CI = process.env.CI === "true" || process.env.CI === "1";
+
   log("=".repeat(70));
   log(`Dashboard Auth invitations  [${APPLY ? "APPLY" : "DRY RUN (read-only)"}]`);
   log("=".repeat(70));
@@ -96,7 +151,7 @@ async function main() {
     log(`  ${normalizeEmail(m.email).padEnd(28)} ${m.role.padEnd(7)} ${m.displayName}`);
   }
   log(`  ${summary.count} operators, ${summary.owners} owner(s).`);
-  log(`\nInvite redirect (Site URL callback): ${REDIRECT_TO}`);
+  log(`\nInvite redirect is pinned to: ${CANONICAL_REDIRECT}`);
 
   if (!APPLY) {
     log("\nDRY RUN complete — read-only. No invitations were sent; no Auth users");
@@ -108,6 +163,21 @@ async function main() {
 
   if (IN_CI) fail("Refusing --apply in CI. Send invitations from a trusted operator shell.");
 
+  // Resolve + validate the EXACT production target FIRST. Fails closed unless the
+  // committed project ref/hostname are resolved, SUPABASE_PROJECT_REF is set and
+  // matches, NEXT_PUBLIC_SUPABASE_URL parses to exactly that host, and
+  // NEXT_PUBLIC_SITE_URL (if set) is exactly the canonical origin.
+  let target;
+  try {
+    target = resolveProductionTarget({
+      siteUrlEnv: process.env.NEXT_PUBLIC_SITE_URL,
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      projectRefEnv: process.env.SUPABASE_PROJECT_REF,
+    });
+  } catch (err) {
+    fail(err.message);
+  }
+
   // Require BOTH env vars; a partial config is a hard error (never a silent skip).
   let env;
   try {
@@ -117,42 +187,23 @@ async function main() {
   }
   if (env.mode !== "live") fail("--apply requires NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.");
 
-  log("\nTarget Supabase host:", hostOnly(env.url), "(no credentials shown)");
+  log("\nValidated target Supabase host:", hostOnly(env.url), "(matches committed target; no credentials shown)");
+  log("Redirect pinned to:", target.redirectTo);
 
   const { createClient } = await import("@supabase/supabase-js");
   const admin = createClient(env.url, env.serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
-  // Learn which operators already have an Auth account (idempotency + no dupes).
+  const lister = ({ page, perPage }) => admin.auth.admin.listUsers({ page, perPage });
+  const invite = (email, redirectTo) => admin.auth.admin.inviteUserByEmail(email, { redirectTo });
+
   log("\nListing existing Auth users to avoid duplicate invitations…");
-  let existing;
+  let results;
   try {
-    existing = await findExistingByEmail(admin, DASHBOARD_MEMBERS.map((m) => m.email));
+    results = await runInvites({ members: DASHBOARD_MEMBERS, lister, invite, redirectTo: target.redirectTo });
   } catch (err) {
     fail(err.message);
-  }
-
-  const results = []; // { email, status }
-  for (const m of DASHBOARD_MEMBERS) {
-    const email = normalizeEmail(m.email);
-    const hit = existing.get(email);
-    if (hit) {
-      if (hit.count > 1) {
-        results.push({ email, status: "ambiguous (multiple Auth users — resolve manually)" });
-        continue;
-      }
-      results.push({ email, status: hit.confirmed ? "already exists (confirmed)" : "already exists (pending confirmation)" });
-      continue;
-    }
-    // Send a secure invitation. The response's action_link / token is NEVER
-    // read or printed — only success/failure is surfaced.
-    const { error } = await admin.auth.admin.inviteUserByEmail(email, { redirectTo: REDIRECT_TO });
-    if (error) {
-      results.push({ email, status: `FAILED: ${error.message}` });
-    } else {
-      results.push({ email, status: "invited (pending — awaiting inbox acceptance)" });
-    }
   }
 
   log("\nPer-operator result:");
@@ -179,4 +230,7 @@ async function main() {
   log("  ONLY after every operator resolves to exactly one confirmed Auth user.");
 }
 
-main().catch((err) => fail(err?.stack || String(err)));
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isMain) {
+  main().catch((err) => fail(err?.stack || String(err)));
+}

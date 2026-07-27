@@ -28,11 +28,16 @@ cookies, or full Auth user objects.
 | Identifier | Expected / to confirm |
 | --- | --- |
 | Production domain | `https://alshehai.ae` (must match `NEXT_PUBLIC_SITE_URL` and `lib/env/public.ts` fallback) |
-| Supabase project ref | _(resolve from `supabase projects list` — record ref only)_ |
-| Supabase hostname | _(host of `NEXT_PUBLIC_SUPABASE_URL`, e.g. `<ref>.supabase.co` — host only)_ |
+| Supabase project ref | _(resolve from `supabase projects list` — record ref only; then commit it as `EXPECTED_SUPABASE_PROJECT_REF`)_ |
+| Supabase hostname | _(host of `NEXT_PUBLIC_SUPABASE_URL`, e.g. `<ref>.supabase.co` — host only; then commit it as `EXPECTED_SUPABASE_HOSTNAME`)_ |
 | Vercel project name | _(record project name only)_ |
 | Git branch | `prod/remote-supabase-activation-p06` |
-| Git commit deployed | _(exact reviewed commit SHA)_ |
+| Git commit deployed | _(exact reviewed commit SHA — from `git rev-parse HEAD`; see §11)_ |
+
+Once the project ref and hostname are resolved (non-secret), commit them into
+`scripts/production-target.config.mjs` (`EXPECTED_SUPABASE_PROJECT_REF` /
+`EXPECTED_SUPABASE_HOSTNAME`). Until then the invitation tool's `--apply` fails
+closed and refuses to act against any Supabase URL.
 
 **STOP and do not write** if the project ref or domain is ambiguous, if the
 project appears to belong to another application, or if unexpected
@@ -72,13 +77,24 @@ P02–P05 are merged and immutable):
 3. `20260719120000_dashboard_auth_flow_nonces.sql`
 4. `20260721120000_dashboard_crud_p05.sql`
 
-**OPERATOR ACTION**
+**OPERATOR ACTION — run this EXACT sequence, in order:**
 
-- Capture the remote migration list **before**: `supabase migration list --linked`.
-- Dry-run the diff where supported: `supabase db diff --linked`.
-- Apply **only the missing** migrations, in order: `supabase db push --linked`.
-- Capture the migration list **after**; confirm only the expected new entries appear.
-- Verify tables, triggers, grants, RLS policies, and RPC signatures exist; confirm `anon`/`authenticated` grants match the migrations; confirm **no** service-role dependency in the dashboard runtime.
+1. `supabase migration list --linked` — capture the applied migration list **before**.
+2. `supabase db diff --linked` — **drift check only**. Confirm the remote schema
+   matches the repo migrations with no unexpected drift. This is NOT the push
+   dry-run — do not treat a clean/!clean diff as the pending-apply preview.
+3. `supabase db push --linked --dry-run` — the actual **pending-migration
+   preview**. It prints exactly which migrations would be applied.
+4. **Review the exact pending migration list** from step 3. It must contain
+   ONLY the expected missing migrations from the four above, in order.
+5. **STOP** on any unexpected migration, history divergence, or drift surfaced in
+   steps 2–4. Do not force. Do not continue.
+6. **Only then:** `supabase db push --linked` — apply the missing migrations.
+7. `supabase migration list --linked` — capture the applied migration list
+   **after**; confirm only the expected new entries appear.
+8. Verify tables, triggers, grants, RLS policies, and RPC signatures exist;
+   confirm `anon`/`authenticated` grants match the migrations; confirm **no**
+   service-role dependency in the dashboard runtime.
 
 **Never** reset, drop, or recreate the remote database. **Never** run destructive
 rollback SQL. If remote history conflicts with the repo, **STOP without forcing**.
@@ -141,14 +157,31 @@ Source of truth: `scripts/dashboard-members.config.mjs` (emails + roles only, no
 No public signup. Never generate or store passwords. Prefer secure Auth
 invitations; invitees set their own password via the callback flow.
 
+**Prerequisite — resolve the exact production target first.** Before `--apply`
+can run, fill in `scripts/production-target.config.mjs` with the
+**preflight-verified** non-secret `EXPECTED_SUPABASE_PROJECT_REF` and
+`EXPECTED_SUPABASE_HOSTNAME` (they must agree: hostname = `<ref>.<suffix>`).
+While these are empty the tool **fails closed** and sends nothing. Also export
+`SUPABASE_PROJECT_REF` in the operator shell — it must exactly match the
+committed expected ref.
+
 **OPERATOR ACTION** (after §4 is configured):
 
-1. Dry run: `npm run db:auth:invite` (read-only; sends nothing).
+1. Dry run: `npm run db:auth:invite` (read-only; sends nothing; requires no credentials).
 2. Apply: `npm run db:auth:invite:apply` — requires `NEXT_PUBLIC_SUPABASE_URL` +
-   `SUPABASE_SERVICE_ROLE_KEY`, refused in CI. It:
+   `SUPABASE_SERVICE_ROLE_KEY` + `SUPABASE_PROJECT_REF`, refused in CI. It:
+   - acts **only against the exact committed target** — it validates
+     `SUPABASE_PROJECT_REF` against the committed ref and parses
+     `NEXT_PUBLIC_SUPABASE_URL`, requiring https, no credentials, no port, and no
+     path/query/fragment, with the hostname matching the committed hostname and
+     agreeing with the ref (any deviation fails closed — it never proceeds after
+     merely displaying the host);
+   - **pins** the invite redirect to exactly
+     `https://alshehai.ae/dashboard/auth/callback` and fails closed if
+     `NEXT_PUBLIC_SITE_URL` is set to anything other than `https://alshehai.ae`;
    - lists existing Auth users and **only invites emails that do not exist**
-     (idempotent; never duplicates, never re-invites);
-   - pins the invite redirect to `https://alshehai.ae/dashboard/auth/callback`;
+     (idempotent; never duplicates, never re-invites), and **fails closed if user
+     pagination does not terminate** (never invites on a partial list);
    - **never** prints the invitation link/token; **never** creates a password;
    - reports each operator as `invited (pending)`, `already exists
      (confirmed/pending)`, `ambiguous`, or `FAILED`, and exits non-zero on any
@@ -223,6 +256,7 @@ npm run test:auth-shell
 npm run test:auth-flow
 npm run test:callback-cookie-helper
 npm run test:callback-cookies
+npm run test:invite-tool
 npm run lint
 npm run typecheck
 npm run build
@@ -264,11 +298,23 @@ Remote (OPERATOR ACTION, after activation): `npm run db:verify`,
 
 ## 11. Current activation state (from the preparation environment)
 
+**Commit identifiers (distinct — do not conflate):**
+
+- **Required baseline (P05 merge):** `9cb88c4bd5bdaada39af4695fac7e88eb1190739`
+  — the mandated starting commit. It is the branch's ancestor, **not** its HEAD.
+- **Branch HEAD (execution-time commit):** obtain at run time with
+  `git rev-parse HEAD` — do **not** hardcode a self-referential SHA here (the
+  commit that adds this line cannot contain its own hash). Verify descent with
+  `git merge-base --is-ancestor 9cb88c4bd5bdaada39af4695fac7e88eb1190739 HEAD`.
+- The reviewed head is whatever the P06 PR's latest commit resolves to; deploy
+  only that exact reviewed commit (§7).
+
 | Step | State |
 | --- | --- |
-| Read-only preflight (git baseline, domain, repo facts) | Done — HEAD `9cb88c4`, descends from required baseline; domain `https://alshehai.ae` confirmed from repo |
+| Read-only preflight (git baseline, domain, repo facts) | Done — branch HEAD descends from the required baseline `9cb88c4` (confirmed via `git merge-base --is-ancestor`); domain `https://alshehai.ae` confirmed from repo |
+| Production target resolved (`scripts/production-target.config.mjs`) | **PENDING — expected project ref/hostname intentionally empty; fills in after preflight; `--apply` fails closed until then** |
 | Local verification suite (§8) | Run before commit (see PR/CI) |
-| Committed artifacts (this doc, invite script, npm scripts, `.env.example`) | Done |
+| Committed artifacts (this doc, invite script + validator + test, npm scripts, `.env.example`) | Done |
 | Remote migrations apply (§2) | **BLOCKED — no operator credentials in this environment** |
 | Seed apply / verify (§3) | **BLOCKED — no operator credentials** |
 | Auth configuration (§4) | **BLOCKED — no operator credentials** |

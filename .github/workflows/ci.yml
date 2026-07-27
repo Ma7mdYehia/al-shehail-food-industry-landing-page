@@ -116,6 +116,12 @@ jobs:
       - name: Membership bootstrap is read-only by default
         run: npm run db:members:bootstrap
 
+      # Operator invitation tool: production-target validation, redirect pinning,
+      # CI-refusal, fail-closed pagination, and no secret/link leakage. No real
+      # credentials or network — synthetic identifiers only.
+      - name: Operator invitation tool safety tests
+        run: npm run test:invite-tool
+
       - name: Lint
         run: npm run lint
 
